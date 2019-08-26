@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="https://rogerspy.github.io/"/>
   <updated>2019-08-26T15:23:10.715Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>https://rogerspy.github.io/</id>
   
   <author>
     <name>Rogerspy</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>NLP中的注意力机制简介（一）</title>
-    <link href="http://yoursite.com/2019/08/26/NLP%E4%B8%AD%E7%9A%84%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E7%AE%80%E4%BB%8B%EF%BC%88%E4%B8%80%EF%BC%89/"/>
-    <id>http://yoursite.com/2019/08/26/NLP中的注意力机制简介（一）/</id>
+    <link href="https://rogerspy.github.io/2019/08/26/NLP%E4%B8%AD%E7%9A%84%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E7%AE%80%E4%BB%8B%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>https://rogerspy.github.io/2019/08/26/NLP中的注意力机制简介（一）/</id>
     <published>2019-08-26T09:54:30.000Z</published>
     <updated>2019-08-26T15:23:10.715Z</updated>
     
@@ -31,10 +31,10 @@
     
     </summary>
     
-      <category term="NLP" scheme="http://yoursite.com/categories/NLP/"/>
+      <category term="NLP" scheme="https://rogerspy.github.io/categories/NLP/"/>
     
     
-      <category term="Attention" scheme="http://yoursite.com/tags/Attention/"/>
+      <category term="Attention" scheme="https://rogerspy.github.io/tags/Attention/"/>
     
   </entry>
   
