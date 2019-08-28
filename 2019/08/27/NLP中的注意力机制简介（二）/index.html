@@ -398,7 +398,7 @@
 
 
 
-<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>之前我们介绍了各种各样的注意力机制，如果仔细回想一下就可以发现无论是哪种注意力机制都不是单独出现的，都是伴随着<em>RNN</em>或者其他<em>RNN</em>的变种。这种基于<em>RNN</em>的注意力机制会面临一个问题就是，难以处理长序列的句子，因为无法实现并行计算，所以非常消耗计算资源。</p>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>之前我们介绍了各种各样的注意力机制，如果仔细回想一下就可以发现无论是哪种注意力机制都不是单独出现的，都是伴随着<em>RNN</em>或者其他<em>RNN</em>的变种。这种基于<em>RNN</em>c的注意力机制会面临一个问题就是，难以处理长序列的句子，因为无法实现并行计算，所以非常消耗计算资源。</p>
 <a id="more"></a>
 
 <p><em>CNN</em>虽然可以实现并行计算，但是它无法获得序列的位置信息，这样它也就难以获得远距离信息上的依赖关系。后来虽然有人提出了完全基于<em>CNN</em>的<em>seq2seq</em>模型，但是却非常消耗内存。</p>
@@ -415,10 +415,10 @@
 <p><em>encoder</em>的输入先经过一个自注意力层对句子进行编码获取词的注意力权重，然后将自注意力输入给一个全连接层。</p>
 <p>对于<em>decoder</em>中自注意力层和全连接层和<em>encoder</em>相同，但是在自注意力输出后要经过一个注意力编码层与<em>encoder</em>进行联合编码，然后再传入给全连接层。这个联合编码其实就类似于在<em>seq2seq</em>模型中解码过程中，<em>decoder</em>隐状态和注意力联合编码然后再输出的过程是类似的。</p>
 <p>下面我们继续拆解擎天柱的零件，看看这个自注意力和全连接层下面埋藏着什么秘密。</p>
-<p><img src="imgs/1566026177834.png" alt="1566026177834"></p>
+<p><img src="https://img.vim-cn.com/3a/78ea12dca1ce0f99f9a9705466afc16c58c3cf.png" alt></p>
 <p>原来所谓的<em>Self-attention</em>是一个叫做<em>Multi-Head Attention</em>的东西，这个就是擎天柱的核心部件了。其他的小零件比如<em>Add, Norm, Linear, softmax, Feed Forward</em>等等都是在五金店都能买到的小玩意儿。下面我们就详细看下这个能量块到底隐藏着什么秘密吧。</p>
 <h2 id="2-2-Multi-Head-Attention"><a href="#2-2-Multi-Head-Attention" class="headerlink" title="2.2 Multi-Head Attention"></a>2.2 Multi-Head Attention</h2><p>从字面上就可以看出所谓<em>Multi-Head Attention</em>是由两部分组成——<em>Multi-Head</em>和<em>Attention</em>，而实际情况也是如此。其实严格来讲这是一个一般化的名称，如果具体到论文使用的自注意力机制的话，应该叫做<em>Self-Multi-Head Attention</em>。应该有三部分组成，除了上面提到的两个，还应该加上一个自注意力。</p>
-<p><img src="imgs/1566027212886.png" alt="1566027212886"></p>
+<p><img src="https://img.vim-cn.com/b1/e4bc841abc55d366813340f92f6696c5d59e95.png" alt></p>
 <p>还记得我们上一篇介绍注意力机制的文章中提到一种使用$\mathbf{k}, \mathbf{q}, \mathbf{v}$计算注意力的注意力机制。而<em>Scaled Dot-Product</em>也是我们之前提到的一种计算<em>Alignment score function</em>的方法。也就是说，图中下半部分是在计算<em>Scaled-Dot Product Attention</em>，而图中上半部分的<em>Concat</em>操作就是拼接操作，拼接什么？仔细看下半部分计算注意力的时候，不是只计算一个<em>Scaled-Dot Product Attention</em>，而是在同时计算<em>h</em>个<em>Scaled-Dot Product Attention</em>。而<em>Concat</em>拼接的的就是这<em>h</em>个<em>Scaled-Dot Product Attention</em>。这就是所谓的<em>Multi-Head Attention</em>，每一个<em>Head</em>就是一个<em>Scaled-Dot Product Attention</em>。</p>
 <p>形式化描述如下：<br>$$<br>MultiHead(Q, K, V) = Concat(head_1, head_2, …, head_h)W^O<br>$$</p>
 <p>$$<br>head_i = Attention(QW_i^Q, KW_i^K, VW_i^V)<br>$$</p>
@@ -426,7 +426,7 @@
 <p>我们仔细思考一下这个<em>Multi-Head Attention</em>，和我们提到的<em>Multi-dimensional Attention</em>有异曲同工之妙。论文里提到，相对于使用单个注意力而言，使用<em>Multi-Head</em>能获得更好的效果。但是论文并没有解释为什么。我们这里结合<em>Multi-dimensional Attention</em>做一个大胆的猜想：<em>Transformer</em>的强大之处正是由于这个<em>Multi-Head</em>！因为多维注意力机制能够获得一句话中在不同语境下的不同理解。而在语言模型中，词语和句子的歧义性一直是自然语言处理的难点，而<em>Transformer</em>在多维注意力机制的作用下能够很好的获取句子的多重含义，并且能根据上下文信息自动获取正确的语义，因此<em>Transformer</em>能够在预训练语言模型中大放异彩。</p>
 <p>下面我们就应该看一下这个核心中的核心——<em>Scaled-Dot Product Attention</em>了。</p>
 <h2 id="2-3-Scaled-Dot-Product-Attention"><a href="#2-3-Scaled-Dot-Product-Attention" class="headerlink" title="2.3 Scaled-Dot Product Attention"></a>2.3 Scaled-Dot Product Attention</h2><p><em>Scaled-Dot Product Attention</em>结构如图所示：</p>
-<p><img src="imgs/1566031501224.png" alt="1566031501224"></p>
+<p><img src="https://img.vim-cn.com/ed/97e04d7d6067cb360e8fef1d29cf41978d353e.png" alt></p>
 <p>首先我们先给出其形式化定义：<br>$$<br>Attention(K, Q, V) = softmax(\frac{QK^T}{\sqrt {d_k}})V<br>$$<br>我们把图中结构分解开来，一步一步解释清楚：</p>
 <ul>
 <li>第一步<em>MatMul</em>：计算<em>Alignment score function</em></li>
@@ -470,7 +470,7 @@
 <ul>
 <li>第五步：在<em>decoder</em>中对句子进行<em>Mask</em>。比如输入是一句话 “i have a dream” 总共4个单词，这里就会形成一张4x4的注意力机制的图：</li>
 </ul>
-<p><img src="imgs/1.png" alt="1566044913090"></p>
+<p><img src="https://img.vim-cn.com/4c/625491d4b49760feac027775caf66df844e4f3.png" alt></p>
 <p>这里的<em>mask</em>就是要在做语言建模的时候，不给模型看到未来的信息，让模型自己预测后面的信息。比如上图中，“I”作为第一个词，只能和自己进行<em>Attention</em>；“have”作为第二个词，可以和“I”和“have”本身进行<em>Attention</em>；“a”作为第三个单词，可以和“I”，“have”，“a” 三个单词进行<em>Attention</em>；到了最后一个单词“dream”的时候，才有对整个句子4个单词的<em>attention</em>。</p>
 <ul>
 <li>第六步：用上面计算出来的<em>softmax</em>与<em>values</em>进行加权求和</li>
@@ -485,7 +485,7 @@
 <p><img src="https://jalammar.github.io/images/t/transformer_positional_encoding_example.png" alt="img"></p>
 <p>在NLP的很多模型中都有位置向量的使用，比如前面我们提到基于<em>CNN</em>的<em>seq2seq</em>模型（<a href="https://arxiv.org/abs/1705.03122" target="_blank" rel="noopener">Gehring et al., 2017</a>）。但是通常其他模型中的位置向量都是通过学习得来的，本文采用的是直接通过函数构造出来的：<br>$$<br>\left\{<br>\begin{aligned}<br>PE_{(pos, 2i)} &amp; =  sin(pos/10000^{2i/d_{model}}) \<br>PE_{(pos, 2i+1)} &amp; =  cos(pos/10000^{2i}/d_{model})<br>\end{aligned}<br>\right.<br>$$<br>其中$pos$表示位置索引，$i$表示维度索引。也就是说位置向量中的每一维都是一个余弦曲线，波长是一个从$2\pi$到$10000 \cdot 2\pi$的等比数列。之所以选择这个函数，是因为它允许模型能很容易的学习到相对位置信息，因为对于任意固定的偏置$k$，$PE_{pos+k}$能通过一个$PE_{pos} $的线性函数推理得到：<br>$$<br>\begin{aligned}<br>sin(\alpha+\beta) &amp;= sin(\alpha) cos(\beta) + cos(\alpha)sin(\beta)\<br>cos(\alpha+\beta) &amp;= cos(\alpha) cos(\beta) - sin(\alpha)sin(\beta)<br>\end{aligned}<br>$$<br>另外，作者也做过实验，使用通过学习得到的位置向量，最后发现两者的效果差别不大。在效果差别不大的情况下使用直接构造的方法能够避免训练过程的权重更新，这样可以加速训练。另外一个很重要的原因就是，选择这个余弦版本的位置向量还可以处理比训练时遇到的更长的序列。</p>
 <h2 id="2-6-残差结构"><a href="#2-6-残差结构" class="headerlink" title="2.6 残差结构"></a>2.6 残差结构</h2><p>如果我们仔细看模型结构图就会发现，数据的流向并不是从一层单项流向下一层的这种简单的串联结构，而是采用了类似残差网络的残差式连接。</p>
-<p><img src="imgs/1566120593103.png" alt></p>
+<p><img src="https://img.vim-cn.com/f5/93c8882e8ab0822050df9b69d080564124889c.png" alt></p>
 <ul>
 <li>第一步：计算<em>Multi-Head Attention</em></li>
 <li>第二步：原始的输入+<em>Multi-Head Attention</em></li>
@@ -515,7 +515,7 @@
 <h2 id="3-3-最后的Linear层和Softmax层"><a href="#3-3-最后的Linear层和Softmax层" class="headerlink" title="3.3 最后的Linear层和Softmax层"></a>3.3 最后的Linear层和Softmax层</h2><p><em>Decoder</em>输出一个向量，我们怎么把这个向量转化成单词呢？这就是最后的<em>Linear</em>和<em>Softmax</em>层做的事情。</p>
 <p>线性变换层是一个简单的全连接层，将<em>Decoder</em>输出的向量转化成一个<em>logits vector</em>。假设模型的词表中有10000个词，这个<em>logits vector</em>的维度就是10000，每一维对应词表中的一个词的得分。</p>
 <p>然后<em>softmax</em>将这些得分进行归一化，将得分变成每个词的概率，然后选出概率最大的那个位置对应到词就是最后的输出了。</p>
-<img src="imgs/1566125533498.png" width="60%">
+<img src="https://img.vim-cn.com/4c/8e4eb0da346e24135138f9a4efe40d1a1899d5.png" width="60%">
 
 
 
@@ -523,7 +523,7 @@
 <p><img src="https://jalammar.github.io/images/t/transformer_decoding_2.gif" alt="img"></p>
 <h1 id="5-关于K-Q-V的讨论"><a href="#5-关于K-Q-V的讨论" class="headerlink" title="5. 关于K, Q, V的讨论"></a>5. 关于K, Q, V的讨论</h1><p>到这里我们关于整个<em>Transformer</em>的介绍就结束了，我们先从整体上介绍了<em>Transformer</em>也是一个基于<em>encoder-decoder</em>的结构，然后抽丝剥茧般的一层一层的剥开模型，看看它的每一部分到底长什么样子，然后我们了解了每个零件之后又重新把每个零件组装回去。但是还是有两个问题我们可以再细致的讨论一下的，比如为什么需要$V$？为什么$K, Q$使用不同的权重获得？</p>
 <h2 id="5-1-我们为什么需要V？"><a href="#5-1-我们为什么需要V？" class="headerlink" title="5.1 我们为什么需要V？"></a>5.1 我们为什么需要V？</h2><p>注意力权重矩阵可以表示序列中任意两个元素的相似性，但是不能用来表示原始的序列，因为它缺少了词向量。注意力的作用是给原始序列中的不同位置上的元素以不同的权重，这样可以更好的获取到这个句子中哪一部分重要哪一部分不那么重要，或者说对于句子中的某个词来说，哪个词对它更有依赖关系，哪些词跟它关系没那么密切。所以说，注意力有两个重要的组成部分，一个是注意力权重，也就是词与词之间的相似性，另一个就是原始的句子序列。从模型结构就可以看出来，$K, Q$是用来计算相似性的，那么$V$其实就是用来表征句子序列特征的。</p>
-<p><img src="imgs/1566186141115.png" alt="1566186141115"></p>
+<p><img src="https://img.vim-cn.com/d2/f6b7183f71a2447bfc4f5036fc42791655888c.png" alt="c"></p>
 <p>我们可以认为注意力权重矩阵是一个<em>过滤矩阵</em> ，把更多的注意力给重要的词，给那些不那么重要的词以更少的注意力。</p>
 <h2 id="5-2-为什么使用两个不同的权重获得K-Q"><a href="#5-2-为什么使用两个不同的权重获得K-Q" class="headerlink" title="5.2 为什么使用两个不同的权重获得K, Q?"></a>5.2 为什么使用两个不同的权重获得K, Q?</h2><p>另一个问题就是，我们为什么要用两个不同的矩阵来获得$K, Q$？换句话说，就是我们为什么要用两个不同的矩阵来计算注意力呢？</p>
 <p>正如我们前面所说的，注意力实际上是在计算两个词的相似度，如果使用相同的矩阵的话那就相当于计算自己与自己的相似度了，最后我们会得到一个对称矩阵，这样最后的模型的泛化性会大打折扣。</p>
@@ -559,7 +559,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-08-28T15:51:39+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-08-28T18:04:39+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>last updated at Aug 28, 2019</p>
@@ -571,7 +571,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/ATTENTION-TRANSFORMER/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Attention, Transformer</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/ATTENTION/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Attention</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/TRANSFORMER/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Transformer</p></a></div>
 
 
         
@@ -590,7 +590,7 @@
 
 
 
-1. 前言之前我们介绍了各种各样的注意力机制，如果仔细回想一下就可以发现无论是哪种注意力机制都不是单独出现的，都是伴随着RNN或者其他RNN的变种。这种基于RNN的注意力机制会面临一个问题就是，难以处理长序列的句子，因为无法实现并行计算，所以非常消耗计算资源。"
+1. 前言之前我们介绍了各种各样的注意力机制，如果仔细回想一下就可以发现无论是哪种注意力机制都不是单独出现的，都是伴随着RNN或者其他RNN的变种。这种基于RNNc的注意力机制会面临一个问题就是，难以处理长序列的句子，因为无法实现并行计算，所以非常消耗计算资源。"
           
           >
           
@@ -608,7 +608,7 @@
 
 
 
-1. 前言之前我们介绍了各种各样的注意力机制，如果仔细回想一下就可以发现无论是哪种注意力机制都不是单独出现的，都是伴随着RNN或者其他RNN的变种。这种基于RNN的注意力机制会面临一个问题就是，难以处理长序列的句子，因为无法实现并行计算，所以非常消耗计算资源。"
+1. 前言之前我们介绍了各种各样的注意力机制，如果仔细回想一下就可以发现无论是哪种注意力机制都不是单独出现的，都是伴随着RNN或者其他RNN的变种。这种基于RNNc的注意力机制会面临一个问题就是，难以处理长序列的句子，因为无法实现并行计算，所以非常消耗计算资源。"
           
           >
           
@@ -634,7 +634,7 @@
 
 
 
-1. 前言之前我们介绍了各种各样的注意力机制，如果仔细回想一下就可以发现无论是哪种注意力机制都不是单独出现的，都是伴随着RNN或者其他RNN的变种。这种基于RNN的注意力机制会面临一个问题就是，难以处理长序列的句子，因为无法实现并行计算，所以非常消耗计算资源。"
+1. 前言之前我们介绍了各种各样的注意力机制，如果仔细回想一下就可以发现无论是哪种注意力机制都不是单独出现的，都是伴随着RNN或者其他RNN的变种。这种基于RNNc的注意力机制会面临一个问题就是，难以处理长序列的句子，因为无法实现并行计算，所以非常消耗计算资源。"
           
           >
           
@@ -1001,7 +1001,7 @@
 </header>
 
     <div class='content pure'>
-      <a href="/tags/ATTENTION/" style="font-size: 14px; color: #999">Attention</a> <a href="/tags/ATTENTION-TRANSFORMER/" style="font-size: 14px; color: #999">Attention, Transformer</a>
+      <a href="/tags/ATTENTION/" style="font-size: 24px; color: #555">Attention</a> <a href="/tags/TRANSFORMER/" style="font-size: 14px; color: #999">Transformer</a>
     </div>
   </section>
 
