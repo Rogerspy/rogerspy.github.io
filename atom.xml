@@ -37,12 +37,12 @@
     
     </summary>
     
-      <category term="NLP" scheme="https://rogerspy.github.io/categories/NLP/"/>
+      <category term="NLP" scheme="https://rogerspy.github.io/categories/nlp/"/>
     
     
-      <category term="Attention" scheme="https://rogerspy.github.io/tags/Attention/"/>
+      <category term="Attention" scheme="https://rogerspy.github.io/tags/attention/"/>
     
-      <category term="Transformer" scheme="https://rogerspy.github.io/tags/Transformer/"/>
+      <category term="Transformer" scheme="https://rogerspy.github.io/tags/transformer/"/>
     
   </entry>
   
@@ -61,10 +61,10 @@
     
     </summary>
     
-      <category term="NLP" scheme="https://rogerspy.github.io/categories/NLP/"/>
+      <category term="NLP" scheme="https://rogerspy.github.io/categories/nlp/"/>
     
     
-      <category term="Attention" scheme="https://rogerspy.github.io/tags/Attention/"/>
+      <category term="Attention" scheme="https://rogerspy.github.io/tags/attention/"/>
     
   </entry>
   
