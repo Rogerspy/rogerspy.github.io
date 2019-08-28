@@ -402,14 +402,14 @@
 <li>在解码过程中没有利用词对齐信息，也就是说在产生目标序列的过程中每产生一个词是基于整个源序列的信息的，由于注意力分散，所以在产生目标序列的过程中也容易出错。（<strong>注意力分散问题</strong>）</li>
 </ol>
 <p>为了解决以上两个问题， <a href="https://arxiv.org/abs/1409.0473" target="_blank" rel="noopener"><em>Bahdanau et al., 2014</em></a>和 <a href="https://arxiv.org/abs/1508.04025" target="_blank" rel="noopener"><em>Luong et al., 2015</em></a>提出了注意力机制。论文中仍然使用基于<em>RNN</em>的<em>encoder-decoder</em>结构，但是在解码过程中每个时间步长都会计算注意力得分，然后再生成该隐状态下对应的输出。下面我们以<em>seq2seq with attention</em>模型为例，介绍传统注意力机制过程：</p>
-<p><img src="imgs%5C48d0da24-2b86-49e7-a43b-beaab016bfa3.gif" alt></p>
+<p><img src="imgs/48d0da24-2b86-49e7-a43b-beaab016bfa3.gif" alt></p>
 <p>加入了注意力机制的<em>encoder-decoder</em>模型与标准的<em>encoder-encoder</em>有两点区别：</p>
 <ol>
 <li>传入<em>decoder</em>的数据不再是单纯的<em>encoder</em>的最后一个隐状态，而是<em>encoder</em>的所有隐状态；</li>
 <li><em>decoder</em>在产生输出之前还会有额外的计算，用于确定当前<em>decoder</em>的隐状态应该对应到哪个<em>encoder</em>的隐状态，这样相当于集中注意力来产生与之对应的输出，这也是注意力机制得名的由来。</li>
 </ol>
 <p>注意力得分的计算过程如下所示：</p>
-<p><img src="imgs%5Cd97693da-0368-48e5-aa1f-a0e8f9a24e32.gif" alt></p>
+<p><img src="imgs/d97693da-0368-48e5-aa1f-a0e8f9a24e32.gif" alt></p>
 <ol>
 <li>准备好输入到<em>decoder</em>的所有<em>encoder</em>隐状态$\mathbf{h}_1,\mathbf{h}_2,\mathbf{h}_3$；</li>
 <li>对每一个隐状态给定一个得分；</li>
@@ -418,7 +418,7 @@
 <li>最后对加权后的<em>encoder</em>隐状态进行求和，求和后的隐状态即相当于原始<em>encoder-decoder</em>中的单一隐状态。</li>
 </ol>
 <p>以上步骤在<em>decoder</em>中的每一个时间步长上都进行一次计算，仍然以翻译模型为例，对整个过程进行简单的介绍：</p>
-<p><img src="imgs%5C5fe59340-18a3-49b8-89a7-47fe74dd2648.gif" alt></p>
+<p><img src="imgs/5fe59340-18a3-49b8-89a7-47fe74dd2648.gif" alt></p>
 <ol>
 <li>首先是<em>encoder</em>中对输入的句子序列进行编码，得到$h_1, h_2, h_3$三个隐状态待用；</li>
 <li>第一个<em>decoder</em>单元接收到源序列中的终止符<em><end></end></em>开始进行解码，<em>decoder</em>单元首先初始化一个隐状态权重，此时与接收到的源序列终止符<em><end></end></em>相互作用，但并不产生输出，而是产生一个新的隐状态$\mathbf{h}_4$；</li>
@@ -440,7 +440,7 @@
 <li>对于注意力分散的问题，由于我们在每一次进行<em>decode</em>的时候都会进行注意力加权，注意力只会集中在对当前影响较大的部分序列上，而不是把注意力分散到整个序列中，因此有效的解决了注意力分散的问题。</li>
 </ol>
 <p>注意力机制自从被提出来以后，在机器翻译领域取得了非常打的成功，随后注意力机制被广泛应用于NLP各个领域中，并且为了解决不同领域中各种问题，注意力机制也出现了各种各样的变种，下图总结了最近几年关于注意力机制的一些比较重要的研究。</p>
-<p><img src="imgs%5C1565940458240.png" alt="1565940458240"></p>
+<p><img src="imgs/1565940458240.png" alt="1565940458240"></p>
 <p>下面我们就介绍一些比较重要的注意力模型。</p>
 <h1 id="2-注意力模型的基本形式"><a href="#2-注意力模型的基本形式" class="headerlink" title="2. 注意力模型的基本形式"></a>2. 注意力模型的基本形式</h1><p>前面我们介绍了注意力机制在神经机器翻译中的应用，为了更一般化、形式化注意力机制，首先定义$V=\{\mathbf{v}_i\} \in \mathbb{R}^{n\times d_v}$，其中$\mathbf{v}_i$表示序列元素对应的向量（这里实际上应该是经过编码后的隐状态向量即前文所说的$\mathbf{h}_i$），重写之前的注意力模型：<br>$$<br>e_i = a(\mathbf{v}_i, \mathbf{u})<br>$$</p>
 <p>$$<br>\alpha_i = \frac{exp(e_i)}{\sum_i exp(e_i)}<br>$$</p>
@@ -553,7 +553,7 @@
 </ol>
 <p>对于第一个理解方式，那么注意力应该在<em>Fish Burger</em>；而对于第二种理解方式，注意力应该在<em>the best</em>上面。也就是说针对不同语境（<em>representation space</em>），同一句话的注意力重点也是不同的。因此，我们需要多个注意力来处理这类情况，即所谓的<em>Multi-dimensional attention</em>。</p>
 <p>最简单的方式就是多个<em>1D-attention</em>堆积成一个<em>Multi-dimensional attention</em>。例如<a href="http://www.aaai.org/Conferences/AAAI/2017/PreliminaryPapers/15-Wang-W-14441.pdf" target="_blank" rel="noopener">Wang et al., 2017</a>提出的<em>2D-attention</em>：给定一个输入序列$V=\{\mathbf{v}_i\}$，两个<em>representation space</em> $U = \{\mathbf{u}^a, \mathbf{u}^p\}$，权重张量$\mathbf{W}=\{W_a, W_p\}$，注意力权重的计算变为：<br>$$<br>\mathbf{e}_i = tanh([\mathbf{v}_i^TW_a\mathbf{u}^a:\mathbf{v}_i^TW_p\mathbf{u}^p])<br>$$<br>其中$[:]$表示两个向量的拼接，$E = \{\mathbf{e}_i\}$， 经过<em>softmax</em>归一化之后得到注意力矩阵$\Lambda = \{\alpha_i\}$。结果如图所示：</p>
-<p><img src="imgs%5C1565763505669.png" alt="1565763505669"></p>
+<p><img src="imgs/1565763505669.png" alt="1565763505669"></p>
 <p><em>Aspect attention</em>和<em>Opinion attention</em>表示两个<em>representation space</em>，<em>Aspect attention</em>能把注意力集中在<em>Fish Burger</em>上，而<em>Opinion attention</em>能把注意力集中在<em>best</em>上，这样就解决了上面提到的问题。</p>
 <p>然而这种多维注意力机制存在一个问题：</p>
 <blockquote>
@@ -671,7 +671,7 @@
 <p>第三至第六步：就是标准的注意力加权求和。</p>
 <p>第七步：更新问题向量。</p>
 <p>整个推理过程如下：</p>
-<p><img src="imgs%5C1565860574005.png" alt></p>
+<p><img src="imgs/1565860574005.png" alt></p>
 <p>另外有很多人在这方面也做了很多工作，比如<em><a href="https://arxiv.org/pdf/1506.07285.pdf" target="_blank" rel="noopener">Kumar et al. 2016</a>，<a href="https://arxiv.org/abs/1410.5401" target="_blank" rel="noopener">Graves et al., 2014</a></em>这里不详细介绍了。下面我们继续介绍第二点优势。</p>
 </li>
 <li><p>灵活性（<em>Flexibility</em>）</p>
@@ -680,7 +680,7 @@
 </li>
 </ul>
 <h2 id="3-5-指针网络"><a href="#3-5-指针网络" class="headerlink" title="3.5 指针网络"></a>3.5 指针网络</h2><p>对于一些排序的问题（<em>sorting</em>）或者“巡回推销员”（<em>travelling salesman</em>）问题输出并不是确定的，而是随着输入的变化输出也随之改变。面对这类问题前面提到的各种注意力模型都无能为力了，因此 <a href="https://arxiv.org/abs/1506.03134" target="_blank" rel="noopener">Vinyals, et al. 2015</a>提出了<strong>指针网络</strong>的方法。不同于其他注意力模型将上下文信息糅合进一个向量里面，指针网络是在解码阶段通过注意力机制一个一个从输入序列中选择元素进行输出。</p>
-<p><img src="imgs%5C1565925694004.png" alt="1565925694004"></p>
+<p><img src="imgs/1565925694004.png" alt="1565925694004"></p>
 <p>给定一个输入序列$V=\{\mathbf{v}_i\}$，指针网络输出一个序列$\mathbf{c}=\{c_i\}$，其中$c_i$是$V$中元素的索引。<br>$$<br>\begin{align}<br>y_i &amp;= p(c_i|c_1,…c_{i-1}, V) \nonumber\\<br>    &amp;= \sigma(a(\mathbf{v}_i, \mathbf{u})) \<br>    &amp;= \sigma(\mathbf{w}_2^{T}tanh(W_1[\mathbf{v}_i;\mathbf{u}])) \nonumber<br>\end{align}<br>$$</p>
 <h2 id="3-6-特定任务下的注意力机制"><a href="#3-6-特定任务下的注意力机制" class="headerlink" title="3.6 特定任务下的注意力机制"></a>3.6 特定任务下的注意力机制</h2><ul>
 <li><strong>文本摘要</strong></li>
@@ -744,7 +744,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-08-28T13:02:20+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-08-28T13:12:06+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>最后更新于 Aug 28, 2019</p>
