@@ -68,7 +68,7 @@ a:hover, a:focus{
 	border-top: none;
 	position: relative;
 }
-#accordion .panel-body a{
+#accordion .panel-body a:target{
 	color: #444;
     cursor: pointer;
     text-decoration: none;
