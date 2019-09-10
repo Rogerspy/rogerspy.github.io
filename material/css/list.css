@@ -72,10 +72,6 @@ a:hover, a:focus{
 	color: #444;
     cursor: pointer;
     text-decoration: none;
-    transition: all .25s ease;
-    -moz-transition: all .25s ease;
-    -webkit-transition: all .25s ease;
-    -o-transition: all .25s ease;
 }
 #accordion .panel-body a:hover{
 	color: #1bc3fb;
