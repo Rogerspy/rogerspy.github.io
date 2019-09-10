@@ -1,0 +1,13 @@
+#footer{position:relative;padding:40px 10px 120px 10px;width:100%;color:rgba(85,85,85,.5);margin:0 auto;font-size:14px;overflow:hidden;text-align:center;font-family:'Varela Round',"Microsoft YaHei","Source Sans Pro","Helvetica Neue",Menlo,Monaco,monospace,"Lucida Console",sans-serif,Helvetica,"Hiragino Sans GB","Hiragino Sans GB W3",Source Han Sans CN Regular,WenQuanYi Micro Hei,Arial,sans-serif}
+#footer .licenses{color:rgba(85,85,85,.5);text-decoration:underline}
+#footer .codename{text-decoration:underline}
+#footer .social-wrapper{display:flex;justify-content:center;flex-wrap:wrap;margin:4px 8px}
+#footer a{color:rgba(85,85,85,.7);padding:0;transition:all .25s ease;-moz-transition:all .25s ease;-webkit-transition:all .25s ease;-o-transition:all .25s ease}
+#footer a:hover{color:#1bc3fb}
+#footer a.social{position:relative;display:inline-block;text-align:center;display:flex;justify-content:center;align-items:center;width:32px;height:32px;margin:4px;border-radius:100px}
+#footer a.social:hover{background:rgba(27,195,251,.1);color:#1bc3fb}
+@media (max-width:768px){ #footer{justify-content:center}
+}
+.clearfix{zoom:1}
+.clearfix:after,.clearfix:before{content:" ";display:table}
+.clearfix:after{clear:both}
