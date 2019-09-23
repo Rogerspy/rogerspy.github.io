@@ -526,11 +526,11 @@
 <li>或者注意力集中在后几个词</li>
 <li>最后注意力会集中在句子的末尾</li>
 </ul>
-<p><img src="http://img.vim-cn.com/a2/1daa1130c9fa37195edb3385b35563a33905fa.png" alt></p>
+<p><img src="https://img.vim-cn.com/a2/1daa1130c9fa37195edb3385b35563a33905fa.png" alt></p>
 <p>假设输入句子是“there is also an economic motive.”，<em>Transformer</em>中典型的注意力权重分布。可以看到layer 0中注意力都在词本身，后面基层的注意力会在词的前后几个词上，再到最后一层所有词的注意力全部放在句子末尾。这就预示着<em>Transformer</em>的高层注意力试图发现词与词之间的长程依赖关系，而低层注意力试图在局部发现依赖关系，这一发现很好的印证了<em>Transformer</em>作者的预想。</p>
 <h1 id="2-树结构生成"><a href="#2-树结构生成" class="headerlink" title="2. 树结构生成"></a>2. 树结构生成</h1><p><em>Transformer</em>的权重矩阵可以看成是一个加权图：每个次都是一个节点，词与词之间的注意力是边。尽管模型没有任何生成树形结构的训练，但是我们可以使用这种图结构来抽取出一棵树来看看它是否能反应词之间的依赖关系。</p>
 <p>作者在<em>CoNLL 2017 Share Task</em>的<em>English PUD treebank</em>上做实验。</p>
-<p><img src="http://img.vim-cn.com/9b/0edca00f20e5f0e9e855fb9c06481dd1042b76.png" alt></p>
+<p><img src="https://img.vim-cn.com/9b/0edca00f20e5f0e9e855fb9c06481dd1042b76.png" alt></p>
 <p>上图展示了<em>UAS F1-Score</em>，实验中作为对比作者使用<em>random baseline</em>的得分是10.1，从上图我们可以看到虽然注意力层没有训练用于生成树结构，但是每一层的得分都好于随机，这说明模型可以学习到一些语法关系。</p>
 <p>基本上得分最高的层都集中在前三层，说明前三层主要用于学习句子的语法结构的。</p>
 <p>但是作者也通过在注意力权重可视化中发现的规律作为基准，计算<em>UAS F1-Score</em>得到最好的分数为35.08，而我们可以从上表中看到，表中最好的结果并没有比基准高多少，并且之前我们的结论是高层注意力用于学习远距离的依赖关系，但是这里我们看到主要是低层注意力学习到了有效的语法结构，这说明<em>Transformer</em>很难有效地处理更加复杂和长程的依赖。</p>
@@ -582,7 +582,7 @@
 <td>6.4</td>
 </tr>
 </tbody></table>
-<p><img src="http://img.vim-cn.com/da/b0a2810894b50fd0501e6dd70c0edbd38ebb53.png" alt></p>
+<p><img src="https://img.vim-cn.com/da/b0a2810894b50fd0501e6dd70c0edbd38ebb53.png" alt></p>
 <p>上图展示了测试结果。</p>
 <ul>
 <li>对于POS和CHUNK任务来说，最高的结果基本出现在前三层，说明前三层用于学习语法结构，这一结论与之前的结果相吻合。</li>
@@ -595,7 +595,7 @@
 <li>使用English-German训练好的编码层，初始化English-Turkish编码层，并且允许编码层权重微调（TL1）</li>
 <li>使用English-German训练好的编码层，初始化English-Turkish编码层，并且保持权重不变（TL2）</li>
 </ul>
-<p><img src="http://img.vim-cn.com/8b/e008811c89ae0e7792e9d59f0bfb70ffe1b0e8.png" alt></p>
+<p><img src="https://img.vim-cn.com/8b/e008811c89ae0e7792e9d59f0bfb70ffe1b0e8.png" alt></p>
 <p>上图展示了实验的结果。从结果中我们可以看到，效果很明显。</p>
 <h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h1><p>本文主要研究了<em>Transformer</em>每层注意力都学到了什么，通过实验发现：</p>
 <ul>
@@ -620,7 +620,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-09-23T17:40:00+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-09-23T19:03:56+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>last updated at Sep 23, 2019</p>
@@ -705,9 +705,9 @@
                         <span class="art-item-left">
                             <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
                             <h4>
-                                <a href="/2019/09/19/transformer变种/" rel="prev" title="Transformer变种">
+                                <a href="/2019/09/19/transformer变种-weighted/" rel="prev" title="Transformer变种之Weighted Transformer">
                                   
-                                      Transformer变种
+                                      Transformer变种之Weighted Transformer
                                   
                                 </a>
                             </h4>
