@@ -550,7 +550,7 @@
 <p><img src="https://jalammar.github.io/images/t/transformer_decoding_2.gif" alt="img"></p>
 <h1 id="5-关于K-Q-V的讨论"><a href="#5-关于K-Q-V的讨论" class="headerlink" title="5. 关于K, Q, V的讨论"></a>5. 关于K, Q, V的讨论</h1><p>到这里我们关于整个<em>Transformer</em>的介绍就结束了，我们先从整体上介绍了<em>Transformer</em>也是一个基于<em>encoder-decoder</em>的结构，然后抽丝剥茧般的一层一层的剥开模型，看看它的每一部分到底长什么样子，然后我们了解了每个零件之后又重新把每个零件组装回去。但是还是有两个问题我们可以再细致的讨论一下的，比如为什么需要$V$？为什么$K, Q$使用不同的权重获得？</p>
 <h2 id="5-1-我们为什么需要V？"><a href="#5-1-我们为什么需要V？" class="headerlink" title="5.1 我们为什么需要V？"></a>5.1 我们为什么需要V？</h2><p>注意力权重矩阵可以表示序列中任意两个元素的相似性，但是不能用来表示原始的序列，因为它缺少了词向量。注意力的作用是给原始序列中的不同位置上的元素以不同的权重，这样可以更好的获取到这个句子中哪一部分重要哪一部分不那么重要，或者说对于句子中的某个词来说，哪个词对它更有依赖关系，哪些词跟它关系没那么密切。所以说，注意力有两个重要的组成部分，一个是注意力权重，也就是词与词之间的相似性，另一个就是原始的句子序列。从模型结构就可以看出来，$K, Q$是用来计算相似性的，那么$V$其实就是用来表征句子序列特征的。</p>
-<p><img src="https://img.vim-cn.com/d2/f6b7183f71a2447bfc4f5036fc42791655888c.png" alt="c"></p>
+<p><img src="https://img.vim-cn.com/d2/f6b7183f71a2447bfc4f5036fc42791655888c.png" alt></p>
 <p>我们可以认为注意力权重矩阵是一个<em>过滤矩阵</em> ，把更多的注意力给重要的词，给那些不那么重要的词以更少的注意力。</p>
 <h2 id="5-2-为什么使用两个不同的权重获得K-Q"><a href="#5-2-为什么使用两个不同的权重获得K-Q" class="headerlink" title="5.2 为什么使用两个不同的权重获得K, Q?"></a>5.2 为什么使用两个不同的权重获得K, Q?</h2><p>另一个问题就是，我们为什么要用两个不同的矩阵来获得$K, Q$？换句话说，就是我们为什么要用两个不同的矩阵来计算注意力呢？</p>
 <p>正如我们前面所说的，注意力实际上是在计算两个词的相似度，如果使用相同的矩阵的话那就相当于计算自己与自己的相似度了，最后我们会得到一个对称矩阵，这样最后的模型的泛化性会大打折扣。</p>
@@ -586,10 +586,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-09-11T16:37:34+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-09-24T10:01:20+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>last updated at Sep 11, 2019</p>
+    <p>last updated at Sep 24, 2019</p>
   </a>
 </div>
 
@@ -1016,7 +1016,7 @@
     <div class='content pure'>
       <ul class="entry">
         
-          <li><a class="flat-box" title="/categories/nlp/" href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" title="/categories/nlp/" href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(7)</div></a></li>
         
       </ul>
     </div>
