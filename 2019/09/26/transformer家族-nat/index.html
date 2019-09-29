@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
-  <title>transformer家族之NA-Trasnsformer | Rogerspy&#39;s Home</title>
+  <title>Transformer家族之NA Trasnsformer | Rogerspy&#39;s Home</title>
   
   <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
   
@@ -338,7 +338,7 @@
   
     <h1 class="title">
       <a href="/2019/09/26/transformer家族-nat/">
-        transformer家族之NA-Trasnsformer
+        Transformer家族之NA Trasnsformer
       </a>
     </h1>
   
@@ -420,6 +420,104 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           <p><img src="https://img.vim-cn.com/54/833bf5e320661bf6e566f1a94d8894c601b9be.jpg" alt></p>
+<p>本文继续介绍关于<em>transformer</em>在<em>non-auto regression</em>方面的研究，今天要介绍的是<em>Gu et al. 2018</em> 发表在<em>ICLR 2018</em>上的文章<a href="http://arxiv.org/abs/1711.02281" target="_blank" rel="noopener">Non-autoregressive neural machine translation</a> 。</p>
+<a id="more"></a>
+
+<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><p>之前我们介绍了由于<em>transformer</em>的<em>auto-regression</em>机制，导致模型在做推理的时候会变得非常慢。针对这个问题很多研究者都做了探索，之前介绍的几篇论文都没有真正做到<em>non-auto regression</em>，而今天我们要介绍的这篇文章则从根本上做到了<em>non-auto regression</em>。</p>
+<h2 id="1-1-Auto-Regressive-Decoding"><a href="#1-1-Auto-Regressive-Decoding" class="headerlink" title="1.1 Auto-Regressive Decoding"></a>1.1 Auto-Regressive Decoding</h2><p>给定一个源序列$X=\{x_1, x_2, …, x_{T’}\}$，翻译模型通过链式条件概率的方式预测输出序列$Y = \{ y_1, y_2, …, y_T\}$:<br>$$<br>p_{AR}(Y|X;\theta) = \Pi_{t=1}^{T+1} p(y_t|y_{0:t-1}, x_{1:T’};\theta)<br>$$<br>其中$y_0$表示句子开始符，比如$BOS$；$y_{T+1}$表示句子结束符，比如$EOS$ 。</p>
+<h2 id="1-2-Maximum-Likelihood-training"><a href="#1-2-Maximum-Likelihood-training" class="headerlink" title="1.2  Maximum Likelihood training"></a>1.2  Maximum Likelihood training</h2><p>训练的时候直接使用<em>Maximum Likelihood training</em>方法对模型进行训练：<br>$$<br>L_{ML} = \log P_{AR}\{Y|X;\theta\} = \sum_{t=1}^{T+1} \log p(y_t|y_{0:t-1},x_{1:T’};\theta)<br>$$</p>
+<h2 id="1-3-Non-Auto-regressive-Decoding"><a href="#1-3-Non-Auto-regressive-Decoding" class="headerlink" title="1.3 Non-Auto regressive Decoding"></a>1.3 Non-Auto regressive Decoding</h2><p>从上面的$p_{AR}(Y|X;\theta)$中可以看出，实际上要预测$Y=\{y_t\}$需要两个条件：</p>
+<ul>
+<li>知道$Y$的长度$T$，虽然对于<em>auto-regression</em>来说，解码过程并不知道$T$显示的值，但是由于编码的开始和结束可以通过句子开始符（$&lt; BOS&gt;$）和句子结束符（$&lt; EOS&gt;$）来控制，编码过程是一个词一个词的生成 ，知道遇到结束符，则编码过程结束。因此，模型可以隐式的知道$T$的值。但是对于并行生成句子序列，我们必须提前知道句子的长度，才能一次性生成一个长度为$T$的序列，所以对于<em>Non-auto reregression</em>来说$T$必须是显式的；</li>
+<li>第二点当然就是$Y$序列本身了，当知道了需要预测的序列长度，就可以根据输入预测输出了。</li>
+</ul>
+<p>因此，我们可以把预测$Y=\{y_t\}$任务分为两部分，第一部分预测$T$的大小，第二部分生成长度为$T$的序列：<br>$$<br>p_{NA}(Y|X;\theta) = p_L(T|x_{1:T’};\theta)\cdot \Pi_{t=1}^{T} p(y_t|x_{1:T’};\theta)<br>$$<br>这样我们就可以分别独立的训练这两部分，而在推理的时候 能并行计算。</p>
+<h2 id="1-4-多模态问题"><a href="#1-4-多模态问题" class="headerlink" title="1.4 多模态问题"></a>1.4 多模态问题</h2><p>这种简单的方法虽然看起来合理，但是实际上有一个很大的问题：多模态问题 。具体来说就是同一句话有多种翻译方式，比如<em>Thank you</em>可以翻译成<em>谢谢</em>、<em>感谢</em>等。由于$p(y_t)$只与$X$有关，所以无法获得训练数据中<em>谢谢</em>、<em>感谢</em> 等不同翻译方式的分布。</p>
+<p>当<em>A B</em>既可以翻译成<em>1 2 3</em>，又可以翻译成<em>4 5 6</em>时，实际上相当于<br>$$<br>\{A, B\} =&gt; \{1, 2, 3, 4, 5, 6\}<br>$$<br>的一个映射，而最佳的映射组合是$\{1,2,3\}$和$\{4,5,6\}$，但是由于<em>non-auto regression</em>每个词都是独立的，所以无法获取到词与词之间的依赖关系，每种序列组合称为<em>mode</em>。</p>
+<p>另外使用<em>Maxium Likelihood</em>进行训练的时候，模型倾向于使用在训练集中出现概率最大的<em>mode</em>覆盖掉其他小概率<em>mode</em>，这实际上是有一定问题的。</p>
+<p>要解决多模态问题，一般有三种方法：</p>
+<ul>
+<li>增强模型处理多模态的能力；</li>
+<li>在训练集中减少<em>mode</em>的数量；</li>
+<li>改变学习目标</li>
+</ul>
+<p>实际上最有效的还是第一种方法，这篇论文提出了一种训练技术用来解决多模态问题。</p>
+<h1 id="2-Non-Autoregressive-Transformer"><a href="#2-Non-Autoregressive-Transformer" class="headerlink" title="2. Non-Autoregressive Transformer"></a>2. Non-Autoregressive Transformer</h1><p><img src="https://img.vim-cn.com/7e/e3c7fba55c89d79ee2c7fdee8860a7bd7d48f0.png" alt></p>
+<p>模型结构图如上。模型包含四个部分：<em>Encoder</em>、<em>Fertility predictor</em>、<em>Decoder</em>和<em>Translation Predictor</em>。其中黑色实线箭头表示可微分操作，浅色虚线表示不可微分操作，每个<em>sublayer</em>也都包含<em>LayerNorm</em>和残差连接。</p>
+<p><em>Encoder</em>部分作者并没有做什么变化，与<em>Transformer</em>保持一致，因此这里我们不做介绍，主要介绍其他几部分，以及训练技巧。</p>
+<h2 id="2-1-Decoder-Stack"><a href="#2-1-Decoder-Stack" class="headerlink" title="2.1 Decoder Stack"></a>2.1 Decoder Stack</h2><p>从图中可以看到，<em>Decoder Stack</em>包含了四部分：</p>
+<ul>
+<li>Multi-Head Self-Attention</li>
+<li>Multi-Head Positional Attention</li>
+<li>Multi-Head Inter-Attention</li>
+<li>MLP</li>
+</ul>
+<p>其中<em>MLP</em>就是<em>transformer</em>中的<em>position wise feed forward</em>层。<em>Multi-Head Inter-Attention</em>就是<em>transformer</em>中<em>decoder block</em>的第二个<em>multi-head attention</em>层。这两个相比原来的<em>transformer</em>没有什么变化，这里就跳过不讲。下面主要介绍其余两个模块以及<em>Decoder Stack</em>的输入。</p>
+<h3 id="2-1-1-Decoder-Inputs"><a href="#2-1-1-Decoder-Inputs" class="headerlink" title="2.1.1 Decoder Inputs"></a>2.1.1 Decoder Inputs</h3><p>在进行解码之前，<em>Non-Autoregressive Transformer</em>（<em>NAT</em>）需要知道要生成的序列的长度。另一方面如果只输入位置编码的话最后的效果会很差，因此解码器的输入也是非常重要的。为此，作者设计了两种解码器的输入：</p>
+<ul>
+<li><strong>Copy source inputs uniformly</strong>：根据下面的规则从源序列中拷贝一个序列出来作为解码器的输入</li>
+</ul>
+<p>$$<br>Round(T’t/T)<br>$$</p>
+<p>假设源序列长度是$T’$，目标序列长度是$T$，那么解码器的输入序列中第$t$个位置的元素为源序列中第$Round(T’t/T)$个元素。举个例子：</p>
+<blockquote>
+<p>源序列：[Thank, you, !]</p>
+<p>目标序列：[谢谢, ！]</p>
+</blockquote>
+<p>源序列的长度是3，目标序列的长度是2。那么解码器的输入第0个位置的元素应该对应源序列中第 $3 \times 0/2=0$，个元素，即<em>Thank</em>；解码器的输入序列的第1个元素，应该对应源序列中第$3 \times 1/2=1.5$，四舍五入得2，即<em>！</em>。那么解码器的输入序列应该为$\{Thank , !\}$。</p>
+<ul>
+<li><strong>Copy source inputs using fertilities</strong>：同样是从源序列中拷贝一个序列出来作为解码器的输入，但是拷贝规则有了变化。如同结构图中显示的，编码器会在编码结束后除了输出注意力状态，还会输出一个长度与源序列长度相同的序列，序列中每个元素都是一个整数。将源序列中的每个位置上的元素拷贝相应的整数倍之后作为解码器的输入，而解码器的输入长度$T$则是编码器输出的整数序列之和。举个例子：</li>
+</ul>
+<blockquote>
+<p>源序列：[Thank, you, !]</p>
+<p>encoder output: [1, 0, 1] </p>
+</blockquote>
+<p>那么解码器的输入序列为： $\{Thank \times 1, you \times 0, ! \times 1 \}$，即$\{Thank, !\}$为解码器的输入。</p>
+<h2 id="2-1-2-Non-causal-self-attention"><a href="#2-1-2-Non-causal-self-attention" class="headerlink" title="2.1.2 Non-causal self-attention"></a>2.1.2 Non-causal self-attention</h2><p>由于这里是并行生成目标序列，因此不需要对注意力权重矩阵进行mask。但是在实际的测试过程中作者发现把元素自身所在的位置mask掉后会取得更好的结果，即（深色部分表示被mask掉的）：</p>
+<p><img src="https://img.vim-cn.com/50/beac1906681d79de2a36ba7e872129973babd4.png" alt></p>
+<h3 id="2-1-3-Positional-Attention"><a href="#2-1-3-Positional-Attention" class="headerlink" title="2.1.3 Positional Attention"></a>2.1.3 Positional Attention</h3><p>作者还在每个<em>decoder layer</em>中加入了<em>positional attention</em>，使得模型获得序列位置向量的能力更强了。而所谓的<em>positional attention</em>顾名思义就是<em>positional encoding + attention</em>，分别对应<em>transformer</em>中的<em>positional encoding</em>和<em>multi-head attention</em>：<br>$$<br>p(j, k) = \sin(j/10000^{k/d}), k为偶数<br>$$</p>
+<p>$$<br>p(j,k) = \cos(j/10000^{k/d}), k为奇数<br>$$</p>
+<p>$$<br>Attention(Q, K, V) = \mathrm{softmax}(\frac{QK^T}{\sqrt{d_{model}}})V<br>$$</p>
+<h2 id="2-2-Modeling-Fertility-解决多模态问题"><a href="#2-2-Modeling-Fertility-解决多模态问题" class="headerlink" title="2.2 Modeling Fertility 解决多模态问题"></a>2.2 Modeling Fertility 解决多模态问题</h2><p>本文提出使用隐变量（<em>Latent Variable</em>）方法来解决这一问题。具体的想法如下图</p>
+<p><img src="https://img.vim-cn.com/45/1adb5756acb8ee4ffb980d2b895080ae0ff905.png" alt></p>
+<p>左边代表可能的各种可能的组合元素，所有元素可以两两组合，也可以三三组合等等可以以任意方式组合，因为对于<em>NA</em>来说词与词之间存在一个独立假设。我们可以从大的组合集中进行采样得到小的组合集（如图中蓝色圈圈画出来的小样本集合），这样模型就相当于在一个小的样本空间中进行建模，这样就可以强化模型的多模态处理能力。而我们把采样得到的样本空间称之为隐变量$z$，引入$z$后多模态的翻译分布则变成了：<br>$$<br>p_{NA}(Y|X;\theta) = \sum_z\left[ p_z(z|x_{1:T’};\theta)\cdot p_L(T|x_{1:T’};\theta;z)\cdot \Pi_{t=1}^{T}p(y_t|x_{1:T’};\theta;z)\right]<br>$$<br>$z$需要满足以下条件：</p>
+<ul>
+<li>需要比较简单的从端到端的训练中获得；</li>
+<li>$z$要尽可能的考虑到不同说出之间的关系，使得其余位置的输出尽可能条件独立性；</li>
+<li>$z$要很容易从平行语料中推理得到，又不能信息量过于丰富让$p$显得无关紧要。</li>
+</ul>
+<p>所以，模型的关键是对$z$建模。本文中$z$就是<em>decoder</em>的输入——利用<em>Fertility</em>的思想从<em>encoder</em>输入中拷贝元素。所谓<em>fertility</em>指的是，源序列中每个元素会被翻译多少次。这种思想源于早期的统计机器翻译中，每个词被翻译的次数不同，则输出序列会不，比如<em>Thank</em>被翻译一次可能是<em>谢谢</em>，而如果翻译两次的话可能会输出<em>多谢</em>。每个词的翻译次数实际上是个隐藏的含义，并不具有显式意义，因此它是一种<em>Latent Variable</em>，可以用来表示一种<em>translation mode</em>。</p>
+<p>因此根据<em>fertitlity</em>我们可以把方程写成：<br>$$<br>p_{NA}(Y|X;\theta) = \sum_{f_1, …, f_T’\in F}\left( \Pi_{t’=1}^{T’}p_F(f_{t’}|x_{1:T’};\theta) \cdot \Pi_{t=1}^{T}p(y_t|x_1\{f_1\}, …x_{T’}\{f_{T’};\theta\})\right)<br>$$<br>其中$F=\{f_1, …, f_{T’} | \sum_{t’=1}^{T’}f_{t’}=T, f_{t’}\in \mathbb{Z^*}\}$。</p>
+<p><em>Fertility</em>序列中每个词重复的次数通过一个<em>softmax</em>层预测。</p>
+<h1 id="3-训练"><a href="#3-训练" class="headerlink" title="3. 训练"></a>3. 训练</h1><p>由于模型中引入了离散的隐变量，是的整个模型不能直接使用后向传播进行训练。作者引入了一个外部的对齐函数——<em>Fast-align</em>。<em>Fast-align</em>能够将输入输出进行词对齐，即目标序列中的每个词对应源序列中的相应的词。这样我们就可以得到一个外部的<em>Fertility</em>序列。我们可以用这个外部的<em>fertility</em>序列当成<em>fertility</em>的监督项，这样整个模型的损失项来源于两部分：<em>decoding</em>和<em>fertility</em>：<br>$$<br>L_{ML}= \log p_{NA}(Y|X;\theta) = \log \sum_{f_{1:T’}\in F} p_F(f_{1:T’}|x_{1:T’};\theta)\cdot p(y_{1:T}|x_{1:T’},f_{1:T’};\theta)<br>$$</p>
+<p>$$<br>L_{ML} \ge \mathbb{E}_{f_{1:T’}\sim q}(\underbrace{\sum_{t=1}^T\log(y_t|x_1\{f_1\}, …,x_{T’}\{f_{T’}\};\theta)}_{\mathrm{Translation Loss}}+\underbrace{\sum_{t’=1}^{T’}\log p_F(f_{t’}|x_{1:T’};\theta)}_{\mathrm{Fertility~Loss}})+H(q)<br>$$</p>
+<p>其中$q$表示外部对齐函数估计的<em>Fertility</em>序列分布。</p>
+<p>这样的话整个模型就相当于由两部分监督学习组成，就可以直接使用后向传播进行训练了。</p>
+<h2 id="3-1-知识蒸馏"><a href="#3-1-知识蒸馏" class="headerlink" title="3.1 知识蒸馏"></a>3.1 知识蒸馏</h2><p>之前我们提到解决多模态问题有三种方法：增强模型处理多模态的能力，减少<em>mode</em>数，改变学习目标。其中曾强模型处理多模态的能力是核心，前面我们已经介绍过了。下面我们介绍一下后两种方法，注意这几种方法结合使用，而不是分别使用，也就是说是在同一个模型中一起使用者三种方法，<em>fertility</em>是核心。</p>
+<p>知识蒸馏其实蒸馏的就是<em>mode</em>，通过减少<em>mode</em>数，从而提升模型的学习效果。这里使用的方法是先用一个标准的<em>Transformer</em>学习一个模型，将这个标准<em>Transformer</em>的推理结果作为<em>NAT</em>的目标序列。</p>
+<h2 id="3-2-Fune-Tuning"><a href="#3-2-Fune-Tuning" class="headerlink" title="3.2 Fune Tuning"></a>3.2 Fune Tuning</h2><p>前面我们提到使用<em>Maximum Likelihood</em>本身更倾向于学习概率更大的<em>mode</em>，因此作者在这里引入一个微调项，用来做目标纠正——<em>reverse K-L divergence</em>:<br>$$<br>L_{RKL}(f_{1:T’};\theta) = \sum_{t=1}^{T}\sum_{y_t} [\log p_{AR}(y_t|\hat{y}_{1:t},x_{1:T’})\cdot p_{NA}(y_t|x_{1:T’},f_{1:T’};\theta)]<br>$$<br>其中$\hat{y}_{1:T}=G(x_{1:T’}, f_{1:T’};\theta)$，所以最终的损失函数为：<br>$$<br>L_{FT} = \lambda(\underbrace{\mathbb{E}_{f_{1:T’}\sim p_F}(L_{RKL}(f_{1:T’})-L_{RKL}(\overline{f_{1:T’}}))}_{L_{RL}}+\underbrace{\mathbb{E}_{f_{1:T’}}(L_{RKL}(f_{1:T’}))}_{L_{BP}})+(1-\lambda)L_{KD}<br>$$</p>
+<h1 id="4-推理"><a href="#4-推理" class="headerlink" title="4. 推理"></a>4. 推理</h1><p>推理阶段主要的任务是获取<em>fertility</em>序列，作者提出三种方法：</p>
+<ul>
+<li><strong>Argmax decoding</strong></li>
+</ul>
+<p>由于在模型训练阶段，<em>fertility</em>序列随着模型的训练一起呗训练了 ，因此我们可以直接使用$\mathrm{arg~max}$来得到<em>fertility</em>序列：<br>$$<br>\hat{Y}_{argmax} = G(x_{1:T’},\hat{f}_{1:T’};\theta),其中\hat{f}_{t’}=\mathrm{arg}\max p_F(f_{t’}|x_{1:T’};\theta)<br>$$</p>
+<ul>
+<li><strong>Average decoding</strong></li>
+</ul>
+<p>也可以通过求对应的<em>softmax</em>的期望来得到<em>fertility</em>序列：<br>$$<br>\hat{Y}_{average} = G(x_{1:T’}, \hat{f}_{1:T’};\theta), 其中\hat{f_{t’}}=Round(\sum_{f_{t’}}^{L}p_F(f_{t’}|x_{1:T’};\theta)f_{t’})<br>$$</p>
+<ul>
+<li><strong>Noisy parallel decoding (NPD)</strong></li>
+</ul>
+<p>$$<br>\hat{Y}_{NPD} = G(x_{1:T’},\mathrm{arg}\max_{f_{t’}\sim p_F} p_{AR}(G(x_{1:T’}, f_{1:T’};\theta)|X;\theta);\theta)<br>$$</p>
+<p>最后使用一个之前在做知识蒸馏的时候训练好的<em>Transformer</em>对输出的句子进行<em>re-ranking</em>，得到一个最佳的翻译结果：</p>
+<p><img src="https://img.vim-cn.com/ce/6a37db1447abd4218ebf12c1f19c8d3f0009f3.png" alt></p>
+<h1 id="5-实验结果"><a href="#5-实验结果" class="headerlink" title="5. 实验结果"></a>5. 实验结果</h1><p><img src="https://img.vim-cn.com/ac/eb257dc95fc7fc9bea69525e523c9e8cfe5bd8.png" alt></p>
+<p><img src="https://img.vim-cn.com/c1/175160ea64dacce506c4413783ff5ac0c4428b.png" alt></p>
+<h1 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h1><ol>
+<li><p><a href="http://arxiv.org/abs/1711.02281" target="_blank" rel="noopener">Non-autoregressive neural machine translation</a> <em>Gu et al. 2018</em></p>
+</li>
+<li><p><a href="https://blog.csdn.net/c9Yv2cf9I06K2A9E/article/details/79547509" target="_blank" rel="noopener">直播实录 | 非自回归神经机器翻译 + ICLR 2018 论文解读</a></p>
+</li>
+</ol>
 
         </div>
         
@@ -431,10 +529,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-09-26T19:17:22+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-09-29T21:15:16+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>last updated at Sep 26, 2019</p>
+    <p>last updated at Sep 29, 2019</p>
   </a>
 </div>
 
@@ -456,7 +554,8 @@
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.github.io/2019/09/26/transformer家族-nat/&title=transformer家族之NA-Trasnsformer | Rogerspy's Home&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.github.io/2019/09/26/transformer家族-nat/&title=Transformer家族之NA Trasnsformer | Rogerspy's Home&summary=
+本文继续介绍关于transformer在non-auto regression方面的研究，今天要介绍的是Gu et al. 2018 发表在ICLR 2018上的文章Non-autoregressive neural machine translation 。"
           
           >
           
@@ -468,7 +567,8 @@
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.github.io/2019/09/26/transformer家族-nat/&title=transformer家族之NA-Trasnsformer | Rogerspy's Home&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.github.io/2019/09/26/transformer家族-nat/&title=Transformer家族之NA Trasnsformer | Rogerspy's Home&summary=
+本文继续介绍关于transformer在non-auto regression方面的研究，今天要介绍的是Gu et al. 2018 发表在ICLR 2018上的文章Non-autoregressive neural machine translation 。"
           
           >
           
@@ -488,7 +588,8 @@
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=https://rogerspy.github.io/2019/09/26/transformer家族-nat/&title=transformer家族之NA-Trasnsformer | Rogerspy's Home&summary="
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.github.io/2019/09/26/transformer家族-nat/&title=Transformer家族之NA Trasnsformer | Rogerspy's Home&summary=
+本文继续介绍关于transformer在non-auto regression方面的研究，今天要介绍的是Gu et al. 2018 发表在ICLR 2018上的文章Non-autoregressive neural machine translation 。"
           
           >
           
@@ -607,7 +708,7 @@
 
   <script>
     window.subData = {
-      title: 'transformer家族之NA-Trasnsformer',
+      title: 'Transformer家族之NA Trasnsformer',
       tools: true
     }
   </script>
@@ -677,6 +778,20 @@
           
           
             
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;TOC</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-简介"><span class="toc-text">1. 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Auto-Regressive-Decoding"><span class="toc-text">1.1 Auto-Regressive Decoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-Maximum-Likelihood-training"><span class="toc-text">1.2  Maximum Likelihood training</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Non-Auto-regressive-Decoding"><span class="toc-text">1.3 Non-Auto regressive Decoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-多模态问题"><span class="toc-text">1.4 多模态问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Non-Autoregressive-Transformer"><span class="toc-text">2. Non-Autoregressive Transformer</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Decoder-Stack"><span class="toc-text">2.1 Decoder Stack</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-Decoder-Inputs"><span class="toc-text">2.1.1 Decoder Inputs</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-2-Non-causal-self-attention"><span class="toc-text">2.1.2 Non-causal self-attention</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-Positional-Attention"><span class="toc-text">2.1.3 Positional Attention</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Modeling-Fertility-解决多模态问题"><span class="toc-text">2.2 Modeling Fertility 解决多模态问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-训练"><span class="toc-text">3. 训练</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-知识蒸馏"><span class="toc-text">3.1 知识蒸馏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Fune-Tuning"><span class="toc-text">3.2 Fune Tuning</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-推理"><span class="toc-text">4. 推理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-实验结果"><span class="toc-text">5. 实验结果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-参考资料"><span class="toc-text">6. 参考资料</span></a></li></ol>
+    </div>
+  </section>
+
 
           
         
