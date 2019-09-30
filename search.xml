@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Transformer家族之Semi-Autoregressive Transformer</title>
+      <link href="/2019/09/30/transformer%E5%AE%B6%E6%97%8F-sa/"/>
+      <url>/2019/09/30/transformer%E5%AE%B6%E6%97%8F-sa/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://img.vim-cn.com/54/833bf5e320661bf6e566f1a94d8894c601b9be.jpg" alt></p><p>从题目就可以看出来，本文将要介绍一种半自动回归的机器翻译解码技术。之前我们介绍了各种非自动回归的解码技术，其中有一个<em>Latent Transformer</em>是先用<em>auto-regression</em>生成一个短序列，然后用这个短序列并行生成目标序列。当时我们说这其实算是一种半自动回归的方法。今天我们要介绍另一种半自动回归的方法——<em>SAT</em>。</p><a id="more"></a><p>和<em>Latent Transformer</em>不同，<em>Semi-Auto regressive Transformer （SAT）</em>仍然是<em>auto-regression</em>的运行机制，但是不像<em>auto-regression</em>那样一次生成一个元素，<em>SAT</em>是一次生成多个元素。</p><p><img src="https://img.vim-cn.com/b2/8dda2a1d508a3e3108c09a543a4a4c918c2e76.png" alt></p><h1 id="1-模型结构"><a href="#1-模型结构" class="headerlink" title="1. 模型结构"></a>1. 模型结构</h1><p><img src="https://img.vim-cn.com/ad/f6757519d2f1b55a549102a43e27fbc55872ea.png" alt></p><p>模型结构如图。我们可以看到模型基本上和<em>Transformer</em>保持一致，只在图中红虚线框中有所改变。</p><h2 id="1-1-Group-Level-Chain-Rule"><a href="#1-1-Group-Level-Chain-Rule" class="headerlink" title="1.1 Group-Level Chain Rule"></a>1.1 Group-Level Chain Rule</h2><p>给定一个目标序列，通常的建模方式是词级别的链式法则：<br>$$<br>p(y_1, y_2, …, y_n|X) = \Pi_{t=1}^n p(y_t|y_1, …, y_{t-1}, x)<br>$$<br>每个词都依赖之前的词。在<em>SAT</em>中，对序列进行分组<br>$$<br>G_1, G_2, …, G_{[(n-1)/K]+1} = y_1, …, y_K, y_{K+1}, …, y_{2K}, …,y_{[(n-1/K)\times K+1]}, …, y_n<br>$$<br>其中$K$表示每组的大小，$K$越大 表示并行能力越强，除了最后一组其他每组中必须包含$K$个词。这样的话，上面的链式法则则变成：<br>$$<br>p(y_1, …, y_n|X) = \Pi_{t=1}^{[(n-1)/K]+1} p (G_t|G_1, …, G_{t-1}, x)<br>$$<br>作者将之前的<em>auto-regression</em>称之为<em>short-distance prediction</em>，而将<em>SAT</em>称之为<em>long-distance prediction</em>。</p><p><img src="https://img.vim-cn.com/b4/30cac6ad33a85cd226d29a38b3f3a70fe8a773.png" alt></p><h2 id="1-2-Relaxed-Causal-Mask"><a href="#1-2-Relaxed-Causal-Mask" class="headerlink" title="1.2 Relaxed Causal Mask"></a>1.2 Relaxed Causal Mask</h2><p>在<em>Transformer</em>中由于是连续的词矩阵，因此在做<em>mask</em>的时候直接使用下三角矩阵，但是在<em>SAT</em>中由于答对词进行了分组，再使用下三角矩阵就不合适了，作者这里提出一个<strong>粗粒度下三角矩阵</strong>（<em>coarse-grained lower triangular matrix</em>）的 <em>mask</em>矩阵。如图所示：</p><p><img src="https://img.vim-cn.com/7b/0c0a6933a204fd767ede1e4794779d4f51378f.png" alt></p><p>图中左边表示标准的下三角矩阵，右边表示粗粒度下三角矩阵。</p><p>数学形式：</p><p><img src="https://img.vim-cn.com/d7/49d1f6c42a21bfff8b118dbefe0d5cd004a2ea.png" alt></p><h1 id="2-实验结果"><a href="#2-实验结果" class="headerlink" title="2. 实验结果"></a>2. 实验结果</h1><p><img src="https://img.vim-cn.com/ac/42129a015c5e78016cab0e78fc549d6d48afce.png" alt></p><h1 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h1><p><a href="https://arxiv.org/pdf/1808.08583.pdf" target="_blank" rel="noopener">Semi-Autoregressive Neural Machine Translation</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> NLP </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Transformer </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Transformer家族之NA Trasnsformer</title>
       <link href="/2019/09/26/transformer%E5%AE%B6%E6%97%8F-nat/"/>
       <url>/2019/09/26/transformer%E5%AE%B6%E6%97%8F-nat/</url>
