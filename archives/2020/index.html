@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
-  <title>Tag: pytorch | Rogerspy&#39;s Home</title>
+  <title>Archives: 2020 | Rogerspy&#39;s Home</title>
   
   <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
   
@@ -321,11 +321,9 @@
 
   <div class="l_body">
     <div class='body-wrapper'>
-      
-<div class='l_main'>
-  
-    
-      
+      <div class='l_main'>
+	
+		
   <section class="post-list">
     
       
@@ -349,8 +347,8 @@
       
         
   <h2 class="title">
-    <a href="/2019/09/11/Transformer代码实现-pytorch/">
-      Transformer代码实现-Pytorch版
+    <a href="/2020/03/26/transformer家族-block/">
+      Transformer家族之Blockwise Transformer
     </a>
   </h2>
 
@@ -378,7 +376,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-09-11</p>
+    <p>2020-03-26</p>
   </a>
 </div>
 
@@ -417,10 +415,11 @@
 
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
-      <p>前面介绍了Transformer的模型结构，最后也给出了<code>pytorch</code>版本的代码实现，但是始终觉得不够过瘾，有些话还没说清楚，因此，这篇文章专门用来讨论Transformer的代码细节。</p>
+      <p><img src="https://img.vim-cn.com/54/833bf5e320661bf6e566f1a94d8894c601b9be.jpg" alt></p>
+<p>本文将继续介绍关于<em>transformer</em>在 <em>non-auto regression</em>方面的研究，今天要介绍的是<em>Google Brain</em>的工作<a href="https://papers.nips.cc/paper/8212-blockwise-parallel-decoding-for-deep-autoregressive-models.pdf" target="_blank" rel="noopener">Blockwise Parallel Decoding for Deep Autoregressive Models</a>。</p>
       
         <div class="readmore">
-          <a href="/2019/09/11/Transformer代码实现-pytorch/" class="flat-box">
+          <a href="/2020/03/26/transformer家族-block/" class="flat-box">
             <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
             Read More
           </a>
@@ -431,8 +430,6 @@
       <div class="full-width auto-padding tags">
         
           <a href="/tags/transformer/" rel="nofollow"><i class="fas fa-hashtag fa-fw"></i>Transformer</a>
-        
-          <a href="/tags/pytorch/" rel="nofollow"><i class="fas fa-hashtag fa-fw"></i>pytorch</a>
         
       </div>
     
@@ -491,8 +488,7 @@
   
 
 
-    
-  
+	
 </div>
 <aside class='l_side'>
   
@@ -841,6 +837,52 @@
 <script type="text/javascript" src="/cool/cooltext.js"></script>
 <script type="text/javascript" src="/cool/clicklove.js"></script>
 <script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+	<!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
+	
+
+	
+	    <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+	
+
 
       <script>setLoadingBarProgress(60);</script>
     </div>

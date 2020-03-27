@@ -217,7 +217,7 @@
 			
 				<div class="m_search">
 					<form name="searchform" class="form u-search-form">
-						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<input type="text" class="input u-search-input" placeholder="Search" />
 						<i class="icon fas fa-search fa-fw"></i>
 					</form>
 				</div>
@@ -492,7 +492,7 @@
 <p>$$<br>L_{ML} \ge \mathbb{E}_{f_{1:T’}\sim q}(\underbrace{\sum_{t=1}^T\log(y_t|x_1\{f_1\}, …,x_{T’}\{f_{T’}\};\theta)}_{\mathrm{Translation Loss}}+\underbrace{\sum_{t’=1}^{T’}\log p_F(f_{t’}|x_{1:T’};\theta)}_{\mathrm{Fertility~Loss}})+H(q)<br>$$</p>
 <p>其中$q$表示外部对齐函数估计的<em>Fertility</em>序列分布。</p>
 <p>这样的话整个模型就相当于由两部分监督学习组成，就可以直接使用后向传播进行训练了。</p>
-<h2 id="3-1-知识蒸馏"><a href="#3-1-知识蒸馏" class="headerlink" title="3.1 知识蒸馏"></a>3.1 知识蒸馏</h2><p>之前我们提到解决多模态问题有三种方法：增强模型处理多模态的能力，减少<em>mode</em>数，改变学习目标。其中曾强模型处理多模态的能力是核心，前面我们已经介绍过了。下面我们介绍一下后两种方法，注意这几种方法结合使用，而不是分别使用，也就是说是在同一个模型中一起使用者三种方法，<em>fertility</em>是核心。</p>
+<h2 id="3-1-知识蒸馏"><a href="#3-1-知识蒸馏" class="headerlink" title="3.1 知识蒸馏"></a>3.1 知识蒸馏</h2><p>之前我们提到解决多模态问题有三种方法：增强模型处理多模态的能力，减少<em>mode</em>数，改变学习目标。其中增强模型处理多模态的能力是核心，前面我们已经介绍过了。下面我们介绍一下后两种方法，注意这几种方法结合使用，而不是分别使用，也就是说是在同一个模型中一起使用者三种方法，<em>fertility</em>是核心。</p>
 <p>知识蒸馏其实蒸馏的就是<em>mode</em>，通过减少<em>mode</em>数，从而提升模型的学习效果。这里使用的方法是先用一个标准的<em>Transformer</em>学习一个模型，将这个标准<em>Transformer</em>的推理结果作为<em>NAT</em>的目标序列。</p>
 <h2 id="3-2-Fune-Tuning"><a href="#3-2-Fune-Tuning" class="headerlink" title="3.2 Fune Tuning"></a>3.2 Fune Tuning</h2><p>前面我们提到使用<em>Maximum Likelihood</em>本身更倾向于学习概率更大的<em>mode</em>，因此作者在这里引入一个微调项，用来做目标纠正——<em>reverse K-L divergence</em>:<br>$$<br>L_{RKL}(f_{1:T’};\theta) = \sum_{t=1}^{T}\sum_{y_t} [\log p_{AR}(y_t|\hat{y}_{1:t},x_{1:T’})\cdot p_{NA}(y_t|x_{1:T’},f_{1:T’};\theta)]<br>$$<br>其中$\hat{y}_{1:T}=G(x_{1:T’}, f_{1:T’};\theta)$，所以最终的损失函数为：<br>$$<br>L_{FT} = \lambda(\underbrace{\mathbb{E}_{f_{1:T’}\sim p_F}(L_{RKL}(f_{1:T’})-L_{RKL}(\overline{f_{1:T’}}))}_{L_{RL}}+\underbrace{\mathbb{E}_{f_{1:T’}}(L_{RKL}(f_{1:T’}))}_{L_{BP}})+(1-\lambda)L_{KD}<br>$$</p>
 <h1 id="4-推理"><a href="#4-推理" class="headerlink" title="4. 推理"></a>4. 推理</h1><p>推理阶段主要的任务是获取<em>fertility</em>序列，作者提出三种方法：</p>
@@ -529,10 +529,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-09-29T21:15:16+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-26T16:06:41+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 Sep 29, 2019</p>
+    <p>last updated at Mar 26, 2020</p>
   </a>
 </div>
 
@@ -615,7 +615,7 @@
                 
                     <section class="prev">
                         <span class="art-item-left">
-                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous</h6>
                             <h4>
                                 <a href="/2019/09/30/transformer家族-sa/" rel="prev" title="Transformer家族之Semi-Autoregressive Transformer">
                                   
@@ -635,7 +635,7 @@
                 
                     <section class="next">
                         <span class="art-item-right" aria-hidden="true">
-                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                             <h4>
                                 <a href="/2019/09/25/transformer家族-latent/" rel="prev" title="Transformer家族之Latent Transformer">
                                     
@@ -665,7 +665,7 @@
 
   <article class="post white-box comments">
     <section class="article typo">
-      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;Comments</h4>
       
       
       
@@ -800,7 +800,7 @@
   <section class='widget toc-wrapper'>
     
 <header class='pure'>
-  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;TOC</div>
   
     <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
   
@@ -926,7 +926,7 @@
   <section class='widget category'>
     
 <header class='pure'>
-  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Categories</div>
   
     <a class="rightBtn"
     
@@ -942,7 +942,7 @@
     <div class='content pure'>
       <ul class="entry">
         
-          <li><a class="flat-box" title="/categories/nlp/" href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(11)</div></a></li>
+          <li><a class="flat-box" title="/categories/nlp/" href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -959,7 +959,7 @@
   <section class='widget tagcloud'>
     
 <header class='pure'>
-  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Hot Tags</div>
   
     <a class="rightBtn"
     
@@ -1075,19 +1075,19 @@
     </div>
   
   <br>
-  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+  <div><p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
 </div>
   <div>
-    本站使用
+    Use
     <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
-    作为主题
+    as theme
     
-      ，
-      总访问量为
+      , 
+      total visits
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
-      次
+      times
     
-    。
+    . 
   </div>
 	</footer>
 <script>setLoadingBarProgress(80);</script>
@@ -1213,15 +1213,15 @@
 <!-- 复制 -->
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "复制成功";
-  let COPY_FAILURE = "复制失败";
+  let COPY_SUCCESS = "Copied";
+  let COPY_FAILURE = "Copy failed";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>Copy</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {

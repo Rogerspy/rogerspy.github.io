@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
-  <title>Tag: pytorch | Rogerspy&#39;s Home</title>
+  <title>Tag: Transformer | Rogerspy&#39;s Home</title>
   
   <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
   
@@ -328,12 +328,6 @@
       
   <section class="post-list">
     
-      
-        
-          
-        
-      
-    
     
       
         
@@ -349,8 +343,8 @@
       
         
   <h2 class="title">
-    <a href="/2019/09/11/Transformer代码实现-pytorch/">
-      Transformer代码实现-Pytorch版
+    <a href="/2019/08/27/NLP中的注意力机制简介（二）/">
+      NLP中的注意力机制简介（二）
     </a>
   </h2>
 
@@ -378,7 +372,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-09-11</p>
+    <p>2019-08-27</p>
   </a>
 </div>
 
@@ -417,10 +411,16 @@
 
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
-      <p>前面介绍了Transformer的模型结构，最后也给出了<code>pytorch</code>版本的代码实现，但是始终觉得不够过瘾，有些话还没说清楚，因此，这篇文章专门用来讨论Transformer的代码细节。</p>
+      <h1>
+    <small>——Transformer专题篇</small>
+</h1>
+
+
+
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>之前我们介绍了各种各样的注意力机制，如果仔细回想一下就可以发现无论是哪种注意力机制都不是单独出现的，都是伴随着<em>RNN</em>或者其他<em>RNN</em>的变种。这种基于<em>RNN</em>的注意力机制会面临一个问题就是，难以处理长序列的句子，因为无法实现并行计算，所以非常消耗计算资源。</p>
       
         <div class="readmore">
-          <a href="/2019/09/11/Transformer代码实现-pytorch/" class="flat-box">
+          <a href="/2019/08/27/NLP中的注意力机制简介（二）/" class="flat-box">
             <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
             Read More
           </a>
@@ -432,7 +432,7 @@
         
           <a href="/tags/transformer/" rel="nofollow"><i class="fas fa-hashtag fa-fw"></i>Transformer</a>
         
-          <a href="/tags/pytorch/" rel="nofollow"><i class="fas fa-hashtag fa-fw"></i>pytorch</a>
+          <a href="/tags/attention/" rel="nofollow"><i class="fas fa-hashtag fa-fw"></i>Attention</a>
         
       </div>
     
@@ -445,6 +445,24 @@
     
   </section>
   
+    
+      <br>
+      <div class="prev-next">
+        <div class="prev-next">
+          
+            <a class="prev" rel="prev" href="/tags/transformer/">
+              <section class="post prev" >
+                <i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;Previous&nbsp;
+              </section>
+            </a>
+          
+          <p class="current">
+            2 / 2
+          </p>
+          
+        </div>
+      </div>
+
     
     <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
     
