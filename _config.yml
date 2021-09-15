@@ -8,12 +8,12 @@ subtitle:
 description:
 keywords: Machine Learning, Deep Learning, NLP
 author: Rogerspy
-language: zh-Hans
+language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://rogerspy.github.io
+url: https://rogerspy.gitee.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -33,7 +33,7 @@ new_post_name: :title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
-filename_case: 2
+filename_case: 1
 render_drafts: false
 post_asset_folder: false
 relative_link: false
@@ -73,13 +73,23 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
+plugin:
+- hexo-generator-feed
+#Feed Atom
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+
+
 theme: material-x
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: https://github.com/Rogerspy/rogerspy.github.io
+#  repository: https://gitee.com/rogerspy/rogerspy.git
+  repository: git@github.com:Rogerspy/rogerspy.github.io.git
   branch: master
 
 # 文章末尾添加“本文结束”标记
@@ -105,3 +115,6 @@ gitalk:
   repo: rogerspy.github.io
   owner: Rogerspy
   admin: [Rogerspy]
+  
+# skip_render
+

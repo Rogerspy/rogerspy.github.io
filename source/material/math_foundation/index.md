@@ -1,0 +1,517 @@
+---
+layout: false
+---
+
+{% raw %}
+
+<!DOCTYPE html>
+<head>		
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>机器学习数学基础</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" >
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+	<link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+	<link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+	<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+	<link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+	<link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+	<link href="../css/style.css" rel="stylesheet" type="text/css">
+    <link href="../css/sidebar.css" rel="stylesheet" type="text/css">
+    <link href="../css/header.css" rel="stylesheet" type="text/css">
+	<link href="../css/footer.css" rel="stylesheet" type="text/css">
+	<link href="../css/list.css" rel="stylesheet" type="text/css">
+	<link href="../css/bootstrap.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+	    <div class="cover-wrapper">
+            <cover class="cover half" style="position: relative; z-index: 0; background: none;">
+                <h1 class='title'>Rogerspy's Home</h1>
+                <div class="m_search">
+                    <form name="searchform" class="form u-search-form">
+                        <input type="text" class="input u-search-input" placeholder="" />
+                        <i class="icon fas fa-search fa-fw"></i>
+                    </form>
+                 </div>
+				<div class='menu navgation'>
+					<ul class='h-list'>
+						<li>
+							<a class="nav home" href="/" id="home">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;博文
+							</a>
+						</li>
+						<li>
+							<a class="nav home active" href="/video/" id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;视频
+							</a>
+						</li>
+						<li>
+							<a class="nav home active" href="/material/" rel="nofollow" id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;资料
+							</a>
+						</li>
+						<li>
+							<a class="nav home" href="/about/" rel="nofollow" id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 412px; width: 100%; z-index: -999998; position: absolute;">
+				    <img src="https://img.vim-cn.com/6d/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg" style="position: absolute; margin: 0px; padding: 0px; border: none; width: 100%; height: 100%; max-height: none; max-width: none; z-index: -999999; left: 0px; top: 0px;">
+				</div>
+            </cover>
+            <header class="l_header pure">
+	            <div class='wrapper'>
+					<div class="nav-main container container--flex">
+				        <a class="logo flat-box waves-effect waves-block" href='/' >
+					        Rogerspy's Home
+					    </a>
+						<div class='menu navgation'>
+							<ul class='h-list'>
+								<li>
+									<a class="nav flat-box" href="/blog/" id="blog">
+										<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+									</a>
+								</li>
+								<li>
+									<a class="nav flat-box" href="/video/" id="video">
+										<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+									</a>
+								</li>
+								<li>
+									<a class="nav flat-box active" href="/material/" id="material">
+										<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+									</a>
+								</li>
+								<li>
+									<a class="nav flat-box" href="/diary/" id="diary">
+										<i class='fas fa-book fa-fw'></i>&nbsp;随心记
+									</a>
+								</li>
+								<li>
+									<a class="nav flat-box" href="/categories/" rel="nofollow" id="categories">
+										<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+									</a>
+								</li>
+								<li>
+									<a class="nav flat-box" href="/tags/" rel="nofollow" id="tags">
+										<i class='fas fa-hashtag fa-fw'></i>&nbsp;标签
+									</a>
+								</li>
+								<li>
+									<a class="nav flat-box" href="/blog/archives/" rel="nofollow" id="blogarchives">
+										<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="m_search">
+							<form name="searchform" class="form u-search-form">
+								<input type="text" class="input u-search-input" placeholder="Search" />
+								<i class="icon fas fa-search fa-fw"></i>
+							</form>
+						</div>
+		            </div>
+	            </div>
+	        </header>
+		</div>	
+		<div class="container-x" id="box">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-offset-3 col-md-6">
+					    <h2 class="title-list heading-list">Mathematics for Machine Learning</h2>
+						<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+							<div class="panel panel-default">
+							    <h3 style="margin-bottom: 20px; text-align: center">Part I Mathematical Foundations</h3>
+								<div class="panel-heading" role="tab" id="headingOne">
+									<h4 class="panel-title">
+										<a class= "collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+											1. Linear Algebra
+										</a>
+									</h4>
+								</div>
+								<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+									<div class="panel-body">
+									    <a href="">1.1 System of Linear Equations</a>
+     								</div>
+									<div class="panel-body">
+									    <a href="">1.2 Matrices</a>
+     								</div>
+									<div class="panel-body">
+									    <a href="">1.3 Solving Systems of Linear Equations</a>
+     								</div>
+									<div class="panel-body">
+									    <a href="">1.4 Vector Spaces</a>
+     								</div>
+									<div class="panel-body">
+									    <a href="">1.5 Linear Independence</a>
+     								</div>
+									<div class="panel-body">
+									    <a href="">1.6 Basis and Rank</a>
+     								</div>
+									<div class="panel-body">
+									    <a href="">1.7 Linear Mappings</a>
+     								</div>
+									<div class="panel-body">
+									    <a href="">1.8 Affine Spaces</a>
+     								</div>
+									<div class="panel-body">
+									    <a href="">1.9 Further Reading</a>
+     								</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingTwo">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+											2. Analytic Geometry 
+										</a>
+									</h4>
+								</div>
+								<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									<div class="panel-body">
+										<a href="">2.1 Norms</a>
+									</div>
+									<div class="panel-body">
+										<a href="">2.2 Inner Products</a>
+									</div>
+									<div class="panel-body">
+										<a href="">2.3 Lengths and Distances</a>
+									</div>
+									<div class="panel-body">
+										<a href="">2.4 Angles and Orthogonality</a>
+									</div>
+									<div class="panel-body">
+										<a href="">2.5 Orthogonal Basis</a>
+									</div>
+									<div class="panel-body">
+										<a href="">2.6 Orthogonal Complement</a>
+									</div>
+									<div class="panel-body">
+										<a href="">2.7 Inner Product of Functions</a>
+									</div>
+									<div class="panel-body">
+										<a href="">2.8 Rotations</a>
+									</div>
+									<div class="panel-body">
+										<a href="">2.9 Further Reading</a>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingThree">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+											3. Matrix Decompositions
+										</a>
+									</h4>
+								</div>
+								<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+									<div class="panel-body">
+										<a href="">3.1 Determinant and Trace</a>
+									</div>
+									<div class="panel-body">
+										<a href="">3.2 Eigenvalues and Eigenvectors</a>
+									</div>
+									<div class="panel-body">
+										<a href="">3.3 Cholesky Decomposition</a>
+									</div>
+									<div class="panel-body">
+										<a href="">3.4 Eigendecomposition and Diagonalization</a>
+									</div>
+									<div class="panel-body">
+										<a href="">3.5 Singular Value Decomposition</a>
+									</div>
+									<div class="panel-body">
+										<a href="">3.6 Matrix Approximation</a>
+									</div>
+									<div class="panel-body">
+										<a href="">3.7 Matrix Phylogeny</a>
+									</div>
+									<div class="panel-body">
+										<a href="">3.8 Further Reading</a>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingFour">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+											4. Vector Calculus
+										</a>
+									</h4>
+								</div>
+								<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+									<div class="panel-body">
+										<a href="">4.1 Differentiation of Univariate Functions</a>
+									</div>
+									<div class="panel-body">
+										<a href="">4.2 Partial Differentiation and Gradients</a>
+									</div>
+									<div class="panel-body">
+										<a href="">4.3 Gradients of Vector-Valued Functions</a>
+									</div>
+									<div class="panel-body">
+										<a href="">4.4 Gradients of Matrices</a>
+									</div>
+									<div class="panel-body">
+										<a href="">4.5 Useful Identities for Computing Gradients</a>
+									</div>
+									<div class="panel-body">
+										<a href="">4.6 Backpropagation and Automatic Differentiation</a>
+									</div>
+									<div class="panel-body">
+										<a href="">4.7 Higher-Order Derivatives</a>
+									</div>
+									<div class="panel-body">
+										<a href="">4.8 Linearization and Multivariate Taylor Series</a>
+									</div>
+									<div class="panel-body">
+										<a href="">4.9 Further Reading</a>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingFive">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+											5. Probability and Distributions
+										</a>
+									</h4>
+								</div>
+								<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+									<div class="panel-body">
+										<a href="">5.1 Construction of a Probability Space</a>
+									</div>
+									<div class="panel-body">
+										<a href="">5.2 Discrete and Continuous Probabilities</a>
+									</div>
+									<div class="panel-body">
+										<a href="">5.3 Sum Rule, Product Rule, and Bayes’ Theorem</a>
+									</div>
+									<div class="panel-body">
+										<a href="">5.4 Summary Statistics and Independence</a>
+									</div>
+									<div class="panel-body">
+										<a href="">5.5 Gaussian Distribution</a>
+									</div>
+									<div class="panel-body">
+										<a href="">5.6 Conjugacy and the Exponential Family</a>
+									</div>
+									<div class="panel-body">
+										<a href="">5.7 Change of Variables/Inverse Transform</a>
+									</div>
+									<div class="panel-body">
+										<a href="">5.8 Further Reading</a>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingSix">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+											6. Continuous Optimization
+										</a>
+									</h4>
+								</div>
+								<div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+									<div class="panel-body">
+										<a href="">6.1 Optimization Using Gradient Descent</a>
+									</div>
+									<div class="panel-body">
+										<a href="">6.2 Constrained Optimization and Lagrange Multipliers</a>
+									</div>
+									<div class="panel-body">
+										<a href="">6.3 Convex Optimization</a>
+									</div>
+									<div class="panel-body">
+										<a href="">6.4 Further Reading</a>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+							    <h3 style="margin-bottom: 20px; text-align: center">Part II Central Machine Learning Problems</h3>
+								<div class="panel-heading" role="tab" id="headingSeven">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+											7. When Models Meet Data
+										</a>
+									</h4>
+								</div>
+								<div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+									<div class="panel-body">
+										<a href="">7.1 Data, Models, and Learning</a>
+									</div>
+									<div class="panel-body">
+										<a href="">7.2 Empirical Risk Minimization</a>
+									</div>
+									<div class="panel-body">
+										<a href="">7.3 Parameter Estimation</a>
+									</div>
+									<div class="panel-body">
+										<a href="">7.4 Probabilistic Modeling and Inference</a>
+									</div>
+									<div class="panel-body">
+										<a href="">7.5 Directed Graphical Models</a>
+									</div>
+									<div class="panel-body">
+										<a href="">7.6 Model Selection</a>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingEight">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+											8. Linear Regression
+										</a>
+									</h4>
+								</div>
+								<div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+									<div class="panel-body">
+										<a href="">8.1 Problem Formulation</a>
+									</div>
+									<div class="panel-body">
+										<a href="">8.2 Parameter Estimation</a>
+									</div>
+									<div class="panel-body">
+										<a href="">8.3 Bayesian Linear Regression</a>
+									</div>
+									<div class="panel-body">
+										<a href="">8.4 Maximum Likelihood as Orthogonal Projection</a>
+									</div>
+									<div class="panel-body">
+										<a href="">8.5 Further Reading</a>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingNine">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+											9. Dimensionality Reduction with Principal Component Analysis
+										</a>
+									</h4>
+								</div>
+								<div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
+									<div class="panel-body">
+										<a href="">9.1 Problem Setting</a>
+									</div>
+									<div class="panel-body">
+										<a href="">9.2 Maximum Variance Perspective</a>
+									</div>
+									<div class="panel-body">
+										<a href="">9.3 Projection Perspective</a>
+									</div>
+									<div class="panel-body">
+										<a href="">9.4 Eigenvector Computation and Low-Rank Approximations</a>
+									</div>
+									<div class="panel-body">
+										<a href="">9.5 PCA in High Dimensions</a>
+									</div>
+									<div class="panel-body">
+										<a href="">9.6 Key Steps of PCA in Practice</a>
+									</div>
+									<div class="panel-body">
+										<a href="">9.7 Latent Variable Perspective</a>
+									</div>
+									<div class="panel-body">
+										<a href="">9.8 Further Reading</a>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingTen">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+											10. Density Estimation with Gaussian Mixture Models
+										</a>
+									</h4>
+								</div>
+								<div id="collapseTen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTen">
+									<div class="panel-body">
+										<a href="">10.1 Gaussian Mixture Model</a>
+									</div>
+									<div class="panel-body">
+										<a href="">10.2 Parameter Learning via Maximum Likelihood</a>
+									</div>
+									<div class="panel-body">
+										<a href="">10.3 EM Algorithm</a>
+									</div>
+									<div class="panel-body">
+										<a href="">10.4 Latent-Variable Perspective</a>
+									</div>
+									<div class="panel-body">
+										<a href="">10.5 Further Reading</a>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingEleven">
+									<h4 class="panel-title">
+										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+											11. Classification with Support Vector Machines
+										</a>
+									</h4>
+								</div>
+								<div id="collapseEleven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEleven">
+									<div class="panel-body">
+										<a href="">11.1 Separating Hyperplanes</a>
+									</div>
+									<div class="panel-body">
+										<a href="">11.2 Primal Support Vector Machine</a>
+									</div>
+									<div class="panel-body">
+										<a href="">11.3 Dual Support Vector Machine</a>
+									</div>
+									<div class="panel-body">
+										<a href="">11.4 Kernels</a>
+									</div>
+									<div class="panel-body">
+										<a href="">11.5 Numerical Solution</a>
+									</div>
+									<div class="panel-body">
+										<a href="">11.6 Further Reading</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> <!-- container-x -->
+		<!--footer-->
+		<footer id="footer" class="clearfix">
+		    <div id="sitetime"></div>
+			<div class="social-wrapper">
+				<a href="/atom.xml" class="social fas fa-rss flat-btn" target="_blank" rel="external nofollow noopener noreferrer"></a>
+				<a href="mailto:rogerspy@163.com" class="social fas fa-envelope flat-btn" target="_blank" rel="external nofollow noopener noreferrer"> </a>
+				<a href="https://github.com/rogerspy" class="social fab fa-github flat-btn" target="_blank" rel="external nofollow noopener noreferrer"></a>
+				<a href="https://music.163.com/#/user/home?id=1960721923" class="social fas fa-headphones-alt flat-btn" target="_blank" rel="external nofollow noopener noreferrer"> </a>
+			</div>
+		    <br>
+		    <div>
+			    <p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+		    </div>
+		    <div>
+			    Use <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+			    as theme, total visits <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span> times. 
+		    </div>
+	    </footer>
+		<!-- 点击特效，输入特效 运行时间 -->
+		<script type="text/javascript" src="/cool/cooltext.js"></script>
+		<script type="text/javascript" src="/cool/clicklove.js"></script>
+		<script type="text/javascript" src="/cool/sitetime.js"></script>
+		<!--js-->
+		<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+		<script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</body>
+</html>
+
+{% endraw %}

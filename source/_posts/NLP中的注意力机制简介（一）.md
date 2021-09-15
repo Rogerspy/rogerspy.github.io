@@ -12,7 +12,7 @@ tags: Attention
 categories: [NLP]
 body: [article, comments]
 gitalk:
-  placeholder: 有什么想对我说的呢？
+  id: /wiki/material-x/
 ---
 
 
@@ -23,7 +23,7 @@ gitalk:
 
 <!-- more -->
 
-![](imgs/99e5fb3a-b8f1-4b14-8c27-c4cefef15695.gif)
+![](https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/99e5fb3a-b8f1-4b14-8c27-c4cefef15695.gif)
 
 *encoder-decoder*结构在机器翻译任务中被广泛使用，尽管这种方法相较之前的统计翻译方法对翻译效果有很大的提升，但是这种基于*RNN*的结构也存在两个非常严重的问题：
 
@@ -32,7 +32,7 @@ gitalk:
 
 为了解决以上两个问题， [*Bahdanau et al., 2014*](https://arxiv.org/abs/1409.0473)和 [*Luong et al., 2015*](https://arxiv.org/abs/1508.04025)提出了注意力机制。论文中仍然使用基于*RNN*的*encoder-decoder*结构，但是在解码过程中每个时间步长都会计算注意力得分，然后再生成该隐状态下对应的输出。下面我们以*seq2seq with attention*模型为例，介绍传统注意力机制过程：
 
-![](imgs\48d0da24-2b86-49e7-a43b-beaab016bfa3.gif)
+![](https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/48d0da24-2b86-49e7-a43b-beaab016bfa3.gif)
 
 加入了注意力机制的*encoder-decoder*模型与标准的*encoder-encoder*有两点区别：
 
@@ -41,7 +41,7 @@ gitalk:
 
 注意力得分的计算过程如下所示：
 
-![](imgs\d97693da-0368-48e5-aa1f-a0e8f9a24e32.gif)
+![](https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/d97693da-0368-48e5-aa1f-a0e8f9a24e32.gif)
 
 1. 准备好输入到*decoder*的所有*encoder*隐状态$\mathbf{h}_1,\mathbf{h}_2,\mathbf{h}_3$；
 2. 对每一个隐状态给定一个得分；
@@ -51,7 +51,7 @@ gitalk:
 
 以上步骤在*decoder*中的每一个时间步长上都进行一次计算，仍然以翻译模型为例，对整个过程进行简单的介绍：
 
-![](imgs\5fe59340-18a3-49b8-89a7-47fe74dd2648.gif)
+![](https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/5fe59340-18a3-49b8-89a7-47fe74dd2648.gif)
 
 1. 首先是*encoder*中对输入的句子序列进行编码，得到$h_1, h_2, h_3$三个隐状态待用；
 2. 第一个*decoder*单元接收到源序列中的终止符*<END>*开始进行解码，*decoder*单元首先初始化一个隐状态权重，此时与接收到的源序列终止符*<END>*相互作用，但并不产生输出，而是产生一个新的隐状态$\mathbf{h}_4$；
@@ -93,7 +93,7 @@ $$
 
 注意力机制自从被提出来以后，在机器翻译领域取得了非常打的成功，随后注意力机制被广泛应用于NLP各个领域中，并且为了解决不同领域中各种问题，注意力机制也出现了各种各样的变种，下图总结了最近几年关于注意力机制的一些比较重要的研究。
 
-![1565940458240](imgs\1565940458240.png)
+![](https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/1565940458240.png)
 
 下面我们就介绍一些比较重要的注意力模型。
 
@@ -178,7 +178,7 @@ $$
 $$
 其中$[:]$表示两个向量的拼接，$E = \{\mathbf{e}_i\}$， 经过*softmax*归一化之后得到注意力矩阵$\Lambda = \{\alpha_i\}$。结果如图所示：
 
-![1565763505669](imgs\1565763505669.png)
+![](https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/1565763505669.png)
 
 *Aspect attention*和*Opinion attention*表示两个*representation space*，*Aspect attention*能把注意力集中在*Fish Burger*上，而*Opinion attention*能把注意力集中在*best*上，这样就解决了上面提到的问题。
 
@@ -388,7 +388,7 @@ $$
 
   整个推理过程如下：
 
-  ![1565860574005](C:\Users\1X194W2\AppData\Roaming\Typora\typora-user-images\1565860574005.png)
+  ![](https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/1565860574005.png)
 
   另外有很多人在这方面也做了很多工作，比如*[Kumar et al. 2016](https://arxiv.org/pdf/1506.07285.pdf)，[Graves et al., 2014](https://arxiv.org/abs/1410.5401)*这里不详细介绍了。下面我们继续介绍第二点优势。
 
@@ -402,13 +402,13 @@ $$
 
 对于一些排序的问题（*sorting*）或者“巡回推销员”（*travelling salesman*）问题输出并不是确定的，而是随着输入的变化输出也随之改变。面对这类问题前面提到的各种注意力模型都无能为力了，因此 [Vinyals, et al. 2015](https://arxiv.org/abs/1506.03134)提出了**指针网络**的方法。不同于其他注意力模型将上下文信息糅合进一个向量里面，指针网络是在解码阶段通过注意力机制一个一个从输入序列中选择元素进行输出。
 
-![1565925694004](imgs\1565925694004.png)
+![](https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/1565925694004.png)
 
 给定一个输入序列$V=\{\mathbf{v}_i\}$，指针网络输出一个序列$\mathbf{c}=\{c_i\}$，其中$c_i$是$V$中元素的索引。
 $$
 \begin{align}
 y_i &= p(c_i|c_1,...c_{i-1}, V) \nonumber\\ 
-    &= \sigma(a(\mathbf{v}_i, \mathbf{u})) \\
+    &= \sigma(a(\mathbf{v}_i, \mathbf{u})) \nonumber\\
     &= \sigma(\mathbf{w}_2^{T}tanh(W_1[\mathbf{v}_i;\mathbf{u}])) \nonumber
 \end{align}
 $$
@@ -484,3 +484,4 @@ $$
 16. [Pointer Networks, ](https://arxiv.org/abs/1506.03134)*Vinyals, et al.,* 2015
 17. [ Abstractive document summarization with a graph-based attentional neural model, ](https://www.aclweb.org/anthology/P17-1108)*Tan et al.,* 2017
 18. [ Structured attention networks, ](https://arxiv.org/pdf/1702.00887.pdf)*Kim et al.,* 2017
+

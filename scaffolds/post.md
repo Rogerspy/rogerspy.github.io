@@ -1,4 +1,5 @@
 ---
+type: blog
 title: {{ title }}
 date: {{ date }}
 top: false
@@ -9,5 +10,8 @@ mathjax: true
 summary:
 tags:
 categories:
+body: [article, comments]
+gitalk:
+  id: /wiki/material-x/
 ---
 
