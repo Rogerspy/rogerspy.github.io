@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>双数组前缀树 | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/diary/"
+                  
+                  
+                  id="diary">
+									<i class='fas fa-book fa-fw'></i>&nbsp;随心记
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/tags/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="tags">
+									<i class='fas fa-hashtag fa-fw'></i>&nbsp;标签
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/blog/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="blogarchives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/08/16/double_array_trie/">
+        双数组前缀树
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-08-16</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/博客转载/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>博客转载</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">3.2k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">11分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p>前缀树（trie）又叫字典树，顾名思义通过字符串的前缀进行查找、匹配的数据结构。Trie 树的应用场景主要包括：分词、词频统计、字符串查询和模糊匹配、字符串排序等。Trie 树大幅降低重复字符串的比较，所以执行效率非常高。</p>
+<a id="more"></a>
+<h1 id="1-Trie-树简介"><a href="#1-Trie-树简介" class="headerlink" title="1. Trie 树简介"></a>1. Trie 树简介</h1><p>前缀树是将字符串存储在一棵树结构内，该树是将字符串的公共前缀作为父节点。以下图为例：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210816213207.png" alt></p>
+<p>假设有三个词，分别是“茶叶”、“茶树”、“走廊”。将这三个词存储在 Trie 树里如上图所示。“茶树”和“茶叶”有公共前缀“茶”，所以“茶”作为“叶”和“树”的父节点。而“走廊”和前两个词无公共前缀，所以独立成一个分支。另外 <code>root</code> 节点表示根节点，所有词的匹配、查找都是从根节点开始的。而 <code>null</code> 为叶节点表示从根节点 <code>root</code> 到 叶子节点 <code>null</code> 的路径组成一个完整的词。Trie 树具有以下几个特点：</p>
+<ul>
+<li>具有相同前缀的词必须位于同一个路径下。“叶”和“树”要共用一个父节点“茶”。</li>
+<li>Trie 树中的词只可共用前缀，不可共用词的其他部分。比如，现在有一个新词“卖茶”，虽然都有“茶”，但是它并不是“卖茶”的前缀，所以“卖茶”要与“茶叶”和“茶树”在不同的分支上。</li>
+<li>Trie 树中任何一个完整的词，都必须是从根节点开始至叶子节点结束，这意味着对一个词进行检索也必须从根节点开始，至叶子节点才算结束。</li>
+</ul>
+<h1 id="2-搜索-Trie-树的时间复杂度"><a href="#2-搜索-Trie-树的时间复杂度" class="headerlink" title="2. 搜索 Trie 树的时间复杂度"></a>2. 搜索 Trie 树的时间复杂度</h1><p>在 Trie 树中搜索一个字符串，会从根节点出发，沿着某条路径向下逐字比对字符串的每个字符，直到抵达底部的叶子节点才能确认字符串为该词，这种检索方式具有以下两个优点：</p>
+<ol>
+<li><p>公共前缀的词都位于同一个串内，查词范围因此被大幅缩小（比如首字不同的字符串，都会被排除）。</p>
+</li>
+<li><p>Trie 树实质是一个有限状态自动机（Deterministic Finite Automaton, DFA），这就意味着从 Trie 树 的一个节点（状态）转移到另一个节点（状态）的行为完全由状态转移函数控制，而 <strong>状态转移函数本质上是一种映射</strong>，这意味着：<strong>逐字搜索 Trie 树时，从一个字符到下一个字符比对是不需要遍历该节点的所有子节点的。</strong></p>
+<blockquote>
+<p>确定的有限自动机 M 是一个五元组：</p>
+<script type="math/tex; mode=display">
+M = (\Sigma, Q, \delta, q_0, F)</script><p>其中，</p>
+<ul>
+<li><p>$\Sigma$ 是输入符号的有穷集合；</p>
+</li>
+<li><p>$Q$ 是状态的有限集合；</p>
+</li>
+<li><p>$\delta$ 是 $Q$ 与 $\Sigma$ 的直积 $Q × \Sigma$ 到 $Q$ (下一个状态) 的映射。它支配着有限状态控制的行为，有时也称为状态转移函数。</p>
+</li>
+<li><p>$q_0 \in Q$ 是初始状态；</p>
+</li>
+<li><p>$F$ 是终止状态集合，$F \subseteq Q$；</p>
+</li>
+</ul>
+<p>可以把 DFA 想象成一个单放机，插入一盘磁带，随着磁带的转动，DFA 读取一个符号，依靠状态转移函数改变自己的状态，同时磁带转到下一个字符。</p>
+</blockquote>
+</li>
+</ol>
+<p>这两个优点相结合可以最大限度地减少无谓的字符比较，使得搜索的时间复杂度理论上仅与检索词的长度有关：$O(m)$，其中 $m$ 为检索词的长度。</p>
+<h1 id="3-Trie-树的缺点"><a href="#3-Trie-树的缺点" class="headerlink" title="3. Trie 树的缺点"></a>3. Trie 树的缺点</h1><p>综上可知， Trie 树主要是利用词的公共前缀缩小查词范围、通过状态间的映射关系避免了字符的遍历，从而达到高效检索的目的。这一思想有赖于字符在词中的前后位置能够得到表达，因此其设计哲学是典型的“<strong>以信息换时间</strong>”，当然，这种优势同样是需要付出代价的：</p>
+<ol>
+<li>由于结构需要记录更多的信息，因此 Trie 树的实现稍显复杂。好在这点在大多数情况下并非不可接受。</li>
+<li>Trie 型词典不仅需要记录词，还需要记录字符之间、词之间的相关信息，因此字典构建时必须对每个词和字逐一进行处理，而这无疑会减慢词典的构建速度。对于强调实时更新的词典而言，这点可能是致命的，尤其是采用双数组实现的 Trie 树，更新词典很大概率会造成词典的全部重构，词典构建过程中还需处理各种冲突，因此重构的时间非常长，这导致其大多用于离线；不过也有一些 Trie 可以实现实时更新，但也需付出一定的代价，这个缺点一定程度上影响了 Trie 树的应用范围。</li>
+<li>公共前缀虽然可以减少一定的存储空间，但 Trie 树相比普通字典还需表达词、字之间的各种关系，其实现也更加复杂，因此实际空间消耗相对更大（大多少，得根据具体实现而定）。尤其是早期的“Array Trie”，属于典型的以空间换时间的实现，（其实 Trie 本身的实现思想是是以信息换时间，而非以空间换时间，这就给 Trie 树的改进提供了可能），然而 Trie 树现今已经得到了很好的改进，总体来说，对于类似词典这样的应用，Trie 是一个优秀的数据结构。</li>
+</ol>
+<h1 id="4-Trie-树的几种实现"><a href="#4-Trie-树的几种实现" class="headerlink" title="4. Trie 树的几种实现"></a>4. Trie 树的几种实现</h1><p>Trie 树实现:一般的链表指针方式，三数组实现，双数组实现，HAT，burst trie 等。</p>
+<ul>
+<li><p><strong>链表指针方式</strong></p>
+<p>即每个节点对应一个字符，并有多个指针指向子节点，查找和插入从根节点按照指针的指向向下查询。这种方案，实现较为简单，但指针较多，较为浪费空间；树形结构，指针跳转，对缓存不够友好，节点数目上去之后，效率不够高。</p>
+</li>
+<li><p><strong>Hash Trie 树以及 Burst trie</strong></p>
+<p>是将 trie 树和其他数据结构，比如 HashMap，结合起来，提高效率。但主要用于键值查找，对于给定一个字符串匹配其前缀这种场景不适用。</p>
+</li>
+<li><p><strong>三数组实现</strong></p>
+<p>利用三个数组（分别叫做 base, next, check）来实现状态的转移，将前缀树压缩到三个数据里，能够较好的节省内存；数组的方式也能较好的利用缓存。</p>
+</li>
+<li><p><strong>双数组实现</strong></p>
+<p>是在三数组的基础上，将 base 数组重用为 next 数组，节省了一个数组，并没有增加其他开销。与三数组相比，内存使用和效率进一步提升。</p>
+</li>
+</ul>
+<p>综上，双数组 trie（Double Array trie，简称为 DATrie）的实现有明显的优势，以下讨论 DATrie 的细节（只介绍构造和查询，删除节点不常用，而且比较复杂，暂时略过）。</p>
+<h1 id="5-Double-Array-Trie-树"><a href="#5-Double-Array-Trie-树" class="headerlink" title="5. Double-Array Trie 树"></a>5. Double-Array Trie 树</h1><h2 id="5-1-DATrie-构造方法"><a href="#5-1-DATrie-构造方法" class="headerlink" title="5.1 DATrie 构造方法"></a>5.1 DATrie 构造方法</h2><ol>
+<li><p>数组表示 trie 树的状态转移，父节点跳转到子节点转化为父状态跳转到子状态。</p>
+</li>
+<li><p>利用两个数组 <code>base</code>, <code>check</code>表示状态的转移：</p>
+<ul>
+<li><code>base</code> 数组的索引用来表示状态</li>
+<li><code>base</code> 数组里存的数据称为 offset</li>
+<li><code>check</code> 数组里存的数据是父状态的索引</li>
+<li><code>check</code> 与<code>base</code> 大小相同，一一对应，用于保存父状态，以及解决冲突</li>
+</ul>
+</li>
+<li><p>状态 S 接收到字符 c 后转移到状态 T:</p>
+<script type="math/tex; mode=display">
+S \overset{c}{\to} T</script><p>满足：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">check[base[S] + c] = S</span><br><span class="line">base[S] + c = T</span><br><span class="line">base[T] = base[S]</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/trie1.png" alt></p>
+<ul>
+<li><code>base</code> 数组的索引为 0，1，…, base[s], …, S, …, T，均表示 trie 树的状态</li>
+<li>从 S 状态接收到 c 跳转到 T, 则表示为 base 数组索引为 S 的内容 base[S] 为基地址，加上跳转偏移 c，得到下一个 T 状态在 base 的索引 <code>T=base[S] + C</code></li>
+<li><code>check</code> 数组对应 T 的内容 check[T] 为跳转过来的父状态，即 S。</li>
+</ul>
+</li>
+</ol>
+<h2 id="5-2-DATrie-查询"><a href="#5-2-DATrie-查询" class="headerlink" title="5.2 DATrie 查询"></a>5.2 DATrie 查询</h2><ol>
+<li>从 <code>base</code> 数组索引 0 开始，初始状态为 S=base[0]，其中偏移的基地址为 base[S]</li>
+<li>接受到 c，则跳转到 <code>base</code> 数组索引 T=base[S] + c，检查此时 <code>check</code> 数组的 check[T] == S，为真跳转到 3，否则匹配失败。</li>
+<li>如果 <code>base[T] == LEAF_VALUE</code> （这里 <code>LEAF_VALUE</code> 用来表示叶子节点的特殊值），则匹配完成；否则，令 S = T, 跳转到 2。</li>
+</ol>
+<p>状态更新的伪码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">T := base[S] + c</span><br><span class="line"></span><br><span class="line">if check[T] = S then</span><br><span class="line">    next state := T</span><br><span class="line">else</span><br><span class="line">    fail</span><br><span class="line">endif</span><br></pre></td></tr></table></figure>
+<h2 id="5-3-举个例子"><a href="#5-3-举个例子" class="headerlink" title="5.3 举个例子"></a>5.3 举个例子</h2><ul>
+<li><p>假定输入两个前缀为 ‘ab’ ,  ‘ad’ ，将字母 a-z 映射为数字 1，2，3,…, 26.</p>
+</li>
+<li><p>这里用 -1 代表数组元素为空，-2 代表叶子节点，-3 代表根节点</p>
+</li>
+<li><p>状态如下：</p>
+<ol>
+<li><p>初始状态</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/dat_example1.png" alt></p>
+</li>
+<li><p>输入 ‘a’ （’ab’）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/dat_example2.png" alt></p>
+<p><code>base[0]+a</code>，由状态 0 跳转到状态 2。<code>check[2]</code> 为 -1，说明为空，更新为父状态 0；<code>base[2]</code>更新为跳转过来的 <code>base</code>, 即 <code>base[0]</code> 的值 1。</p>
+</li>
+<li><p>输入 ‘b’ （’ab’）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/dat_example3.png" alt></p>
+<p><code>base[2]+b</code>，由状态 2 跳转到状态 3，<code>check[3]</code>为 -1，说明为空，更新为父状态 2；由于字符串结束，将 <code>base[3]</code> 更新为 -2，代表叶节点。</p>
+</li>
+<li><p>输入 ‘a’（’ad’）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/dat_example4.png" alt></p>
+<p>图中 <code>base</code> 和 <code>check</code> 的状态不会变化。 根据 <code>base[0]+a</code>，从状态 0 跳转到 2。<code>check[2]</code> 不为空，但<code>check[2]</code> 的值 0 与其父状态 S=0 相等，则无需更新，进入状态 2，等待输入下一个字符。这个过程相当于一个查询过程。</p>
+</li>
+<li><p>输入 ‘d’ （’ad’）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/dat_example5.png" alt></p>
+<p><code>base[2]+d</code>，由状态 2 跳转到状态 5，<code>check[5]</code> 为 -1，说明为空，更新为父状态 2；由于字符串结束，将 <code>base[5]</code> 更新为 -2，代表叶节点。</p>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="5-4-解决冲突"><a href="#5-4-解决冲突" class="headerlink" title="5.4 解决冲突"></a>5.4 解决冲突</h2><p>DATrie 不可避免会出现冲突。仍以上面的例子说明，继续插入 ‘ca’：</p>
+<ul>
+<li><p>输入 ‘c’（’ca’）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/dat_example6.png" alt></p>
+<p>状态由 0 跳转到状态 4，<code>check[4]</code> 空闲，将 <code>check[4]</code> 赋值为 0，<code>base[4]</code> 赋值为1。</p>
+</li>
+<li><p>输入 ‘a’ （’ca’）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/dat_example7.png" alt></p>
+<p>根据 <code>base[4]+4</code> 状态从4跳转到2， 但是 <code>check[2]</code> 非空，并且 <code>check[2]=0</code> 不等于父状态 4，此时发生冲突。</p>
+</li>
+<li><p>解决冲突</p>
+<ol>
+<li><p>挪动以 4 为父状态状态转移，查找对应 <code>base</code>，<code>check</code> 的连续的空闲空间以放入状态。这里只有最新的输入 ‘a’ 带来的状态转移以 4 为父状态。<code>base[6]</code>, <code>check[6]</code> 有空闲。</p>
+</li>
+<li><p>修改 <code>base[4]</code>, 使其能够根据输入跳转到空闲空间，即 <code>base[4] = 6 - a = 5</code>。</p>
+</li>
+<li><p>重新插入 ‘a’，如下图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/dat_example8.png" alt></p>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="6-Trie-树的压缩"><a href="#6-Trie-树的压缩" class="headerlink" title="6. Trie 树的压缩"></a>6. Trie 树的压缩</h1><p>双数组 Trie 树虽然大幅改善了经典 Trie 树的空间浪费，但是由于冲突发生时，程序总是向后寻找空地址，导致数组不可避免的出现空置，因此空间上还是会有些浪费。另外， 随着节点的增加，冲突的产生几率也会越来越大，字典构建的时间因此越来越长，为了改善这些问题，有人想到对双数组 Trie 进行尾缀压缩，具体做法是：将非公共前缀的词尾合并为一个节点（tail 节点），以此大幅减少节点总数，从而改善树的构建速度；同时将合并的词尾单独存储在另一个数组之中（Tail array）， 并通过 tail 节点的 base 值指向该数组的相应位置，以 <code>{baby, bachelor, badge, jar}</code> 四词为例，其实现示意图如下:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/dat_example9.png" alt></p>
+<ul>
+<li>速度：减少了 <code>base</code>， <code>check</code> 的状态数，以及冲突的概率，提高了插入的速度。</li>
+<li>内存：状态数的减少的开销大于存储 tail 的开销，节省了内存。</li>
+<li>删除：能很方便的实现删除，只需将 tail 删除即可。</li>
+</ul>
+<h2 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h2><ol>
+<li>Trie 树是一种以信息换时间的数据结构，其查询的复杂度为 $O(m)$。</li>
+<li>Trie 的单数组实现能够达到最佳的性能，但是其空间利用率极低，是典型的以空间换时间的实现。</li>
+<li>Trie 树的哈希实现可以很好的平衡性能需求和空间开销，同时能够实现词典的实时更新。</li>
+<li>Trie 树的双数组实现基本可以达到单数组实现的性能，同时能够大幅降低空间开销；但是其难以做到词典的实时更新。</li>
+<li>对双数组 Trie 进行 tail 改进可以明显改善词典的构建速度，同时进一步减少空间开销。</li>
+</ol>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://segmentfault.com/a/1190000008877595" target="_blank" rel="noopener">小白详解 Trie 树</a>, <em>xu_zhoufeng</em></li>
+<li><a href="https://www.iteye.com/blog/huangwei1024-813697" target="_blank" rel="noopener">Double-Array Trie（双数组字典树）</a>, <em>huangwei1024</em></li>
+<li><a href="https://turbopeter.github.io/2013/09/02/prefix-match/" target="_blank" rel="noopener">前缀树匹配(Double Array Trie)</a>, <em>minzhan’s blog</em></li>
+<li><a href="https://zhuanlan.zhihu.com/p/35193582" target="_blank" rel="noopener">双数组前缀树（Double-Array Trie）</a>, <em>两片</em> </li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:16+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2021年9月15日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/数据结构/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>数据结构</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/双数组前缀树/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>双数组前缀树</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/08/16/double_array_trie/&title=双数组前缀树 | Rogerspy's Home&summary=前缀树（trie）又叫字典树，顾名思义通过字符串的前缀进行查找、匹配的数据结构。Trie 树的应用场景主要包括：分词、词频统计、字符串查询和模糊匹配、字符串排序等。Trie 树大幅降低重复字符串的比较，所以执行效率非常高。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/08/16/double_array_trie/&title=双数组前缀树 | Rogerspy's Home&summary=前缀树（trie）又叫字典树，顾名思义通过字符串的前缀进行查找、匹配的数据结构。Trie 树的应用场景主要包括：分词、词频统计、字符串查询和模糊匹配、字符串排序等。Trie 树大幅降低重复字符串的比较，所以执行效率非常高。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsElEQVR42u3aQZLCMAwEQP7/6d0HQMhIsqgcOicqsF53Drai8esVX38XV/LL92+/f34f5+o3xy48PDy8Q1N/Hzr/NsH0xs/njIeHh7fNu1pRv0+uulV8X71787mx4OHh4T2Gly/ZvQI9L8fx8PDwns/L71QfQVJY4+Hh4T2Hlw89aRBU7/+014KHh4dX6xhEKdJzPq/ke3h4eHjjVH2ySeyNXxgNDw8Pb4GXL7j5VKrRV3WFL/8SDw8P7yivGlP1qM0FvRiDffiMh4eHt8CbB2DJkYJ5c6EalR3L9/Dw8PACXtIISMrc3lTy8KwwMh4eHt4CrxreJ8ikRE5aDHkDohyG4eHh4bV4eVl8qgSvjtDbGC57LXh4eHg/4e0V1jkjD9vKGwMeHh7eAu9sa6DXjKiOWd738PDw8GpZ1ata+M4zpl55nW8JeHh4eHu83gJdLXMnbYhkK7o5U4aHh4d3lDcJwAqx/eAwQTPNm+d7eHh4eMWCOI/EehFaXnD3SnY8PDy8bd6ke9E7IjA/dDV5oHh4eHhzXq/xmjdnqzFYL2CLOtN4eHh4h3j5kt3rc1QPdVUbJXh4eHi/580X8aT8nbSGR6U5Hh4e3hovQfbuTB5N78Hh4eHhbfPm5XUOqB6c6oVth98e8PDw8C4Sot6rftJsnRTWk+0EDw8Pb5uXL7X5RCdxWl6mN3steHh4eId41cMEvWlVW7S9sA0PDw9vg9eLoPLFuteW/b5pFbYlPDw8vAVeLyfqBV2TAwRJ6f+aXHh4eHhFXm8zyGOtOXL0iPHw8PDWeHl7t7egV5vCk/7Kh5YEHh4e3gN4+b+pNinysG1xY8DDw8M7ysvL3GTSSdOh2mjGw8PD+w1v0ghoHoc6dKTg5q/w8PDwFnjVF/6kwO21M3rthmP5Hh4eHt497x8H7XOo5+2xEQAAAABJRU5ErkJggg=='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/08/16/double_array_trie/&title=双数组前缀树 | Rogerspy's Home&summary=前缀树（trie）又叫字典树，顾名思义通过字符串的前缀进行查找、匹配的数据结构。Trie 树的应用场景主要包括：分词、词频统计、字符串查询和模糊匹配、字符串排序等。Trie 树大幅降低重复字符串的比较，所以执行效率非常高。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/08/23/kg-build-ontology-method/" rel="prev" title="知识图谱：知识建模（二）构建本体的方法论">
+                                  
+                                      知识图谱：知识建模（二）构建本体的方法论
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/kg/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>KG</a> <a class="tag" href="/tags/ontology/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>ontology</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/08/11/ptm-word-embedding/" rel="prev" title="预训练语言模型：Word Embedding">
+                                    
+                                        预训练语言模型：Word Embedding
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/词向量/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>词向量</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '双数组前缀树',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Trie-树简介"><span class="toc-text">1. Trie 树简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-搜索-Trie-树的时间复杂度"><span class="toc-text">2. 搜索 Trie 树的时间复杂度</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Trie-树的缺点"><span class="toc-text">3. Trie 树的缺点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Trie-树的几种实现"><span class="toc-text">4. Trie 树的几种实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Double-Array-Trie-树"><span class="toc-text">5. Double-Array Trie 树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-DATrie-构造方法"><span class="toc-text">5.1 DATrie 构造方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-DATrie-查询"><span class="toc-text">5.2 DATrie 查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-举个例子"><span class="toc-text">5.3 举个例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-解决冲突"><span class="toc-text">5.4 解决冲突</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Trie-树的压缩"><span class="toc-text">6. Trie 树的压缩</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-总结"><span class="toc-text">7. 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="blogarchives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="netease"
+    data-type="playlist"
+    data-id="2957571193"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

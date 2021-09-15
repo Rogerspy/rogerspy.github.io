@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Transformer家族之Levenshtein Transformer | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <div class="cover-wrapper">
+    <cover class='cover post half'>
+      
+        
+  <h1 class='title'>Rogerspy's Home</h1>
+
+
+  <div class="m_search">
+    <form name="searchform" class="form u-search-form">
+      <input type="text" class="input u-search-input" placeholder="" />
+      <i class="icon fas fa-search fa-fw"></i>
+    </form>
+  </div>
+
+<div class='menu navgation'>
+  <ul class='h-list'>
+    
+      
+        <li>
+          <a class="nav home" href="/"
+            
+            
+            id="home">
+            <i class='fas fa-edit fa-fw'></i>&nbsp;博文
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/video/"
+            
+            
+            id="video">
+            <i class='fas fa-film fa-fw'></i>&nbsp;视频
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/material/"
+            
+              rel="nofollow"
+            
+            
+            id="material">
+            <i class='fas fa-briefcase fa-fw'></i>&nbsp;资料
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/about/"
+            
+              rel="nofollow"
+            
+            
+            id="about">
+            <i class='fas fa-info-circle fa-fw'></i>&nbsp;关于
+          </a>
+        </li>
+      
+    
+  </ul>
+</div>
+
+      
+    </cover>
+    <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/diary/"
+                  
+                  
+                  id="diary">
+									<i class='fas fa-book fa-fw'></i>&nbsp;随心记
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/tags/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="tags">
+									<i class='fas fa-hashtag fa-fw'></i>&nbsp;标签
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/blog/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="blogarchives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+  </div>
+
+
+  <div class="l_body">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2020/04/27/transformer家族-levt/">
+        Transformer家族之Levenshtein Transformer
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2020-04-27</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/nlp/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>NLP</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">2.5k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">10分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/5396ee05ly1g5pqn3ch6zj20u092znph.jpg" alt></p>
+<p>之前我们介绍了几个 <em>Insertion-based</em> 的序列生成的方法，使我们跳出传统的从左到右的生成顺序的思维定式。既然有 <em>Insertion</em> 操作，那么一个很自然的想法就是，我们能不能再加入一个 <em>deletion</em> 操作呢？这样我们不仅能生成序列，还可以修改生成的序列，岂不美哉？<a href="https://arxiv.org/pdf/1905.11006.pdf" target="_blank" rel="noopener"><em>Gu et al. (2019)</em></a> 就针对这种想法提出了 <em>Levenshtein Transformer</em> 的模型。<em>Levenshtein Distance</em> 我们不陌生，也就是编辑距离，这里面涉及到三种操作：<em>insertion、deletion、replace</em>，严格意义上来讲 <em>replace</em> 实际上就是 <em>insertion</em> 和 <em>deletion</em> 的组合，所以 <em>LevT</em> 模型只用到了插入和删除操作。</p>
+<a id="more"></a>
+<h1 id="1-Abstract-Framework"><a href="#1-Abstract-Framework" class="headerlink" title="1. Abstract Framework"></a>1. Abstract Framework</h1><p><em>LevT</em> 不同于一般的生成模型，它不仅可以生成序列，还可以修改序列。这样的话他应该算是 <em>generation model</em> 和 <em>refinement model</em> 的组合体，比如，如果 解码端初始化是一个序列，那么该模型就是普通的生成模型；而如果解码端初始化是一段低质量的序列，那么该模型可以通过插入和删除操作将输入序列修改成一段高质量的序列，比如翻译后编辑任务（<em>translation post-editing</em>）。</p>
+<p>作者将 <em>generation</em> 和 <em>refinement</em> 两个任务当成一个马尔科夫决策过程（<em>Markov Decision Process, MDP</em>），使用一个五元组来表示：$(\mathcal{Y, A, E, R}, y_0)$。</p>
+<ul>
+<li>$\mathcal{Y=V}^{N_{\max}}$ —— 表示一个序列集合，其中 $\mathcal{V}$ 表示词表；</li>
+<li>$\pmb{a} \in \mathcal{A}$ —— 表示一个行为，$\mathcal{A}$ 表示动作集合；</li>
+<li>$\pmb{r} \in \mathcal{R}$ —— 表示回馈，$\mathcal{R}$ 表示回馈函数；</li>
+<li>$\mathcal{E}$ —— 表示一个主体（<em>agent</em>）;</li>
+<li>$\pmb{y}_0$ —— 表示初始序列，要么为空，要么是由其他模型生成的序列。</li>
+</ul>
+<p>马尔科夫决策过程如下：一个主体 $\mathcal{E}$ 接受一个行为 $\pmb{a}$，得到一个序列 $\pmb{y}$， 然后反馈函数 $\mathcal{R}$ 度量这个序列与真实的序列的误差：$\mathcal{R(y)=-D(y, y^{\star})}$。由于操作基于插入和删除，自然地，我们可以使用 <em>Levenshtein Distance</em> 去度量。主体要采取什么动作则由策略 $\pi$ 决定：将目前的序列映射成行为概率分布，即 $\pi: \mathcal{Y \rightarrow P(A)}$。</p>
+<p><em>LevT</em> 的任务就是给定一个序列 $\pmb{y}^k = ( y_1, y_2, …, y_n)$，生成 $\pmb{y}^{k+1} = \mathcal{E(\pmb{y}^k, \pmb{a}^{k+1})}$，其中 $y_1$ 和 $y_n$ 分别为 $&lt; s &gt;$ 和 $&lt; /s &gt;$。</p>
+<blockquote>
+<p>注意：在下面的描述中上角标 $k, k+1$ 省略，以及对于条件概率生成，比如机器翻译，源序列输入 $x$ 在下面的公式中也省略了。</p>
+</blockquote>
+<ul>
+<li><p><strong>删除</strong></p>
+<script type="math/tex; mode=display">
+\pi^{\mathrm{del}}(d|i, \pmb{y}) \sim \mathrm{Bernoulli}(0, 1)</script><p>删除策略是一个 $n$ 重伯努利分布：输入一个序列 $y$，对于序列中的每一个元素 $y_i \in \pmb{y}$ 要么保留，要么删除，即 $d = 1(删除)$ 或者 $d = 0 (保留)$。为了避免 $&lt; s &gt;$ 和 $&lt; /s &gt;$ 被删除，这里强制令 $\pi^{\mathrm{del}}(0|0, \pmb{y}) = \pi^{\mathrm{del}}(0|n, \pmb{y}) = 1$。</p>
+</li>
+<li><p><strong>插入</strong></p>
+<p>相对删除操作，插入就比较复杂了，因为你进要预测插入的词，还要预测插入的位置，我们还希望在同一个位置尽可能多的插入更多的词，这样就相当于模型具有并行的能力。这里作者将插入位置的预测称之为占位符预测（<em>placeholder prediction</em>）；将词的预测称之为词预测（<em>token prediction</em>）。</p>
+<p><strong>第一步：占位符预测</strong></p>
+<script type="math/tex; mode=display">
+(y_i, y_{i+1}) = \pi^{\mathrm{plh}} (p|i, \pmb{y})</script><p>$(y<em>i, y</em>{i+1})$ 表示接下来的词插入到 $y<em>i, y</em>{i+1}$ 之间。注意这里可以预测多个插入位置。</p>
+<p><strong>第二步：词预测</strong></p>
+<script type="math/tex; mode=display">
+tokens = \pi^{\mathrm{tok}}(t|i, \pmb{y})</script><p>每个位置可以有多个词。</p>
+<p>这两个步骤可以看成是 <em>Insertion Transformer</em> 和 <em>masked language model</em> 的混合体。</p>
+</li>
+<li><p><strong>删除和插入的综合</strong></p>
+<p>最后，作者将序列的生成分成三个阶段：① 删除词；② 插入占位符；③ 用词替换占位符。其中每一步都是可以并行处理的。</p>
+<p>给定序列 $\pmb{y}=(y<em>0, …, y_n)$，预测行为 $a = {\underbrace{d_0, …, d_n}</em>{删除操作}; \underbrace{p<em>0,…,p</em>{n-1}}<em>{占位符预测}; \underbrace{t_0^1,…,t_0^{p_0},…,t</em>{n-1}^{p<em>{n-1}}}</em>{词预测}}$：</p>
+<script type="math/tex; mode=display">
+\pi(\pmb{a}|\pmb{y}) = \prod_{d_1 \in \pmb{d}}\pi^{\mathrm{del}}(d_i|i, \pmb{y})\cdot \prod_{p_i \in \pmb{p}}\pi^{\mathrm{plh}} (p_i|i, \pmb{y'}) \cdot \prod_{t_i \in \pmb{t}}\pi^{\mathrm{tok}}(t_i|i, \pmb{y''})</script><p>其中 $\pmb{y’}=\mathcal{E}(\pmb{y}, \pmb{d})$，$\pmb{y’’}=\mathcal{E}(\pmb{y’}, \pmb{p})$。</p>
+</li>
+</ul>
+<h1 id="2-Levenshtein-Transformer"><a href="#2-Levenshtein-Transformer" class="headerlink" title="2. Levenshtein Transformer"></a>2. Levenshtein Transformer</h1><h2 id="2-1-Model"><a href="#2-1-Model" class="headerlink" title="2.1 Model"></a>2.1 Model</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200428155309.png" alt></p>
+<p>模型的整体结构仍然采用 <em>Transformer</em>，第 $l$ 个注意力层的状态如下：</p>
+<script type="math/tex; mode=display">
+\pmb{h}_0^{(l+1)}, ..., \pmb{h}_n^{(l+1)} = \begin{cases}
+E_{y_0}+P_0, ..., E_{y_n} + P_n, & l=0 \\\\
+\mathrm{TransformerBlock}_l(\pmb{h}_0^{(l)}, ..., \pmb{h}_n^{(l)})， & l \ne 0
+\end{cases}</script><p>其中 $E \in \mathbb{R}^{\mathcal{|V|}\times d<em>{model}}$ 表示词向量，$P \in \mathbb{R}^{N</em>\max \times N_\max}$ 表示位置向量。</p>
+<p>从图中我们可以看到，解码器的输出 $(\pmb{h}_0,…,\pmb{h}_n)$ 被传入到三个分类器中：删除分类器、占位符分类器和词分类器。</p>
+<ul>
+<li><p><strong>删除分类器</strong></p>
+<script type="math/tex; mode=display">
+\pi_\theta^{\mathrm{del}}(d|i, \pmb{y}) = \mathrm{softmax} (\pmb{h}_i \cdot A^T)</script><p>其中 $A \in \mathbb{R}^{2 \times d_{model}}$。对序列中除了 $&lt; s &gt;$ 和 $&lt; /s &gt;$ 之外的所有元素进行分类。</p>
+</li>
+<li><p><strong>占位符分类器</strong></p>
+<script type="math/tex; mode=display">
+\pi_\theta^{\mathrm{plh}}(p|i, \pmb{y}) = \mathrm{softmax}(\mathrm{concate}(\pmb{h}_i,\pmb{h}_{i+1}) \cdot B^T)</script><p>其中 $B \in \mathbb{R}^{(K<em>\max+1)\times (2d</em>{model})}$，$(0 \sim K_\max)$ 表示在当前位置上插入占位符的个数，本文中占位符用 <code>[PLH]</code> 表示。比如 $(A, D) \rightarrow (A, [\mathrm{PLH}], [\mathrm{PLH}], D)$。</p>
+</li>
+<li><p><strong>词分类器</strong></p>
+<script type="math/tex; mode=display">
+\pi_\theta^{\mathrm{tok}}(t|i, \pmb{y}) = \mathrm{softmax}(\pmb{h}_i \cdot C^T)</script><p>其中 $C \in \mathbb{R}^{\mathcal{|V|}\times d_{model}}$。</p>
+</li>
+</ul>
+<h2 id="2-2-Dual-policy-Learning"><a href="#2-2-Dual-policy-Learning" class="headerlink" title="2.2  Dual-policy Learning"></a>2.2  Dual-policy Learning</h2><p>接下来一个关键的问题是，模型怎么学习？最简单的，我们可以用模仿学习。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200428185949.png" alt></p>
+<p>假设我们现在有一个参考策略 $\pi^{\star}$，这个参考策略要么使用真值，要么可以加入少许噪声。我们的目标是最大化以下期望值：</p>
+<script type="math/tex; mode=display">
+\underbrace{\mathop{\mathbb{E}_{\pmb{y}_{\mathrm{del}} \sim d_{\tilde{\pi}_{\mathrm{del}}}}} \limits_{\pmb{d}^\star \sim \pi^\star} \sum_{d_i^\star \in \pmb{d}^\star} \log \pi_\theta^{\mathrm{del}}(d^\star_i|i, \pmb{y}_{\mathrm{del}})}_{删除操作的目标}+\underbrace{\mathop{\mathbb{E}_{\pmb{y}_{\mathrm{ins}}\sim d_{\tilde{\pi}_{\mathrm{ins}}}}}\limits_{\pmb{p}^\star, \pmb{t}^\star \sim \pi^\star}\left[\sum_{p_i^\star \in \pmb{p}^\star} \log \pi_\theta^{\mathrm{plh}}(p_i^\star|i, \pmb{y}_{\mathrm{ins}})+\sum_{t_i^\star \in \pmb{t}^\star}\log \pi_\theta^{\mathrm{tok}}(t_i^\star|i, \pmb{y'}_{\mathrm{ins}})\right]}_{插入操作的目标}</script><p>其中 $\pmb{y’}<em>\mathrm{ins}$ 表示在 $\pmb{y}$ 上插入占位符以后的序列。$\tilde{\pi}</em>\mathrm{del}, \tilde{\pi}_\mathrm{ins}$ 是输入策略，我们不断从由它们导致的状态分布中抽样分布（序列），这些状态首先由参考策略运行，然后返回其行为，我们就是要去最大化这些行为概率。我们有两种方法定义输入策略：① 在真值上加噪； ② 使用对抗策略。如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200428173803.png" alt></p>
+<ol>
+<li><p>删除操作，我们可以定义：</p>
+<script type="math/tex; mode=display">
+d_{\tilde{\pi}_\mathrm{del}} = \begin{cases}
+\pmb{y}^0, & u< \alpha \\\\
+\mathcal{E}(\mathcal{E}(\pmb{y'}, \pmb{p}^\star), \tilde{\pmb{t}}), & u \ge \alpha
+\end{cases}</script><p>其中 $\pmb{y}^0$ 是初始输入，$\alpha \in [0, 1]$ 表示我们交替从 $\pmb{y}^0$ 和 $\pmb{y’}$ 中选取样本，$u \sim U[0,1]$，$\pmb{y’}$ 是任意准备插入的序列，$\pmb{p}^\star$ 取自参考策略， $\tilde{\pmb{t}}$ 取自当前策略。用这种方法，我们既可以学习对初始序列 $\pmb{y}_0 $ 如何删除，也可以学习在整个过程中如何对序列删除。</p>
+</li>
+<li><p>插入操作，类似于删除操作：</p>
+<script type="math/tex; mode=display">
+d_{\tilde{\pi}_\mathrm{ins}} = \begin{cases}
+\mathcal{E}(\pmb{y}^0, \pmb{d}^\star), & \pmb{d}^\star \sim \pi^\star, & u < \beta\\\\
+\mathcal{E}(\pmb{y}^\star, \tilde{\pmb{d}})， & \tilde{\pmb{d}} \sim \pi^{\mathrm{RND}}, & u\ge \beta
+\end{cases}</script><p>这里 $u \sim U[0,1]$，$\beta \in [0, 1]$，$\pi^{\mathrm{RND}}$ 是从真值序列中随机丢弃一个字符。</p>
+</li>
+</ol>
+<p>现在还剩最后一个问题：<strong>如何构建参考策略？</strong> </p>
+<ul>
+<li><p><em>Oracle</em>：</p>
+<script type="math/tex; mode=display">
+\pmb{a}^\star = \mathop{\arg \min} \limits_{\pmb{a}} \mathcal{D}(\pmb{y}^\star, \mathcal{E}(\pmb{y, a}))</script><p>其中 $\mathcal{D}$ 表示 <em>Levenshtein distance</em>。</p>
+</li>
+<li><p><em>Distillation</em>：我们首先训练一个 <em>AR</em> 模型，然后把真值序列 $\pmb{y}^\star$ 用 <em>distillation</em> 模型的 <em>beam search</em> 结果 $\pmb{y}^{AR}$ 进行替换。实验结果表明这个方法是对上一个方法的大幅改进，既可以边生成边修改，又可以并行。</p>
+</li>
+</ul>
+<h2 id="2-3-Inference"><a href="#2-3-Inference" class="headerlink" title="2.3 Inference"></a>2.3 Inference</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200428190044.png" alt></p>
+<p>在进行推理的时候采用 <strong>贪婪解码</strong>。解码终止条件有两个：</p>
+<ul>
+<li><em>Looping</em>：当两次连续的修改操作（插入和删除）返回相同的序列。可能有两个原因：① 没有可插入或者可删除的词了；② 插入和删除相互抵消了，解码过程陷入死循环。</li>
+<li><em>Timeout</em>：通过设置最大迭代次数保证模型不会在一个较差的结果上耗费过多时间。</li>
+</ul>
+<p>另外为了防止不合理的空占位符的出现，作者这里和 <em>Insertion Transformer</em> 一样采取了惩罚措施：从占位符分类器的输出结果中剪掉 $\gamma \in [0,3]$ 项。</p>
+<h1 id="3-Experiments"><a href="#3-Experiments" class="headerlink" title="3. Experiments"></a>3. Experiments</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200428192142.png" alt></p>
+<p>可以看到，<em>Levenshtein oracle</em> 的效果堪比 <em>Transformer</em>，而加了<em>Transformer distillation</em>之后表现几乎总好于 <em>Transformer</em>，并且还快得多。</p>
+<p>另外，由于 <em>LevT</em> 还可以进行 <em>refinement</em>， 因此作者还评估了模型的修改效果，下表 <em>APE</em>（<em>automatic post-editing)</em>） 是实验结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200428192835.png" alt></p>
+<p>左边的结果是 <em>BLEU</em> 值，右边的结果是 <em>TER</em> 翻译错误率。可以看到，<em>LevT</em> 几乎承包了所有任务上的最优结果，表明了这种修改的可行性。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://arxiv.org/pdf/1905.11006.pdf" target="_blank" rel="noopener">Levenshtein Transformer</a>, <em>Jiatao Gu , Changhan Wang &amp; Jake Zhao (Junbo). 2019. arXiv: 1905.11006</em></li>
+<li><a href="https://zhuanlan.zhihu.com/p/73417154" target="_blank" rel="noopener">香侬读 | 按什么套路生成？基于插入和删除的序列生成方法</a>, 香侬科技, 知乎</li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2021年9月15日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/transformer/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Transformer</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/nmt/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>NMT</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/insertion-deletion/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>insertion-deletion</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2020/04/27/transformer家族-levt/&title=Transformer家族之Levenshtein Transformer | Rogerspy's Home&summary=
+之前我们介绍了几个 Insertion-based 的序列生成的方法，使我们跳出传统的从左到右的生成顺序的思维定式。既然有 Insertion 操作，那么一个很自然的想法就是，我们能不能再加入一个 deletion 操作呢？这样我们不仅能生成序列，还可以修改生成的序列，岂不美哉？Gu et al. (2019) 就针对这种想法提出了 Levenshtein Transformer 的模型。Levenshtein Distance 我们不陌生，也就是编辑距离，这里面涉及到三种操作：insertion、deletion、replace，严格意义上来讲 replace 实际上就是 insertion 和 deletion 的组合，所以 LevT 模型只用到了插入和删除操作。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2020/04/27/transformer家族-levt/&title=Transformer家族之Levenshtein Transformer | Rogerspy's Home&summary=
+之前我们介绍了几个 Insertion-based 的序列生成的方法，使我们跳出传统的从左到右的生成顺序的思维定式。既然有 Insertion 操作，那么一个很自然的想法就是，我们能不能再加入一个 deletion 操作呢？这样我们不仅能生成序列，还可以修改生成的序列，岂不美哉？Gu et al. (2019) 就针对这种想法提出了 Levenshtein Transformer 的模型。Levenshtein Distance 我们不陌生，也就是编辑距离，这里面涉及到三种操作：insertion、deletion、replace，严格意义上来讲 replace 实际上就是 insertion 和 deletion 的组合，所以 LevT 模型只用到了插入和删除操作。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACu0lEQVR42u3aO27DMBAFQN//0kkbIJH09kNExagybMXmqOBu3vLzia+vH1fyTvXTn/dcvfP707ULDw8Pb7D0ZHH379wv7ur+3m8ljwwPDw/vHO9qR0025ftvqJaE6uuHleDh4eG9htfbpqOtfNBe4+Hh4b2ZN/nhpJnOW3A8PDy8/+JtfXUe497/bR4ir2UteHh4eDEvnyK95/WR+R4eHh7eeKre26yvPr2PGCbjrsvV4uHh4R3g5Rtu3iLn0W11qNZbJx4eHt4uL48VqtFDr3hUj149NP14eHh4B3iF6rE0KktgkzFbOaTAw8PDG2ee87gheUx57tobg+Hh4eGd5lXDgoVRfQu/UOXw8PDwVmHJVpvEtZNYofpXD+vEw8PDO8DLb8pfz2GTKlDo0/Hw8PBavN6C8qNU1USkFzc06x4eHh5ef4L/yRedF4ZeUz6Jd6MigYeHhzfmVTf03jg/B2/9Lh4eHt45Xn4gYNIKV0PYBFM4xICHh4d3gFel9kZl93fmrXavkODh4eFt8ebHAqrHtqobetJSX5YoPDw8vAO8vAD0hlVJLJvfkxcYPDw8vHO86qGoQm9eJFWj3rVDV3h4eHhFXr6seQOdHwvoHflqPno8PDy8Iq+3ufeCgzzkXSsbeHh4eGc70s9k6+/FwcmUKvnmct3Dw8PDG/N6vXZO6i2u1453b8LDw8Pb4eWR7mQkVoWVHw0eHh7eMV6+rVcD1kmPvzD6wsPDw1vlfRWvpGDksUIvqiiUKzw8PLwDvPmRqbxdnrTvvfgDDw8P7xwvLwbVSGLrygvDH6vFw8PDO8abjKwmgcW8dj18Px4eHt5reL12/B6cHyMoNPd4eHh4L+Dli+61yNUGvVA38PDw8FZ5kyCg145Xi0HSpl8WBjw8PLxVXu8f/uqWPXlkyahsYb6Hh4eH98z7Bu6Sc6j1nzhHAAAAAElFTkSuQmCC'>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2020/04/27/transformer家族-levt/&title=Transformer家族之Levenshtein Transformer | Rogerspy's Home&summary=
+之前我们介绍了几个 Insertion-based 的序列生成的方法，使我们跳出传统的从左到右的生成顺序的思维定式。既然有 Insertion 操作，那么一个很自然的想法就是，我们能不能再加入一个 deletion 操作呢？这样我们不仅能生成序列，还可以修改生成的序列，岂不美哉？Gu et al. (2019) 就针对这种想法提出了 Levenshtein Transformer 的模型。Levenshtein Distance 我们不陌生，也就是编辑距离，这里面涉及到三种操作：insertion、deletion、replace，严格意义上来讲 replace 实际上就是 insertion 和 deletion 的组合，所以 LevT 模型只用到了插入和删除操作。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2020/04/29/transformer家族-insertion-deletion/" rel="prev" title="Transformer家族之Insertion-Deletion Transformer">
+                                  
+                                      Transformer家族之Insertion-Deletion Transformer
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/nmt/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>NMT</a> <a class="tag" href="/tags/insertion-deletion/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>insertion-deletion</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2020/04/24/transformer家族-indigo/" rel="prev" title="Transformer家族之Transformer-InDIGO">
+                                    
+                                        Transformer家族之Transformer-InDIGO
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/nmt/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>NMT</a> <a class="tag" href="/tags/insertion/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>insertion</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: 'Transformer家族之Levenshtein Transformer',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Abstract-Framework"><span class="toc-text">1. Abstract Framework</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Levenshtein-Transformer"><span class="toc-text">2. Levenshtein Transformer</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Model"><span class="toc-text">2.1 Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Dual-policy-Learning"><span class="toc-text">2.2  Dual-policy Learning</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Inference"><span class="toc-text">2.3 Inference</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Experiments"><span class="toc-text">3. Experiments</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="blogarchives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="netease"
+    data-type="playlist"
+    data-id="2957571193"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

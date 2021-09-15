@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>预训练语言模型：Word Embedding | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/diary/"
+                  
+                  
+                  id="diary">
+									<i class='fas fa-book fa-fw'></i>&nbsp;随心记
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/tags/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="tags">
+									<i class='fas fa-hashtag fa-fw'></i>&nbsp;标签
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/blog/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="blogarchives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/08/11/ptm-word-embedding/">
+        预训练语言模型：Word Embedding
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-08-11</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/语言模型/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>语言模型</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">8.2k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">34分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://aylien.com/images/uploads/general/tumblr_inline_o8tinsmw081u37g00_540.png" alt></p>
+<p>词嵌入（word embedding）是一种用稠密向量来表示词义的方法，其中每个词对应的向量叫做词向量（word vector）。词嵌入通常是从语言模型中学习得来的，其中蕴含着词与词之间的语义关系，比如 “猫” 和 “狗” 的语义相似性大于 “猫” 和 “计算机” 。这种语义相似性就是通过向量距离来计算的。</p>
+<a id="more"></a>
+<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><h2 id="1-1-词表示法简史"><a href="#1-1-词表示法简史" class="headerlink" title="1.1 词表示法简史"></a>1.1 词表示法简史</h2><p>自然语言文本在很长时间里并没有一个统一的表示法，用于计算机进行计算。通常人们给每个词分配一个 id，将词作为离散符号输入计算机系统。</p>
+<ul>
+<li><p><strong>查字典</strong></p>
+<p>最直接的方法是创建一个词表，每个词分配一个唯一的 ID，比如：</p>
+<blockquote>
+<p>  我， 0</p>
+<p>  是， 1</p>
+<p>  谁， 2</p>
+<p>  …</p>
+</blockquote>
+</li>
+<li><p><strong>One-hot 编码</strong></p>
+<p>同样是先建立一个词表，然后给词表中的每个词分配一个大小为词表大小的向量来表示词。每个词对应的向量中，只有一个位置的数字为 1，其他位置上的数字全部是 0。词与词的 one-hot 向量两两正交。整个词表就是一个 $1\times (N+1)$ 的矩阵，其中 $N$ 表示词表大小，额外的 1 表示 <em>UNK</em> ，即不在词表中的词的统一标识。比如：</p>
+<blockquote>
+<p>  我，[1, 0, 0, 0, …]</p>
+<p>  是，[0, 1, 0, 0, …]</p>
+<p>  谁，[0, 0, 1, 0, …]</p>
+<p>  …</p>
+</blockquote>
+</li>
+<li><p><strong>Distributional 表示法</strong></p>
+<p>以上两种方法存在着一下几个问题：</p>
+<ol>
+<li>正交。词与词之间的语义丢失，我们没有办法从向量表示中得到词与词之间的关联性，</li>
+<li>维度爆炸。通常一个词表会有几万个词，如果用 one-hot 表示，那么整个词表的 one-hot 就是一个几万乘几万的矩阵，极大地消耗了计算机资源。</li>
+<li>矩阵稀疏。one-hot 矩阵中，除了特定位置上的数字是 1， 其余位置全部是 0，造成整个矩阵极端稀疏化，运算过程中极大地浪费了算力，</li>
+</ol>
+<p>因此，人们提出了分布式表示法，希望通过稠密向量来获得词嵌入矩阵。而得到稠密向量的方法就是我们下面要介绍的。</p>
+</li>
+</ul>
+<h2 id="1-2-发展里程碑"><a href="#1-2-发展里程碑" class="headerlink" title="1.2 发展里程碑"></a>1.2 发展里程碑</h2><div class="timeline">
+<div class="timenode"><div class="meta"><p></p><p>2003 年 —— 前馈神经网络语言模型</p>
+<p></p></div><div class="body"><p>2003 年 <em>Bengio</em> 等人提出前馈神经网络语言模型（FFNNLM），该模型的一个重要副产物就是词向量。相当于提出了一种利用语言模型训练词向量的方法，同样为后来的 Word2vec 打下了基础。</p></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>2005 年 —— 层级 Softmax</p>
+<p></p></div><div class="body"><p><em>Morin &amp; Bengio</em> 提出层级 softmax 思想。给定大小为 $V$ 的词表，通过一棵二叉树计算输出词的概率分布，将计算复杂度从 $O(V)$ 降到 $O(\log(V))$。这一思想成为后来 word2vec 模型的重要组成部分。</p></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>2010 年 —— Noise Contrastive Estimation</p>
+<p></p></div><div class="body"><p><em>Gutmann &amp; Hyvarinen</em> 提出噪声对比估计（NCE）方法。其基本思想是：一个好的模型可以利用<strong>逻辑回归</strong>从噪声中识别有用数据。后来 NCE 被 <em>Mnih &amp;Teh</em> 用于语言模型。后来 Word2vec 中的负采样技术就是 NCE 的简化版。</p></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>2013 年 —— word2vec</p>
+<p></p></div><div class="body"><p><em>Mikolov</em> 等人提出 word2vec 模型，使得大规模训练词向量成为现实。Word2vec 包含两个模型：<em>skip-gram</em> 和 <em>CBOW</em>。为了加速计算，word2vec 将 softmax 替换成层级 softmax，二叉树用的是哈夫曼树（Huffman tree）。</p></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>2013 年 —— 负采样</p>
+<p></p></div><div class="body"><p><em>Mikolov</em> 等人对原来的 word2vec 模型进行了优化，提出负采样的方法。负采样是噪声对比估计的简化版，比层级 softmax 更简单、更快。</p></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>2014 年 —— GloVe</p>
+<p></p></div><div class="body"><p><em>Pennington</em> 等人基于词共现的方法，提出另一种训练词向量的方法：Glove。与 word2vec 相比，两个模型表现相差不大，而 GloVe 更容易并行化训练。</p></div></div>
+</div>
+<p>接下来我们介绍两种主要的训练词嵌入的方法：</p>
+<ul>
+<li><strong>Context-based</strong>：给定上下文，设计模型预测中心词。</li>
+<li><strong>Count-based</strong>：统计文本中词的共现矩阵，然后利用矩阵分解的方法对矩阵进行降维。</li>
+</ul>
+<h1 id="2-Context-based-Word2Vec"><a href="#2-Context-based-Word2Vec" class="headerlink" title="2. Context-based: Word2Vec"></a>2. Context-based: Word2Vec</h1><p>2013 年 <a href="http://arxiv.org/pdf/1301.3781.pdf" target="_blank" rel="noopener">Mikolov</a> 等人提出一种模型 —— Word2Vec。该模型包含两种架构：<em>Continuous Bag-of-Words（CBOW）</em> 和  <em>Continuous Skip-gram（Skip-gram）</em>，然后在随后的文章中提出了两种模型训练的优化方法：<em>hierarchical softmax（层级 softmax）</em> 和 <em>negative sampling（负采样）</em>。Mikolov 等人不是第一个提出连续向量表示词的人，但是他们提出的 word2vec 模型是第一个能应用在大规模语料上的模型，具有非常重要的意义。</p>
+<p>假设有一个固定大小的滑动窗口，沿着句子从头到尾滑动取片段，每个窗口中中心词即为目标词（target），其他的词为上下文（context）。举个例子（假设已经分词）：</p>
+<blockquote>
+<p>  天才 就是 百分之一 的 灵感 加 百分之九十九 的 汗水。</p>
+</blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>滑动窗口（size=5）</th>
+<th>target</th>
+<th>context</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[<font color="red">天才</font>, 就是, 百分之一]</td>
+<td>天才</td>
+<td>就是, 百分之一</td>
+</tr>
+<tr>
+<td>[天才, <font color="red">就是</font>, 百分之一, 的]</td>
+<td>就是</td>
+<td>天才, 百分之一,的</td>
+</tr>
+<tr>
+<td>[天才, 就是, <font color="red">百分之一</font>, 的, 灵感]</td>
+<td>百分之一</td>
+<td>天才, 就是, 的, 灵感</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>[灵感, 加, <font color="red">百分之九十九</font>, 的, 汗水]</td>
+<td>百分之九十九</td>
+<td>灵感, 加, 的, 汗水</td>
+</tr>
+<tr>
+<td>[加, 百分之九十九, <font color="red">的</font>, 汗水]</td>
+<td>的</td>
+<td>加, 百分之九十九, 汗水</td>
+</tr>
+<tr>
+<td>[百分之九十九, 的, <font color="red">汗水</font>]</td>
+<td>汗水</td>
+<td>百分之九十九, 的</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="2-1-Skip-Gram-Model"><a href="#2-1-Skip-Gram-Model" class="headerlink" title="2.1 Skip-Gram Model"></a>2.1 Skip-Gram Model</h2><p>Skip-gram 模型的核心思想是通过<strong>中心词</strong>预测<strong>上下文</strong>，即：</p>
+<script type="math/tex; mode=display">
+p(w_{i-2}, w_{i-1}, w_{i+1}, w_{i+2}|w_i)</script><p>Skip-gram 模型采用的是一个浅层神经网络来计算这个概率分布。该一共只有三层：输入层、投影层（隐藏层）、输出层。模型结构如下图：</p>
+<p><img width="500" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210811213240.jpg"></p>
+<p>假设上下文中的词相互独立，则：</p>
+<script type="math/tex; mode=display">
+p(w_{i-2}, w_{i-1}, w_{i+1}, w_{i+2}|w_i) = p(w_{i-2}|w_i)\cdot p(w_{i-1}|w_i) \cdot p(w_{i+1}|w_i)\cdot p(w_{i+2}|w_i)</script><p>相当于训练样本的（target，context）对拆解成 $2m$个（target，context word）对，其中 $m$ 表示滑动窗口除中心词外一半大小（很多地方会直接把 $m$ 定义为窗口大小），context word 表示上下文中每个词。例如，中心词为 “百分之九十九”，那么训练样本就是：</p>
+<blockquote>
+<p>  （百分之九十九，灵感）</p>
+<p>  （百分之九十九，加）</p>
+<p>  （百分之九十九， 的）</p>
+<p>  （百分之九十九， 汗水）</p>
+</blockquote>
+<p>此时，上面的模型结构则等效于下图：</p>
+<p><img width="500" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210811213223.jpg"></p>
+<p>模型的输入是中心词，输出是上下文词之一。</p>
+<p>假设词表 $\mathcal{V}$​​​​​ 的大小为 $V=|\mathcal{V}|$​​​​​，中心词在词典中的索引为 $i$​​​​​，上下文对应的词在词表中的索引为 $j$， $N$ 表示词向量 $\boldsymbol{v}_i$ 的维度，即 $\boldsymbol{v}_i \in \mathbb{R}^N$​​​​​。</p>
+<p>关于模型的一些细节：</p>
+<ul>
+<li><p>$\boldsymbol{x}$​​​ 和 $\boldsymbol{y}$​​​ 都是 one-hot 编码，编码中 $i$​ 和 $j$​ 对应的位置为 1，其余位置全部为 0，$\boldsymbol{x},\boldsymbol{y} \in \mathbb{R}^{1\times V}$​。​​​</p>
+</li>
+<li><p>首先，将输入 $\boldsymbol{x}$​​ 与一个 $\boldsymbol{W}$​​ 矩阵相乘得到隐藏层 $\boldsymbol{h}$​​，其中 $\boldsymbol{W}\in \mathbb{R}^{V\times N}$​​​​​​​ ，则 $\boldsymbol{h}\in \mathbb{R}^{1\times N}$​​。实际上 $\boldsymbol{h}$​ 相当于 $\boldsymbol{W}$​ 的第 $i$​ 行：</p>
+<script type="math/tex; mode=display">
+[0, ..., 1, ..., 0] \times 
+\left[
+\begin{matrix}
+w_{00}, w_{01}, ..., w_{0N} \\\\
+\vdots \\\\
+w_{i0}, w_{i1}, ..., w_{iN} \\\\
+\vdots \\\\
+w_{V0}, w_{V1}, ..., w_{VN}
+\end{matrix}
+\right] = \left[w_{i0}, ...,w_{ii}, ..., w_{iN}\right]</script></li>
+<li><p>用 $\boldsymbol{h}$​ 与另一个矩阵 $\boldsymbol{W’}\in \mathbb{R}^{N\times V}$​​ 相乘得到一个 $1\times V$ 的向量 $\boldsymbol{h’}$。</p>
+</li>
+<li><p>将 $\boldsymbol{h’}$ 进行归一化即可得到 $\boldsymbol{y}$​ 的 one-hot 概率分布：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{y} = \mathrm{softmax}(\boldsymbol{h'})</script></li>
+<li><p>$\boldsymbol{y}$ 中概率最大的位置 $j$ 即对应词表第 $j$ 个词：</p>
+<script type="math/tex; mode=display">
+w_j = \mathcal{V}_{j=\arg \max (\boldsymbol{y})}</script><p>比如：</p>
+<blockquote>
+<p>  假设 $\mathcal{V}=[我，的，灵感，天才，…]$</p>
+<p>  $\boldsymbol{y} = [0.1, 0.2, 0.3, 0.2, 0.15, 0.05]$</p>
+<p>  $\boldsymbol{y}$​ 中最大概率为 0.3，对应的索引是 2，即 $j=2$​​，</p>
+<p>  则 $w_j = \mathcal{V}_2 = 灵感$​。</p>
+</blockquote>
+</li>
+<li><p>模型中有两个矩阵 $\boldsymbol{W}$ 和 $\boldsymbol{W’}$​，非别对应着中心词的向量编码和上下文的向量编码。在自然语言处理应用中，一般使用中心词向量作为词的表征向量，即 $\boldsymbol{W}$ 就是我们最终得到的 word embedding。</p>
+</li>
+</ul>
+<h2 id="2-2-CBOW-Model"><a href="#2-2-CBOW-Model" class="headerlink" title="2.2 CBOW Model"></a>2.2 CBOW Model</h2><p>连续词袋模型（CBOW）模型与 skip-gram 模型正相反，CBOW 是利用<strong>上下文</strong>来预测<strong>中心词</strong>，即：</p>
+<script type="math/tex; mode=display">
+p(w_i|w_{i-2},w_{i-1},w_{i_1},w_{i+1})</script><p>模型结构如下图所示：</p>
+<p><img width="500" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210811213150.png"></p>
+<p>由于 CBOW 模型的输入有多个，所以我们将得到的 context 向量取平均，然后使用和 skip-gram 一样的方法来计算中心词的概率分布。</p>
+<script type="math/tex; mode=display">
+\boldsymbol{h} = \frac{1}{2m}\sum \boldsymbol{x}_i \cdot \boldsymbol{W}</script><h2 id="2-3-Loss-object-Functions"><a href="#2-3-Loss-object-Functions" class="headerlink" title="2.3 Loss/object Functions"></a>2.3 Loss/object Functions</h2><p>无论是 skip-gram 模型还是 CBOW 模型，模型参数就是中心词向量和上下文词向量对应的嵌入矩阵 $\boldsymbol{W}$​​​​ 和 $\boldsymbol{W’}$​​​。给定输入词 $w_I$​​​ ，其在 $\boldsymbol{W}$​​​ 中对应的向量为 $\boldsymbol{v}_I$​​​​（即 $\boldsymbol{h}$​​）。$\boldsymbol{W’}$​​ 中每一列对应的词向量为 $\boldsymbol{v’}_j$​​​​​​。输出词 $w_O$​​ 对应的词向量为 $\boldsymbol{v’}_o$​​。</p>
+<p>通过最小化损失函数对模型进行训练，下面以 skip-gram 为例介绍一些常用的损失/目标函数。</p>
+<h3 id="2-3-1-标准-Softmax（Full-Softmax）"><a href="#2-3-1-标准-Softmax（Full-Softmax）" class="headerlink" title="2.3.1 标准 Softmax（Full Softmax）"></a>2.3.1 标准 Softmax（Full Softmax）</h3><p>用数学语言来描述上面的模型，即对于单个样本我们的目标函数为：</p>
+<script type="math/tex; mode=display">
+p(w_O|w_I) = \frac{\exp(\boldsymbol{v'}_O^\mathsf{T} \cdot \boldsymbol{v}_I)}{\sum_{j=1}^V\exp(\boldsymbol{v'}_j^\mathsf{T} \cdot \boldsymbol{v}_I)}</script><p>从上式可以看出，对于任意单一样本，我们都需要对全词表进行指数求和，然而当 $V$ 非常大的时候（实际情况下 $V$​ 通常会有几万到几十万），计算将会变得非常复杂，根据 2.3.3 节关于交叉熵损失函数的介绍中，我们也可以看出进行后向传播的时候，计算过程同样是需要计算完整词表。因此，<a href="https://www.iro.umontreal.ca/~lisa/pointeurs/hierarchical-nnlm-aistats05.pdf" target="_blank" rel="noopener">Morin and Bengio</a> 等人在 2005 年的时候，提出了层级 Softmax，采用二叉树来加速计算。</p>
+<h3 id="2-3-2-层级-Softmax（Hierarchical-Softmax）"><a href="#2-3-2-层级-Softmax（Hierarchical-Softmax）" class="headerlink" title="2.3.2 层级 Softmax（Hierarchical Softmax）"></a>2.3.2 层级 Softmax（Hierarchical Softmax）</h3><p><img width="500" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210811213210.png"></p>
+<p>由于标准的 softmax 的计算复杂度较高，所以人们就不断思考对其进行优化。2001 年 <a href="https://arxiv.org/abs/cs/0108006" target="_blank" rel="noopener"><em>Goodman</em></a> 提出基于分类思想的加速方案。简单来说，假设我们词表中有 10000 个词，在传统的方法是在这 10000 个词上做 <em>softmax</em> 获得每个词的概率分布，然后取出概率最大的词，这样我们需要计算 10000 次。如果我们将这 10000 个词进行分类，假设分成 100 个类别，每个类别 100 个词。这个时候我们的计算过程是，先用一个 <em>softmax</em> 计算下一个词是属于什么类别，然后再用一个 <em>softmax</em> 计算概率最大的类别中的词的概率分布，这样我们只需要两个 100 次的计算量，计算速度直接提升 50 倍。</p>
+<p>基于这个思想，<a href="https://www.iro.umontreal.ca/~lisa/pointeurs/hierarchical-nnlm-aistats05.pdf" target="_blank" rel="noopener"><em>Morin &amp; Bengio</em></a> 于 2005 年提出层级 softmax 的方法：使用平衡二叉树来构建这种分类关系，能够将计算复杂度降到 $O(\log_2(|\mathcal{V}|))$。由于他们利用的是先验知识（wordnet 中的 is-a 关系）来构建二叉树，最终的而效果并不理想。随后 <em>Mnih &amp; Hinton</em> 采用 boostrapping 的方法，从一个随机树开始自动学习一棵平衡二叉树。</p>
+<p>直到 2013 年 <em>Mikolov</em> 等人提出使用 Huffman 树来代替平衡二叉树，使得层级 softmax 在效果和效率上都达到了新的高度。</p>
+<h4 id="2-3-2-1-Huffman-树"><a href="#2-3-2-1-Huffman-树" class="headerlink" title="2.3.2.1 Huffman 树"></a>2.3.2.1 Huffman 树</h4><p>Huffman 树是一个用于数据压缩的算法。计算机中所有的数据都是以 0 和 1 进行存储的，最简单的数据编码方式是 <strong>等长编码</strong>。假设我们的数据中有 6 个字母，那么我们要将这些字母区分开，就至少需要三位二进制数来表示，$2^3=8&gt;6$，如果数据中的字符数更多，那就需要更长的二进制数进行编码。然而我们希望用尽可能少的二进制数对数据进行编码，尤其是实际生活中，有些字符使用频率非常高，另一些字符很少使用。我们希望使用频率高的字符编码长度更短，这样就可以节省存储空间了。所以这里就涉及到 <strong>变长编码</strong>。</p>
+<p>比如，给定一个字符串 <code>aabacdab</code>，包含了 8 个字符，我们发现这个这个字符串中包含了 4 个不同的字符 <code>a</code>、<code>b</code>、<code>c</code>、<code>d</code>，分别对应的频率为 4、2、1、1。由于 <code>a</code> 的频率大于 <code>b</code>，<code>b</code> 的频率大于 <code>c</code> 和 <code>d</code>。所以，我们可以给 <code>a</code> 分配一个 1 位的编码长度，<code>b</code> 分配 2 位的编码长度，<code>c</code> 和 <code>d</code> 分配 3 位的编码长度：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a: 0</span><br><span class="line">b: 11</span><br><span class="line">c: 100</span><br><span class="line">d: 011</span><br></pre></td></tr></table></figure>
+<p>所以，<code>aabacdab</code> 就被编码成了 <code>00110100011011</code>（<code>0|0|11|0|100|011|0|11</code>）。但是这个编码会有问题，那就是歧义性。因为我们不仅需要编码，还需要解码。当我们把数据存储到计算机以后，还需要从计算机中将数据读取出来。读取数据的过程就是解码的过程。如果我们用上面的编码进行存储解码的时候，会出现不同的解码方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0|011|0|100|011|0|11    adacdab</span><br><span class="line">0|0|11|0|100|0|11|011   aabacabd</span><br><span class="line">0|011|0|100|0|11|0|11   adacabab</span><br><span class="line">…</span><br></pre></td></tr></table></figure>
+<p>为了避免解码歧义，我们需要保证编码满足 “<strong>前缀规则</strong>”：任意编码不能是其他编码的前缀。在上例中，<code>0</code> 是 <code>011</code> 的前缀，所以才会出现解码歧义性问题。</p>
+<p>Huffman 树就是用来做这种变长编码的数据结构，构造过程如下：</p>
+<ol>
+<li><p>计算字符频率</p>
+<p><img width="250" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/hf-character-frequency.png"></p>
+</li>
+<li><p>根据词频对字符进行排序，并按升序进行排列，得到序列 <code>Q</code>：</p>
+<p><img width="250" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/hf-character-frequency-sorted.png"></p>
+</li>
+<li><p>创建一个空节点 <code>z</code>。节点 <code>z</code> 的左子节点是频率最低的字符，右子节点是频率第二低的字符。节点 <code>z</code> 的频率为左右子节点字符频率之和</p>
+<p><img width="200" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/hf-encoding-1.png"></p>
+</li>
+<li><p>从 <code>Q</code> 中删除两个上一步中两个频率最低的字符，然后将两者频率之和添加到 <code>Q</code> 中。</p>
+</li>
+<li><p>重复 3-4 两步</p>
+<table><tr>
+    <td><center><img width="250" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/hf-encoding-2.png"></center></td>
+    <td><center><img width="250" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/hf-encoding-3.png"></center></td>
+</tr></table>            
+</li>
+<li><p>将左侧的边赋值为 0，右侧的边为 1。</p>
+<p><img width="250" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/hf-encoding-4.png"></p>
+</li>
+</ol>
+<p>这样就构建好了一棵 Huffman 树。Huffman 编码就是找到从根节点到对应的字符之间的路径，然后将路径上的边对应的值拼接在一起。比如，上例中的 <code>A</code>、<code>B</code>、<code>C</code>、<code>D</code> 的编码分别为：<code>11</code>、<code>100</code>、<code>0</code>、<code>101</code>。</p>
+<p>解码过程就是按照编码找到相应的路径：</p>
+<p><img width="250" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/hf-decoding.png"></p>
+<h4 id="2-3-2-2-基于-Huffman-树的层级-softmax"><a href="#2-3-2-2-基于-Huffman-树的层级-softmax" class="headerlink" title="2.3.2.2 基于 Huffman 树的层级 softmax"></a>2.3.2.2 基于 Huffman 树的层级 softmax</h4><p>Word2vec 中是预先统计语料中的词频，根据词频构建起一棵 Huffman 树。</p>
+<blockquote>
+<p>Huffman 树的每个叶子节点是词表中的一个词，每个除叶子节点和根节点以外的节点都表示一个二分类的概率，这个概率用来决定去往左右子节点的路径。</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210811213210.png" alt></p>
+<p>如上图所示，每个叶子结点（白圈）表示一个词表中的词 $w_i$，每个非叶子节点（灰圈）表示该路径上的概率。每个词都有一条唯一可达的路径，$n(w_i, j)$ 表示 $w_i$ 的路径上 第 $j$ 个节点。比如 $w_2$ 的路径就是 $n(w_2,1)n(w_2,2)n(w_2,3)w_2$。这条路径就对应 Huffman 编码。$w_2$ 的概率就是这条路径上每个节点的概率累积：</p>
+<script type="math/tex; mode=display">
+p(w_O \vert w_I) = \prod_{j-1}^{L(w_O)-1} p(n(w_O,j))</script><p>其中 $L(w_O)$  表示 $w_O$ 的路径长度（Huffman 编码长度）。由于这是一个二叉树，相当于 $p(n(w_O,j))$ 是一个二分类，所以可以使用 $\sigma$ 函数进行计算：</p>
+<script type="math/tex; mode=display">
+p(w_O \vert w_I) = \prod_{j=1}^{L(w_O)-1} \sigma({\mathbb{I}_{\text{turn}} \cdot\boldsymbol{v'}_{n(w_O, j)}}^{\top} \cdot \boldsymbol{v}_{w_I})</script><p>其中 $v’<em>{n(w_O,j)}$ 表示 $n(w</em>,j)$ 节点对应的向量，$\mathbb{I}<em>{\text{turn}}$ 表示特殊的标识函数：如果 $n(w_O,j+1)$ 是 $n(w_O,j)$ 的左子节点，则 $\mathbb{I}</em>{\text{turn}}=1$ ，否则为 $\mathbb{I}_{\text{turn}}=-1$。比如，上图中，我们要计算 $w_2$ 的概率：</p>
+<script type="math/tex; mode=display">
+P(w_2 \mid w_I) = \sigma(\boldsymbol{v'}_{n(w_2,1)}^\top \boldsymbol{v}_I) \cdot \sigma(\boldsymbol{v'}_{n(w_2,2)}^\top \boldsymbol{v}_I) \cdot \sigma(-\boldsymbol{v'}_{n(w_2,3)}^\top \boldsymbol{v}_I)</script><p>内部节点的向量 $\boldsymbol{v’}_{n(w_i, j)}$ 可以通过训练得到。由 $\sigma(\cdot)$ 的定义：</p>
+<script type="math/tex; mode=display">
+\sigma(z) = \frac{1}{1+\exp(-z)}</script><p>可知，整个概率的计算都无需遍历整个词表，只需计算 $\log_2(V)$ 次 $\sigma(\cdot)$ 即可，相当于将计算复杂度降低到了 $\log_2(V)$，大幅提升了计算效率。</p>
+<p>由于 $\sigma(x)+\sigma(-x)=1$，给定中心词 $w_I$，生成词典 $\mathcal{V}$ 中任意词的体哦阿健概率之和也满足：</p>
+<script type="math/tex; mode=display">
+\sum_{w\in \mathcal{V}} p(w|w_I)=1</script><p>由于 Huffman 树是用来对数据进行压缩编码的，其主要思想是高频的词距离根节点越近，那么它的路径就会越短，所需要计算的 $\sigma(\cdot)$ 函数的次数也会越少。所以相比平衡二叉树，Huffman 树的计算更有效率。</p>
+<p>需要注意的是，我们在训练过程中，由于已知我们需要预测的词是哪一个，所以只需要计算对应的词的概率，然后进行优化即可。但是在推理过程中，我们并不知道哪个词是最优解，所以还是需要遍历整个词表。所以基于 Huffman 树的 word2vec 加速了训练过程而没有加速推理过程。</p>
+<h3 id="2-3-3-交叉熵（Cross-Entropy）"><a href="#2-3-3-交叉熵（Cross-Entropy）" class="headerlink" title="2.3.3 交叉熵（Cross Entropy）"></a>2.3.3 交叉熵（Cross Entropy）</h3><p>交叉熵用于度量两个概率（$p$ 和 $q$​​）分布间的差异性信息的一个指标。计算公式如下：</p>
+<script type="math/tex; mode=display">
+H(p, q) = -\sum_xp(x)\log q(x)</script><p>当交叉熵用于损失函数的时候，我们需要度量的是真实标签概率分布（$\boldsymbol{y}<em>{true}$）和模型输出标签概率分布（$\boldsymbol{y}</em>{pred}$）之间的差异，即：</p>
+<script type="math/tex; mode=display">
+H(\boldsymbol{y}_{true}, \boldsymbol{y}_{pred}) = -\sum \boldsymbol{y}_{true}\cdot \log(\boldsymbol{y}_{pred})</script><p>在我们的情况下，$\boldsymbol{y}<em>{true}$​ 中只有 $y</em>{i=O}=1$​，其余位置 $y<em>j$​ 全部是 0，$\boldsymbol{y}</em>{pred} = p(w_i|w_I)$​。也就是说，我们只需要计算 $w_i=w_O$​ 位置的交叉熵即可，如下图所示。 </p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210813001314.jpg" alt></p>
+<script type="math/tex; mode=display">
+\mathcal{L}_{\theta} = H(y_i, w_i) = -\sum_{i=1}^{V}y_i\log p(w_i|w_I) \overset{i=O}{=} -\log p(w_O|w_I)</script><p>式中 $\theta$ 表示我们需要训练的参数。如上面介绍的，交叉熵是用来度量两个分布的差异性的指标。对于我们的模型来说，当然是 $\boldsymbol{y}<em>{ture}$ 和 $\boldsymbol{y}</em>{pred}$​ 的差异越小越好。所以我们模型训练最终的目的是<strong>最小化交叉熵</strong>。</p>
+<p>将 $p(w_O|w_I)$ 的 full softmax 公式代入交叉熵损失函数中得到：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}_{\theta} = -\log \frac{\exp(\boldsymbol{v'}_{O}^\mathsf{T} \cdot \boldsymbol{v}_I)}{\sum_{j=1}^V\exp(\boldsymbol{v'}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I)}=-\boldsymbol{v'}_{O}^\mathsf{T} \cdot \boldsymbol{v}_I + \log \sum_{j=1}^V \exp(\boldsymbol{v'}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I)</script><p>使用随机梯度下降算法对模型开始训练，需要计算损失函数的梯度。为了简化，我们令 $z<em>{IO}=\boldsymbol{v’}</em>{O}^\mathsf{T} \cdot \boldsymbol{v}<em>I$​ 及 $z</em>{Ij}=\boldsymbol{v’}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I$​。</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+\nabla_\theta \mathcal{L}_\theta &= \nabla_\theta(-z_{IO}+\log\sum_{j=1}^V\exp(z_{Ij}))\\\\
+                                 &= -\nabla_\theta z_{IO} + \nabla_\theta(\log \sum_{j=1}^V \exp(z_{Ij})) \\\\
+                                 &= -\nabla_\theta z_{IO} + \frac{1}{\sum_{j=1}^V\exp(z_{Ij})} \sum_{j=1}^V \exp(z_{Ij}) \cdot \nabla_\theta z_{Ij} \\\\
+                                 &= -\nabla_\theta z_{IO} + \sum_{j=1}^V \frac{\exp(z_{Ij})}{\sum_{j=1}^V\exp(z_{Ij})} \cdot \nabla_\theta z_{Ij} \\\\
+                                 &= -\nabla_\theta z_{IO} + \sum_{j=1}^V p(w_j|w_I) \cdot \nabla_\theta z_{Ij} \\\\
+                                 &= -\nabla_\theta z_{IO} + \mathbb{E}_{w_j \sim Q(\bar{w})} \cdot \nabla_\theta z_{Ij}
+\end{aligned}
+\end{equation}</script><p>将 $z<em>{IO}$ 和 $z</em>{Ij}$ 代回原式，根据下面两式：</p>
+<script type="math/tex; mode=display">
+\nabla_\theta z_{IO} =  \frac{\partial (\boldsymbol{v'}_{O}^\mathsf{T} \cdot \boldsymbol{v}_I)}{\partial \boldsymbol{v}_I} = \boldsymbol{v'}_{O} ,\quad
+\nabla_\theta z_{Ij} = \frac{\partial (\boldsymbol{v'}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I)}{\partial \boldsymbol{v}_I} = \boldsymbol{v'}_{j} \\\\</script><p>可得：</p>
+<script type="math/tex; mode=display">
+\nabla_\theta \mathcal{L}_\theta = -\boldsymbol{v'}_{O} + \mathbb{E}_{w_j \sim Q(\tilde{w})} \cdot \boldsymbol{v'}_{j}</script><p>上式中 $Q(\tilde{w})$​ 表示噪声概率分布。根据上式，输出词的词向量越大，损失越小；而其他词的词向量越小，则损失越小。因此，交叉熵损失函数会使模型将正确的输出更加凸显，而对错误的输出进行压制，从而使参数达到最优。</p>
+<h3 id="2-3-4-Noise-Contrastive-Estimation"><a href="#2-3-4-Noise-Contrastive-Estimation" class="headerlink" title="2.3.4 Noise Contrastive Estimation"></a>2.3.4 Noise Contrastive Estimation</h3><p>噪声对比估计（NCE）是通过简单的逻辑回归来区分目标词和非目标词的。</p>
+<p>给定输入词 $w_I$，正确的输出词是 $w_O$。同时，我们可以从噪声词分布 $Q(\tilde{w})$ 中进行采样得到 $N$ 个负样本词：</p>
+<script type="math/tex; mode=display">
+\tilde{w}_1,\tilde{w}_2,\dots,\tilde{w}_N \sim Q(\tilde{w})</script><p>此时，我们的样本就成了 $w_O$  为正样本，$\tilde{w}_1,\tilde{w}_2,\dots,\tilde{w}_N$ 为负样本，然后再用一个二分类器进行分类：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}_\theta = - \left[ \log p(d=1 \vert w_O, w_I) + \sum_{i=1, \tilde{w}_i \sim Q}^N \log p(d=0|\tilde{w}_i, w_I) \right]</script><p>$d$ 表示二分类器的输出标签。</p>
+<p>当 $N$ 足够大时，根据<a href="https://en.wikipedia.org/wiki/Law_of_large_numbers" target="_blank" rel="noopener">大数定理</a>可得:</p>
+<script type="math/tex; mode=display">
+\mathcal{L}_\theta = - \left[ \log p(d=1 \vert w_O, w_I) + N\mathbb{E}_{\tilde{w}_i \sim Q} \log p(d=0|\tilde{w}_i, w_I) \right]</script><p>为了计算概率分布 $p(d=1 \vert w<em>O, w_I)$，我们可以从联合概率 $p(d, w_j \vert w_I), w_j \in [w_O, \tilde{w}_1, \tilde{w}_2, \dots, \tilde{w}_N]$。我们有 $1/(N+1)$ 的概率得到 $w_j=w_O$，这个概率是一个条件概率 $p(w_j=w_O\vert w_I)$，同时我们有 $N/(N+1)$ 的概率得到噪声词 $q(\tilde{w}</em>{1:N})$。</p>
+<script type="math/tex; mode=display">
+p(d, w_j | w_I) = 
+\begin{cases} 
+\frac{1}{N+1} p(w_O \vert w_I) & \text{if } d=1 \\\\ 
+\frac{N}{N+1} q(\tilde{w}_{1:N}) & \text{if } d=0 
+\end{cases}</script><p>然后我们可以计算 $p(d=1 \vert w, w_I)$ 和 $p(d=0 \vert w, w_I)$：</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned} 
+p(d=1 \vert w, w_I) &= \frac{p(d=1, w \vert w_I)}{p(d=1, w \vert w_I) + p(d=0, w \vert w_I)} \\\\ 
+                    &\overset{贝叶斯公式}{=} \frac{p(w \vert w_I)}{p(w \vert w_I) + Nq(\tilde{w})}
+\end{aligned}
+\end{equation}</script><script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+p(d=0 \vert w, w_I) &= \frac{p(d=0, w \vert w_I)}{p(d=1, w \vert w_I) + p(d=0, w \vert w_I)}\\\\ &\overset{贝叶斯公式}{=} \frac{Nq(\tilde{w})}{p(w \vert w_I) + Nq(\tilde{w})} 
+\end{aligned}
+\end{equation}</script><p>最后，NCE 二分类器的损失函数为：</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned} 
+\mathcal{L}_\theta & = - \left[ \log p(d=1 \vert w, w_I) + \sum_{\substack{i=1 \\\\ \tilde{w}_i \sim Q}}^N \log p(d=0|\tilde{w}_i, w_I) \right] \\\\ 
+                   & = - \left[ \log \frac{p(w \vert w_I)}{p(w \vert w_I) + Nq(\tilde{w})} + \sum_{\substack{i=1 \\ \tilde{w}_i \sim Q}}^N \log \frac{Nq(\tilde{w}_i)}{p(w \vert w_I) + Nq(\tilde{w}_i)} \right] 
+\end{aligned}
+\end{equation}</script><p>然而，我们会发现公式中仍然有 $p(w \vert w_I)$ ，即仍然要对整个词表进行求和。为了方便，令 $Z(w_I)$ 为 $p(w\vert w_I)$ 的分母。NCE 对于 $Z(w_I)$ 的处理有两种假设：</p>
+<ol>
+<li><p>将 $Z(w_I)$ 视作常数。<a href="https://www.cs.toronto.edu/~amnih/papers/ncelm.pdf" target="_blank" rel="noopener">Mnih &amp; Teh, 2012</a> 证明对于参数量很大的神经网络模型来说，将 $Z(w_I)$ 固定为 1 对每个 $w_I$ 仍是成立的。此时，上面的损失函数可以简化成：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}_\theta = - \left[ \log \frac{\exp({v'_w}^{\top}{v_{w_I}})}{\exp({v'_w}^{\top}{v_{w_I}}) + Nq(\tilde{w})} + \sum_{\substack{i=1 \\ \tilde{w}_i \sim Q}}^N \log \frac{Nq(\tilde{w}_i)}{\exp({v'_w}^{\top}{v_{w_I}}) + Nq(\tilde{w}_i)}\right]</script><ul>
+<li><p>这种情况下，我们可以证明，当 $N \to \infty$ 时，$\nabla<em>\theta \mathcal{L}</em>{NCE}=\nabla<em>\theta\mathcal{L}</em>{entrpy}$。证明过程可参看 <a href="https://www.cs.toronto.edu/~amnih/papers/ncelm.pdf" target="_blank" rel="noopener">Mnih &amp; Teh, 2012</a>。所以 NCE 的优化目标和交叉熵是一样的。作者还发现，当 $N=25$ 时，效果就已经与标准 softmax 效果差不多了，但是速度提升了 45 倍。</p>
+</li>
+<li><p>实际上 $Z(w_I)$ 到底取值是多少，不同作者都有过不同的尝试。但是从表现来看，不同点只是开始的时候收敛速度不同，最终的结果相差不大。</p>
+</li>
+<li><p>噪声分布 $Q(\tilde{w})$ 是一个可调参数，在选择 $Q$ 的分布的时候应该考虑两点：</p>
+<p>① 接近真实数据分布；</p>
+<p>② 容易采样</p>
+</li>
+</ul>
+</li>
+<li><p>将 $Z(w_I)$ 看作一个可训练的参数。</p>
+</li>
+</ol>
+<p>从实践来看，当训练语料比较小的时候，$Z(w_I)$ 直接设置为常数效果更好。当有足够语料的时候，$Z(w_I)$ 作为可训练的一个参数效果更好。</p>
+<p>NCE 处理似乎是故意绕开了标准 Softmax 计算量最大的分母，但其背后有充分的理论推导和证明。如果直接在最大似然估计上用这两种假设（之一）是否可行？</p>
+<p>答案还真是不行。两种情况：</p>
+<ol>
+<li>如果最大似然估计中的 $Z(w<em>I)$ 为常数，那么 $\mathcal{L}</em>\theta$ 的第二项 $\log Z(w<em>I)$ 就是常数，这就意味着 $\mathcal{L}</em>\theta$ 的导数的第二项就为 0。也就是噪声词的词向量缺少约束，模型只需要让目标词的概率变大即可，最坏情况下预测所有词的概率为 1 即可。</li>
+<li>如果 $Z(w_I)$ 为可训练的一个参数，这个参数没有和数据产生任何联系，只需要简单的变小，就可以让似然概率变大，得到一个完全与数据无关的结果，所以也不可行。</li>
+</ol>
+<h3 id="2-3-5-Negative-Sampling"><a href="#2-3-5-Negative-Sampling" class="headerlink" title="2.3.5 Negative Sampling"></a>2.3.5 Negative Sampling</h3><p><em><a href="https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf" target="_blank" rel="noopener">Mikolov</a></em> 等人 2013 年提出的负采样方法是 NCE 的一个简化版变种。因为 word2vec 的目标是训练高质量的词向量，而不是对自然语言中的词进行建模。所以，<em>Mikolov</em> 等人在 NCE 的基础上进一步简化。</p>
+<p>在 NCE 假设 $Z(w_I)=1$ 的基础上，进一步令 $N q(\tilde{w})=1$，则</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+p(d=1\vert w, w_I) &= \frac{p(w \vert w_I)}{p(w \vert w_I)+1} \\\\
+                   &= \sigma({v'_{w}}^\top v_{w_I}) \\\\
+p(d=0\vert w, w_I) &= \frac{1}{p(w \vert w_I) + 1} \\\\ 
+                   &= 1 - \sigma({v'_{w}}^\top v_{w_I}) \\\\
+                   &= \sigma(-{v'_{w}}^\top v_{w_I})
+\end{aligned}
+\end{equation}</script><p>那么负采样的损失函数为：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}_\theta =  - \left[ \log \sigma({v'_{w}}^\top v_{w_I}) + \sum_{\substack{i=1 \\ \tilde{w}_i \sim Q}}^N \log \sigma(-{v'_{\tilde{w}_i}}^\top v_{w_I}) \right]</script><p>因为 $Nq(\tilde{w})=1$，所以 $q(\tilde{w})=1/N$ 是一个均匀分布。这里的均匀采样并不是每个词采样概率相同，而是在总的语料中进行均匀采样。这就意味着，它实际上是按照每个词本身的词频来进行采样的，词频越高，采样的概率就越高。这种情况下，模型最终拟合的实际是词的互信息。详细解答看这里：<a href="https://spaces.ac.cn/archives/5617" target="_blank" rel="noopener">“噪声对比估计”杂谈：曲径通幽之妙</a>。互信息与条件概率的区别就类似：条件概率反映“我认识周杰伦，周杰伦却不认识我”，而互信息反映的是“你认识我，我也认识你”。所以，通常负采样的效果比层次 softmax 要好一些。</p>
+<h2 id="2-4-一些小技巧"><a href="#2-4-一些小技巧" class="headerlink" title="2.4 一些小技巧"></a>2.4 一些小技巧</h2><ul>
+<li><p><strong>Soft slide window</strong>。利用滑动窗口构建输入词和输出词样本对的时候，我们可以给距离较远的词更低的权重。比如，设置窗口就最大值 $s<em>{\text{max}}$，然后每次训练时的真实窗口大小是从 $[1, s</em>{\text{max}}]$ 中进行随机采样。因此，每个上下文词都有 $1/(d)$ 的概率被取到，其中 $d$ 表示到中心词的距离。</p>
+</li>
+<li><p><strong>下采样高频词</strong>。极端高端的词可能由于太常见而无法得以区分（比如停用词）。而低频词可能会带有很重要的信息。为了平衡高频词和低频词，<em>Mikolov</em> 等人提出采样时对每个词施加一个采样概率 $1-\sqrt{t/f(w)}$。其中 $f(w)$ 表示词频，$t$ 表示相关性阈值，通常取值为 $10^{-5}$。</p>
+</li>
+<li><p><strong>先学词组</strong>。词组表示一个有意义的概念单元，而非简单的独立单词的组合。先学习这些词组将他们作为一个词单元来处理可以提升词向量的质量。比如基于 unigram 和 bigram 统计：</p>
+<script type="math/tex; mode=display">
+s_{\text{phrase}} = \frac{C(w_i w_j) - \delta}{ C(w_i)C(w_j)}</script><p>其中 $C(\cdot)$ 表示 unigram $w<em>i$ 或 bigram $w_iw_j$ 的数量，$\delta$ 表示衰减阈值，防止过高频的词或词组。$s</em>{\text{phrase}}$ 得分越高则采样几率越高。为了形成长于两个单词的短语，我们可以随着分数截止值的降低多次扫描词汇表。</p>
+</li>
+</ul>
+<h1 id="3-Count-based-GloVe"><a href="#3-Count-based-GloVe" class="headerlink" title="3. Count-based: GloVe"></a>3. Count-based: GloVe</h1><p>GloVe（<em>The Global Vector</em>）是 <a href="http://www.aclweb.org/anthology/D14-1162" target="_blank" rel="noopener">Pennington</a> 等人于 2014 年提出的模型。 GloVe 结合了 矩阵分解和 skip-gram 模型。</p>
+<p>众所周知，统计数量和共现可以表示词义。为了区分上下文的词嵌入 $p(w_O \vert w_I)$，我们定义共现概率：</p>
+<script type="math/tex; mode=display">
+p_{\text{co}}(w_k \vert w_i) = \frac{C(w_i, w_k)}{C(w_i)}</script><p>$C(w_i, w_k)$ 表示 $w_i$ 和 $w_k$ 的共现频率。假设有两个词 $w_i=”ice”$ 和 $w_j=”steam”$，第三个词 $\tilde{w}_k=”solid”$ 与 $”ice”$ 相关，但是与 $”steam”$ 无关，我们希望：</p>
+<script type="math/tex; mode=display">
+p_{\text{co}}(\tilde{w}_k \vert w_i) > p_{\text{co}}(\tilde{w}_k \vert w_j)</script><p>因此 $\frac{p<em>{\text{co}}(\tilde{w}_k \vert w_i)}{p</em>{\text{co}}(\tilde{w}<em>k \vert w_j)}$ 会非常大。而如果 $\tilde{w}_k=”water”$ 与 $”ice”$ 和 $”steam”$ 都有关系，或者 $\tilde{w}_k=”fashion”$ 与两者都没有关系，$\frac{p</em>{\text{co}}(\tilde{w}<em>k \vert w_i)}{p</em>{\text{co}}(\tilde{w}_k \vert w_j)}$ 会接近 1。</p>
+<p>以上描述给我们的直观感受就是，词义是通过共现概率分布的比例得到的，而非共现概率本身。所以，GloVe 模型是将第三个词的向量取决于另两个词之间的关系：</p>
+<script type="math/tex; mode=display">
+F(w_i, w_j, \tilde{w}_k) = \frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}</script><p>确定 $F$ 的函数形式过程如下：</p>
+<ol>
+<li><p>$F(w_i, w_j, \tilde{w}_k)$ 是考察 $i, j, k$ 三个词的相似关系，不妨单独考察 $i, j$ 两个词。在线性空间中，两个向量的相似性最简单的就是欧氏距离 $v_i, v_j$，所以 $F$ 可以是</p>
+<script type="math/tex; mode=display">
+F(w_i-w_j, \tilde{w}_k) = \frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}</script></li>
+<li><p>$\frac{p<em>{\text{co}}(\tilde{w}_k \vert w_i)}{p</em>{\text{co}}(\tilde{w}_k \vert w_j)}$ 是一个标量，而 $F$ 是作用在两个向量上的，向量与矢量之间的关系自然就可以想到内积，所以进一步确定 $F$ 的形式：</p>
+<script type="math/tex; mode=display">
+F((w_i-w_j) \top \tilde{w}_k) = F(w_i\top \tilde{w}_k-w_j \top \tilde{w}_k) = \frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}</script></li>
+<li><p>上式中，左边是差，右边是商。可以通过 $\exp(\cdot)$ 函数将两者结合在一起：</p>
+<script type="math/tex; mode=display">
+\exp(w_i\top \tilde{w}_k-w_j \top \tilde{w}_k) = \frac{\exp(w_i \top \tilde{w}_k)}{\exp(w_j \top \tilde{w}_k)} = \frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}</script></li>
+<li><p>现在只要让分子分母分别相等，上式就可以成立：</p>
+<script type="math/tex; mode=display">
+\exp(w_i \top \tilde{w}_k) = p_{co}(\tilde{w}_k \vert w_i) \\\\
+\exp(w_j \top \tilde{w}_k) = p_{co}(\tilde{w}_k \vert w_j)</script></li>
+<li><p>只需要满足：</p>
+<script type="math/tex; mode=display">
+{w_i}^\top \tilde{w}_k = \log p_{\text{co}}(\tilde{w}_k \vert w_i) = \log \frac{C(w_i, \tilde{w}_k)}{C(w_i)} = \log C(w_i, \tilde{w}_k) - \log C(w_i)</script></li>
+<li><p>由于 $w_i$ 和 $\tilde{w}_k$ 是向量，所以 $\tilde{w}_k \top w_i = w_i \top \tilde{w}_k$ ，这就意味着上式中 $i, k$ 是顺序不敏感的，但是右边交换 $i,k$ 的顺序结果就会不同。为了解决这个对称性问题，模型引入两个偏置项 $b_i, b_k$，则模型变成：</p>
+<script type="math/tex; mode=display">
+\log C(w_i, \tilde{w}_k) = w_i \top \tilde{w}_k + b_i +\tilde{b}_k</script></li>
+<li><p>上面的公式只是理想状态下，实际上左右只能无限接近，所以损失函数定义为：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}_\theta = \sum_{i=1, k=1}^V ({w_i}^\top \tilde{w}_k + b_i + \tilde{b}_k - \log C(w_i, \tilde{w}_k))^2</script></li>
+<li><p>根据经验，如果两个词共现次数越多，那么两个词在损失函数中的影响就应该越大，所以可以根据两个词共现的次数设计一个权重来对损失函数进行加权：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}_\theta = \sum_{i=1, j=1}^V f(C(w_i,\tilde{w}_k)) ({w_i}^\top \tilde{w}_k + b_i + \tilde{b}_k - \log C(w_i, \tilde{w}_k))^2</script><p>权重函数 $f(\cdot)$ 应该有以下性质：</p>
+<p>① $f(0)=0$，即如果两个词没有共现过，那么权重为 0；</p>
+<p>② $f(x)$ 必须是一个单调递增的函数。两个词共现次数越多，反而权重越小违反了设置权重项的初衷；</p>
+<p>③ $f(x)$ 对于共现次数过多的词对，不能有太大的值，比如停用词。</p>
+<p>有了这三个性质，可以将 $f(x)$ 定义为：</p>
+<script type="math/tex; mode=display">
+f(x) = \begin{cases}
+(\frac{x}{x_{\text{max}}})^\alpha,\quad & \text{if}\quad x<x_{\text{max}}\\\\
+1, \quad & \text{otherwise}
+\end{cases}</script><p>根据经验 GloVe 作者认为 $x_\text{max}=100, \alpha=3/4$ 是一个比较好的选择。</p>
+</li>
+</ol>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><p><a href="https://blog.acolyer.org/2016/04/21/the-amazing-power-of-word-vectors/" target="_blank" rel="noopener">The amazing power of word vectors</a>, <em>Adrian Colyer</em></p>
+</li>
+<li><p><a href="https://lilianweng.github.io/lil-log/2017/10/15/learning-word-embedding.html#glove-global-vectors" target="_blank" rel="noopener">Learning Word Embedding</a>, <em>Lilian Weng</em></p>
+</li>
+<li><p><a href="https://jalammar.github.io/illustrated-word2vec/" target="_blank" rel="noopener">Illustrated word2vec</a>, <em>Jay Alammar</em></p>
+</li>
+<li><p><a href="https://zh.d2l.ai/chapter_natural-language-processing/word2vec.html" target="_blank" rel="noopener">Dive into deep learning: word2vec</a></p>
+</li>
+<li><p><a href="https://zh.d2l.ai/chapter_natural-language-processing/glove.html" target="_blank" rel="noopener">Dive into deep learning: GloVe</a></p>
+</li>
+<li><p><a href="http://arxiv.org/pdf/1301.3781.pdf" target="_blank" rel="noopener">Efficient Estimation of Word Representations in Vector Space</a> <em>Mikolov et al. 2013</em></p>
+</li>
+<li><p><a href="https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf" target="_blank" rel="noopener">Distributed Representations of Words and Phrases and their Compositionality</a> <em>Mikolov et al. 2013</em></p>
+</li>
+<li><p><a href="http://www.aclweb.org/anthology/N13-1090" target="_blank" rel="noopener">Linguistic Regularities in Continuous Space Word Representations</a> <em>Mikolov et al. 2013</em></p>
+</li>
+<li><p><a href="http://arxiv.org/pdf/1411.2738v3.pdf" target="_blank" rel="noopener">word2vec Parameter Learning Explained</a> <em>Rong 2014</em></p>
+</li>
+<li><p><a href="http://arxiv.org/pdf/1402.3722v1.pdf" target="_blank" rel="noopener">word2vec Explained: Deriving Mikolov et al’s Negative Sampling Word-Embedding Method</a> <em>Goldberg and Levy 2014</em></p>
+</li>
+<li><p><a href="https://nlp.stanford.edu/pubs/glove.pdf" target="_blank" rel="noopener">GloVe: Global Vectors for Word Representation</a>, <em>Jeffrey Pennington et al. 2014</em></p>
+</li>
+<li><p><a href="https://www.gavagai.io/text-analytics/a-brief-history-of-word-embeddings/" target="_blank" rel="noopener">A Brief History of Word Embeddings</a>, <em>gavagai</em></p>
+</li>
+<li><p><a href="https://licor.me/post/word-representation/" target="_blank" rel="noopener">Word Representation</a>, <em>Chuanrong Li</em></p>
+</li>
+<li><p>Devopedia. 2020. “Word2vec.” Version 4, September 5. Accessed 2021-03-28. <a href="https://devopedia.org/word2vec" target="_blank" rel="noopener">https://devopedia.org/word2vec</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/peghoty/p/3857839.html" target="_blank" rel="noopener">word2vec 中的数学原理详解</a>, <em>peghoty</em></p>
+</li>
+<li><p><a href="https://www.techiedelight.com/huffman-coding/" target="_blank" rel="noopener">Huffman Coding Compression Algorithm</a> </p>
+</li>
+<li><p><a href="https://www.programiz.com/dsa/huffman-coding" target="_blank" rel="noopener">Huffman Coding</a></p>
+</li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/368939108" target="_blank" rel="noopener">噪声对比估计 Noise Contrastive Estimation</a>, <em>码农要术</em></p>
+</li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/42073620" target="_blank" rel="noopener">(十五）通俗易懂理解——Glove算法原理</a>, <em>梦里寻梦</em> </p>
+</li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2021年9月15日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/词向量/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>词向量</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/08/11/ptm-word-embedding/&title=预训练语言模型：Word Embedding | Rogerspy's Home&summary=
+词嵌入（word embedding）是一种用稠密向量来表示词义的方法，其中每个词对应的向量叫做词向量（word vector）。词嵌入通常是从语言模型中学习得来的，其中蕴含着词与词之间的语义关系，比如 “猫” 和 “狗” 的语义相似性大于 “猫” 和 “计算机” 。这种语义相似性就是通过向量距离来计算的。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/08/11/ptm-word-embedding/&title=预训练语言模型：Word Embedding | Rogerspy's Home&summary=
+词嵌入（word embedding）是一种用稠密向量来表示词义的方法，其中每个词对应的向量叫做词向量（word vector）。词嵌入通常是从语言模型中学习得来的，其中蕴含着词与词之间的语义关系，比如 “猫” 和 “狗” 的语义相似性大于 “猫” 和 “计算机” 。这种语义相似性就是通过向量距离来计算的。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACu0lEQVR42u3awa7iMAwFUP7/p5nNW4wEhXvjBFicrBCUtidItbF9u8Xr/t96fP/xmMfj7/G6uuLj1bctPDw8vMGt5xdLzvl6g67OllNf3zMeHh7ead7rW8xDQrtx+RbkW4OHh4f3m7wkJOTgCRUPDw/v93n5qdtHfJLW4+Hh4f0Orz11HgCurpKHig/VWvDw8PC6OsBiovyt10f6e3h4eHjjrvpaU//1TbQjCGv3+fddPDw8vAO8/IGbJKxrKfiuq18eiYeHh3eY14aHvGTQpstro1dPzoaHh4e3lZcMTuVFivadtfBQnAEPDw/vAK9NiNstyL+Vlz/yxB0PDw/vNC85KLnkWn8qDzwb+nh4eHh4h8cFkrR10tBaCw9J6QQPDw/vBG9XU6ptjM1bYlEIwcPDwzvMy4NBG2fm41xJov8mMODh4eFt4s3/xbf5+66H/t6ggoeHh5fz8nJtsk9rD+52SCsvauDh4eGd4+UP7tdpaxsY1lLhIuHGw8PD+wgvT53bSmmbiLettScWPDw8vC/xJvNL7UhBfg/JT4KHh4d3gjdpceWfrm3cJITg4eHhneZ9Zs1LGLvCGB4eHt6ct6s0MB8OSKh5CMHDw8M7wZu38NvHel6SaIu5byYj8PDw8DbxkkbX2gDWWtjINzE/Bg8PD+8zvHwgoE2a8yC0thFFto6Hh4c35uUXy9tdefm1LX8UxQs8PDy8Y7y2ZJCnvG2xeN5muyV7jIeHh7fEu5drUmZtS7fJprz5kfDw8PAO8CYjU5NwMm+DTcoieHh4eHNemxy3hd37eOWBoU6s8fDw8Aa8tmWVJ9btFmyoryQf4+Hh4X2QN0nH8xR8LQxcVqnx8PDwvsrLSxItpgVHpVs8PDy8Y7y1QsDaAMFae6wtKOPh4eGd46394c9HB9YYbZK9eRQNDw8P7/n6B3DVu2ArjG+kAAAAAElFTkSuQmCC'>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/08/11/ptm-word-embedding/&title=预训练语言模型：Word Embedding | Rogerspy's Home&summary=
+词嵌入（word embedding）是一种用稠密向量来表示词义的方法，其中每个词对应的向量叫做词向量（word vector）。词嵌入通常是从语言模型中学习得来的，其中蕴含着词与词之间的语义关系，比如 “猫” 和 “狗” 的语义相似性大于 “猫” 和 “计算机” 。这种语义相似性就是通过向量距离来计算的。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/08/16/double_array_trie/" rel="prev" title="双数组前缀树">
+                                  
+                                      双数组前缀树
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/数据结构/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>数据结构</a> <a class="tag" href="/tags/双数组前缀树/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>双数组前缀树</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/08/09/ds-array/" rel="prev" title="算法与数据结构（Python）：array">
+                                    
+                                        算法与数据结构（Python）：array
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/数组/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>数组</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '预训练语言模型：Word Embedding',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-简介"><span class="toc-text">1. 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-词表示法简史"><span class="toc-text">1.1 词表示法简史</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-发展里程碑"><span class="toc-text">1.2 发展里程碑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Context-based-Word2Vec"><span class="toc-text">2. Context-based: Word2Vec</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Skip-Gram-Model"><span class="toc-text">2.1 Skip-Gram Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-CBOW-Model"><span class="toc-text">2.2 CBOW Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Loss-object-Functions"><span class="toc-text">2.3 Loss/object Functions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-标准-Softmax（Full-Softmax）"><span class="toc-text">2.3.1 标准 Softmax（Full Softmax）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-层级-Softmax（Hierarchical-Softmax）"><span class="toc-text">2.3.2 层级 Softmax（Hierarchical Softmax）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-1-Huffman-树"><span class="toc-text">2.3.2.1 Huffman 树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-2-基于-Huffman-树的层级-softmax"><span class="toc-text">2.3.2.2 基于 Huffman 树的层级 softmax</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-交叉熵（Cross-Entropy）"><span class="toc-text">2.3.3 交叉熵（Cross Entropy）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-4-Noise-Contrastive-Estimation"><span class="toc-text">2.3.4 Noise Contrastive Estimation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-5-Negative-Sampling"><span class="toc-text">2.3.5 Negative Sampling</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-一些小技巧"><span class="toc-text">2.4 一些小技巧</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Count-based-GloVe"><span class="toc-text">3. Count-based: GloVe</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="blogarchives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="netease"
+    data-type="playlist"
+    data-id="2957571193"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

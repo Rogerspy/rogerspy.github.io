@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Data Structures With Python | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/diary/"
+                  
+                  
+                  id="diary">
+									<i class='fas fa-book fa-fw'></i>&nbsp;随心记
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/tags/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="tags">
+									<i class='fas fa-hashtag fa-fw'></i>&nbsp;标签
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/blog/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="blogarchives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/07/27/data-structures-with-python/">
+        Data Structures With Python
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-07-27</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/博客转载/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>博客转载</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">1.8k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">7分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://mymasterdesigner.com/wp-content/uploads/2021/07/Data-Structures-With-Python-Big-Guide.png" alt></p>
+<p>对于编程和计算机科学来说，数据结构是主要的主题，几乎涉及所有计算机领域。</p>
+<p>本文介绍 <code>python</code> 中的一些数据结构。</p>
+<a id="more"></a>
+<h1 id="1-什么是数据结构"><a href="#1-什么是数据结构" class="headerlink" title="1. 什么是数据结构"></a>1. 什么是数据结构</h1><p>计算机科学中，数据结构是一种为了便于数据获取和修改的组织、管理和存储的形式。所有编程语言中，列表、字典和数组是最简单的数据结构。尽管语法不同，但是其内在的逻辑是相同的。因此，本文介绍的例子也适用于其它编程语言。</p>
+<h1 id="2-字典、映射、哈希表"><a href="#2-字典、映射、哈希表" class="headerlink" title="2. 字典、映射、哈希表"></a>2. 字典、映射、哈希表</h1><p><code>Python</code> 中的字典（<code>dictionary</code>）可以用来存储任意数据，每条数据都有一个关键词。映射（<code>map</code>）也被称为哈希表（<code>hash table</code>）、查找表（<code>lookup table</code>）或者关联数组（<code>associative array</code>）。它可以更轻松地组织与特定关键字关联的数据，并以更有条理的形式呈现。</p>
+<p>比如，用字典来存储每个人的年龄：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'Mark'</span>: <span class="number">12</span>,</span><br><span class="line">    <span class="string">'Alice'</span>: <span class="number">23</span>,</span><br><span class="line">    <span class="string">'David'</span>: <span class="number">8</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当我们想要查看特定的人的年龄时：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">'Mark'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output: 12</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当然，你可以把数据写在同一行内，但是如果数据量比较大的时候，卸载一行看起来会比较乱。</p>
+</blockquote>
+<h2 id="2-1-OrderedDict-defaultdict-ChainMap"><a href="#2-1-OrderedDict-defaultdict-ChainMap" class="headerlink" title="2.1 OrderedDict, defaultdict, ChainMap"></a>2.1 <code>OrderedDict</code>, <code>defaultdict</code>, <code>ChainMap</code></h2><ul>
+<li>字典是无序的，如果我们想按照顺序来存储数据，显然原生的字典就无能为力了，这个时候就可以用 <code>OrderedDict</code>：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections <span class="keyword">as</span> cs</span><br><span class="line"></span><br><span class="line">dict1 = cs.OrderedDict(</span><br><span class="line">    Mark=<span class="number">12</span>,</span><br><span class="line">    Alice=<span class="number">23</span>,</span><br><span class="line">    David=<span class="number">8</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>查看一下 <code>dcit1</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(dict1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Ouput: ([('Mark', 12), ('Alice', 22), ('David', 8)])</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>当我们从字典里面取值的时候，遇到字典里并没有对应的 key 的时候，程序就会报错。这时 <code>defaultdict</code> 就派上用场了。<code>defaultdict</code> 的作用是在于，当字典里的key不存在但被查找时，返回的不是 <code>keyError</code> 而是一个默认值。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line">dict1 = defaultdict(int)</span><br><span class="line">dict2 = defaultdict(set)</span><br><span class="line">dict3 = defaultdict(str)</span><br><span class="line">dict4 = defaultdict(list)</span><br></pre></td></tr></table></figure>
+<p><code>defaultdict</code> 接受 <code>int</code>, <code>set</code>, <code>str</code>, <code>list</code> 作为参数，也可以自定义函数作为参数。我们来看下，上面的例子中默认值分别是什么：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">print(dict1[<span class="number">1</span>]) </span><br><span class="line">print(dict2[<span class="number">1</span>])</span><br><span class="line">print(dict3[<span class="number">1</span>])</span><br><span class="line">print(dict4[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output:</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">set()</span><br><span class="line"></span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+<p>说明 <code>int</code> 默认值是 0，<code>set</code> 默认值是空集合，<code>str</code> 默认值是空字符串，<code>list</code> 默认值是空列表。</p>
+<ul>
+<li>当你有多个字典的时候，可以使用 <code>ChainMap</code> 将它们变成一个字典。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> ChainMap</span><br><span class="line"></span><br><span class="line">dict1 = &#123;<span class="string">"1"</span>: <span class="number">1</span>, <span class="string">"2"</span>: <span class="number">2</span>&#125;</span><br><span class="line">dict2 = &#123;<span class="string">"3"</span>: <span class="number">3</span>, <span class="string">"4"</span>: <span class="number">4</span>&#125;</span><br><span class="line">main = ChainMap(dict1, dict2)</span><br><span class="line"></span><br><span class="line">print(main[<span class="string">"3"</span>] , main[<span class="string">"1"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output:</span></span><br><span class="line"><span class="number">3</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h1 id="3-数组型数据结构"><a href="#3-数组型数据结构" class="headerlink" title="3. 数组型数据结构"></a>3. 数组型数据结构</h1><h2 id="3-1-列表"><a href="#3-1-列表" class="headerlink" title="3.1 列表"></a>3.1 列表</h2><p>列表可以存储任意类型的数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># from 0 to 10 value</span></span><br><span class="line">arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># String Array</span></span><br><span class="line">arr1 = [<span class="string">"a"</span> , <span class="string">"b"</span> , <span class="string">"c"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Get First Indexing</span></span><br><span class="line">arr1[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Get from 0 to 4</span></span><br><span class="line">arr[<span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Deleting Element</span></span><br><span class="line"><span class="keyword">del</span> arr[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Adding Element</span></span><br><span class="line">arr.append(<span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(a)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output:  [1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-2-元组"><a href="#3-2-元组" class="headerlink" title="3.2 元组"></a>3.2 元组</h2><p>元组是另一个可以存储任意类型数据的数据结构。与列表不同的是，元组是不可变的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">tuple = (<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>)</span><br><span class="line">tuple[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output: 1</span></span><br><span class="line"></span><br><span class="line">tuple1 = (<span class="string">"x"</span> , <span class="number">1</span> , <span class="number">1.25</span>)</span><br><span class="line">tuple1[<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output: 1.25</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># you'll get error</span></span><br><span class="line"><span class="keyword">del</span> tuple[<span class="number">0</span>]</span><br><span class="line">tuple[<span class="number">1</span>] = <span class="string">"y"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 报错</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-3-array-数组"><a href="#3-3-array-数组" class="headerlink" title="3.3 array 数组"></a>3.3 <code>array</code> 数组</h2><p><code>python</code> 的 <code>array</code> 模块存储的数据包括整型、浮点型等等，它的空间占用率会更低。因为 <code>array</code> 只接受相同类型的数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Accessing array</span></span><br><span class="line"><span class="keyword">from</span> array <span class="keyword">import</span> array</span><br><span class="line"></span><br><span class="line"><span class="comment"># use type code</span></span><br><span class="line">arr = array(<span class="string">"f"</span> , [<span class="number">1.0</span> , <span class="number">1.2</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="3-4-字符串——字符编码的数组"><a href="#3-4-字符串——字符编码的数组" class="headerlink" title="3.4 字符串——字符编码的数组"></a>3.4 字符串——字符编码的数组</h2><p>字符串可以节省空间，因为它们被密集打包并专门处理特定的数据类型。 如果要保存 <code>Unicode</code> 文本，则应使用字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"55555"</span></span><br><span class="line">emoji = <span class="string">"😀"</span></span><br><span class="line"></span><br><span class="line">print(str , emoji)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Outtput: 55555 😀</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-5-字节-amp-字节数组"><a href="#3-5-字节-amp-字节数组" class="headerlink" title="3.5 字节 &amp; 字节数组"></a>3.5 字节 &amp; 字节数组</h2><p>字节（<em>Bytes</em>）存储的是 0 到 255 的数字，如果超过了这个范围程序会报错。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = bytes([<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>])</span><br><span class="line">y = bytes([<span class="number">-1</span> , <span class="number">2</span> , <span class="number">3</span>])</span><br><span class="line">z = bytes([<span class="number">100</span> , <span class="number">200</span> , <span class="number">300</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Output: <span class="string">b'\x01\x02\x03'</span></span><br><span class="line">Output: error</span><br><span class="line">Output: error</span><br></pre></td></tr></table></figure>
+<h1 id="4-集合-amp-多数组数据结构"><a href="#4-集合-amp-多数组数据结构" class="headerlink" title="4. 集合 &amp; 多数组数据结构"></a>4. 集合 &amp; 多数组数据结构</h1><h2 id="4-1-集合"><a href="#4-1-集合" class="headerlink" title="4.1 集合"></a>4.1 集合</h2><p>集合中不能包含相同的数据，且集合存储的是无序的数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set = &#123;<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>&#125;</span><br><span class="line"></span><br><span class="line">set.add(<span class="number">4</span>)</span><br><span class="line">set.remove(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="4-2-Frozen-Set"><a href="#4-2-Frozen-Set" class="headerlink" title="4.2 Frozen Set"></a>4.2 Frozen Set</h2><p>原始的集合元素可增可删，如果我们不想让集合发生改变，可以使用 <code>frozenset</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">frozen = frozenset(&#123;<span class="string">"x"</span> , <span class="string">"y"</span> , <span class="string">"z"</span>&#125;)</span><br><span class="line">frozen.add(<span class="string">"k"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 报错</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-3-Counter"><a href="#4-3-Counter" class="headerlink" title="4.3 Counter"></a>4.3 Counter</h2><p><code>counter</code> 可以对多个集合进行合并，并且可以对每个元素进行计数，得到每个元素的个数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line">merge = Counter()</span><br><span class="line"></span><br><span class="line">fruits = &#123;<span class="string">"apple"</span> , <span class="string">"banana"</span> , <span class="string">"orange"</span>&#125;</span><br><span class="line">merge.update(fruits)</span><br><span class="line">print(merge)</span><br><span class="line"></span><br><span class="line">fruits1 = &#123;<span class="string">"apple"</span> , <span class="string">"banana"</span> , <span class="string">"watermelon"</span>&#125;</span><br><span class="line">merge.update(fruits1)</span><br><span class="line">print(merge)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'orange'</span>: <span class="number">1</span>, <span class="string">'apple'</span>: <span class="number">1</span>, <span class="string">'banana'</span>: <span class="number">1</span>&#125;)</span><br><span class="line">&#123;<span class="string">'apple'</span>: <span class="number">2</span>, <span class="string">'banana'</span>: <span class="number">2</span>, <span class="string">'orange'</span>: <span class="number">1</span>, <span class="string">'watermelon'</span>: <span class="number">1</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="5-堆栈"><a href="#5-堆栈" class="headerlink" title="5. 堆栈"></a>5. 堆栈</h1><p>堆栈是支持用于插入和删除的快速输入/输出语义 (LIFO) 的项目集合。与数组和列表不同，你不能做随机访问，你需要使用函数进行插入和删除。</p>
+<h2 id="5-1-list-实现堆栈"><a href="#5-1-list-实现堆栈" class="headerlink" title="5.1 list 实现堆栈"></a>5.1 <code>list</code> 实现堆栈</h2><p>你可以用 <code>append</code> 把数据加到最后，再用<code>pop</code>从 LIFO 队列中取出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">stack = []</span><br><span class="line"></span><br><span class="line">stack.append(<span class="number">1</span>)</span><br><span class="line">stack.append(<span class="number">2</span>)</span><br><span class="line">stack.append(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">print(stack)</span><br><span class="line"></span><br><span class="line">stack.pop()</span><br><span class="line">stack.pop()</span><br><span class="line"></span><br><span class="line">print(stack)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Output: [1,2,3]</span></span><br><span class="line"><span class="comment"># Output: [1]</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-2-deque-实现堆栈"><a href="#5-2-deque-实现堆栈" class="headerlink" title="5.2 deque 实现堆栈"></a>5.2 <code>deque</code> 实现堆栈</h2><p><code>deque</code> 与列表的区别还支持在固定时间添加和删除数组开头的元素。</p>
+<p>因此，它比列表更有效、更快。 它还支持随机访问。</p>
+<p>如果您尝试删除双端队列之间的数据，您可能会失去性能，主要原因是直到两端的所有元素都移动以腾出空间或填补空白。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line">stack = deque()</span><br><span class="line"></span><br><span class="line">stack.append(<span class="string">"a"</span>)</span><br><span class="line">stack.append(<span class="string">"b"</span>)</span><br><span class="line">stack.append(<span class="string">"c"</span>)</span><br><span class="line"></span><br><span class="line">print(stack)</span><br><span class="line"></span><br><span class="line">print(stack.pop())</span><br><span class="line">print(stack.pop())</span><br><span class="line"></span><br><span class="line">print(stack)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Output: deque(['a', 'b', 'c'])</span></span><br><span class="line"><span class="comment"># Output: deque(['a'])</span></span><br></pre></td></tr></table></figure>
+<h1 id="6-Queues"><a href="#6-Queues" class="headerlink" title="6. Queues"></a>6. <code>Queues</code></h1><p>堆栈上的逻辑在这里略有不同，其中采用先进先出 (FIFO)，而在堆栈中采用先进后出。</p>
+<p>我们这里可以使用栈中使用的 <code>list</code>和 <code>deque</code> 数据结构，也可以使用队列中的 <code>Queue</code> 类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">queue = []</span><br><span class="line"></span><br><span class="line">queue.append(<span class="string">"x"</span>)</span><br><span class="line">queue.append(<span class="string">"y"</span>)</span><br><span class="line">queue.append(<span class="string">"z"</span>)</span><br><span class="line"></span><br><span class="line">print(queue)</span><br><span class="line"></span><br><span class="line">queue.pop(<span class="number">0</span>)</span><br><span class="line">queue.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">print(queue)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Output: ['x', 'y', 'z']</span></span><br><span class="line"><span class="comment"># Output: ['z']</span></span><br></pre></td></tr></table></figure>
+<h2 id="6-1-deque"><a href="#6-1-deque" class="headerlink" title="6.1 deque"></a>6.1 <code>deque</code></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line">queue = deque()</span><br><span class="line"></span><br><span class="line">queue.append(<span class="string">"x"</span>)</span><br><span class="line">queue.append(<span class="string">"y"</span>)</span><br><span class="line">queue.append(<span class="string">"z"</span>)</span><br><span class="line"></span><br><span class="line">print(queue)</span><br><span class="line"></span><br><span class="line">queue.popleft()</span><br><span class="line">queue.popleft()</span><br><span class="line"></span><br><span class="line">print(queue)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Output: deque(['x', 'y', 'z'])</span></span><br><span class="line"><span class="comment"># Output: deque(['z'])</span></span><br></pre></td></tr></table></figure>
+<h2 id="6-2-queue"><a href="#6-2-queue" class="headerlink" title="6.2 queue"></a>6.2 <code>queue</code></h2><p>队列是一种结构，通过它我们可以确定队列可以容纳和存储多少数据。 它主要用于实现队列。</p>
+<p>您可以通过将 <code>max size</code> 参数设置为 0 来创建无限队列，这符合 FIFO 规则。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue</span><br><span class="line"></span><br><span class="line">queue = Queue(maxsize = <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Adding element</span></span><br><span class="line">queue.put(<span class="number">10</span>)</span><br><span class="line">queue.put(<span class="number">20</span>)</span><br><span class="line">queue.put(<span class="number">30</span>)</span><br><span class="line"></span><br><span class="line">print(queue.queue)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Removing element</span></span><br><span class="line">queue.get()</span><br><span class="line">queue.get()</span><br><span class="line"></span><br><span class="line">print(queue.queue)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Output: deque([10, 20, 30])</span></span><br><span class="line"><span class="comment"># Output: deque([30])</span></span><br></pre></td></tr></table></figure>
+<h1 id="7-自定义数据类型"><a href="#7-自定义数据类型" class="headerlink" title="7. 自定义数据类型"></a>7. 自定义数据类型</h1><p>要更可控，您只需要您自己。 不要害怕创建和使用自己的类。 创建复杂的类有时会很累，但它会提高您的工作效率。</p>
+<p>当您想通过方法向记录对象添加业务逻辑和活动时，创建自定义类是一个极好的解决方案。 然而，这意味着这些东西不再只是数据对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, note)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.note = note</span><br><span class="line"></span><br><span class="line">x = Student(<span class="string">"David"</span> , <span class="number">55</span>)</span><br><span class="line">y = Student(<span class="string">"Mark"</span> , <span class="number">35</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Access Data</span></span><br><span class="line">print(x.name , x.note)</span><br><span class="line"></span><br><span class="line">print(Student)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Output: David 55</span></span><br><span class="line"><span class="comment"># Output: &lt;main.Student object at 0x7f53925c2400&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="8-Reference"><a href="#8-Reference" class="headerlink" title="8. Reference"></a>8. Reference</h1><p><a href="https://mymasterdesigner.com/2021/07/06/data-structures-with-python-big-guide/" target="_blank" rel="noopener">Data Structures With Python – Big Guide</a></p>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:16+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2021年9月15日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/data-structure/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Data Structure</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/07/27/data-structures-with-python/&title=Data Structures With Python | Rogerspy's Home&summary=
+对于编程和计算机科学来说，数据结构是主要的主题，几乎涉及所有计算机领域。
+本文介绍 python 中的一些数据结构。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/07/27/data-structures-with-python/&title=Data Structures With Python | Rogerspy's Home&summary=
+对于编程和计算机科学来说，数据结构是主要的主题，几乎涉及所有计算机领域。
+本文介绍 python 中的一些数据结构。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuUlEQVR42u3awW7rMAwEwPz/T/ddCzw43SWlNofxqUhdWaMCIU3y9Yqvr2/X90+e7ny/Tr5m8sQDFx4eHt5i6/9fG977n/Pfvr/nac94eHh4t3n5Rp8ekGyiDT9tkMDDw8P7TF70dRysnPxtEmbw8PDwPp+XFBra4JEcHB4eHt6n8WZLt+w8VCTFi8O1Fjw8PLyYl3eRPufnK/09PDw8vHVXPf/CzZtVedEhDwOPu8XDw8O7wGvT4k2Df9YSSw7ohzvx8PDwrvGSTbzfXPJ5XvJo22CP6+Dh4eFd5rXjU20inhdq84OrSxJ4eHh4C14OmCFnLf9NoHp8V8DDw8O7wJsFj035YFYgLu7Bw8PDu8DblB72uesmPOTPwsPDwzvLS0qoCaANFbNRgzqE4OHh4V3gJZtoG1rJMNZ+AGuY7uPh4eEd4uUJ7uaeWThpBwiKiIGHh4c34rWv+jkgL9S2jFUxAg8PD2/NyxPfDf7U8eV7e7V5PR4eHt7o+7l98IGhqLiAmyfodXqNh4eHt+DlLbHZSMFs6GpWQCn+h3h4eHhr3r7Z37asZqWNVd0aDw8P7xDvVAk1X3OTdrdBCA8PD+8Urx2xmiW7bRg4VSDGw8PDu8fLE+hTowN1+TU+0MehATw8PLxDvP0AQdu42hdkk6T/Mb3Gw8PDO8TLX/VnaXEbPPJQcWBcAA8PD+8oLyG1JeDZ0FW7chQY8PDw8A7x9mMEbaNrM7YVHRAeHh7eUd5XeeVLty2r5Jjq8QI8PDy8C7y2yZRTiwZ/Wc44gMHDw8Nb82ZL7xPr5OmzwICHh4f3O7y2c5Sns+0X/SxoPX6Ch4eH9wG8tlmVF2rzUshqmgwPDw/vT3mzwLBJo6NxATw8PLxf4eWPmQ0czIq5s3CCh4eHd5s3e+FviwJ5Ur45oFV/Dw8PD+9n3j9irpxxcAuQ/QAAAABJRU5ErkJggg=='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/07/27/data-structures-with-python/&title=Data Structures With Python | Rogerspy's Home&summary=
+对于编程和计算机科学来说，数据结构是主要的主题，几乎涉及所有计算机领域。
+本文介绍 python 中的一些数据结构。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/07/29/roc-auc/" rel="prev" title="ROC-AUC原理及计算方法">
+                                  
+                                      ROC-AUC原理及计算方法
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/roc-auc/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>ROC-AUC</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/07/23/kg-data-modelling/" rel="prev" title="知识图谱：知识建模（一）不那么简要的知识建模简介">
+                                    
+                                        知识图谱：知识建模（一）不那么简要的知识建模简介
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/kg/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>KG</a> <a class="tag" href="/tags/knowledge-modelling/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>knowledge-modelling</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: 'Data Structures With Python',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-什么是数据结构"><span class="toc-text">1. 什么是数据结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-字典、映射、哈希表"><span class="toc-text">2. 字典、映射、哈希表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-OrderedDict-defaultdict-ChainMap"><span class="toc-text">2.1 OrderedDict, defaultdict, ChainMap</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-数组型数据结构"><span class="toc-text">3. 数组型数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-列表"><span class="toc-text">3.1 列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-元组"><span class="toc-text">3.2 元组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-array-数组"><span class="toc-text">3.3 array 数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-字符串——字符编码的数组"><span class="toc-text">3.4 字符串——字符编码的数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-字节-amp-字节数组"><span class="toc-text">3.5 字节 &amp; 字节数组</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-集合-amp-多数组数据结构"><span class="toc-text">4. 集合 &amp; 多数组数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-集合"><span class="toc-text">4.1 集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-Frozen-Set"><span class="toc-text">4.2 Frozen Set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-Counter"><span class="toc-text">4.3 Counter</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-堆栈"><span class="toc-text">5. 堆栈</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-list-实现堆栈"><span class="toc-text">5.1 list 实现堆栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-deque-实现堆栈"><span class="toc-text">5.2 deque 实现堆栈</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Queues"><span class="toc-text">6. Queues</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-deque"><span class="toc-text">6.1 deque</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-queue"><span class="toc-text">6.2 queue</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-自定义数据类型"><span class="toc-text">7. 自定义数据类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-Reference"><span class="toc-text">8. Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="blogarchives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="netease"
+    data-type="playlist"
+    data-id="2957571193"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
