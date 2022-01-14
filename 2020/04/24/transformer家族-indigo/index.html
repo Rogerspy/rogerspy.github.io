@@ -211,12 +211,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -459,24 +459,24 @@
 <a id="more"></a>
 <h1 id="1-Abstract-Framework"><a href="#1-Abstract-Framework" class="headerlink" title="1. Abstract Framework"></a>1. Abstract Framework</h1><ul>
 <li>$y=(y_1, …, y_T)$ —— 表示待生成的序列；</li>
-<li>$x=(x<em>1, …, x</em>{T’})$ —— 表示输入序列；</li>
-<li>$\pi=(z<em>2, …,z_T,z</em>{T+1}) \in \mathcal{P}_T$ —— 表示 $y$ 生成的顺序，其中 $\mathcal{P}_T$ 表示 $(1, …, T)$ 的排列组合；</li>
-<li>$y<em>{\pi} = {(y_2,z_2),…,(y</em>{T+1}, z_{T+1})}$ ——每一步生成的词及其位置。</li>
+<li>$x=(x_1, …, x_{T’})$ —— 表示输入序列；</li>
+<li>$\pi=(z_2, …,z_T,z_{T+1}) \in \mathcal{P}_T$ —— 表示 $y$ 生成的顺序，其中 $\mathcal{P}_T$ 表示 $(1, …, T)$ 的排列组合；</li>
+<li>$y_{\pi} = \{(y_2,z_2),…,(y_{T+1}, z_{T+1})\}$ ——每一步生成的词及其位置。</li>
 </ul>
 <p>与一般的标记不同，这里我们分别令 $(y_0, z_0) = (&lt; s &gt;, 0), (y_1, z_1) = (&lt; /s &gt;, T+1)$，表示序列的开始和结尾。</p>
 <p>将生成顺序看作隐变量 $\pi$ ，那么对于一个输出句子 $y$ ，取所有顺序的概率之和，作为输出 $y$ 的概率：</p>
 <script type="math/tex; mode=display">
 p_\theta(y|x) = \sum_{\pi \in \mathcal{P}_T} p_\theta (y_\pi|x)</script><p>其中每个生成顺序的概率为：</p>
 <script type="math/tex; mode=display">
-p_\theta(y_\pi|x) = p_\theta(y_{T+2}|y_{0:T+1}, z_{0:T+1}, x_{1:T'}) \cdot \prod_{t=1}^Tp_\theta(y_{t+1}, z_{t+1}|y_{0:t}, z_{0:t}, x_{1:T'})</script><p>其中 $y<em>{T+2}=&lt; eod &gt;$ 表示结束解码的标志，用 $p(y</em>{T+2}|\cdot)$ 表示其概率分布。</p>
+p_\theta(y_\pi|x) = p_\theta(y_{T+2}|y_{0:T+1}, z_{0:T+1}, x_{1:T'}) \cdot \prod_{t=1}^Tp_\theta(y_{t+1}, z_{t+1}|y_{0:t}, z_{0:t}, x_{1:T'})</script><p>其中 $y_{T+2}=&lt; eod &gt;$ 表示结束解码的标志，用 $p(y_{T+2}|\cdot)$ 表示其概率分布。</p>
 <p>另外 $z$ 表示生成的单词在句子中的绝对位置。但是这就会有一个问题：我们连最后生成的句序列长度都还不知道怎么能确定当前生成的词在最终序列的绝对位置呢？为了解决这个问题作者提出一个相对位置的概念。</p>
-<h1 id="2-InDIGO"><a href="#2-InDIGO" class="headerlink" title="2. InDIGO"></a>2. InDIGO</h1><h2 id="2-1-Relative-Positions"><a href="#2-1-Relative-Positions" class="headerlink" title="2.1 Relative Positions"></a>2.1 Relative Positions</h2><p>为了解决绝对位置编码问题，作者提出相对位置 $r<em>{0:t}^t$ 来替代 $z</em>{0:t}^t$。$r_i^t \in {-1, 0, 1}^{t+1}$，且：</p>
+<h1 id="2-InDIGO"><a href="#2-InDIGO" class="headerlink" title="2. InDIGO"></a>2. InDIGO</h1><h2 id="2-1-Relative-Positions"><a href="#2-1-Relative-Positions" class="headerlink" title="2.1 Relative Positions"></a>2.1 Relative Positions</h2><p>为了解决绝对位置编码问题，作者提出相对位置 $r_{0:t}^t$ 来替代 $z_{0:t}^t$。$r_i^t \in \{-1, 0, 1\}^{t+1}$，且：</p>
 <script type="math/tex; mode=display">
 r_{i,j}^t=\begin{cases}
 -1 & z_j^t > z_i^t & (\mathrm{left})\\\\
 0 & z_j^t 0 z_i^t & (\mathrm{middle}) \\\\
 1 & z_j^t < z_i^t & (\mathrm{right})
-\end{cases}</script><p>假设在 $t$ 时刻，对于第 $i$ 个词 $w<em>i$，用一个向量表示它的相对位置，每个维度取值只有 $(-1, 0, 1)$ 三种。$r</em>{i,j}^t$ 表示如果 $w_i$ 出现在 $w_j$ 的左边，则取 $-1$，如果出现在右边，则取 $1$，如果是同一个词，则取$0$。使用 $R^t=(r_0^t, r_1^t, …r_t^t)$ 表示序列中所有词的相对位置，每一列表示一个单词的位置向量，这个矩阵关于主对角线对称的元素其实是相反数。举个例子：</p>
+\end{cases}</script><p>假设在 $t$ 时刻，对于第 $i$ 个词 $w_i$，用一个向量表示它的相对位置，每个维度取值只有 $(-1, 0, 1)$ 三种。$r_{i,j}^t$ 表示如果 $w_i$ 出现在 $w_j$ 的左边，则取 $-1$，如果出现在右边，则取 $1$，如果是同一个词，则取$0$。使用 $R^t=(r_0^t, r_1^t, …r_t^t)$ 表示序列中所有词的相对位置，每一列表示一个单词的位置向量，这个矩阵关于主对角线对称的元素其实是相反数。举个例子：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200426152417.png" alt></p>
 <blockquote>
 <ul>
@@ -493,29 +493,29 @@ r_{i,j}^t=\begin{cases}
 z_i^t = \sum_{j=0}^t\max (0, r_{i, j}^t)</script><p>还以上面的例子加以说明：</p>
 <blockquote>
 <ul>
-<li>$t=2$ 时，$y = (&lt; s &gt;, &lt; /s &gt;, dream)$，$r<em>{&lt; s &gt;, j}^2 = (0, -1, -1)$，$z</em>{&lt; s &gt;}^2=\sum<em>j \max(0, r</em>{&lt; s &gt;, j}^2)=0$，所以 $&lt; s &gt;$ 的绝对位置是 $0$；$r<em>{&lt; /s &gt;, j}^2 = (1, 0, 1)$，$z</em>{&lt; /s &gt;}^2=\sum<em>j \max(0, r</em>{&lt; /s &gt;, j}^2)=2$，所以 $&lt; /s &gt;$ 的绝对位置是 $2$；$r<em>{dream, j}^2 = (1, -1, 0)$，$z</em>{dream}^2=\sum<em>j \max(0, r</em>{dream, j}^2)=1$，所以$dream$ 的绝对位置是 $1$。</li>
-<li>$t=3$ 时，$y = (&lt; s &gt;, &lt; /s &gt;, dream, I)$，$r<em>{&lt; s &gt;, j}^2 = (0, -1, -1, -1)$，$z</em>{&lt; s &gt;}^2=\sum<em>j \max(0, r</em>{&lt; s &gt;, j}^2)=0$，所以 $&lt; s &gt;$ 的绝对位置是 $0$；$r<em>{&lt; /s &gt;, j}^2 = (1, 0, 1, 1)$，$z</em>{&lt; /s &gt;}^2=\sum<em>j \max(0, r</em>{&lt; /s &gt;, j}^2)=3$，所以 $&lt; /s &gt;$ 的绝对位置是 $3$；$r<em>{dream, j}^2 = (1, -1, 0, 1)$，$z</em>{dream}^2=\sum<em>j \max(0, r</em>{dream, j}^2)=2$，所以 $dream$ 的绝对位置是 $2$；$r<em>{I, j}^2 = (1, -1, -1, 0)$，$z</em>{I}^2=\sum<em>j \max(0, r</em>{I, j}^2)=1$，所以 $I$ 的绝对位置是 $1$。</li>
+<li>$t=2$ 时，$y = (&lt; s &gt;, &lt; /s &gt;, dream)$，$r_{&lt; s &gt;, j}^2 = (0, -1, -1)$，$z_{&lt; s &gt;}^2=\sum_j \max(0, r_{&lt; s &gt;, j}^2)=0$，所以 $&lt; s &gt;$ 的绝对位置是 $0$；$r_{&lt; /s &gt;, j}^2 = (1, 0, 1)$，$z_{&lt; /s &gt;}^2=\sum_j \max(0, r_{&lt; /s &gt;, j}^2)=2$，所以 $&lt; /s &gt;$ 的绝对位置是 $2$；$r_{dream, j}^2 = (1, -1, 0)$，$z_{dream}^2=\sum_j \max(0, r_{dream, j}^2)=1$，所以$dream$ 的绝对位置是 $1$。</li>
+<li>$t=3$ 时，$y = (&lt; s &gt;, &lt; /s &gt;, dream, I)$，$r_{&lt; s &gt;, j}^2 = (0, -1, -1, -1)$，$z_{&lt; s &gt;}^2=\sum_j \max(0, r_{&lt; s &gt;, j}^2)=0$，所以 $&lt; s &gt;$ 的绝对位置是 $0$；$r_{&lt; /s &gt;, j}^2 = (1, 0, 1, 1)$，$z_{&lt; /s &gt;}^2=\sum_j \max(0, r_{&lt; /s &gt;, j}^2)=3$，所以 $&lt; /s &gt;$ 的绝对位置是 $3$；$r_{dream, j}^2 = (1, -1, 0, 1)$，$z_{dream}^2=\sum_j \max(0, r_{dream, j}^2)=2$，所以 $dream$ 的绝对位置是 $2$；$r_{I, j}^2 = (1, -1, -1, 0)$，$z_{I}^2=\sum_j \max(0, r_{I, j}^2)=1$，所以 $I$ 的绝对位置是 $1$。</li>
 <li>以此类推…</li>
 </ul>
 </blockquote>
 <p>其实上面的式子的物理意义也很好理解：看相对位置向量中有多少个 $1$ 就表明该词在多少个词的右边，这样我们就可以知道该词所处的绝对位置了。</p>
-<h2 id="2-2-Insertion-based-Decoding"><a href="#2-2-Insertion-based-Decoding" class="headerlink" title="2.2 Insertion-based Decoding"></a>2.2 Insertion-based Decoding</h2><p>给定一个长度为 $t$ 的序列 $y<em>{0:t}$  以及相对位置 $r</em>{0:t}$ ， 下一个词 $y<em>{t+1}$ 的相对位置的取值有 $3^{t+2}$ 种可能性，显然并不是任意一种可能性都能满足序列正确排序的要求的，我们需要找到最可能的 $r</em>{t+1}$。</p>
+<h2 id="2-2-Insertion-based-Decoding"><a href="#2-2-Insertion-based-Decoding" class="headerlink" title="2.2 Insertion-based Decoding"></a>2.2 Insertion-based Decoding</h2><p>给定一个长度为 $t$ 的序列 $y_{0:t}$  以及相对位置 $r_{0:t}$ ， 下一个词 $y_{t+1}$ 的相对位置的取值有 $3^{t+2}$ 种可能性，显然并不是任意一种可能性都能满足序列正确排序的要求的，我们需要找到最可能的 $r_{t+1}$。</p>
 <p> <img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200426175835.png" alt></p>
-<p>上图给出了一种算法框架：先从现有的序列中选取一个词 $y<em>k$， 其中 $0 \le k \le t$，然后向其左边或者右边插入 $y</em>{t+1}$，$r_{t+1}$ 由下式决定：</p>
+<p>上图给出了一种算法框架：先从现有的序列中选取一个词 $y_k$， 其中 $0 \le k \le t$，然后向其左边或者右边插入 $y_{t+1}$，$r_{t+1}$ 由下式决定：</p>
 <script type="math/tex; mode=display">
 r_{t+1, j} = \begin{cases}
 s & j=k \\\\
 r_{k, j} & j \ne k 
-\end{cases}</script><p>其中如果 $y<em>{t+1}$ 插入 $y_k$ 的左边，则 $s=-1$；如果 $y</em>{t+1}$ 插入 $y_k$ 的右边，则 $s=1$，然后更新 $R$。</p>
+\end{cases}</script><p>其中如果 $y_{t+1}$ 插入 $y_k$ 的左边，则 $s=-1$；如果 $y_{t+1}$ 插入 $y_k$ 的右边，则 $s=1$，然后更新 $R$。</p>
 <p>继续用上面的例子说明：</p>
 <blockquote>
 <ul>
-<li>$t=1$ 时，假设我们选的 $y<em>k=&lt; s &gt;$，$y</em>{2}=dream$，其中 $k=0$，$j=k=0$ ，$dream$ 在 $&lt; s &gt;$ 的右边，所以 $r<em>{2, 0} = 1$；$j=1$，$r</em>{0, 1} = -1$，所以  $r<em>{2, 1}=r</em>{0, 1}=-1$，由于 $j=2$ 是$dream$ 本身，所以 $r_{2, 2}=0$。这样我们就得到了 $dream$ 的相对位置向量： $(1, -1, 0)$;</li>
-<li>$t=2$ 时，假设我们选的 $y<em>k = dream$，$y_3 = I$，其中 $k = 2$，$j=0$， $r</em>{2, 0}=1$，所以 $r<em>{3, 0} = 1$；$j=1$，$r</em>{3, 1}=r<em>{2, 1}=-1$；$j=2$，$j=k=2$，$I$ 在 $dream$ 的左边，所以 $r</em>{3,2}=-1$；$j=3$ 是 $I$ 自身，所以 $r_{3,3}=0$。这样我们就得到了 $I$ 的相对位置向量：$(1, -1, -1, 0)$；</li>
+<li>$t=1$ 时，假设我们选的 $y_k=&lt; s &gt;$，$y_{2}=dream$，其中 $k=0$，$j=k=0$ ，$dream$ 在 $&lt; s &gt;$ 的右边，所以 $r_{2, 0} = 1$；$j=1$，$r_{0, 1} = -1$，所以  $r_{2, 1}=r_{0, 1}=-1$，由于 $j=2$ 是$dream$ 本身，所以 $r_{2, 2}=0$。这样我们就得到了 $dream$ 的相对位置向量： $(1, -1, 0)$;</li>
+<li>$t=2$ 时，假设我们选的 $y_k = dream$，$y_3 = I$，其中 $k = 2$，$j=0$， $r_{2, 0}=1$，所以 $r_{3, 0} = 1$；$j=1$，$r_{3, 1}=r_{2, 1}=-1$；$j=2$，$j=k=2$，$I$ 在 $dream$ 的左边，所以 $r_{3,2}=-1$；$j=3$ 是 $I$ 自身，所以 $r_{3,3}=0$。这样我们就得到了 $I$ 的相对位置向量：$(1, -1, -1, 0)$；</li>
 <li>依次类推…</li>
 </ul>
 </blockquote>
-<p>上面这个公式的物理意义也是很好理解的：首先我们要确定 $y<em>{t+1}$ 要插在哪个位置，这个位置有两种表示方式：第一，<em>slot</em>，也就是用两个词形成一个空隙， $y</em>{t+1}$ 就插在这个空隙里面；第二，<em>s</em>，也就是一个词的左右，我们找到一个词 $y<em>k$，$y_k$有左右两侧，左边就是 $-1$， 右边就是 $1$。之前我们介绍的方法都是使用 <em>slot</em>，显然，这里使用的是 <em>s</em>。序列中其他的词对 $y</em>{t+1}$ 相对位置和对 $y<em>{k}$ 是一样的（因为不考虑 $y_k$本身的话， 实际上 $y</em>{t+1}$ 就是插在了 $y<em>k$ 的位置上），所以直接使用 $r</em>{k, j}$ 即可。比如 $t$ 时刻的序列是 $(A, B, C, D)$，推理 $t+1$ 时刻的时候 $y<em>k=C$，$y</em>{t+1}=E$，对于 $(A, B, D)$ 来说，我们是把 $E$ 插在了 $C$ 的位置上 $(A, B, D)$ 相对 $C$ 和 $D$ 的相对位置是一样的。</p>
+<p>上面这个公式的物理意义也是很好理解的：首先我们要确定 $y_{t+1}$ 要插在哪个位置，这个位置有两种表示方式：第一，<em>slot</em>，也就是用两个词形成一个空隙， $y_{t+1}$ 就插在这个空隙里面；第二，<em>s</em>，也就是一个词的左右，我们找到一个词 $y_k$，$y_k$有左右两侧，左边就是 $-1$， 右边就是 $1$。之前我们介绍的方法都是使用 <em>slot</em>，显然，这里使用的是 <em>s</em>。序列中其他的词对 $y_{t+1}$ 相对位置和对 $y_{k}$ 是一样的（因为不考虑 $y_k$本身的话， 实际上 $y_{t+1}$ 就是插在了 $y_k$ 的位置上），所以直接使用 $r_{k, j}$ 即可。比如 $t$ 时刻的序列是 $(A, B, C, D)$，推理 $t+1$ 时刻的时候 $y_k=C$，$y_{t+1}=E$，对于 $(A, B, D)$ 来说，我们是把 $E$ 插在了 $C$ 的位置上 $(A, B, D)$ 相对 $C$ 和 $D$ 的相对位置是一样的。</p>
 <p>从上面的描述来看，我们现在还有两个问题没有解决：</p>
 <ol>
 <li>$y_k$ 怎么选择？</li>
@@ -530,23 +530,23 @@ r_{k, j} & j \ne k
 <li><em>(c)</em> —— 重排序后的序列输出。</li>
 </ul>
 <p>在传统的 <em>Transformer</em> 结构中有一个零件叫做 <em>positional encoding</em>，这是一个绝对位置的编码，但现在解码器的绝对位置是未知的，所以这部分是需要进行修改的。</p>
-<p>令 $U=(u<em>0, …, u_t)$ 表示 $y</em>{0:t}$ 序列经过 <em>Embedding</em> 之后的隐层，$R^t$ 是其对应的相对位置矩阵。修改后的注意开计算方法如下：</p>
+<p>令 $U=(u_0, …, u_t)$ 表示 $y_{0:t}$ 序列经过 <em>Embedding</em> 之后的隐层，$R^t$ 是其对应的相对位置矩阵。修改后的注意开计算方法如下：</p>
 <script type="math/tex; mode=display">
-e_{i, j} = \frac{(u_i^TQ)\cdot(u_j^TK+A_{[r_{i, j}+1]})^T}{\sqrt{d_{model}}}</script><p>其中$Q, K \in \mathbb{R}^{d<em>{model}\times d</em>{model}}$，$A \in \mathbb{R}^{3 \times d<em>{model}}$ 是参数矩阵，$A</em>{[r<em>{i, j}+1]}$ 表示第 $r</em>{i, j}+1$ 列。</p>
+e_{i, j} = \frac{(u_i^TQ)\cdot(u_j^TK+A_{[r_{i, j}+1]})^T}{\sqrt{d_{model}}}</script><p>其中$Q, K \in \mathbb{R}^{d_{model}\times d_{model}}$，$A \in \mathbb{R}^{3 \times d_{model}}$ 是参数矩阵，$A_{[r_{i, j}+1]}$ 表示第 $r_{i, j}+1$ 列。</p>
 <h2 id="3-1-Word-amp-Position-Prediction"><a href="#3-1-Word-amp-Position-Prediction" class="headerlink" title="3.1 Word &amp; Position Prediction"></a>3.1 Word &amp; Position Prediction</h2><p>  经过自注意力的计算之后我们得到一个矩阵 $H$，下一个词及其位置概率为：</p>
 <script type="math/tex; mode=display">
 p(y_{t+1}, r_{t+1} | H) = p(y_{t+1}|H) \cdot p(r_{t+1}|y_{t+1}， H)</script><p>也就是先预测下一个单词是什么，再预测它的相对位置。当然也可以倒过来，只是实验效果不如这个。</p>
 <ul>
 <li><p><strong>预测 $y_{t+1}$</strong></p>
 <script type="math/tex; mode=display">
-p_{\mathrm{word}} (y|H) = \mathrm{softmax}((h_t^TF)\cdot W^T)</script><p>其中 $W \in \mathbb{R}^{d<em>V \times d</em>{model}}$ 表示词向量矩阵，$d<em>V$ 表示词表大小，$F \in \mathbb{R}^{d</em>{model} \times d_{model}}$ 是用来将 $h_t$ 线性变换的权重矩阵。</p>
+p_{\mathrm{word}} (y|H) = \mathrm{softmax}((h_t^TF)\cdot W^T)</script><p>其中 $W \in \mathbb{R}^{d_V \times d_{model}}$ 表示词向量矩阵，$d_V$ 表示词表大小，$F \in \mathbb{R}^{d_{model} \times d_{model}}$ 是用来将 $h_t$ 线性变换的权重矩阵。</p>
 </li>
 <li><p><strong>预测 $k$</strong></p>
 <p>这里我们就要回答上一节我们遗留的两个问题 $y_k$ 和 $s$ 我们怎么确定？</p>
 <script type="math/tex; mode=display">
-p_{\mathrm{pointer}}(k|y_{t+1}, H) = \mathrm{softmax}\left( (h_t^TE+W_{[y_{t+1}]})\cdot \left[\begin{array}{ccc} H^TC \\ H^TD\end{array}\right]^T\right)</script><p>其中 $C,D,E \in \mathbb{R}^{d<em>{model}\times d</em>{model}}$，$W<em>{[y</em>{t+1}]}$ 是 $y<em>{t+1}$ 的词向量。$C, D$ 是分别用来获取左、右的矩阵。注意我们最后得到的 $k</em>{t+1} \in [0, 2t+1]$，因为每个词都有左右两个位置。另外，为了避免 $y<em>{t+1}$ 出现在 $&lt; s &gt;$ 的左边和 $&lt; /s &gt;$ 的右边，作者手动设置 $p</em>{\mathrm{pointer}}(0|\cdot)=p_{\mathrm{pointer}}(2+t|\cdot) = 0$。</p>
+p_{\mathrm{pointer}}(k|y_{t+1}, H) = \mathrm{softmax}\left( (h_t^TE+W_{[y_{t+1}]})\cdot \left[\begin{array}{ccc} H^TC \\ H^TD\end{array}\right]^T\right)</script><p>其中 $C,D,E \in \mathbb{R}^{d_{model}\times d_{model}}$，$W_{[y_{t+1}]}$ 是 $y_{t+1}$ 的词向量。$C, D$ 是分别用来获取左、右的矩阵。注意我们最后得到的 $k_{t+1} \in [0, 2t+1]$，因为每个词都有左右两个位置。另外，为了避免 $y_{t+1}$ 出现在 $&lt; s &gt;$ 的左边和 $&lt; /s &gt;$ 的右边，作者手动设置 $p_{\mathrm{pointer}}(0|\cdot)=p_{\mathrm{pointer}}(2+t|\cdot) = 0$。</p>
 <blockquote>
-<p>一个词在 $y<em>k$ 的右边实际上等价于在 $y</em>{k+1}$ 的左边。那其实这两个预测结果都是对的。虽然最后的 $r$ 向量都是一样的。</p>
+<p>一个词在 $y_k$ 的右边实际上等价于在 $y_{k+1}$ 的左边。那其实这两个预测结果都是对的。虽然最后的 $r$ 向量都是一样的。</p>
 </blockquote>
 </li>
 </ul>
@@ -562,7 +562,7 @@ p_{\mathrm{pointer}}(k|y_{t+1}, H) = \mathrm{softmax}\left( (h_t^TE+W_{[y_{t+1}]
 \end{equation}</script><p>其中 $\pi = r_{2:T+1}$， 表示从 $q(\pi|x, y)$ 中采样的相对位置， $\mathcal{H}(q)$ 表示熵项，如果 $q$ 是固定的，那么这一项可以忽略。</p>
 <p>为了计算位置损失，作者这里定义：</p>
 <script type="math/tex; mode=display">
-p_\theta(r_{t+1}) = p_{\mathrm{pointer}}(k^l|\cdot)+p_{\mathrm{pointer}}(k^r|\cdot)</script><p>$k^l$ 和 $k^r$ 就是我们前面讲的  $y<em>k$ 的右边等价于在 $y</em>{k+1}$ 的左边。</p>
+p_\theta(r_{t+1}) = p_{\mathrm{pointer}}(k^l|\cdot)+p_{\mathrm{pointer}}(k^r|\cdot)</script><p>$k^l$ 和 $k^r$ 就是我们前面讲的  $y_k$ 的右边等价于在 $y_{k+1}$ 的左边。</p>
 <p>然后就可以根据近似后验来进行采样，优化这个函数了，那么这个近似后验怎么定义呢？作者这里考两种方法：</p>
 <ul>
 <li><p>常见的确定顺序，如下表：</p>
@@ -606,10 +606,10 @@ q(\pi|x, y) = \begin{cases}
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -995,12 +995,12 @@ q(\pi|x, y) = \begin{cases}
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1272,7 +1272,7 @@ q(\pi|x, y) = \begin{cases}
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1280,7 +1280,7 @@ q(\pi|x, y) = \begin{cases}
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1311,7 +1311,7 @@ q(\pi|x, y) = \begin{cases}
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1661,5 +1661,21 @@ q(\pi|x, y) = \begin{cases}
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

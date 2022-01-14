@@ -147,12 +147,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -413,13 +413,13 @@ f(w_t, ..., w_{t-n+1}) = p(w_t|w_{1:t-1})</script><p>使得训练集中的句子
 <p>模型可以分成两部分：</p>
 <ol>
 <li>一个映射 $C \in \mathbb{R}^{|\mathcal{V}| \times m}$，将词表中的词映射成分布式特征向量，$C(w_i) \in \mathbb{R}^m$。$C$ 是一个自由参数矩阵。</li>
-<li>一个概率函数 $g$ 用来计算特征向量序列 $\langle C(w<em>{t-n+1}), \cdots, C(w</em>{t-1}) \rangle$ 的条件概率。$g$ 的输出是句子中第 $t$ 个词出现的概率。既然是神经网络语言模型，那么 $g$ 肯定就是一个神经网络啦。</li>
+<li>一个概率函数 $g$ 用来计算特征向量序列 $\langle C(w_{t-n+1}), \cdots, C(w_{t-1}) \rangle$ 的条件概率。$g$ 的输出是句子中第 $t$ 个词出现的概率。既然是神经网络语言模型，那么 $g$ 肯定就是一个神经网络啦。</li>
 </ol>
 <p>假设有一个句子 $\langle w_1, w_2, …, w_T \rangle$，整个模型的建模过程如下：</p>
 <ol>
-<li><p>选取滑动窗口大小 $n$，对特征向量序列进行滑动切片，得到 $\mathrm{ngrams}=[(w<em>1, w_2, \cdots,w_n), (w_2, w_3, \cdots, w</em>{n+1}), (w<em>3, w_4, \cdots, w</em>{n+2}),\cdots, (w<em>{T-n}, \cdots, w</em>{T})]$。比如 $\langle 我，爱， 北京，天安门 \rangle, n=3$，滑动切片以后得到 $[(我，爱， 北京),(爱，北京，天安门)]$。</p>
+<li><p>选取滑动窗口大小 $n$，对特征向量序列进行滑动切片，得到 $\mathrm{ngrams}=[(w_1, w_2, \cdots,w_n), (w_2, w_3, \cdots, w_{n+1}), (w_3, w_4, \cdots, w_{n+2}),\cdots, (w_{T-n}, \cdots, w_{T})]$。比如 $\langle 我，爱， 北京，天安门 \rangle, n=3$，滑动切片以后得到 $[(我，爱， 北京),(爱，北京，天安门)]$。</p>
 </li>
-<li><p>$\langle w<em>{t-n+1}, \cdots, w</em>{t-1} \rangle$ 表示 $\mathrm{ngrams}$ 中第 $t$ 项的前 $n-1$ 个词，比如 $t=1$，则 $\langle w<em>{t-n+1}, \cdots, w</em>{t-1} \rangle$ 表示 $(我,爱)$。将其中每个词 $w<em>i$ 使用 $C$ 映射成特征向量，得到 $\langle C(w</em>{t-n+1}), \cdots, C(w_{t-1}) \rangle$。比如 $(我，爱，北京)$，$C(我)=[0.1, 0.3, 0.12], C(爱)=[0.2, 0.23, 0.4]$，那么可以得到特征向量序列（其实就是个特征矩阵）：</p>
+<li><p>$\langle w_{t-n+1}, \cdots, w_{t-1} \rangle$ 表示 $\mathrm{ngrams}$ 中第 $t$ 项的前 $n-1$ 个词，比如 $t=1$，则 $\langle w_{t-n+1}, \cdots, w_{t-1} \rangle$ 表示 $(我,爱)$。将其中每个词 $w_i$ 使用 $C$ 映射成特征向量，得到 $\langle C(w_{t-n+1}), \cdots, C(w_{t-1}) \rangle$。比如 $(我，爱，北京)$，$C(我)=[0.1, 0.3, 0.12], C(爱)=[0.2, 0.23, 0.4]$，那么可以得到特征向量序列（其实就是个特征矩阵）：</p>
 <script type="math/tex; mode=display">
 x_{\mathrm{in}}=\left[
 \begin{matrix}
@@ -490,10 +490,10 @@ L=\frac{1}{T} \sum_t \log f(w_t, _{t-1}, \cdots, w_{t-n+1}; \theta) + R(\theta)<
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -876,12 +876,12 @@ L=\frac{1}{T} \sum_t \log f(w_t, _{t-1}, \cdots, w_{t-n+1}; \theta) + R(\theta)<
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1153,7 +1153,7 @@ L=\frac{1}{T} \sum_t \log f(w_t, _{t-1}, \cdots, w_{t-n+1}; \theta) + R(\theta)<
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1161,7 +1161,7 @@ L=\frac{1}{T} \sum_t \log f(w_t, _{t-1}, \cdots, w_{t-n+1}; \theta) + R(\theta)<
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1192,7 +1192,7 @@ L=\frac{1}{T} \sum_t \log f(w_t, _{t-1}, \cdots, w_{t-n+1}; \theta) + R(\theta)<
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1542,5 +1542,21 @@ L=\frac{1}{T} \sum_t \log f(w_t, _{t-1}, \cdots, w_{t-n+1}; \theta) + R(\theta)<
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

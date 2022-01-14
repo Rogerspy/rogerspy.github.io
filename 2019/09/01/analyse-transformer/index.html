@@ -211,12 +211,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -560,7 +560,7 @@
 <blockquote>
 <p>如果模型的输出会随着输入文本数据顺序的变化而变化，那么这个模型就是关于位置敏感的，反之则是位置不敏感的。</p>
 </blockquote>
-<p>用形式化的语言描述为：假设模型函数 $y = f(x)$，其中 $x = (x<em>1, …, x_n)$ 为输入序列，$y$ 为输出。如果将 $x$ 找那个任意元素的位置进行了置换， $x’ = (x</em>{k<em>1}, …x</em>{k_n})$。此时，如果 $f(x) = f(x’)$，那么我们称模型是位置不敏感的；反之则为位置敏感的。</p>
+<p>用形式化的语言描述为：假设模型函数 $y = f(x)$，其中 $x = (x_1, …, x_n)$ 为输入序列，$y$ 为输出。如果将 $x$ 找那个任意元素的位置进行了置换， $x’ = (x_{k_1}, …x_{k_n})$。此时，如果 $f(x) = f(x’)$，那么我们称模型是位置不敏感的；反之则为位置敏感的。</p>
 <p>传统的 <em>RNN</em> 模型是关于位置敏感的模型，我们在使用 <em>RNN</em> 相关模型进行文本建模的时候是不需要位置编码的。只有使用位置不敏感的模型进行文本建模的时候才需要位置编码。</p>
 <h2 id="3-2-How"><a href="#3-2-How" class="headerlink" title="3.2 How?"></a>3.2 How?</h2><p>从直观上来讲，我们可以给序列中的第一个词的位置编码为 1，第二个词位置编码为 2 …… 依此类推。但是这种方法会带来两个问题：① 句子比较长的话，位置编码数字会变得很大；② 模型在推理的时候会遇到比训练数据更长的句子，这种编码会削弱模型的泛化性。</p>
 <p>我们直接能想到的第二种方法是，将序列长度归一化到 $[0, 1]$ 范围内，0 表示第一个词， 1 表示最后一个词。但是这种编码方式也是有问题的：句子是变长的，我们不知道模型遇到的句子的长度是多少，对于不同长度的句子，每个词对应的位置编码是不一样的，也就是说这样的位置编码是无效编码。举个例子：</p>
@@ -604,7 +604,7 @@
 \vdots \\\\
 \sin(\omega_{d_{model}/2} \cdot t)\\\\
 \cos(\omega_{d_{model}/2} \cdot t)
-\end{bmatrix}_{d_{model} \times 1}</script><p>我们希望能找到一个与 $t$ 无关的矩阵，使得 $\vec{p}<em>t$ 通过线性变换成为 $\vec{p}</em>{t+k}$。（因为如果是关于 $t$ 的矩阵， 那这个变换就是非线性的了）</p>
+\end{bmatrix}_{d_{model} \times 1}</script><p>我们希望能找到一个与 $t$ 无关的矩阵，使得 $\vec{p}_t$ 通过线性变换成为 $\vec{p}_{t+k}$。（因为如果是关于 $t$ 的矩阵， 那这个变换就是非线性的了）</p>
 </li>
 <li><p><strong>证明</strong></p>
 <p>我们令</p>
@@ -634,7 +634,7 @@
   \begin{bmatrix}
   \sin(\omega_i \cdot (t+k))\\\\
   \cos(\omega_i \cdot (t+k))
-  \end{bmatrix}</script><p>  令 $M = \begin{bmatrix}u_1 &amp; v_1 \\ u_2 &amp; v_2\end{bmatrix}$，代入上式，并分解等式右边得</p>
+  \end{bmatrix}</script><p>  令 $M = \begin{bmatrix}u_1 &amp; v_1 \\\ u_2 &amp; v_2\end{bmatrix}$，代入上式，并分解等式右边得</p>
 <script type="math/tex; mode=display">
   \begin{bmatrix}
   u_1 & v_1 \\\\ 
@@ -678,7 +678,7 @@
 \end{aligned}
 \end{equation}</script><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200522155328.png" alt></p>
 <p>由此我们可以发现，随着相对位置的递增，正弦位置编码的内积会减小。如上图所示，点积的结果是对称的，并且随 $|k|$ 增加而减少（但并不单调）。</p>
-<p>但是在 <em>Transformer</em> 中，由于需要经过映射，即两者间的点积实际是 $\vec{p}<em>t \cdot W \cdot \vec{p}</em>{t+k}$，下图展示了经过映射之后的位置向量点积：</p>
+<p>但是在 <em>Transformer</em> 中，由于需要经过映射，即两者间的点积实际是 $\vec{p}_t \cdot W \cdot \vec{p}_{t+k}$，下图展示了经过映射之后的位置向量点积：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200522155344.png" alt></p>
 <p>我们可以看到，此时位置向量的点积并没有展现出明确的趋势。</p>
 <p>② <strong>对称性</strong></p>
@@ -689,19 +689,19 @@
 &= \sum_{i=0}^{\frac{d_{model}}{2}-1} \cos(\omega_i\cdot(t-(t-k)))\\\\
 &= \sum_{i=0}^{\frac{d_{model}}{2}-1} \cos(\omega_i\cdot k)
 \end{aligned}
-\end{equation}</script><p>由此我们发现，$ \vec{p}<em>t \cdot \vec{p}</em>{t+k} = \vec{p}<em>t \cdot \vec{p}</em>{t-k} $，这说明正弦位置编码无法区分词与词的前后关系。</p>
+\end{equation}</script><p>由此我们发现，$ \vec{p}_t \cdot \vec{p}_{t+k} = \vec{p}_t \cdot \vec{p}_{t-k} $，这说明正弦位置编码无法区分词与词的前后关系。</p>
 </li>
 <li><p><strong>词向量和位置向量直接相加是否合理？</strong></p>
 <p><em>Transformer</em> 对模型输入的词向量和位置向量的处理是直接相加，作者并没有给出一个理论解释，为什么要直接相加。但是如果我们读过足够多的的 <em>NLP</em> 论文，我们会发现，对位置向量的处理通常只有两种方法：相加和拼接。这两种处理方式在不同的模型中有不同的表现，但总体上并没有太大的差别。<em>Transformer</em> 之所以使用相加的方式，可能主要是考虑减少模型参数，毕竟自注意力矩阵的参数已经足够多了。</p>
 <p>但是我们仔细考虑一下，无论是直接相加还是拼接，都隐含了一个假设：词向量和位置向量都是独立分布的。这个假设对词向量来说是成立的，因为词向量的 <em>index</em> 与我们使用的字典排序有关，而这个排序是任意的，任意的 <em>index</em> 与 <em>index+k</em> 或者 <em>index-k</em> 都没有任何依赖关系，所以这个假设是成立的。但是对于位置向量却并不满足这一假设，其顺序关系对模型理解文本有着重要的影响。我们称之为位置不敏感问题（<em>position-insensitive problem</em>）。</p>
 <p>为了解决这一问题 <a href="https://openreview.net/pdf?id=Hke-WTVtwr" target="_blank" rel="noopener">Wang</a> 等人提出关于位置的连续函数来表征词在位置上的表示，即：</p>
 <script type="math/tex; mode=display">
-f(j, t) = \pmb{g}_j(t) \in \mathbb{R}^D</script><p>其中 $\pmb{g}<em>j(t) = [g</em>{j,1}(t), g<em>{j, 2}(t), …, g</em>{j, D}(t)]$，$g<em>{j, d}(t)$ 是一个关于 $t$ 的函数。为了让这个函数更好的表征位置信息，$g</em>{j, d}(t)$ 必须要满足一下两个性质：</p>
+f(j, t) = \pmb{g}_j(t) \in \mathbb{R}^D</script><p>其中 $\pmb{g}_j(t) = [g_{j,1}(t), g_{j, 2}(t), …, g_{j, D}(t)]$，$g_{j, d}(t)$ 是一个关于 $t$ 的函数。为了让这个函数更好的表征位置信息，$g_{j, d}(t)$ 必须要满足一下两个性质：</p>
 <ol>
 <li><p><strong>Position-free offset transformation</strong></p>
 <p>存在一个线性函数 $\mathrm{Transform}_k(\cdot)=\mathrm{Transform}(g(t))$ 使得</p>
 <script type="math/tex; mode=display">
-g(t+k) = \mathrm{Transform}(g(t))</script><p>也就是说在位置 $t+k$ 上的词 $w<em>{j,t+k}$ 可以通过位置 $t$ 上的词 $w</em>{i, t}$ 通过一个只和 $k$ 相关的变换得到，而与具体这个词无关。有点类似正弦位置编码的线性变换，只是这里不仅是位置的变换，还有词的变换。</p>
+g(t+k) = \mathrm{Transform}(g(t))</script><p>也就是说在位置 $t+k$ 上的词 $w_{j,t+k}$ 可以通过位置 $t$ 上的词 $w_{i, t}$ 通过一个只和 $k$ 相关的变换得到，而与具体这个词无关。有点类似正弦位置编码的线性变换，只是这里不仅是位置的变换，还有词的变换。</p>
 </li>
 <li><p><strong>Boundedness</strong></p>
 <p>这个线性函数必须是有界的。这是一个非常合理的限制，不做过多解释。</p>
@@ -925,10 +925,10 @@ ZYdZYac \rightarrow XdXac</script><p>最后，序列中的所有字符对出现�
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:16+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -937,7 +937,7 @@ ZYdZYac \rightarrow XdXac</script><p>最后，序列中的所有字符对出现�
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/transformer/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Transformer</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/attention/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Attention</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/attention/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Attention</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/transformer/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Transformer</p></a></div>
 
 
         
@@ -1039,7 +1039,7 @@ ZYdZYac \rightarrow XdXac</script><p>最后，序列中的所有字符对出现�
                             
                                 
                                 <h6 class="tags">
-                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/attention/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Attention</a>
+                                    <a class="tag" href="/tags/attention/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Attention</a> <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a>
                                 </h6>
                             
                         </span>
@@ -1311,12 +1311,12 @@ ZYdZYac \rightarrow XdXac</script><p>最后，序列中的所有字符对出现�
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1588,7 +1588,7 @@ ZYdZYac \rightarrow XdXac</script><p>最后，序列中的所有字符对出现�
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1596,7 +1596,7 @@ ZYdZYac \rightarrow XdXac</script><p>最后，序列中的所有字符对出现�
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1627,7 +1627,7 @@ ZYdZYac \rightarrow XdXac</script><p>最后，序列中的所有字符对出现�
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1977,5 +1977,21 @@ ZYdZYac \rightarrow XdXac</script><p>最后，序列中的所有字符对出现�
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>预训练语言模型：Data noising smoothing | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/diary/"
+                  
+                  
+                  id="diary">
+									<i class='fas fa-book fa-fw'></i>&nbsp;随心记
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/tags/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="tags">
+									<i class='fas fa-hashtag fa-fw'></i>&nbsp;标签
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/09/15/ptm-data-noising-as-smoothing/">
+        预训练语言模型：Data noising smoothing
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-09-15</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/语言模型/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>语言模型</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">155字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">1分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220112213334.png" alt></p>
+<p>数据噪化（data noising）是一种非常有效的神经网络正则化的有段，通常被用在语音和视觉领域，但是在离散序列化数据（比如语言模型）上很少应用。本文尝试探讨给神经网络语言模型加噪声与 n-gram 语言模型中的平滑之间的联系，然后利用这种联系设计出一种噪声机制，帮助我们对语言进行建模。</p>
+<a id="more"></a>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>给定一个序列：$X=(x_1, x_2, …, x_T)$，词表 $V$。我们可以对序列进行建模：</p>
+<script type="math/tex; mode=display">
+p(X)=\prod_{t=1}^T p(x_t|x_{<t})</script><p>传统的 n-gram 模型很难对 $t$ 很大的序列建模，因为随着 $t$ 的增加，$x_{&lt;t}$ 的数量是以指数增加的。而神经网络可以处理更长的序列，因为神经网络处理的是隐状态而不是序列个数（参考之前的 RNN/CNN语言模型）。</p>
+<p>以一个 $L$ 层的 LSTM 语言模型为例，第 $l$ 层的隐状态为 $h_t^{(l)}=f_\theta(h_{t-1}^{(l)}, h_t^{(t-1)})$。令 $h^{(0)}$ 为 $X$ 的 one-hot 编码，$t$ 时刻的模型输出为：</p>
+<script type="math/tex; mode=display">
+p_\theta(x_t|x_{<t}) = \text{softmax}(g_\theta(h_t^{(L)}))</script><p>其中 $g_\theta: \mathbb{R}^{|h|} \rightarrow \mathbb{R}^{|V|}$。然后通过优化交叉熵损失函数最大化似然估计 $p_\theta(X)$:</p>
+<script type="math/tex; mode=display">
+\mathcal{L}_\theta = - \sum_t \log p_\theta (x_t|x_{<t})</script><p>另外，我们还考虑另一个序列任务——seq2seq，输入序列 $X$ 输出序列 $Y$：</p>
+<script type="math/tex; mode=display">
+p(Y|X) = \prod_{t=1}^{T_Y} p(y_t|X, y_{<t})</script><p>损失函数：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}_\theta = \sum_t \log p_\theta(y_t|X, y_{<t})</script><h1 id="2-Smoothing-amp-Noising"><a href="#2-Smoothing-amp-Noising" class="headerlink" title="2. Smoothing &amp; Noising"></a>2. Smoothing &amp; Noising</h1><p>神经网络语言模型和 n-gram 语言模型一样，都是通过给定序列去预测下一个位置的元素，使用最大似然估计使模型参数达到最优。因此，两者其实有异曲同工之妙，但是神经网络容易过拟合，现有的正则化方法（比如 L2，dropout 等）都是从模型权重着手，并没有有效地分析和利用序列本身的特征。而 n-gram 模型则充分利用了序列本身的性质，因此分析 n-gram 的序列特征并将这些特征融入到神经网络中，对神经网络序列建模会有很大的帮助。</p>
+<h2 id="2-1-n-gram-中的平滑"><a href="#2-1-n-gram-中的平滑" class="headerlink" title="2.1 n-gram 中的平滑"></a>2.1 n-gram 中的平滑</h2><p>之前介绍<a href="https://rogerspy.github.io/2021/03/16/ptm_probabilistic_language_model/" target="_blank" rel="noopener">统计语言模型</a>的时候，我们介绍过由于 n-gram 语言模型存在稀疏化问题，所以平滑技术至关重要。这里我们考虑插值平滑，比如 bi-gram：</p>
+<script type="math/tex; mode=display">
+p_{\text{inter}}(x_t|x_{t-1}) = \lambda \cdot p(x_t | x_{t-1}) + (1-\lambda) \cdot p(x_t)</script><p>其中 $0 \le \lambda \le 1$。</p>
+<h2 id="2-2-RNN-中的噪声"><a href="#2-2-RNN-中的噪声" class="headerlink" title="2.2 RNN 中的噪声"></a>2.2 RNN 中的噪声</h2><p>要想将 n-gram 中的平滑技术直接应用于 RNN 中会有一个问题，就是 RNN 中没有明确的计数。所以我们设计了两种加噪声的方法：</p>
+<ul>
+<li><p><strong>unigram noising</strong>：对于 $x_i \in x_{&lt;t}$，以 $\gamma$ 概率从样本中采样一个 unigram 来代替 $x_i$。</p>
+<blockquote>
+<p>原句：张三今年20岁。</p>
+<p>unigram noising：李四今年20岁。/ 老虎今年20岁。</p>
+</blockquote>
+</li>
+<li><p><strong>blank noising</strong>: 对于 $x_i \in x_{&lt;t}$ ，以 $\gamma$ 概率将 $x_i$ 替换成 “_”。</p>
+<blockquote>
+<p>原句：张三今年20岁。</p>
+<p>blank noising：_今年20岁。</p>
+</blockquote>
+</li>
+</ul>
+<p>接下来我们就分析一下，这两种噪声与插值平滑之间的关系。</p>
+<h2 id="2-3-unigram-noising-as-interpolation"><a href="#2-3-unigram-noising-as-interpolation" class="headerlink" title="2.3 unigram noising as interpolation"></a>2.3 unigram noising as interpolation</h2><p>我们先考虑最简单的情形——bigram。令 $c(x)$ 表示 $x$ 在原始数据中的个数，$c_\gamma(x)=\mathbb{E}_\tilde{x}[c(\tilde{x})]$ 表示在 unigram noising 情况下 $x$ 的期望个数，我们可得：</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+p_\gamma(x_t|x_{t-1}) &= \frac{c_\gamma(x_{t-1}, x_t)}{c_\gamma(x_{t-1})} \\\\
+                      &= \frac{(1-\gamma)c(x_{t-1}, x_t) + \gamma p(x_{t-1}) c(x_t)}{c(x_{t-1})} \\\\
+                      &= (1-\gamma) p(x_t|x_{t-1})  +\gamma p(x_t)
+\end{aligned}
+\end{equation}</script><p>其中 $c_\gamma(x) = c(x)$， 因为 $q(x)$ 是 unigram 分布。另外，最后一行是由于：</p>
+<script type="math/tex; mode=display">
+p(x_t) = \frac{c(x_t)}{n} \quad \& \quad p(x_{t-1}) = \frac{c(x_{t-1})}{n} \\\\
+n = \frac{c(x_t)}{p(x_t)} = \frac{c(x_{t-1})}{p(x_{t-1})}</script><p> $n$ 表示训练集中总的 token。则最后一行的第二项为：</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+\frac{\gamma p(x_{t-1}) c(x_t)}{c(x_{t-1})} &= \gamma c(x_t) \cdot \frac{1}{n} \\\\
+                                            &= \gamma \frac{c(x_t)}{n} \\\\
+                                            &= \gamma p(x_t)
+\end{aligned}
+\end{equation}</script><p>我们可以看到 $p_\gamma(x_t|x_{t-1})$ 的加噪声形式与插值平滑数学形式上非常相似。我们还可以推导出更一般的形式，令 $\tilde{x_{&lt;t}}$ 表示加噪声后的序列， 则：</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+p_\gamma(x_t|x_{<t}) &= \mathbb{E}_{\tilde{x_{<t}}}[p(x_t|\tilde{x}_{<t})] \\\\
+                      &= \sum_J \underbrace{\pi(|J|)}_{p(|J| \text{swaps})} \sum_{x_K} \underbrace{p(x_t|x_J, x_K)}_{p(x_t|\text{noised context})} \prod_{z\in x_K} \underbrace{p(z)}_{p(\text{drawing z})}
+\end{aligned}
+\end{equation}</script><p>其中 $\pi(|J|)=(1-\gamma)^{|J|} \gamma^{t-1-|J|}$， 且 $\sum_J \pi(|J|)=1, J \in \{1,2,…,t-1\}$ 表示 token 没有发生变化的索引，$K$ 表示 token 被替换的索引。</p>
+<h2 id="2-4-blank-noising-as-interpolation"><a href="#2-4-blank-noising-as-interpolation" class="headerlink" title="2.4 blank noising as interpolation"></a>2.4 blank noising as interpolation</h2><p>Blank noising 可以也解释为 “word-dropout”（<a href="https://arxiv.org/pdf/1506.07285.pdf" target="_blank" rel="noopener">Kumar et al. 2015</a>，<a href="https://arxiv.org/pdf/1511.01432.pdf" target="_blank" rel="noopener">Dai &amp; Le 2015</a>，<a href="https://arxiv.org/pdf/1511.06349.pdf" target="_blank" rel="noopener">Bowman et al. 2015</a>）。令 $\tilde{x}_{&lt;t}$ 表示别替换成 “_” 的序列，$x_J$ 表示没有替换的序列：</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+p_\gamma(x_t|x_{<t}) &= \mathbb{E}_{\tilde{x_{<t}}}[p(x_t|\tilde{x}_{<t})] \\\\
+                      &= \sum_J \underbrace{\pi(|J|)}_{p(|J| \text{swaps})}\underbrace{p(x_t|x_J)}_{p(x_t|\text{noised context})} 
+\end{aligned}
+\end{equation}</script><p>其中 $J \in \{1,2,…,t-1\}$，比如对于 3-gram:</p>
+<script type="math/tex; mode=display">
+p_\gamma(x_3|x_1, x_2) = \pi(2)p(x_3|x_1, x_2) + \pi(1)p(x_3|x_1, \_)+\pi(1)p(x_3|\_, x_2)+\pi(0)p(x_3|\_, \_)</script><p>其中 $\pi(i)=(1-\gamma)^i\gamma^{2-i}$。</p>
+<h1 id="3-他山之石，可以攻玉"><a href="#3-他山之石，可以攻玉" class="headerlink" title="3. 他山之石，可以攻玉"></a>3. 他山之石，可以攻玉</h1><p>我们已经证明了噪化与平滑有异曲同工之妙，现在我们就可以从以下两个方面考虑如何提升噪声机制;</p>
+<ol>
+<li>自适应计算噪声概率 $\gamma$，用来反应特定输入子序列的置信度；</li>
+<li>利用更高阶的 n-gram 统计信息，选择一个比 unigram 更简单的分布 $q(x)$。</li>
+</ol>
+<h2 id="3-1-Noising-Probability"><a href="#3-1-Noising-Probability" class="headerlink" title="3.1 Noising Probability"></a>3.1 Noising Probability</h2><p>假设有下面两个 bigram:</p>
+<script type="math/tex; mode=display">
+\text{“and the”} \quad \text{“Humpty Dumpty”}</script><p>第一个二元组在英语语料中非常常见，它的概率非常容易估计，因此不应该用低阶的分布进行插值。直观上来说，我们希望定义一个 $\gamma(x_{1:t})$ 对于常见的二元组尽可能少地被噪化。</p>
+<p>第二个二元组就比较罕见了，但是这个二元组非常特殊，因为在英语语料中 “Humpty” 后面通常跟着的就是 “Dumpty”，同样的 “Dumpty” 前面的通常也是 “Humpty”，即这两个单词通常是成对出现的，这样的二元组我们称之为 “sticky pair”。构成 sticky pair 的词之间有很强的互信息，这样的二元组更类似于 unigram，我们希望可以避免二元组向一元组逼近。 </p>
+<p>令 $N_{1+}(x_1,\cdot)=|\{x_2:c(x_1, x_2)&gt;0\}|$ 表示以 $x_1$ 为开头的二元组的种类，比如 $\{张三: 3, 张四: 4\}$ 其中以“张” 为前缀的二元组总数为 $3+4=7$，而以“张”为前缀的二元组的种类为 $2$（“张三”，“张四”）。根据对上面两个二元组的分析，我们可以设计噪声概率 $\gamma$：</p>
+<script type="math/tex; mode=display">
+\gamma_{AD}(x_1) = \gamma_0\frac{N_{1+}(x_1, \cdot)}{\sum_{x_2}c(x_1, x_2)}</script><p>其中 $0 \le \gamma_0 \le 1$，因此 $0 \le \gamma_{AD} \le 1$。如果我们忽略掉句子结束符的影响，则 $\sum_{x_2} c(x_1, x_2)=c(x_1)$。</p>
+<ul>
+<li>当以 $x_1$ 为前缀的二元组总数固定，其不同组合的中类越少的时候，$x_1$ 被噪化的概率越小。对应上面第一个分析，当总数一定，但是组合种类越少，那么其中某一种的组合就越常见，$x_1$ 就越不应该被噪化。<script type="math/tex; mode=display">
+\gamma_{AD}(\text{and}) = \gamma_0 \frac{N_+(\text{and}, \cdot)}{c(\text{and})} \quad</script>假设 “and” 组成的二元组是平均分布的，则 $c(\text{and})= \mathbb{E}(c(\text{and, the})) \times \mathbb{E}(N_+(\text{and, the}))$ ，当 $\mathbb{E}(c(\text{and, the}))$ 越大的时候，$\mathbb{E}(N_+(\text{and, the}))$ 就会越小，则 $\gamma_{AD}(\text{and})$ 就越小。</li>
+</ul>
+<h2 id="3-2-Proposal-distribution"><a href="#3-2-Proposal-distribution" class="headerlink" title="3.2 Proposal distribution"></a>3.2 Proposal distribution</h2><p>假设有下面两个二元组：</p>
+<script type="math/tex; mode=display">
+\text{“San Francisco”} \quad \text{“New York”}</script><p>这两个二元组在语料中都非常常见，所以 “Francisco” 和 “York” 也非常常见。但是 “Francisco” 和 “York” 通常是跟在 “San” 和 “New” 后面，所以当使用 unigram 频率时它们也不应该有很高的噪声概率。相反，最好增加具有不同历史的一元组的提议概率，或者更准确地说是完成大量二元组类型的一元组。因此，我们令：</p>
+<script type="math/tex; mode=display">
+q(x) \propto N_{1+}(\cdot, x)</script><ul>
+<li>当以 $x$ 为结尾的二元组种类越少，被采样到的概率就会越低。假设语料中 “New York” 有 1 万条，但是 “York” 只与 “New” 组成二元组，即 $N_+(\cdot, \text{York})=1$，则 $q(x) \sim 1/10000$。 </li>
+</ul>
+<p>注意这个时候，我们除了会对 $x_{1:t-1}$ 进行噪化，同样也会对预测值 $x_t$ 进行噪化。结合 $q(x)$ 和 $\gamma_{AD}(x_1)$ 我们就可以得到   Kneser-Ney 平滑的噪化模拟了。</p>
+<blockquote>
+<ol>
+<li><p>我们以 $\gamma_{AD}(x)$ 的概率决定 $x$ 是否会被噪化（替换成 “_” 或者其他 token）;</p>
+</li>
+<li><p>然后如果我们选择 ngram noising 的话，以 $q(x)$ 的概率对替他 token 进行采样，用来替换被 $\gamma_{AD}(x)$ 选中的 token。</p>
+</li>
+</ol>
+</blockquote>
+<p>下表总结了不同的噪化机制：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220114110524.png" alt></p>
+<h1 id="4-Experiments"><a href="#4-Experiments" class="headerlink" title="4. Experiments"></a>4. Experiments</h1><h2 id="4-1-Language-Model"><a href="#4-1-Language-Model" class="headerlink" title="4.1 Language Model"></a>4.1 Language Model</h2><ul>
+<li><p>Penn Treebank</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220114155146.png" alt></p>
+</li>
+<li><p>Text8</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220114155302.png" alt></p>
+</li>
+</ul>
+<h2 id="4-2-Machine-Translation"><a href="#4-2-Machine-Translation" class="headerlink" title="4.2 Machine Translation"></a>4.2 Machine Translation</h2><ul>
+<li>IWSLT 2015（English-German）</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220114155401.png" alt></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://arxiv.org/pdf/1703.02573.pdf" target="_blank" rel="noopener">Data Noising as Smoothing in Neural Network Language Models</a>, <em>Ziang Xie, Sida I. Wang, Jiwei Li, Daniel Lévy, Aiming Nie, Dan Jurafsky, Andrew Y. Ng.</em>  ICLR, 2017</li>
+<li><a href="https://arxiv.org/pdf/1506.07285.pdf" target="_blank" rel="noopener">Ask me anything: Dynamic memory networks for natural language processing</a>, <em>Ankit Kumar, Ozan Irsoy, Jonathan Su, James Bradbury, Robert English, Brian Pierce, Peter Ondruska, Ishaan Gulrajani, and Richard Socher.</em> <em>arXiv preprint arXiv:1506.07285</em>, 2015.</li>
+<li><a href="https://arxiv.org/pdf/1511.06349.pdf" target="_blank" rel="noopener">Generating sentences from a continuous space.</a>, Samuel R Bowman, Luke Vilnis, Oriol Vinyals, Andrew M Dai, Rafal Jozefowicz, and Samy Bengio. <em>arXiv preprint arXiv:1511.06349</em>, 2015.</li>
+<li><a href> Semi-supervised sequence learning.</a><a href="https://arxiv.org/pdf/1511.01432.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1511.01432.pdf</a> <em>Andrew M Dai and Quoc V Le.</em>  In <em>Advances in Neural Information Processing Systems</em>, pp. 3061–3069, 2015.</li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-14T15:55:02+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月14日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/language-model/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Language Model</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/data-noising/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>data noising</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/09/15/ptm-data-noising-as-smoothing/&title=预训练语言模型：Data noising smoothing | Rogerspy's Home&summary=
+数据噪化（data noising）是一种非常有效的神经网络正则化的有段，通常被用在语音和视觉领域，但是在离散序列化数据（比如语言模型）上很少应用。本文尝试探讨给神经网络语言模型加噪声与 n-gram 语言模型中的平滑之间的联系，然后利用这种联系设计出一种噪声机制，帮助我们对语言进行建模。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/09/15/ptm-data-noising-as-smoothing/&title=预训练语言模型：Data noising smoothing | Rogerspy's Home&summary=
+数据噪化（data noising）是一种非常有效的神经网络正则化的有段，通常被用在语音和视觉领域，但是在离散序列化数据（比如语言模型）上很少应用。本文尝试探讨给神经网络语言模型加噪声与 n-gram 语言模型中的平滑之间的联系，然后利用这种联系设计出一种噪声机制，帮助我们对语言进行建模。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACq0lEQVR42u3a247CMAwFQP7/p9nnFQscX9IFafqEaEkzQUos27dbfN2fXI93H3+VjPn4/Ou7yxceHh7e0tQngGSEZ3eTdyVzxsPDwzvNezbFZOjR6+NFSQ4JPDw8vM/k5YdK/qtkonh4eHjfzkuC762jBQ8PD+8zeUkyoncYVO++fuZgrgUPDw+vkw14U0X6nM9H6nt4eHh446r6woYbBMq98D2aLR4eHt4BXr7h5kFtNYzuLVM+Tzw8PLxdXl7I76UMqo1Z87atX5/x8PDwDvDyUn01NdArjyVjVlsQ8PDw8HZ51UF7ZbB8jbcKaXh4eHineb2TZB5eJ+8a1fTw8PDw/ok3mfq8DJZ/87S+h4eHh3eAlycL5lt8Pn61DBYlI/Dw8PCWeEn8eSK9Wz0MykkKPDw8vEt4edK2FwpvHQbROHh4eHiX8PIlyMPuaoGtV1r7Y0w8PDy8C3l5CrVX8k8C5V5Vq9z1gIeHh9fan5PEa6+cn2/uW0WvN/8hHh4e3hKvmpjoTT1fvnkZLDoD8fDw8Ma8SUI2B+dHS7UYtpa3xsPDw3vJ6wW71TXLnyk0VFV7yvDw8PAO8PL0bp44yKeel7jKWWo8PDy8Vd7kqobXSbg8SUBUU8x4eHh4E161pam3HfcmNymP4eHh4V3DqzYB5AdG/n2+cNHi4uHh4R3m5eFvntKtHjDz4wEPDw/vGl6y1U6aBvIWhK1ECR4eHt4J3r149VoKJg0Ek5YvPDw8vBO8Sbmr13bQS2Hkn9eqeXh4eHgvedXDYLIdz4PycmsXHh4e3jFenv+sNhNMlm/SlICHh4f3jbwk7D4RuOPh4eF9Gq/6gmqLVf58FMrj4eHhHePliYBqEnb+TX78jHIteHh4eKs9TsnhUR0hmVA1KJ91aeHh4eG9fe8P1FYr8KafhNsAAAAASUVORK5CYII='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/09/15/ptm-data-noising-as-smoothing/&title=预训练语言模型：Data noising smoothing | Rogerspy's Home&summary=
+数据噪化（data noising）是一种非常有效的神经网络正则化的有段，通常被用在语音和视觉领域，但是在离散序列化数据（比如语言模型）上很少应用。本文尝试探讨给神经网络语言模型加噪声与 n-gram 语言模型中的平滑之间的联系，然后利用这种联系设计出一种噪声机制，帮助我们对语言进行建模。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/09/17/ptm-pre-trained-seq2seq/" rel="prev" title="预训练语言模型：Pre-trained seq2seq">
+                                  
+                                      预训练语言模型：Pre-trained seq2seq
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/language-model/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Language Model</a> <a class="tag" href="/tags/pre-trained-seq2seq/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>pre-trained seq2seq</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/09/12/einsum-mhsa/" rel="prev" title="深入理解 einsum：实现多头注意力机制">
+                                    
+                                        深入理解 einsum：实现多头注意力机制
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/einsum/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>einsum</a> <a class="tag" href="/tags/mhsa/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>MHSA</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '预训练语言模型：Data noising smoothing',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-前言"><span class="toc-text">1. 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Smoothing-amp-Noising"><span class="toc-text">2. Smoothing &amp; Noising</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-n-gram-中的平滑"><span class="toc-text">2.1 n-gram 中的平滑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-RNN-中的噪声"><span class="toc-text">2.2 RNN 中的噪声</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-unigram-noising-as-interpolation"><span class="toc-text">2.3 unigram noising as interpolation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-blank-noising-as-interpolation"><span class="toc-text">2.4 blank noising as interpolation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-他山之石，可以攻玉"><span class="toc-text">3. 他山之石，可以攻玉</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Noising-Probability"><span class="toc-text">3.1 Noising Probability</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Proposal-distribution"><span class="toc-text">3.2 Proposal distribution</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Experiments"><span class="toc-text">4. Experiments</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Language-Model"><span class="toc-text">4.1 Language Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-Machine-Translation"><span class="toc-text">4.2 Machine Translation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="netease"
+    data-type="playlist"
+    data-id="2957571193"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

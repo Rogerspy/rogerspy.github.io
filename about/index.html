@@ -211,12 +211,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -376,7 +376,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2021-09-15</p>
+    <p>2022-01-12</p>
   </a>
 </div>
 
@@ -418,7 +418,7 @@
         <span class="post-meta-item-icon">
           <i class="fa fa-keyboard"></i>
           <span class="post-meta-item-text">  字数统计: </span>
-          <span class="post-count">3.7k字</span>
+          <span class="post-count">4.5k字</span>
         </span>
       </span>
       &nbsp; | &nbsp;
@@ -426,7 +426,7 @@
         <span class="post-meta-item-icon">
           <i class="fa fa-hourglass-half"></i>
           <span class="post-meta-item-text">  阅读时长≈</span>
-          <span class="post-count">16分</span>
+          <span class="post-count">20分</span>
         </span>
       </span>
     </div>
@@ -644,6 +644,54 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">meta:</span><br><span class="line">  header: [title, author, date, categories, tags, counter, word, top]</span><br><span class="line">  footer: [updated, share]</span><br></pre></td></tr></table></figure>
 <p>最后在主题目录下的 _config.yml 添加以下配置即可</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">word_count: true</span><br></pre></td></tr></table></figure>
+<h1 id="11-hexo中的mathjax数学公式渲染优化"><a href="#11-hexo中的mathjax数学公式渲染优化" class="headerlink" title="11. hexo中的mathjax数学公式渲染优化"></a>11. hexo中的mathjax数学公式渲染优化</h1><blockquote>
+<p>转载自 <a href="https://wxwoo.top/2019/05/15/hexo-mathjax-renderer-optimization/" target="_blank" rel="noopener">hexo中的mathjax数学公式渲染优化</a></p>
+</blockquote>
+<p>在使用hexo博客和material-x等博客主题时，难免会遇到mathjax数学公式渲染失败或者与markdown渲染冲突的问题。</p>
+<p>xaoxuu给出了解决方案，只需在<code>_config.yml</code>里加入<code>mathjax: true</code>即可解决，可以解决大量的mathjax公式渲染，但仍有部分复杂的公式渲染出现问题。</p>
+<p>我在这里给出一种解决方案。</p>
+<p><em>注：部分资料来自互联网</em></p>
+<h2 id="11-1-mathjax渲染修改"><a href="#11-1-mathjax渲染修改" class="headerlink" title="11.1 mathjax渲染修改"></a>11.1 mathjax渲染修改</h2><h3 id="11-1-1-修改渲染引擎"><a href="#11-1-1-修改渲染引擎" class="headerlink" title="11.1.1 修改渲染引擎"></a>11.1.1 修改渲染引擎</h3><p>更改hexo的默认渲染引擎，使其支持mathjax</p>
+<p>打开cmd，cd到hexo博客文件夹下，输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure>
+<h3 id="11-1-2-更改配置"><a href="#11-1-2-更改配置" class="headerlink" title="11.1.2 更改配置"></a>11.1.2 更改配置</h3><p>找到<code>/node_modules/hexo-renderer-kramed/lib/renderer.js</code>，将</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">formatText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Fit kramed's rule:  $$ + \1 + $$ </span></span><br><span class="line">    <span class="keyword">return</span> text.replace(<span class="regexp">/`\ $(.*?)\$ `/g</span>, <span class="string">' $$$$$ 1 $$$$ '</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改为</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">formatText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> text;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="11-1-3-修改数学包"><a href="#11-1-3-修改数学包" class="headerlink" title="11.1.3 修改数学包"></a>11.1.3 修改数学包</h3><p>在cmd中输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-math --save</span><br><span class="line">npm install hexo-renderer-mathjax --save</span><br></pre></td></tr></table></figure>
+<h3 id="11-1-4-更新mathjax配置文件"><a href="#11-1-4-更新mathjax配置文件" class="headerlink" title="11.1.4 更新mathjax配置文件"></a>11.1.4 更新mathjax配置文件</h3><p>找到<code>/node_modules/hexo-renderer-mathjax/mathjax.html</code>，将最下面那一行<code>&lt;script&gt;</code>注释掉，改成</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="11-1-5-修改转义规则"><a href="#11-1-5-修改转义规则" class="headerlink" title="11.1.5 修改转义规则"></a>11.1.5 修改转义规则</h3><p>因为 markdown 和 mathjax 语法有冲突，我们修改转义规则以避免冲突</p>
+<p>找到<code>\node_modules\kramed\lib\rules\inline.js</code>，将<code>escape</code>和<code>em</code>这两行注释掉，改成</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">escape</span>: <span class="regexp">/^\\([`*\[\]()# +\-.!_&gt;])/</span>,</span><br><span class="line"></span><br><span class="line">em: <span class="regexp">/^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span>,</span><br></pre></td></tr></table></figure>
+<h2 id="6-开始使用-1"><a href="#6-开始使用-1" class="headerlink" title="6. 开始使用"></a>6. 开始使用</h2><p>找到<code>\_config.yml</code>，加上一行<code>mathjax: true</code>就可以了。</p>
+<h2 id="11-2-mathjax渲染优化"><a href="#11-2-mathjax渲染优化" class="headerlink" title="11.2 mathjax渲染优化"></a>11.2 mathjax渲染优化</h2><p>其实这应该就结束了</p>
+<p>但不知什么原因，部分情况直接渲染出来会有一个灰色的框，十分难看</p>
+<p>所以我们还要进行优化</p>
+<p>打开<code>/node_modules/hexo-renderer-mathjax/mathjax.html</code>，在<code>MathJax.Hub.Config</code>中加上</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">extensions: ["tex2jax.js"],</span><br><span class="line">jax: ["input/TeX", "output/HTML-CSS"],</span><br></pre></td></tr></table></figure>
+<p>将刚刚第4步修改的链接修改为</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLCSS"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>就可以了</p>
+<p>但是仍然有一些不尽人意的地方，比如：</p>
+<h3 id="11-2-1-部分公式渲染出错"><a href="#11-2-1-部分公式渲染出错" class="headerlink" title="11.2.1 部分公式渲染出错"></a>11.2.1 部分公式渲染出错</h3><p>比如这个公式：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$\dfrac&#123;1&#125;&#123;2&#125;$</span><br></pre></td></tr></table></figure>
+<p>显示<code>Undefined control sequence \dfrac</code></p>
+<p>不仅是这个，还有很多会出错，比如<code>\geqslant</code></p>
+<p>这是由于更改链接后，缺少了<code>amsmath</code>包</p>
+<p>在<code>MathJax.Hub.Config</code>中加上</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TeX: &#123; </span><br><span class="line">    equationNumbers: &#123; <span class="attr">autoNumber</span>: <span class="string">"AMS"</span> &#125;,</span><br><span class="line">    extensions: [<span class="string">"AMSmath.js"</span>, <span class="string">"AMSsymbols.js"</span>]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>即可解决。</p>
+<h3 id="11-2-2-修改字体"><a href="#11-2-2-修改字体" class="headerlink" title="11.2.2 修改字体"></a>11.2.2 修改字体</h3><p>在<code>MathJax.Hub.Config</code>中加上</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"HTML-CSS"</span>: &#123;</span><br><span class="line">	preferredFont: <span class="string">"TeX"</span>, </span><br><span class="line">    availableFonts: [<span class="string">"STIX"</span>,<span class="string">"TeX"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><del>其实这没什么用</del>。</p>
+<h3 id="11-2-3-关闭右下角加载信息"><a href="#11-2-3-关闭右下角加载信息" class="headerlink" title="11.2.3 关闭右下角加载信息"></a>11.2.3 关闭右下角加载信息</h3><p>在<code>MathJax.Hub.Config</code>中加上</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">showProcessingMessages: <span class="literal">false</span>,</span><br><span class="line">messageStyle: <span class="string">"none"</span>,</span><br></pre></td></tr></table></figure>
+<h3 id="11-2-4-关闭右键菜单"><a href="#11-2-4-关闭右键菜单" class="headerlink" title="11.2.4 关闭右键菜单"></a>11.2.4 关闭右键菜单</h3><p>在<code>&quot;HTML-CSS&quot;</code>中加上</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">showMathMenu: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<h3 id="11-2-5-代码整合"><a href="#11-2-5-代码整合" class="headerlink" title="11.2.5 代码整合"></a>11.2.5 代码整合</h3><p>可以根据需要自行修改</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/x-mathjax-config"</span>&gt;</span></span><br><span class="line">    MathJax.Hub.Config(&#123;</span><br><span class="line">        TeX: &#123; </span><br><span class="line"><span class="actionscript">            equationNumbers: &#123; autoNumber: <span class="string">"AMS"</span> &#125;,</span></span><br><span class="line"><span class="actionscript">            extensions: [<span class="string">"AMSmath.js"</span>, <span class="string">"AMSsymbols.js"</span>]</span></span><br><span class="line">        &#125;,</span><br><span class="line"><span class="actionscript">        <span class="string">"HTML-CSS"</span>: &#123;</span></span><br><span class="line"><span class="actionscript">            preferredFont: <span class="string">"TeX"</span>, </span></span><br><span class="line"><span class="actionscript">            availableFonts: [<span class="string">"STIX"</span>, <span class="string">"TeX"</span>],</span></span><br><span class="line"><span class="actionscript">            showMathMenu: <span class="literal">false</span></span></span><br><span class="line">        &#125;,</span><br><span class="line"><span class="actionscript">        showProcessingMessages: <span class="literal">false</span>,</span></span><br><span class="line"><span class="actionscript">		messageStyle: <span class="string">"none"</span>,</span></span><br><span class="line"><span class="actionscript">        extensions: [<span class="string">"tex2jax.js"</span>],</span></span><br><span class="line"><span class="actionscript">        jax: [<span class="string">"input/TeX"</span>, <span class="string">"output/HTML-CSS"</span>],</span></span><br><span class="line">        tex2jax: &#123; </span><br><span class="line"><span class="actionscript">            inlineMath: [ [<span class="string">"$"</span>,<span class="string">"$"</span>] ],  </span></span><br><span class="line"><span class="actionscript">            skipTags: [<span class="string">'script'</span>, <span class="string">'noscript'</span>, <span class="string">'style'</span>, <span class="string">'textarea'</span>, <span class="string">'pre'</span>, <span class="string">'code'</span>, <span class="string">'a'</span>]</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"><span class="actionscript">    MathJax.Hub.Queue(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> all = MathJax.Hub.getAllJax();</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; all.length; ++i)</span></span><br><span class="line"><span class="actionscript">            all[i].SourceElement().parentNode.className += <span class="string">' has-jax'</span>;</span></span><br><span class="line">    &#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLCSS"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
         </div>
         
@@ -759,12 +807,12 @@
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1014,12 +1062,12 @@
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1291,7 +1339,7 @@
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1299,7 +1347,7 @@
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1330,7 +1378,7 @@
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1680,5 +1728,21 @@
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

@@ -147,12 +147,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -754,14 +754,14 @@
 <ul>
 <li><p>标签化（Tagging）</p>
 <ol>
-<li>首先，找到 $q<em>{nl}$ 中的一些特殊词，比如 TypeSQL 通过字符串匹配找到 $q</em>{nl}$ 中包含在数据库或知识库中的实体；PT-MAML 是利用词相似度匹配的方法在 $q_{nl}$ 中找到包含在数据库中的 $V_D$。</li>
+<li>首先，找到 $q_{nl}$ 中的一些特殊词，比如 TypeSQL 通过字符串匹配找到 $q_{nl}$ 中包含在数据库或知识库中的实体；PT-MAML 是利用词相似度匹配的方法在 $q_{nl}$ 中找到包含在数据库中的 $V_D$。</li>
 <li>然后，将这些词和数据库中实体之间建立联系；</li>
 <li>然后，给 $q_{nl}$ 中的找到的词打上实体标签或者直接将这些词规范化到 $V_D$；</li>
 <li>将每个词的标签转化成词向量拼接到每个词的词向量后面，或者将每个实体的类型加到 $q_{nl}$ 对应实体的位置之前；</li>
 <li>将处理后的词向量序列输入到编码器中。</li>
 </ol>
 <blockquote>
-<p>其实一句话总结就是，标签化增强技术是利用数据库中的实体对 $q<em>{nl}$ 中的实体进行增强。这样可以使模型更好的捕捉到 $q</em>{nl}$ 实体和数据库实体的对应关系，从而提高准确率。但是这严重依赖 $q_{nl}$ 实体与数据库实体的匹配技术（无论是字符串匹配还是词相似度匹配），理论上讲即使没有这一步模型也是可以自动学习到，但是这种做法可以提高训练效率，在小数据量上效果应该不错，但是上到大数据量上之后过拟合的风险会大大提高。（当然，这只是个人推断没有实验证据）</p>
+<p>其实一句话总结就是，标签化增强技术是利用数据库中的实体对 $q_{nl}$ 中的实体进行增强。这样可以使模型更好的捕捉到 $q_{nl}$ 实体和数据库实体的对应关系，从而提高准确率。但是这严重依赖 $q_{nl}$ 实体与数据库实体的匹配技术（无论是字符串匹配还是词相似度匹配），理论上讲即使没有这一步模型也是可以自动学习到，但是这种做法可以提高训练效率，在小数据量上效果应该不错，但是上到大数据量上之后过拟合的风险会大大提高。（当然，这只是个人推断没有实验证据）</p>
 </blockquote>
 </li>
 <li><p>词链接（Linking）</p>
@@ -776,7 +776,7 @@
 </blockquote>
 </li>
 <li><p>匿名化（Anonymizing）</p>
-<p>匿名化方法就是将 $q<em>{nl}$ 和 $q</em>{sql}$ 中的常数值替换成一些特殊符号，这样可以降低词表大小。比如 “city.state_name=’New York’” 替换成 “city.state_name=’@STATE’”。用 “@STATE” 来代替具体的城市。</p>
+<p>匿名化方法就是将 $q_{nl}$ 和 $q_{sql}$ 中的常数值替换成一些特殊符号，这样可以降低词表大小。比如 “city.state_name=’New York’” 替换成 “city.state_name=’@STATE’”。用 “@STATE” 来代替具体的城市。</p>
 </li>
 </ul>
 <h2 id="4-3-技术方法：翻译技术"><a href="#4-3-技术方法：翻译技术" class="headerlink" title="4.3 技术方法：翻译技术"></a>4.3 技术方法：翻译技术</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/nl2sql_tech.png" alt="nl2sql_tech"></p>
@@ -790,7 +790,7 @@
 </li>
 </ul>
 <h3 id="4-3-2-基于深度学习的方法"><a href="#4-3-2-基于深度学习的方法" class="headerlink" title="4.3.2 基于深度学习的方法"></a>4.3.2 基于深度学习的方法</h3><p>基于深度学习的方法接班架构都是“编码器—解码器”（<em>encoder-decoder</em>）结构的。2019 年之前的工作，通常都是使用 RNN 作为编码器对 $q_{nl}$ 进行编码。但是随着 Transformer 的特征提取能力逐渐被人们发掘，尤其是以 BERT 为代表的预训练语言模型技术被提出以后，使用预训练语言模型作为编码器逐渐成为主流。</p>
-<p>下面我们从两个方面介绍基于深度学习的 $q<em>{nl} \rightarrow q</em>{sql}$ 映射方法。</p>
+<p>下面我们从两个方面介绍基于深度学习的 $q_{nl} \rightarrow q_{sql}$ 映射方法。</p>
 <ul>
 <li><p><strong>如何处理数据库 $S_D$</strong></p>
 <p>在深度学习框架下，数据库通常有两个作用：作为输出词表的一部分（SaV）和作为输入（SaI）。</p>
@@ -841,7 +841,7 @@
 <h1 id="5-评估方法"><a href="#5-评估方法" class="headerlink" title="5. 评估方法"></a>5. 评估方法</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/nl2sql_evaluation.png" alt="nl2sql_evaluation"></p>
 <p>对于 NL2SQL 模型来说，一个非常重要的点就是，我们如何评估一个模型的好坏？目前的评估方法有四种：</p>
 <ul>
-<li>字符串匹配，通过对比模型生成的 SQL 语句和给定的标准 SQL 语句，判断生成 SQL 语句的正确性。这种方法可能导致误判，比如 WHERE 条件中，$a\ \mathrm{and}\ b$ 和 $b\ \mathrm{and}\ a$ 是等价的，但是用字符串匹配的方式就会得到错误的评估。</li>
+<li>字符串匹配，通过对比模型生成的 SQL 语句和给定的标准 SQL 语句，判断生成 SQL 语句的正确性。这种方法可能导致误判，比如 WHERE 条件中，$a \mathrm{and} b$ 和 $b \mathrm{and} a$ 是等价的，但是用字符串匹配的方式就会得到错误的评估。</li>
 <li>解析树匹配，通过对比模型生成的 SQL 和标准 SQL 的解析树，判断生成 SQL 的正确性。这种方法相比字符串匹配的方式，误判率会低一些，但是仍然是有一定的限制。比如，一个嵌套 SQL 语句和一个非嵌套语句实际上是等效的，但是他们的解析树是不一样的，这样解析树匹配的时候就会造成误判。</li>
 <li>结果匹配，通过对比两条 SQL 语句在数据库中的执行结果来判断生成的 SQL 是否正确。这种方式看起来比较合理，但是仍然不能排除两条不同的 SQL 会得到相同结果的可能性。</li>
 <li><p>人工验证，人工验证的误判率是最低的，但是却是成本最高的方法，几乎无法应用于实际生产中。</p>
@@ -885,7 +885,7 @@
     <td><div align="center"><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210426101828.png"></div></td>
 </tr></table>            
 
-<p>上表中，左边的表表示不同模型的总的表现，右侧表示每个单项的准确率，其中 $acc<em>{sel}$ 表示 SELECT 列的准确率，$acc</em>{agg}$ 表示聚合函数的准确率，$acc<em>{wh, col},acc</em>{wh, op}, acc_{wh,val}$ 分别表示 WHERE 条件中的列，操作符和值的准确率。</p>
+<p>上表中，左边的表表示不同模型的总的表现，右侧表示每个单项的准确率，其中 $acc_{sel}$ 表示 SELECT 列的准确率，$acc_{agg}$ 表示聚合函数的准确率，$acc_{wh, col},acc_{wh, op}, acc_{wh,val}$ 分别表示 WHERE 条件中的列，操作符和值的准确率。</p>
 <h3 id="6-2-1-模型泛化性"><a href="#6-2-1-模型泛化性" class="headerlink" title="6.2.1 模型泛化性"></a>6.2.1 模型泛化性</h3><p>从表中我们可以看出，基于规则的模型准确率都比较低。主要还是基于规则的方法有很大的限制性，比如 NaLIR，如果映射表中没有将 “longest” 映射成 $MAX$ 函数的方法，那么当自然问句中包含 “longest” 时就会出错。解决的办法就是尽可能的扩充映射表，但是这需要大量的人工工作。</p>
 <p>NSP 作为基于深度学习的模型，其表现出来的水平较之其他深度学习模型差了很多。主要原因是它将 $S_D$ 作为输出词表的一部分，这样会有三个问题：</p>
 <ol>
@@ -908,12 +908,12 @@
 </ul>
 <p>这里我们先讨论语法多样性和领域多样性。仔细看实验结果我们会发现，几乎所有的模型在 WTQ-s 数据集上的效果都比较差。主要是因为 WTQ-s 的数据集中自然语言问句比较多样，比如错误示例（C），不仅包含两个独立的条件，而且还有否定条件。这样的句子几乎现在所有的模型都不能处理。另外，如果数据表中的列名或者常数值比较复杂，也会导致问句比较复杂。比如错误示例（D）中列名是 “<em>number of autos da fe</em>”，这里面包含了非英文词汇，而这些词在词表中属于 OOV（<em>Out of Vocabulary</em>），导致模型无法准确辨别列名。</p>
 <h3 id="6-2-4-q-nl-与-S-D-的实体对齐"><a href="#6-2-4-q-nl-与-S-D-的实体对齐" class="headerlink" title="6.2.4 $q_{nl}$ 与 $S_D$ 的实体对齐"></a>6.2.4 $q_{nl}$ 与 $S_D$ 的实体对齐</h3><p>$q_{nl}$ 与 $S_D$ 的实体对齐对准确率的影响非常之大。在 WikiSQL 数据集上 GNN 的总体准确率是最高的，而在单项预测上 GNN 在预测列名的准确率也是最高的，因为在 GNN 模型中使用了实体链接技术。而使用标签化技术的 TypeSQL-C 和 IRNet 在列名的预测上，准确率仅次于 GNN，他们的总体准确率也是如此。</p>
-<p>在 WTQ-s 数据集上，IRNet 的总体准确率是最高的，在单项上 $acc<em>{wh, op}$ 和 $acc</em>{agg}$ 与其他模型的准确率相比相差不多，但是在 $acc<em>{wh, col}$ 和 $acc</em>{sel}$ 上的准确率高出其他模型一大截。细致的分析我们会发现， IRNet 在长列名和表中有相似列名的时候表现尤为突出。比如错误示例（D）中，IRNet 是唯一预测正确的模型。</p>
+<p>在 WTQ-s 数据集上，IRNet 的总体准确率是最高的，在单项上 $acc_{wh, op}$ 和 $acc_{agg}$ 与其他模型的准确率相比相差不多，但是在 $acc_{wh, col}$ 和 $acc_{sel}$ 上的准确率高出其他模型一大截。细致的分析我们会发现， IRNet 在长列名和表中有相似列名的时候表现尤为突出。比如错误示例（D）中，IRNet 是唯一预测正确的模型。</p>
 <p>从以上的分析中我们不难发现，列名的准确性在很大程度上影响了模型的准确性。要提高模型预测列名的准确性，实体对齐是一个很有效的方法。而实体链接和标签化各有优势。</p>
 <h3 id="6-2-5-学习算法的有效性"><a href="#6-2-5-学习算法的有效性" class="headerlink" title="6.2.5 学习算法的有效性"></a>6.2.5 学习算法的有效性</h3><p>在以上所有评估模型中，Seq2SQL 和 PT-MAML 分别采用了强化学习和元学习的方法。我们将这两个学习算法都改成监督学习以后发现，两个模型的准确率都有所下降。说明他们各自的学习算法都有利于发挥他们的能力，但是总体而言，强化学习和元学习在准确率上还是比其他深度学习模型准确率差一些。</p>
 <h2 id="6-3-复杂-SQL-语句实验结果"><a href="#6-3-复杂-SQL-语句实验结果" class="headerlink" title="6.3 复杂 SQL 语句实验结果"></a>6.3 复杂 SQL 语句实验结果</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210426113745.png" alt></p>
 <p>复杂 SQL 语句的实验只在上表中的六个模型上做的，因为其他模型都不支持 复杂 SQL 语句的生成。数据集排除了 WikiSQL，因为该数据集全部是简单 SQL 语句。总的来说，这些模型的准确率都很低。</p>
-<h3 id="6-3-1-基于规则的模型"><a href="#6-3-1-基于规则的模型" class="headerlink" title="6.3.1 基于规则的模型"></a>6.3.1 基于规则的模型</h3><p>基于规则的模型准确率低，主要的原因和前面简单 SQL 的问题一样。但是 Templar 比较有意思，它的准确率在除 MAS 数据集之外的所有数据集上的表现和 NaLIR 相差不大。经过分析我们发现，主要是在 MAS 数据集上 Templar 总是无法正确进行实体映射。给定两个实体 $qf<em>1$ 和 $qf_2$，如果 $qf_2$ 在检索日志中出现的频率更高的话，Templar 选择 $qf_2$ 的概率更高，即使可能 $qf_1$ 的语义更符合 $q</em>{nl}$。比如错误案例（E），“area” 与 “domain.name” 的语义相似度比 “publication.title” 更高，但是 Templar 选择了后者。 </p>
+<h3 id="6-3-1-基于规则的模型"><a href="#6-3-1-基于规则的模型" class="headerlink" title="6.3.1 基于规则的模型"></a>6.3.1 基于规则的模型</h3><p>基于规则的模型准确率低，主要的原因和前面简单 SQL 的问题一样。但是 Templar 比较有意思，它的准确率在除 MAS 数据集之外的所有数据集上的表现和 NaLIR 相差不大。经过分析我们发现，主要是在 MAS 数据集上 Templar 总是无法正确进行实体映射。给定两个实体 $qf_1$ 和 $qf_2$，如果 $qf_2$ 在检索日志中出现的频率更高的话，Templar 选择 $qf_2$ 的概率更高，即使可能 $qf_1$ 的语义更符合 $q_{nl}$。比如错误案例（E），“area” 与 “domain.name” 的语义相似度比 “publication.title” 更高，但是 Templar 选择了后者。 </p>
 <h3 id="6-3-2-泛化性"><a href="#6-3-2-泛化性" class="headerlink" title="6.3.2 泛化性"></a>6.3.2 泛化性</h3><p>SaI 方法总体效果强于 SaV 方法，主要原因还是输出词表的 OOV 问题。使用 SaI 方法的模型中， SyntaxSQLNet 的准确率比 GNN 和 IRNet 低很多，主要原因为后者使用了实体对齐技术。</p>
 <h3 id="6-3-3-小数据集上的模型鲁棒性"><a href="#6-3-3-小数据集上的模型鲁棒性" class="headerlink" title="6.3.3 小数据集上的模型鲁棒性"></a>6.3.3 小数据集上的模型鲁棒性</h3><p>在小数据集上的表现和简单的 SQL 的情况类似，但是对于复杂 SQL 下，迷行表现更加糟糕。基于 SaI 的深度学习模型甚至无法训练处一个有意义的模型出来。这也从侧面说明，要想训练一个能处理复杂语句的深度学习模型需要大量的训练数据。</p>
 <h3 id="6-3-4-生成-SQL-的覆盖面"><a href="#6-3-4-生成-SQL-的覆盖面" class="headerlink" title="6.3.4 生成 SQL 的覆盖面"></a>6.3.4 生成 SQL 的覆盖面</h3><p>SyntaxSQLNet, GNN 和 IRNet 只能支持有限的 SQL，因为：</p>
@@ -922,8 +922,8 @@
 <li>GNN 和 IRNet 是基于语法的模型，他们的表现比 SyntaxSQLNet 要好一些，但是也只能支持部分 SQL 语法。比如，不支持 LIMITE、ORDER BY、GROUP BY 等等。</li>
 </ul>
 <p>NSP 也面临着类似的问题，随着复杂度和多样性的提升 NSP 生成的 SQL 的错误率也随之提升。通过分析发现，NSP 的主要错误来源于表名和列名的预测错误，而这些错误中主要集中在需要连表查询的时候。</p>
-<h3 id="6-3-5-自然语言问句复杂度"><a href="#6-3-5-自然语言问句复杂度" class="headerlink" title="6.3.5 自然语言问句复杂度"></a>6.3.5 自然语言问句复杂度</h3><p>$q<em>{sql}$  的复杂度随着 $q</em>{nl}$ 增加。目前所有的模型在面对复杂语句的时候准确率都非常低。</p>
-<h3 id="6-3-6-常数值的匿名化"><a href="#6-3-6-常数值的匿名化" class="headerlink" title="6.3.6 常数值的匿名化"></a>6.3.6 常数值的匿名化</h3><p>在 Advising（question split）数据集上 NSP 模型 $acc<em>{sem}$ 和 $acc</em>{val}$ 准确率相差近 35%，这个差距非常大。而 35% 非常接近 NSP 在 WikiSQL 上对常数值的预测准确率。看下错误示例（F）我们会发现， NSP 的错误点在于将 “751” 预测错误。说明 NSP 没有正确地将 “751”匿名化。这给我们两点启示：</p>
+<h3 id="6-3-5-自然语言问句复杂度"><a href="#6-3-5-自然语言问句复杂度" class="headerlink" title="6.3.5 自然语言问句复杂度"></a>6.3.5 自然语言问句复杂度</h3><p>$q_{sql}$  的复杂度随着 $q_{nl}$ 增加。目前所有的模型在面对复杂语句的时候准确率都非常低。</p>
+<h3 id="6-3-6-常数值的匿名化"><a href="#6-3-6-常数值的匿名化" class="headerlink" title="6.3.6 常数值的匿名化"></a>6.3.6 常数值的匿名化</h3><p>在 Advising（question split）数据集上 NSP 模型 $acc_{sem}$ 和 $acc_{val}$ 准确率相差近 35%，这个差距非常大。而 35% 非常接近 NSP 在 WikiSQL 上对常数值的预测准确率。看下错误示例（F）我们会发现， NSP 的错误点在于将 “751” 预测错误。说明 NSP 没有正确地将 “751”匿名化。这给我们两点启示：</p>
 <ul>
 <li>NSP 的匿名化技术还有待提升；</li>
 <li>精准的映射常数值也是提升模型准确率的有效手段。</li>
@@ -966,10 +966,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -1352,12 +1352,12 @@
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1629,7 +1629,7 @@
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1637,7 +1637,7 @@
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1668,7 +1668,7 @@
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -2018,5 +2018,21 @@
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

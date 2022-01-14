@@ -211,12 +211,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -474,7 +474,7 @@
 <p><em>Insertion Transformer</em> 需要对输出的词和词的位置都要进行建模：</p>
 <script type="math/tex; mode=display">
 p(c, l|x, \hat{y}_t) = \mathrm{InsertionTransformer}(x, \hat{y}_t)</script><p>举个例子：</p>
-<p>假设$\hat{y}<em>t = [B, D]$，$p(c, l| x, \hat{y}_t) = (c=C, l=1)$，也就是说把 $C$ 插入到 $\hat{y}_t$的 索引值为1的地方（从0开始计算索引），这就意味着$\hat{y}</em>{t+1} = [B, C, D]$。</p>
+<p>假设$\hat{y}_t = [B, D]$，$p(c, l| x, \hat{y}_t) = (c=C, l=1)$，也就是说把 $C$ 插入到 $\hat{y}_t$的 索引值为1的地方（从0开始计算索引），这就意味着$\hat{y}_{t+1} = [B, C, D]$。</p>
 <h1 id="2-Insertion-Transformer"><a href="#2-Insertion-Transformer" class="headerlink" title="2. Insertion Transformer"></a>2. Insertion Transformer</h1><ul>
 <li><strong>Full Decoder Self-Attention</strong></li>
 </ul>
@@ -562,7 +562,7 @@ A = \left[
 <script type="math/tex; mode=display">
 [\mathbf{h}_0, ..., \mathbf{h}_K] = \tanh(\mathbf{h}P^T)</script><script type="math/tex; mode=display">
 [\pi_0, ..., \pi_K] = \mathrm{softmax}(\mathbf{h}M^T)</script><script type="math/tex; mode=display">
-P_{\theta}(x|\mathbf{h}) = \sum_{k=1}^{K}\pi_{c, k} \frac{\exp(\mathbf{h}_{c, k}^T \mathbf{w}_x)}{\sum_{x' \exp(\mathbf{h}_{c, k}^T \mathbf{w}_{x'})}}</script><p>其中 $\sum<em>{k=1}^K\pi</em>{c, k}=1$。</p>
+P_{\theta}(x|\mathbf{h}) = \sum_{k=1}^{K}\pi_{c, k} \frac{\exp(\mathbf{h}_{c, k}^T \mathbf{w}_x)}{\sum_{x' \exp(\mathbf{h}_{c, k}^T \mathbf{w}_{x'})}}</script><p>其中 $\sum_{k=1}^K\pi_{c, k}=1$。</p>
 <p>这里引入了两个权重：</p>
 <ul>
 <li>$P \in \mathbb{R}^{Kd\times d}$，它将 $\mathbf{h}$ 映射成 $K$ 个不同的 $\mathbf{h}$，每个 $\mathbf{h_k} \in \mathbb{R}^d$；</li>
@@ -586,29 +586,29 @@ P_{\theta}(x|\mathbf{h}) = \sum_{k=1}^{K}\pi_{c, k} \frac{\exp(\mathbf{h}_{c, k}
 </li>
 <li><p>打乱 $y$ 中每个词的索引顺序，选择其中前 $k$ 个索引对应的词，这样就得到了一个长度为 $k$ 的子序列；</p>
 </li>
-<li><p>这个长度为 $k$ 的子序列包含 $k+1$ 个<em>slot</em>，每个 <em>slot</em> 对应的位置为 $l = 0, 1, …, k$。令 $(y<em>{i_l}, y</em>{i<em>l+1}, …, y</em>{j_l})$为 $ y$ 中剩余的对应第 $l$ 个 <em>slot</em> 位置上的词。</p>
+<li><p>这个长度为 $k$ 的子序列包含 $k+1$ 个<em>slot</em>，每个 <em>slot</em> 对应的位置为 $l = 0, 1, …, k$。令 $(y_{i_l}, y_{i_l+1}, …, y_{j_l})$为 $ y$ 中剩余的对应第 $l$ 个 <em>slot</em> 位置上的词。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200410151034.png" alt></p>
 <blockquote>
-<p>以上图为例：解释$(y<em>{i_l}, y</em>{i<em>l+1}, …, y</em>{j_l})$是什么？$[A, C, D, I, M]$ 是随机挑选出来的子序列，</p>
+<p>以上图为例：解释$(y_{i_l}, y_{i_l+1}, …, y_{j_l})$是什么？$[A, C, D, I, M]$ 是随机挑选出来的子序列，</p>
 <ul>
-<li>$l=1$ 对应的 $(y<em>{i_1}, y</em>{i<em>1+1}, …, y</em>{j_1})=[B]$；</li>
-<li>$l=3$ 对应的 $(y<em>{i_3}, y</em>{i<em>3+1}, …, y</em>{j_3})=[E, F, G, H]$；</li>
-<li>$l=4$ 对应的 $(y<em>{i_4}, y</em>{i<em>4+1}, …, y</em>{j_4})=[J, K, L]$；</li>
-<li>$l=5$ 对应的 $(y<em>{i_5}, y</em>{i<em>5+1}, …, y</em>{j_5})=[N, O]$；</li>
+<li>$l=1$ 对应的 $(y_{i_1}, y_{i_1+1}, …, y_{j_1})=[B]$；</li>
+<li>$l=3$ 对应的 $(y_{i_3}, y_{i_3+1}, …, y_{j_3})=[E, F, G, H]$；</li>
+<li>$l=4$ 对应的 $(y_{i_4}, y_{i_4+1}, …, y_{j_4})=[J, K, L]$；</li>
+<li>$l=5$ 对应的 $(y_{i_5}, y_{i_5+1}, …, y_{j_5})=[N, O]$；</li>
 </ul>
 <p>对于$l=0, 2$ 的情况在后面讨论。</p>
 <p>注意 $i_l, j_l$ 分别是该词在原始 $y$ 中的索引。</p>
 </blockquote>
-<p>得到了 $(y<em>{i_l}, y</em>{i<em>l+1}, …, y</em>{j<em>l})$ 列表以后，我们去计算每个 <em>slot</em> 与其对应的$(y</em>{i<em>l}, y</em>{i<em>l+1}, …, y</em>{j_l})$ 中每个词的距离：</p>
+<p>得到了 $(y_{i_l}, y_{i_l+1}, …, y_{j_l})$ 列表以后，我们去计算每个 <em>slot</em> 与其对应的$(y_{i_l}, y_{i_l+1}, …, y_{j_l})$ 中每个词的距离：</p>
 <script type="math/tex; mode=display">
 d_l(i) = \left|\frac{i_l+j_l}{2}-i\right|</script><blockquote>
 <ul>
-<li><p>$l=1$ : $d<em>1 = \left|\frac{1+1}{2}-i|</em>{i=1}\right| = [0]$；</p>
+<li><p>$l=1$ : $d_1 = \left|\frac{1+1}{2}-i|_{i=1}\right| = [0]$；</p>
 </li>
-<li><p>$l=3$ : $d<em>3 = \left|\frac{4+7}{2}-i|</em>{i=4,5,6,7}\right| = [1.5, 0.5, 0.5, 1.5]$；</p>
+<li><p>$l=3$ : $d_3 = \left|\frac{4+7}{2}-i|_{i=4,5,6,7}\right| = [1.5, 0.5, 0.5, 1.5]$；</p>
 </li>
-<li>$l=4$ : $d<em>4 = \left|\frac{9+11}{2}-i|</em>{i=9,10,11}\right| = [1,0,1]$；</li>
-<li>$l=5$ : $d<em>5 = \left|\frac{13+14}{2}-i|</em>{i=13,14}\right| = [0.5, 0.5]$；</li>
+<li>$l=4$ : $d_4 = \left|\frac{9+11}{2}-i|_{i=9,10,11}\right| = [1,0,1]$；</li>
+<li>$l=5$ : $d_5 = \left|\frac{13+14}{2}-i|_{i=13,14}\right| = [0.5, 0.5]$；</li>
 </ul>
 </blockquote>
 <p>然后我们根据上面计算出来的距离，给每个距离一个权重：</p>
@@ -627,12 +627,12 @@ w_l(i) = \frac{\exp(-d_l(i)/\tau)}{\sum_{i^{'}}^{j_l}\exp(-d_l(i^{'})/\tau)}</sc
 <ul>
 <li><p><em>Slot Finalization</em> 在训练时引入了 <em>end-of-slot token</em>，来和 <em>label</em> 为空的 <em>slot</em> 计算损失函数。在推理时，当且仅当<strong>全部</strong> <em>slot</em> 的预测都为 <em>end-of-slot</em> 时，停止继续解码。</p>
 <blockquote>
-<p>上面我们在介绍 <em>soft binary tree loss</em> 的时候遗留了一个问题：$l=0, 2$ 时怎么办？我们看到当 $l=0, 2$ 时我们不需要插入任何词，这时候我们定义一个 <em>end-of-slot token</em>，这个时候 $l=0, 2$ 对应的 $(y<em>{i_1}, y</em>{i<em>1+1}, …, y</em>{j<em>1})=[\mathrm{EndOfSlot}]$ ，然后我们用 $\mathrm{EndOfSlot}$ 计算损失。推理的时候，当所有的 <em>slot</em> 对应的 $y</em>{i_l}$ 都是  $\mathrm{EndOfSlot}$ 时停止解码。</p>
+<p>上面我们在介绍 <em>soft binary tree loss</em> 的时候遗留了一个问题：$l=0, 2$ 时怎么办？我们看到当 $l=0, 2$ 时我们不需要插入任何词，这时候我们定义一个 <em>end-of-slot token</em>，这个时候 $l=0, 2$ 对应的 $(y_{i_1}, y_{i_1+1}, …, y_{j_1})=[\mathrm{EndOfSlot}]$ ，然后我们用 $\mathrm{EndOfSlot}$ 计算损失。推理的时候，当所有的 <em>slot</em> 对应的 $y_{i_l}$ 都是  $\mathrm{EndOfSlot}$ 时停止解码。</p>
 </blockquote>
 </li>
 <li><p><em>Sequence Finalization</em> 则还是用的传统的 <em>end-of-sequence token</em>，在全部单词都生成之后，将每个 <em>slot</em> 都和 <em>end-of-sequence token</em> 计算损失函数。在推理时，当<strong>任意</strong>一个 <em>slot</em> 的预测结果是 <em>end-of-sequence token</em> 时，停止解码。</p>
 <blockquote>
-<p>回到上面那个 $l=0, 2$ 的问题，在上面使用 <em>Slot Finalization</em> 时，我们令 $(y<em>{i_1}, y</em>{i<em>1+1}, …, y</em>{j_1})=[\mathrm{EndOfSlot}]$ 然后计算相关损失。当使用 <em>Sequence Finalization</em> 时，遇到 $l=0, 2$ 这种情况的时候，我们认为这里需要插入空字符串，跳过这两个位置的损失计算。直到所有的 <em>slot</em> 都不再产生损失（也就是所有 <em>slot</em> 都要插入空字符串）的时候，我们让每个 <em>slot</em> 都和 <em>end-of-sequence token</em> 计算损失。推理的时候，任意一个 <em>slot</em> 的预测是 <em>end-of-sequence token</em> 则停止解码。</p>
+<p>回到上面那个 $l=0, 2$ 的问题，在上面使用 <em>Slot Finalization</em> 时，我们令 $(y_{i_1}, y_{i_1+1}, …, y_{j_1})=[\mathrm{EndOfSlot}]$ 然后计算相关损失。当使用 <em>Sequence Finalization</em> 时，遇到 $l=0, 2$ 这种情况的时候，我们认为这里需要插入空字符串，跳过这两个位置的损失计算。直到所有的 <em>slot</em> 都不再产生损失（也就是所有 <em>slot</em> 都要插入空字符串）的时候，我们让每个 <em>slot</em> 都和 <em>end-of-sequence token</em> 计算损失。推理的时候，任意一个 <em>slot</em> 的预测是 <em>end-of-sequence token</em> 则停止解码。</p>
 </blockquote>
 </li>
 </ul>
@@ -674,10 +674,10 @@ w_l(i) = \frac{\exp(-d_l(i)/\tau)}{\sum_{i^{'}}^{j_l}\exp(-d_l(i^{'})/\tau)}</sc
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -1078,12 +1078,12 @@ Insertion Transformer不仅在效果上远超非自回归模型，而且能以$l
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1355,7 +1355,7 @@ Insertion Transformer不仅在效果上远超非自回归模型，而且能以$l
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1363,7 +1363,7 @@ Insertion Transformer不仅在效果上远超非自回归模型，而且能以$l
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1394,7 +1394,7 @@ Insertion Transformer不仅在效果上远超非自回归模型，而且能以$l
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1744,5 +1744,21 @@ Insertion Transformer不仅在效果上远超非自回归模型，而且能以$l
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

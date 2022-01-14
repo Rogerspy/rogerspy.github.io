@@ -211,12 +211,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -495,10 +495,10 @@ p(s) &= p(w_1, w_2, ..., w_n)\\\\
 <p>比如：</p>
 <blockquote>
 <p>$n=1$ uni-gram:     $p(w_1, w_2, …, w_n) = p(w_i)$</p>
-<p>$n=2$ bi-gram:     $p(w<em>1, w_2, …, w_n) = p(w_1)\prod</em>{i=2}^np(w<em>i|w</em>{i-1})$</p>
-<p>$n=3$ tri-gram:     $p(w<em>1, w_2, …, w_n) = p(w_1)\prod</em>{i=2}^np(w<em>i|w</em>{i-2},w_{i-1})$</p>
+<p>$n=2$ bi-gram:     $p(w_1, w_2, …, w_n) = p(w_1)\prod_{i=2}^np(w_i|w_{i-1})$</p>
+<p>$n=3$ tri-gram:     $p(w_1, w_2, …, w_n) = p(w_1)\prod_{i=2}^np(w_i|w_{i-2},w_{i-1})$</p>
 <p>…</p>
-<p>$n=n$ n-gram:     $p(w<em>1, w_2, …, w_n)=p(w_1)\prod</em>{i=2}^np(w<em>i|w</em>(i-1),…,w_{i-n+1})$</p>
+<p>$n=n$ n-gram:     $p(w_1, w_2, …, w_n)=p(w_1)\prod_{i=2}^np(w_i|w_(i-1),…,w_{i-n+1})$</p>
 </blockquote>
 <p>在实际应用中，$n$ 的选取通常从计算复杂度和模型效果两个方面去考虑，假设 $|\mathcal{V}| = 2 \times 10^5$, 下表给出了常见的 $n$ 的取值对应的计算复杂度和模型效果：</p>
 <div class="table-container">
@@ -538,13 +538,13 @@ p(s) &= p(w_1, w_2, ..., w_n)\\\\
 <p>从表中我们可以看出，随着 $n$ 增大，模型参数量级是指数增加的，在实际应用中通常采用 $n=3$。</p>
 <p>尽管 <em>n-gram</em> 模型将参数量大大降低，但是技术的发展，尤其是互联网技术的发展，我们可以轻松获得大量的语料。对于语言模型来说，一个基本的事实是语料越多模型效果越好，但是另一方面，模型的参数量也会随着词表的增大而剧增，这样就极大的限制了语言模型的发展。</p>
 <h2 id="1-2-神经网络语言模型"><a href="#1-2-神经网络语言模型" class="headerlink" title="1.2 神经网络语言模型"></a>1.2 神经网络语言模型</h2><p>为了解决上述问题，人们开始考虑使用神经网络技术将语言模型映射到连续空间中，我们称之为“语义空间”。</p>
-<p>最早提出使用神经网络对语言进行建模思想的是百度徐伟，在其 2000 年的论文《<a href="https://www.isca-speech.org/archive/archive_papers/icslp_2000/i00_1202.pdf" target="_blank" rel="noopener">Can Artificial Neural Networks Learn Language Models?</a>》提出一种构建 <em>2-gram</em> 语言模型（$p(w<em>i|w</em>{i-1})$）的方法。该方法的基本思路与后来的神经网络语言模型的建模方法已经差别不大了，但是由于他采用的是只有输入层和输出层，而没有隐藏层的神经网络，且只是二元语言模型，因此限制了其模型泛化能力和上下文语义捕捉能力。</p>
+<p>最早提出使用神经网络对语言进行建模思想的是百度徐伟，在其 2000 年的论文《<a href="https://www.isca-speech.org/archive/archive_papers/icslp_2000/i00_1202.pdf" target="_blank" rel="noopener">Can Artificial Neural Networks Learn Language Models?</a>》提出一种构建 <em>2-gram</em> 语言模型（$p(w_i|w_{i-1})$）的方法。该方法的基本思路与后来的神经网络语言模型的建模方法已经差别不大了，但是由于他采用的是只有输入层和输出层，而没有隐藏层的神经网络，且只是二元语言模型，因此限制了其模型泛化能力和上下文语义捕捉能力。</p>
 <p>到 2003 年 <a href="https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf" target="_blank" rel="noopener"><em>Bengio</em></a> 等人提出了真正意义上的神经网络语言模型（<em>Feedforward Neural Network Language Model, FFNNLM</em>），该模型采用四层神经网络来构建语言模型——输入层、投影层、隐藏层和输出层。该模型不仅解决了统计语言模型的维度灾难问题和稀疏性问题，同时还诞生了一个非常重要的副产物——词向量（<em>word vector</em>）。词向量我们会在下文详细介绍。</p>
 <p>直到 2010 年，<a href="https://www.isca-speech.org/archive/archive_papers/interspeech_2010/i10_1045.pdf" target="_blank" rel="noopener"><em>Mikolov</em></a> 等人提出基于 <em>RNN</em> 的语言模型。自此，神经网络语言模型逐渐成为语言模型的主流并得到快速发展。</p>
 <p>2012 年，<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.248.4448&amp;rep=rep1&amp;type=pdf" target="_blank" rel="noopener"><em>Sundermeyer</em></a> 等人提出使用 <em>LSTM</em> 构建语言模型，用来解决长程依赖问题。</p>
 <p>随后的时间，各种神经网络语言模型如雨后春笋般涌现，用来解决各种各样的问题。直到 2018 年，以 <em>ELMO</em>、<em>GPT</em> 和 <em>BERT</em> 为代表的语言模型的出现，正式宣布预训练语言模型时代的到来。本小节先不讨论预训练语言模型的相关内容，留待下文讲解。这里我们先简单介绍一下 <em>FFNN</em>、<em>RNN</em> 、<em>LSTM</em> 三种里程碑式的语言模型的发展，为后续预训练技术在语言模型上的发展奠定基础。</p>
 <h3 id="1-2-1-FFNN-语言模型"><a href="#1-2-1-FFNN-语言模型" class="headerlink" title="1.2.1 FFNN 语言模型"></a>1.2.1 FFNN 语言模型</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201019145634.png" alt></p>
-<p><em>Bengio</em> 等人 2003 年提出的第一个 <em>FFNN</em> 语言模型结构如上图所示。图中最下方表示输入层，$w<em>{t-n+1}, …, w</em>{t-2}, w<em>{t-1}$ 表示前 $n-1$ 个词。上面一层表示投影层，$C(w)$ 表示将词投影到相应的词向量上，$C$ 表示一个大小为 $|\mathcal{V}| \times m$ 的词向量矩阵，矩阵中每一行对应词表中的一个词的词向量，$m$ 代表词向量的维度。实际上 $C(w)$ 就表示从 $C$ 矩阵中找到 $w$ 对应的向量。将词映射成词向量以后，将 $C(w</em>{t-n+1}),…,C(w<em>{t-2}), C(w</em>{t-1})$ 这 $n-1$ 个词向量首尾相接，得到一个 $(n-1)\times m$ 维的向量，记为 $x$。第三层为隐藏层，通过下式计算得到：</p>
+<p><em>Bengio</em> 等人 2003 年提出的第一个 <em>FFNN</em> 语言模型结构如上图所示。图中最下方表示输入层，$w_{t-n+1}, …, w_{t-2}, w_{t-1}$ 表示前 $n-1$ 个词。上面一层表示投影层，$C(w)$ 表示将词投影到相应的词向量上，$C$ 表示一个大小为 $|\mathcal{V}| \times m$ 的词向量矩阵，矩阵中每一行对应词表中的一个词的词向量，$m$ 代表词向量的维度。实际上 $C(w)$ 就表示从 $C$ 矩阵中找到 $w$ 对应的向量。将词映射成词向量以后，将 $C(w_{t-n+1}),…,C(w_{t-2}), C(w_{t-1})$ 这 $n-1$ 个词向量首尾相接，得到一个 $(n-1)\times m$ 维的向量，记为 $x$。第三层为隐藏层，通过下式计算得到：</p>
 <script type="math/tex; mode=display">
 o = \tanh(d + Hx)</script><p>其中，$H \in \mathbb{R}^{h \times (n-1)m}$。最后就是输出层：</p>
 <script type="math/tex; mode=display">
@@ -564,11 +564,11 @@ y = \mathrm{softmax}(b+Wx+U\cdot o)</script><p>其中 $U \in \mathbb{R}^{|\mathc
 <p>其中 $x_t$ 表示第 $t$ 个词，$y_t$ 表示第 $t$ 个词经过编码以后的输出，$h_t^{(i)}$ 表示第 $t$ 个隐藏层的第 $i$ 层，$p_t$ 表示通过第 $t$ 个词预测的第 $t+1$ 个词，$E$ 为词向量矩阵，$W_h$ 和 $W_o$ 分别表示隐层和输出层的权重矩阵。计算过程如下：</p>
 <ol>
 <li>将词映射成词向量：$h_t^{(0)} = Ex_t$</li>
-<li>隐层编码：$h<em>t^{(1)} = \tanh(W_h[h_t^{(0)};h</em>{t-1}^{(1)}]^T)$</li>
+<li>隐层编码：$h_t^{(1)} = \tanh(W_h[h_t^{(0)};h_{t-1}^{(1)}]^T)$</li>
 <li>计算输出层：$y_t=W_oh_t^{(1)}$</li>
 <li>计算输出概率：$p_t=\mathrm{softmax}(y_t)$</li>
 </ol>
-<p>注意：$[h<em>t^{(0)};h</em>{t-1}^{(1)}]^T$ 表示 $h<em>t^{(0)}, h</em>{t-1}^{(1)}$ 两个向量的首尾拼接。</p>
+<p>注意：$[h_t^{(0)};h_{t-1}^{(1)}]^T$ 表示 $h_t^{(0)}, h_{t-1}^{(1)}$ 两个向量的首尾拼接。</p>
 <p>相比于 <em>FFNN</em> 语言模型，<em>RNN</em> 语言模型能够处理变长序列，相当于对整个句子进行编码，即根据句子前面所有的词来预测当前词。这样我们能够获得更加准确的语言模型。另外由于隐层是共享权重的，因此语言模型的参数量被大大降低了。</p>
 <p>虽然 <em>RNN</em> 语言模型有诸多优点，但是也存在严重缺陷。最棘手的问题是由于神经网络梯度消失或者爆炸导致模型在处理远程依赖问题上的无能为力。为了解决这个问题，<em>Sundermeyer</em> 等人提出了 <em>LSTM</em> 语言模型。</p>
 <h3 id="1-2-3-LSTM-语言模型"><a href="#1-2-3-LSTM-语言模型" class="headerlink" title="1.2.3 LSTM 语言模型"></a>1.2.3 LSTM 语言模型</h3><p><img width="648" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/rnnlm_example.png"></p>
@@ -604,7 +604,7 @@ y = \mathrm{softmax}(b+Wx+U\cdot o)</script><p>其中 $U \in \mathbb{R}^{|\mathc
 <li>稀疏。以英文为例，英文字母有26个，英文单词通常由 1-20 个字母组成，为了说明问题我们这里取 10 作为平均数。这 26 个字母有 $26^{10}$ 种排列组合方式，但实际上的英文单词个数远小于这个数。也就是说，真正的英文单词在这种排列组合情况下式非常稀疏的。这种稀疏化的表示方法会给后续的工作带来一系列问题，比如存储、计算等。</li>
 <li>无法表达词与词之间的关联性。比如上面的 “desk” 和 “table” 都有 “桌子” 的意思，那么他们应该具有相似的语义。但是这种 <em>ASCII</em> 码表示法完全无法将这种语义关联性表示出来。</li>
 </ol>
-<h3 id="2-2-2-One-Hot-表示法"><a href="#2-2-2-One-Hot-表示法" class="headerlink" title="2.2.2 One-Hot 表示法"></a>2.2.2 One-Hot 表示法</h3><p>给定一个固定的词表：$\mathcal{V}={w<em>1, w_2, …, w</em>{|\mathcal{V}|}}$。我们使用一个维度为 $\mathcal{|V|}$ 的向量对每个词进行编码，这个向量中对应该词在词表中的索引的维度为 1， 其余为 0：</p>
+<h3 id="2-2-2-One-Hot-表示法"><a href="#2-2-2-One-Hot-表示法" class="headerlink" title="2.2.2 One-Hot 表示法"></a>2.2.2 One-Hot 表示法</h3><p>给定一个固定的词表：$\mathcal{V}=\{w_1, w_2, …, w_{|\mathcal{V}|}\}$。我们使用一个维度为 $\mathcal{|V|}$ 的向量对每个词进行编码，这个向量中对应该词在词表中的索引的维度为 1， 其余为 0：</p>
 <script type="math/tex; mode=display">
 w_i = \begin{cases}
 1 & \mathrm{if} ~ w = w_i\\\\
@@ -646,7 +646,7 @@ w_i = \begin{cases}
 <li><strong>SENNA</strong></li>
 </ul>
 <p><a href="http://www.thespermwhale.com/jaseweston/papers/unified_nlp.pdf" target="_blank" rel="noopener"><em>Ronan Collobert</em> 和 <em>Jason Weston</em></a> 在 2008 年提出了一种新的词向量训练方法，并开源了他们的方法——<a href="http://ml.nec-labs.com/senna/" target="_blank" rel="noopener">SENNA</a>。实际上最初他们并不是想训练一份好的词向量，甚至不想训练语言模型，而是想要去完成 <em>NLP</em> 中的各种任务，比如词性标注、命名实体识别、语义角色标注等。</p>
-<p><em>SENNA</em> 的训练思路是对一个窗口中的 $n$ 个连续的词进行打分，而不是预测下一个词的概率。这实际上是直接尝试近似求解 $p(w<em>{t-n+1}, …, w</em>{t-1}, w_t)$，打分越高说明越接近正常的话，打分越低说明越不像一句正常的话。有了这个假设，就可以定义目标函数：</p>
+<p><em>SENNA</em> 的训练思路是对一个窗口中的 $n$ 个连续的词进行打分，而不是预测下一个词的概率。这实际上是直接尝试近似求解 $p(w_{t-n+1}, …, w_{t-1}, w_t)$，打分越高说明越接近正常的话，打分越低说明越不像一句正常的话。有了这个假设，就可以定义目标函数：</p>
 <script type="math/tex; mode=display">
 \sum_{x \in \mathcal{X}} \sum_{w \in \mathcal{D}} \max\{0, 1-f(x)+f(x^{(w)})\}</script><p>其中 $\mathcal{X}$ 为训练接中素有连续 $n$ 元短语，$\mathcal{D}$ 表示整个词表。 第一个求和相当于选取训练语料中的所有 $n$ 元短语作为正样本，第二个求和相当于随机选择词表中的词构建负样本，构建方法就是将短语 $x$ 最中间的词替换为 $w$，即$x^{(w)}$。这样构建负样本的好处是，通常情况下，一个正常的 $n$ 元短语被替换掉中间的词之后确实会变成负样本，这样保证负样本的可靠性，即使出现替换掉之后仍然是正样本的情况，也属于少数情况，不影响大局；另一方面，由于负样本仅仅是修改了正样本中的一个词，不会让正负样本距离太大影响分类效果。最后希望正样本的打分要比负样本的打分至少高 1 分。</p>
 <p><em>SENNA</em> 模型的整体结构与 <em>FFNNLM</em> 类似，但是由于 <em>SENNA</em> 最后的输出是一个分数而不是下一个词的概率分布，因此输出层只有一个节点，这样大大降低了计算复杂度。</p>
@@ -942,10 +942,10 @@ y_i = \sum_{i=1}^{n-1}C(w_j)^TH_iC(w_i)</script><p>通常我们将形如 $x^TWy$
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -1331,12 +1331,12 @@ y_i = \sum_{i=1}^{n-1}C(w_j)^TH_iC(w_i)</script><p>通常我们将形如 $x^TWy$
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1608,7 +1608,7 @@ y_i = \sum_{i=1}^{n-1}C(w_j)^TH_iC(w_i)</script><p>通常我们将形如 $x^TWy$
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1616,7 +1616,7 @@ y_i = \sum_{i=1}^{n-1}C(w_j)^TH_iC(w_i)</script><p>通常我们将形如 $x^TWy$
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1647,7 +1647,7 @@ y_i = \sum_{i=1}^{n-1}C(w_j)^TH_iC(w_i)</script><p>通常我们将形如 $x^TWy$
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1997,5 +1997,21 @@ y_i = \sum_{i=1}^{n-1}C(w_j)^TH_iC(w_i)</script><p>通常我们将形如 $x^TWy$
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

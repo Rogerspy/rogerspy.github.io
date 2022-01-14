@@ -147,12 +147,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -395,7 +395,7 @@
 \mathcal{V} = \{我, 爱, 北京, 天安门, ...\}</script><blockquote>
 <p>  ps: 实际上对于中文来说，词表可以分成两类：字表和词表。字表就是所有的汉字，词表指的是汉字组成的词。由于中文句子中不存在英文那种使用空格作为词与词之间的分割符的标志，因此怎样准确地进行分词也是中文自然语言处理的非常重要的工作。使用字作为句子的基本单位不存在分词的问题但是会丢失部分以词作为基本单位的语义信息。因此，以字和词作为句子的基本单位各有优劣。我们在这里讨论语言模型的时候以词作为基本单位。</p>
 </blockquote>
-<p>令 $x = w_1w_2…w_n$ 表示一个句子，其中 $w_i \in \mathcal{V}$ 以及 $i \in { 1, …, (n-1)}, n\ge 1$。令 $V$ 表示词表 $\mathcal{V}$ 的大小，写作 $|\mathcal{V}|$。</p>
+<p>令 $x = w_1w_2…w_n$ 表示一个句子，其中 $w_i \in \mathcal{V}$ 以及 $i \in \{ 1, …, (n-1)\}, n\ge 1$。令 $V$ 表示词表 $\mathcal{V}$ 的大小，写作 $|\mathcal{V}|$。</p>
 <p>我们假设 $w_n$ 是一个特殊符号—— $STOP$ ，这个符号包含在词表中（在后面的内容中我们可以看到为什么要定义这样一个符号了），比如：</p>
 <blockquote>
 <p>  我爱北京天安门STOP</p>
@@ -403,7 +403,7 @@
 <p>  小狗好可爱STOP</p>
 <p>  …</p>
 </blockquote>
-<p>令 $\mathcal{V}^+ = {x_1, x_2, …}$ 表示所有由词表中的词组成的句子集合。$\mathcal{V}^+$ 是一个无限集，因为句子的长度是可以任意的（$\ge 1$）。</p>
+<p>令 $\mathcal{V}^+ = \{x_1, x_2, …\}$ 表示所有由词表中的词组成的句子集合。$\mathcal{V}^+$ 是一个无限集，因为句子的长度是可以任意的（$\ge 1$）。</p>
 <p>一个理想的词表应该包含索要处理的语言的所有词汇，但实际上这是不可能的，因为：</p>
 <ol>
 <li>每种语言（被广泛使用的）随时随刻都在产生新的词汇，有些是从别的语言借鉴而来，有些是随着新生事务的产生而产生的；</li>
@@ -424,7 +424,7 @@
 \forall x \in \mathcal{V}^+, p(x) \ge 0, \\\\
 \sum p(X=x) = 1</script><p>建立一个语言模型可以分成以下几步：</p>
 <ol>
-<li>收集训练语料 $x_{1:n}={x_1, x_2, …, x_n}, x_i \in \mathcal{V}^+$；</li>
+<li>收集训练语料 $x_{1:n}=\{x_1, x_2, …, x_n\}, x_i \in \mathcal{V}^+$；</li>
 <li>从语料中构建一个词表 $\mathcal{V}$；</li>
 <li>定义概率分布 $p$ 的参数；</li>
 <li>利用训练语料进行参数估计。</li>
@@ -518,7 +518,7 @@ p_{\theta}(\pmb{X}=\pmb{x}) = \prod_{j=1}^l p_{\theta}(W_j=w_j|W_{j-n+1:j-1}=w_{
 \theta_{w_j|\pmb{h}} = \frac{c(\pmb{h}, w_j)}{\pmb{h}}</script><p>n-Gram 模型中的 $n$ 值越大，模型越接近 Creepy model，$n$ 值越小模型越接近 Uni-Gram 模型。通常 $n$ 值的选取取决于训练数据，这里我们可以通过一些简单的步骤进行 $n$ 值的选取：</p>
 <ol>
 <li>在构建训练数据的时候留出一部分作为验证集；</li>
-<li>令 $\mathcal{N}$ 为你期望的 $n$ 的取值范围集合，比如 $\mathcal{N} = {1,2,3,4,5}$；</li>
+<li>令 $\mathcal{N}$ 为你期望的 $n$ 的取值范围集合，比如 $\mathcal{N} = \{1,2,3,4,5\}$；</li>
 <li>对于任意 $g \in \mathcal{N}$：（a）在训练数据集上构建 $g$-Gram 语言模型；（b）在验证集上计算 $g$-Gram 模型的困惑度（Perplexity，用来评估语言模型好坏的指标，后面会介绍）；</li>
 <li>选择困惑度最低的 $g$-Gram 模型。</li>
 </ol>
@@ -530,7 +530,7 @@ p_{\theta}(\pmb{X}=\pmb{x}) = \prod_{j=1}^l p_{\theta}(W_j=w_j|W_{j-n+1:j-1}=w_{
                                      &= 2^{-\left(\frac{1}{M}\sum_{i=1}^m -\log_2 p(\bar{\pmb{x}}_i)\right)}
 \end{aligned}
 \end{equation}</script><p>其中 $\bar{\pmb{x}}$ 是未参与训练的验证集（<strong>验证集不能参与训练这一点非常重要</strong>），$M$ 是验证集中词的数量。这个公式看起来好吓人哦，但是别着急，我们拆开了，掰碎了一点一点来看，这到底是个什么东西。</p>
-<p>假设我们在训练数据集之外有一个验证数据集，$\langle \bar{\pmb{x}}<em>1, \bar{\pmb{x}}_2, …, \bar{\pmb{x}}_m \rangle$，其中每个 $\bar{\pmb{x}}_i, i \in {1, 2, …, m}$ 都是一个句子，每个句子都是由 $\langle w</em>{i1}, w<em>{i2}, …, w</em>{in} \rangle$ 组成的序列，$w_{ij}, j \in {1,2,…,n}$ 表示句子 $\bar{\pmb{x}}_i$ 中的第 $j$ 个词。 </p>
+<p>假设我们在训练数据集之外有一个验证数据集，$\langle \bar{\pmb{x}}_1, \bar{\pmb{x}}_2, …, \bar{\pmb{x}}_m \rangle$，其中每个 $\bar{\pmb{x}}_i, i \in \{1, 2, …, m\}$ 都是一个句子，每个句子都是由 $\langle w_{i1}, w_{i2}, …, w_{in} \rangle$ 组成的序列，$w_{ij}, j \in \{1,2,…,n\}$ 表示句子 $\bar{\pmb{x}}_i$ 中的第 $j$ 个词。 </p>
 <p>对于验证集中的每一句话我们都可以计算它的概率 $p(\bar{\pmb{x}}_i)$，那么对于整个验证集的所有句子出现的概率为：</p>
 <script type="math/tex; mode=display">
 p(\bar{\pmb{x}})=\prod_{i=1}^m p(\bar{\pmb{x}}_i)</script><p>直观上来讲，语言模型的质量越高，那么 $p(\bar{\pmb{x}})$ 的值应该越大。困惑度指标就是基于这一基本假设提出的。</p>
@@ -553,14 +553,14 @@ p(\bar{\pmb{x}})=\prod_{i=1}^m p(\bar{\pmb{x}}_i)</script><p>直观上来讲，�
 <script type="math/tex; mode=display">
 \mathrm{perplexity} = 2^{-l} \\\\
 l = \frac{1}{N} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i)</script><p>困惑度取了负指数，说明困惑度值越低，语言模型越好。为什么要这样定义呢？我们以最简单的情形加以说明。</p>
-<p>假设我们有一个词表 $\mathcal{V}$ ，词表大小为 $V$，语言模型服从均匀分布，即对于语言模型来说词表中的每个词出现的概率是一样的，比如对于 Uni-Gram 来说 $p(w<em>i) = 1/V$，对于Bi-Gram 来说 $p(w_i|w</em>{i-1})=1/V$ 等等。我们将这样一个分布代入到上面的困惑度计算公式中会发现困惑度为 $V$，也就是词表的大小。</p>
+<p>假设我们有一个词表 $\mathcal{V}$ ，词表大小为 $V$，语言模型服从均匀分布，即对于语言模型来说词表中的每个词出现的概率是一样的，比如对于 Uni-Gram 来说 $p(w_i) = 1/V$，对于Bi-Gram 来说 $p(w_i|w_{i-1})=1/V$ 等等。我们将这样一个分布代入到上面的困惑度计算公式中会发现困惑度为 $V$，也就是词表的大小。</p>
 <p>因此，我们可以认为，<strong>困惑度其实相当于一个等效词表，困惑度的值表明对于模型来说预测下一个词有多少种选择</strong>。比如困惑度为 120 时，当模型遇到“我爱”的时候需要从 120 个选择中准确找到“北京”这个词。（选择越多越困惑）</p>
 <p>接下来我们一步一步解析困惑度的计算过程：</p>
 <ol>
-<li>计算验证集中每个句子的概率：$p(\bar{\pmb{x}}_i), i \in {1, 2, …m}$；</li>
-<li>对每个句子的概率取对数：$\log_2 p(\bar{\pmb{x}}_i), i \in {1,2,…,m}$；</li>
-<li>计算每个词出现的平均概率：$\frac{1}{M} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i), i \in {1,2,…m}$；</li>
-<li>将平均概率作为指数计算：$2^{-\frac{1}{M} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i)}, i \in {1,2,…m}$。</li>
+<li>计算验证集中每个句子的概率：$p(\bar{\pmb{x}}_i), i \in \{1, 2, …m\}$；</li>
+<li>对每个句子的概率取对数：$\log_2 p(\bar{\pmb{x}}_i), i \in \{1,2,…,m\}$；</li>
+<li>计算每个词出现的平均概率：$\frac{1}{M} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i), i \in \{1,2,…m\}$；</li>
+<li>将平均概率作为指数计算：$2^{-\frac{1}{M} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i)}, i \in \{1,2,…m\}$。</li>
 </ol>
 <p>需要注意的是困惑度并不是一个完美的指标，困惑度降低并不一定意味着语言模型质量的提升，影响困惑度的因素主要有以下几个：</p>
 <ol>
@@ -597,7 +597,7 @@ l = \frac{1}{N} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i)</script><p>困惑度取了
 \hat{\theta}(w_j|w_{j-1}, w_{j-2}) &= \alpha_1\theta(w_j|w_{j-1}, w_{j-2})+\alpha_2\theta(w_j|w_{j-1})+\alpha_3\theta(w_j) \\\\
                                    &= \alpha_1 \frac{c(w_{j-2}, w_{j-1}, w_j)}{c(w_{j-2}, w_{j-1})} + \alpha_2\frac{c(w_{j-1}, w_j)}{c(w_{j-1})} + \alpha_3 \frac{c(w_j)}{N}
 \end{aligned}
-\end{equation}</script><p>当 $c(w<em>{j-2}, w</em>{j-1})=0$ 或 $c(w_{j-1})=0$ 时，相应的令 $\alpha_1=0$ 或 $\alpha_2=0$ 。</p>
+\end{equation}</script><p>当 $c(w_{j-2}, w_{j-1})=0$ 或 $c(w_{j-1})=0$ 时，相应的令 $\alpha_1=0$ 或 $\alpha_2=0$ 。</p>
 <h2 id="3-2-加性平滑"><a href="#3-2-加性平滑" class="headerlink" title="3.2 加性平滑"></a>3.2 加性平滑</h2><p>加性平滑又称拉普拉斯平滑，想法非常简单：只需要对每个统计单元词频加 $\alpha$，比如：</p>
 <script type="math/tex; mode=display">
 \hat{\theta}(w_j|w_{j-1}, w_{j-2}) = \frac{\alpha + c(w_{j-2}, w_{j-1}, w_j)}{\alpha \cdot V + c(w_{j-2}, w_{j-1})}</script><p>假设 $c(我，爱)$ 在训练语料中的出现的次数是 100，经过拉普拉斯平滑以后就变成了 $100+\alpha$，这样就一定能避免任意词频出现零的情况。而 $\alpha$ 的选取仍然作为模型的超参数，通过验证集进行选取。在实际的语言模型中通常 $\alpha \lt 1$。</p>
@@ -607,7 +607,7 @@ l = \frac{1}{N} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i)</script><p>困惑度取了
 <li>给所有未出现的词的词频加上相同的数，即认为这些词出现的概率是相同的，这种假设是否合理其实也值得商榷。而且，对于非零词频的词都增加同样的频度值，这是否合理，我们并不能给出一个明确的答案。</li>
 </ol>
 <h2 id="3-3-减值平滑"><a href="#3-3-减值平滑" class="headerlink" title="3.3 减值平滑"></a>3.3 减值平滑</h2><p>之所以会产生零词频，是因为那些非零词频的词出现的概率被模型高估了，占用了原本属于零词频词的概率份额，所以我们可以通过直接从非零词频对应的概率上扣除一部分概率还给零词频词，这就是减值平滑的基本思想。</p>
-<p>以 Bi-Gram 为例，$\theta(w<em>j|w</em>{j-1}) = c(w<em>{j-1}, w_j)/c(w</em>{j-1})$，对于任意 $c(w_{j-1}, w_j)&gt;0$ 的情况，我们都令</p>
+<p>以 Bi-Gram 为例，$\theta(w_j|w_{j-1}) = c(w_{j-1}, w_j)/c(w_{j-1})$，对于任意 $c(w_{j-1}, w_j)&gt;0$ 的情况，我们都令</p>
 <script type="math/tex; mode=display">
 c^*(w_{j-1}, w_j) = c(w_{j-1}, w_j) - \beta</script><p>其中 $\beta \in [0,1]$（通常 $\beta=0.5$），这个 $\beta$ 就是我们从非零词频词的概率上抠下来的份额。</p>
 <p>举个例子，假设 $c(w_{j-1}=我)=48$：</p>
@@ -618,7 +618,7 @@ c^*(w_{j-1}, w_j) = c(w_{j-1}, w_j) - \beta</script><p>其中 $\beta \in [0,1]$�
 <th style="text-align:center">$(w_{j-1}, w_j)$</th>
 <th style="text-align:center">$c(w_{j-1}, w_j)$</th>
 <th style="text-align:center">$c^*(w_{j-1}, w_j)$</th>
-<th style="text-align:center">$c^*(w<em>{j-1})/c(w</em>{j-1}=我)$</th>
+<th style="text-align:center">$c^*(w_{j-1})/c(w_{j-1}=我)$</th>
 </tr>
 </thead>
 <tbody>
@@ -692,10 +692,10 @@ q(\pmb{h}) = 1-\sum_{w_j\in\mathcal{A}(\pmb{h})} \hat{\theta}(\pmb{h}, w_j)</scr
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -1078,12 +1078,12 @@ q(\pmb{h}) = 1-\sum_{w_j\in\mathcal{A}(\pmb{h})} \hat{\theta}(\pmb{h}, w_j)</scr
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1355,7 +1355,7 @@ q(\pmb{h}) = 1-\sum_{w_j\in\mathcal{A}(\pmb{h})} \hat{\theta}(\pmb{h}, w_j)</scr
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1363,7 +1363,7 @@ q(\pmb{h}) = 1-\sum_{w_j\in\mathcal{A}(\pmb{h})} \hat{\theta}(\pmb{h}, w_j)</scr
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1394,7 +1394,7 @@ q(\pmb{h}) = 1-\sum_{w_j\in\mathcal{A}(\pmb{h})} \hat{\theta}(\pmb{h}, w_j)</scr
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1744,5 +1744,21 @@ q(\pmb{h}) = 1-\sum_{w_j\in\mathcal{A}(\pmb{h})} \hat{\theta}(\pmb{h}, w_j)</scr
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

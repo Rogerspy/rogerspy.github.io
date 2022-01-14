@@ -211,12 +211,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -479,7 +479,7 @@ BranchedAttention(Q, K, V) = \sum_{i=1}^M \alpha_i \mathrm{FFN}_i(\overline{head
 <p><del>无论什么原因，下面的介绍我都会替换成<em>Concat</em>。另外，作者介绍<em>Weighted transformer</em>的FFN的时候使用的也是$\sum$，但是从作者在其他的地方的表述来看，这里的求和应该指的也是<em>Concat</em>。比如作者将$\kappa$命名为<em>concatenation weight</em>，另外作者认为<em>weighted transformer</em>的参数只比<em>transformer</em>多了$\alpha$和$\kappa $，所以总的参数量应该是相同的，但是如果在<em>weighted transformer</em>中这一步使用了求和的话，假设$h=8, d_k=d_v=64$， 那么FFN的输出维度应该是（batch_size, seq_len, 64），而<em>Transformer</em>的输出维度是（batch_size, seq_len, 512），这样参数量是不同的， 除非在<em>weighted transformer</em>中作者令$d_k=d_v=512$，但是如果是这样的话，每个<em>head</em>的参数又不同了，所以无论如何<em>weighted trnasformer</em>和<em>transformer</em>的参数都是不同的。因此，我认为这里应该是<em>Concat</em>。</del></p>
 <blockquote>
 <p>刚开始的时候由于思考的不周全，以为是作者在论文中的表述不准确，所以自己瞎讨论半天，后来发现作者的表述没有任何问题，而是自己的问题，所以上面的内容只保留删除线，不把内容删除，用来提醒自己曾经犯过的错误。</p>
-<p>这里解释一下为什么作者表述是正确的，而我的理解是错误的呢？首先说作者在描述<em>transformer</em>的时候用的公式$BranchedAttention(Q, K, V)=\mathrm{FFN}(\sum<em>i^M \overline{head_i})$，我之前认为原始论文中这里应该是<em>Concat</em>而不应该是$\sum$，但是我忽略了一点，就是在<em>transformer</em>原始论文中，是先进行<em>Concat</em>，这个时候输出<em>tensor.shape == (batch_size, seq_len, d_model)</em>，再进行线性变换的时候$W^{O_i}$的形状应该是<em>（d_model, d_model）</em>，所以FFN的输出是<em>(batch_size, seq_len, d_model)</em>。但是本文中是先进行的线性变换，我原先想的是线性变换的<em>tensor.shape == (batch_size, seq_len, d_v)</em>，而$W^{Q_i}.shape == (d_v, d_v)$，这样得到的输出形状是<em>(batch_size, seq_len, d_v)</em>，然后平权求和，如果是这样的话就会出现我上面的错误，缺少<em>Concat</em>和输出维数对应不上的问题。但实际上这里的$W^{Q_i}.shape == (d_v, d</em>{model})$，这样会输出$M$个形状为<em>(batch_size, seq_len, d_model)</em>的<em>tensor</em>（这就是$\overline{head_i}=head_iW^{O_i}$这一步做的事情），然后通过沿着head方向求和就可以得到一个形状为<em>(batch_size, seq_len, d_model)</em>的<em>tensor</em>（这就是$\mathrm{FFN}(\sum \overline{head_i})$这一步做的事情），实际上本文作者的操作和<em>transformer</em>的原始论文的操作是等效的。我的思考主要问题出现在了线性变换这一步的输出上。下面我们继续跟随作者的脚步，看下他在FFN上做了什么文章。</p>
+<p>这里解释一下为什么作者表述是正确的，而我的理解是错误的呢？首先说作者在描述<em>transformer</em>的时候用的公式$BranchedAttention(Q, K, V)=\mathrm{FFN}(\sum_i^M \overline{head_i})$，我之前认为原始论文中这里应该是<em>Concat</em>而不应该是$\sum$，但是我忽略了一点，就是在<em>transformer</em>原始论文中，是先进行<em>Concat</em>，这个时候输出<em>tensor.shape == (batch_size, seq_len, d_model)</em>，再进行线性变换的时候$W^{O_i}$的形状应该是<em>（d_model, d_model）</em>，所以FFN的输出是<em>(batch_size, seq_len, d_model)</em>。但是本文中是先进行的线性变换，我原先想的是线性变换的<em>tensor.shape == (batch_size, seq_len, d_v)</em>，而$W^{Q_i}.shape == (d_v, d_v)$，这样得到的输出形状是<em>(batch_size, seq_len, d_v)</em>，然后平权求和，如果是这样的话就会出现我上面的错误，缺少<em>Concat</em>和输出维数对应不上的问题。但实际上这里的$W^{Q_i}.shape == (d_v, d_{model})$，这样会输出$M$个形状为<em>(batch_size, seq_len, d_model)</em>的<em>tensor</em>（这就是$\overline{head_i}=head_iW^{O_i}$这一步做的事情），然后通过沿着head方向求和就可以得到一个形状为<em>(batch_size, seq_len, d_model)</em>的<em>tensor</em>（这就是$\mathrm{FFN}(\sum \overline{head_i})$这一步做的事情），实际上本文作者的操作和<em>transformer</em>的原始论文的操作是等效的。我的思考主要问题出现在了线性变换这一步的输出上。下面我们继续跟随作者的脚步，看下他在FFN上做了什么文章。</p>
 </blockquote>
 <p><em>Transformer</em>在计算<em>FFN</em>的过程如下：</p>
 <script type="math/tex; mode=display">
@@ -503,10 +503,10 @@ lr = (d_{model}/N)^{-0.5}\cdot \min(steps^{-0.5}, steps \cdot 400^{-1.5})</scrip
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -892,12 +892,12 @@ lr = (d_{model}/N)^{-0.5}\cdot \min(steps^{-0.5}, steps \cdot 400^{-1.5})</scrip
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1169,7 +1169,7 @@ lr = (d_{model}/N)^{-0.5}\cdot \min(steps^{-0.5}, steps \cdot 400^{-1.5})</scrip
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1177,7 +1177,7 @@ lr = (d_{model}/N)^{-0.5}\cdot \min(steps^{-0.5}, steps \cdot 400^{-1.5})</scrip
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1208,7 +1208,7 @@ lr = (d_{model}/N)^{-0.5}\cdot \min(steps^{-0.5}, steps \cdot 400^{-1.5})</scrip
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1558,5 +1558,21 @@ lr = (d_{model}/N)^{-0.5}\cdot \min(steps^{-0.5}, steps \cdot 400^{-1.5})</scrip
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

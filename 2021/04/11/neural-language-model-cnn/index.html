@@ -147,12 +147,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -444,8 +444,8 @@ z_i^{(l, f)}(\pmb{x}) = \begin{cases}
 <ul>
 <li>$z_i^{(l, f)}$ 表示第 $l$ 层网络第 $i$ 个位置的特征输出；</li>
 <li>$\sigma(\cdot)$ 表示 <code>sigmoid</code> 函数或者 <code>Relu</code> 函数；</li>
-<li>$W<em>{TF}^{(l, f)}$ 表示第 $l$  层网络，$f\in \mathrm{Time-Flow}$ 的参数；$W</em>{TA}^{(l, f, i)}$ 表示第 $l$ 层网络第 $i$ 个位置，$f\in \mathrm{Time-Arrow}$ 的参数；</li>
-<li>$\pmb{\hat{z}}<em>i^{(l-1)}$ 表示第 $l-1$ 层第 $i$ 个位置的特征，令 $\pmb{\hat{z}}_i^{(0)}=[x_i^T, x</em>{i+1}^T, \cdots,x_{i+k-1}^T]$，$k$ 表示窗口大小。</li>
+<li>$W_{TF}^{(l, f)}$ 表示第 $l$  层网络，$f\in \mathrm{Time-Flow}$ 的参数；$W_{TA}^{(l, f, i)}$ 表示第 $l$ 层网络第 $i$ 个位置，$f\in \mathrm{Time-Arrow}$ 的参数；</li>
+<li>$\pmb{\hat{z}}_i^{(l-1)}$ 表示第 $l-1$ 层第 $i$ 个位置的特征，令 $\pmb{\hat{z}}_i^{(0)}=[x_i^T, x_{i+1}^T, \cdots,x_{i+k-1}^T]$，$k$ 表示窗口大小。</li>
 </ul>
 <h3 id="2-1-2-门控网络"><a href="#2-1-2-门控网络" class="headerlink" title="2.1.2 门控网络"></a>2.1.2 门控网络</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163036.png" width="400"></p>
 <p>假设有一个第 $l$ 层网络的特征矩阵，然后再第 $l+1$ 层上加门控（窗口大小为 2）。门控网络定义是一个二分类逻辑回归器：</p>
@@ -453,7 +453,7 @@ z_i^{(l, f)}(\pmb{x}) = \begin{cases}
 g_j^{(l+1, f)} = \begin{cases}
 \frac{1}{1+\exp(-W_{gate}^{(l, f, j)}\cdot\bar{\pmb{z}}_j^{(l)})} & f \in \mathrm{Time-Arrow} \\\\
 \frac{1}{1+\exp(-W_{gate}^{(l, f)}\cdot\bar{\pmb{z}}_j^{(l)})} & f \in \mathrm{Time-Flow} 
-\end{cases}</script><p>其中 $\bar{\pmb{z}}<em>j$ 表示第 $j$ 个窗口中将 $\hat{\pmb{z}}</em>{2j-1}^{(l)}$ 和 $\hat{\pmb{z}}_{2j}^{(l)}$ 融合在一起的矩阵。</p>
+\end{cases}</script><p>其中 $\bar{\pmb{z}}_j$ 表示第 $j$ 个窗口中将 $\hat{\pmb{z}}_{2j-1}^{(l)}$ 和 $\hat{\pmb{z}}_{2j}^{(l)}$ 融合在一起的矩阵。</p>
 <p>然后将得到的值与特征矩阵进行加权求和：</p>
 <script type="math/tex; mode=display">
 z_j^{(l+1, f)} = g_j^{(l+1, f)}\cdot z_{2j-1}^{(l, f)} + (1-g_j^{(l+1, f)}) \cdot z_{2j}^{(j, f)}</script><p>这样就得到了 $l+1$ 层的特征矩阵。</p>
@@ -465,7 +465,7 @@ z_j^{(l+1, f)} = g_j^{(l+1, f)}\cdot z_{2j-1}^{(l, f)} + (1-g_j^{(l+1, f)}) \cdo
 </blockquote>
 <h3 id="2-1-3-循环结构"><a href="#2-1-3-循环结构" class="headerlink" title="2.1.3 循环结构"></a>2.1.3 循环结构</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163052.png" width="400"></p>
 <p>就像之前介绍的那样，我们处理使用 $\alpha$CNN 来获取当前信息以外，还会使用 $\beta$CNN 来记录历史信息。$\beta$CNN 只包含 <code>Time-Flow</code> 特征，得到 $\beta$CNN 特征之后将它作为 $\alpha$CNN 输入的第一个词输入给 $\alpha$CNN。所有的 $\beta$CNN 都是相同且循环对齐的，使得 $gen$CNN 能处理任意长度的句子。每个 $\beta$CNN 后面加一个特殊的开关，当没有历史信息的时候就会把开关关掉。</p>
-<p>实验中 $\alpha$CNN 处理的句子长度为 $L<em>\alpha=30\sim40$，也就是说，如果句子长度短于 $L</em>\alpha$ 的话，那么模型就只包含了 $\alpha$CNN。实验中发现，90% 以上的句子可以只用 $\alpha$CNN 就可以， 超过 99% 的句子只需要一个 $\beta$CNN 就可以。实际上作者发现一个更大更深的 $\alpha$CNN 比 更小的 $\alpha$CNN 更多的 $\beta$CNN 结构表现更好。</p>
+<p>实验中 $\alpha$CNN 处理的句子长度为 $L_\alpha=30\sim40$，也就是说，如果句子长度短于 $L_\alpha$ 的话，那么模型就只包含了 $\alpha$CNN。实验中发现，90% 以上的句子可以只用 $\alpha$CNN 就可以， 超过 99% 的句子只需要一个 $\beta$CNN 就可以。实际上作者发现一个更大更深的 $\alpha$CNN 比 更小的 $\alpha$CNN 更多的 $\beta$CNN 结构表现更好。</p>
 <h2 id="2-2-Gated-CNN"><a href="#2-2-Gated-CNN" class="headerlink" title="2.2 Gated-CNN"></a>2.2 Gated-CNN</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411162913.png" width="400"></p>
 <p>上图是 Gated CNN 模型的基本结构，大体上和传统的 CNN 语言模型区别不大，只是在 卷积之后加了一个门控机制：</p>
 <script type="math/tex; mode=display">
@@ -488,7 +488,7 @@ h_l(\pmb{x}) = (\pmb{x}\cdot W +b) \otimes \sigma(\pmb{x} \cdot V + c)</script><
     <td><div align="center"><img width="400" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163423.png"></div></td>
     <td><div align="center"><img width="600" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163437.png"></div></td>
 </tr></table><br>1D 空洞卷积的定义如下：</p>
-<p>输入序列 $\pmb{x} \in \mathbb{R}^{n}$，卷积核 $f:{0, \cdots, k-1} \rightarrow \mathbb{R}$，在序列元素 $s$ 上的空洞卷积操作 $F$ 定义如下：</p>
+<p>输入序列 $\pmb{x} \in \mathbb{R}^{n}$，卷积核 $f:\{0, \cdots, k-1\} \rightarrow \mathbb{R}$，在序列元素 $s$ 上的空洞卷积操作 $F$ 定义如下：</p>
 <script type="math/tex; mode=display">
 F(s) = \sum_{i=0}^{k-1}f(i)\cdot \pmb{x}_s +d\cdot i</script><p>其中 $d$ 是空洞步长（或者空洞卷积的扩张率），$k$ 是卷积核尺寸。</p>
 <p>使用空洞卷积可以使得上层的节点感受野更大，这样也就可以引入更多的历史信息。一般 $d$ 随着层数的指数增加，即 $d=O(2^i)$，其中 $i$ 为层数。每层计算卷积时相隔 $d-1$ 个位置。</p>
@@ -537,10 +537,10 @@ F(s) = \sum_{i=0}^{k-1}f(i)\cdot \pmb{x}_s +d\cdot i</script><p>其中 $d$ 是�
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -549,7 +549,7 @@ F(s) = \sum_{i=0}^{k-1}f(i)\cdot \pmb{x}_s +d\cdot i</script><p>其中 $d$ 是�
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/language-model/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Language Model</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/cnnlm/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>CNNLM</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/cnnlm/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>CNNLM</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/language-model/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Language Model</p></a></div>
 
 
         
@@ -923,12 +923,12 @@ F(s) = \sum_{i=0}^{k-1}f(i)\cdot \pmb{x}_s +d\cdot i</script><p>其中 $d$ 是�
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1200,7 +1200,7 @@ F(s) = \sum_{i=0}^{k-1}f(i)\cdot \pmb{x}_s +d\cdot i</script><p>其中 $d$ 是�
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1208,7 +1208,7 @@ F(s) = \sum_{i=0}^{k-1}f(i)\cdot \pmb{x}_s +d\cdot i</script><p>其中 $d$ 是�
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1239,7 +1239,7 @@ F(s) = \sum_{i=0}^{k-1}f(i)\cdot \pmb{x}_s +d\cdot i</script><p>其中 $d$ 是�
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1589,5 +1589,21 @@ F(s) = \sum_{i=0}^{k-1}f(i)\cdot \pmb{x}_s +d\cdot i</script><p>其中 $d$ 是�
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

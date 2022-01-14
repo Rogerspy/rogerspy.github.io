@@ -147,12 +147,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -606,7 +606,7 @@ p(w_O|w_I) = \frac{\exp(\boldsymbol{v'}_O^\mathsf{T} \cdot \boldsymbol{v}_I)}{\s
 <script type="math/tex; mode=display">
 p(w_O \vert w_I) = \prod_{j-1}^{L(w_O)-1} p(n(w_O,j))</script><p>其中 $L(w_O)$  表示 $w_O$ 的路径长度（Huffman 编码长度）。由于这是一个二叉树，相当于 $p(n(w_O,j))$ 是一个二分类，所以可以使用 $\sigma$ 函数进行计算：</p>
 <script type="math/tex; mode=display">
-p(w_O \vert w_I) = \prod_{j=1}^{L(w_O)-1} \sigma({\mathbb{I}_{\text{turn}} \cdot\boldsymbol{v'}_{n(w_O, j)}}^{\top} \cdot \boldsymbol{v}_{w_I})</script><p>其中 $v’<em>{n(w_O,j)}$ 表示 $n(w</em>,j)$ 节点对应的向量，$\mathbb{I}<em>{\text{turn}}$ 表示特殊的标识函数：如果 $n(w_O,j+1)$ 是 $n(w_O,j)$ 的左子节点，则 $\mathbb{I}</em>{\text{turn}}=1$ ，否则为 $\mathbb{I}_{\text{turn}}=-1$。比如，上图中，我们要计算 $w_2$ 的概率：</p>
+p(w_O \vert w_I) = \prod_{j=1}^{L(w_O)-1} \sigma({\mathbb{I}_{\text{turn}} \cdot\boldsymbol{v'}_{n(w_O, j)}}^{\top} \cdot \boldsymbol{v}_{w_I})</script><p>其中 $v’_{n(w_O,j)}$ 表示 $n(w_,j)$ 节点对应的向量，$\mathbb{I}_{\text{turn}}$ 表示特殊的标识函数：如果 $n(w_O,j+1)$ 是 $n(w_O,j)$ 的左子节点，则 $\mathbb{I}_{\text{turn}}=1$ ，否则为 $\mathbb{I}_{\text{turn}}=-1$。比如，上图中，我们要计算 $w_2$ 的概率：</p>
 <script type="math/tex; mode=display">
 P(w_2 \mid w_I) = \sigma(\boldsymbol{v'}_{n(w_2,1)}^\top \boldsymbol{v}_I) \cdot \sigma(\boldsymbol{v'}_{n(w_2,2)}^\top \boldsymbol{v}_I) \cdot \sigma(-\boldsymbol{v'}_{n(w_2,3)}^\top \boldsymbol{v}_I)</script><p>内部节点的向量 $\boldsymbol{v’}_{n(w_i, j)}$ 可以通过训练得到。由 $\sigma(\cdot)$ 的定义：</p>
 <script type="math/tex; mode=display">
@@ -617,15 +617,15 @@ P(w_2 \mid w_I) = \sigma(\boldsymbol{v'}_{n(w_2,1)}^\top \boldsymbol{v}_I) \cdot
 <p>需要注意的是，我们在训练过程中，由于已知我们需要预测的词是哪一个，所以只需要计算对应的词的概率，然后进行优化即可。但是在推理过程中，我们并不知道哪个词是最优解，所以还是需要遍历整个词表。所以基于 Huffman 树的 word2vec 加速了训练过程而没有加速推理过程。</p>
 <h3 id="2-3-3-交叉熵（Cross-Entropy）"><a href="#2-3-3-交叉熵（Cross-Entropy）" class="headerlink" title="2.3.3 交叉熵（Cross Entropy）"></a>2.3.3 交叉熵（Cross Entropy）</h3><p>交叉熵用于度量两个概率（$p$ 和 $q$​​）分布间的差异性信息的一个指标。计算公式如下：</p>
 <script type="math/tex; mode=display">
-H(p, q) = -\sum_xp(x)\log q(x)</script><p>当交叉熵用于损失函数的时候，我们需要度量的是真实标签概率分布（$\boldsymbol{y}<em>{true}$）和模型输出标签概率分布（$\boldsymbol{y}</em>{pred}$）之间的差异，即：</p>
+H(p, q) = -\sum_xp(x)\log q(x)</script><p>当交叉熵用于损失函数的时候，我们需要度量的是真实标签概率分布（$\boldsymbol{y}_{true}$）和模型输出标签概率分布（$\boldsymbol{y}_{pred}$）之间的差异，即：</p>
 <script type="math/tex; mode=display">
-H(\boldsymbol{y}_{true}, \boldsymbol{y}_{pred}) = -\sum \boldsymbol{y}_{true}\cdot \log(\boldsymbol{y}_{pred})</script><p>在我们的情况下，$\boldsymbol{y}<em>{true}$​ 中只有 $y</em>{i=O}=1$​，其余位置 $y<em>j$​ 全部是 0，$\boldsymbol{y}</em>{pred} = p(w_i|w_I)$​。也就是说，我们只需要计算 $w_i=w_O$​ 位置的交叉熵即可，如下图所示。 </p>
+H(\boldsymbol{y}_{true}, \boldsymbol{y}_{pred}) = -\sum \boldsymbol{y}_{true}\cdot \log(\boldsymbol{y}_{pred})</script><p>在我们的情况下，$\boldsymbol{y}_{true}$​ 中只有 $y_{i=O}=1$​，其余位置 $y_j$​ 全部是 0，$\boldsymbol{y}_{pred} = p(w_i|w_I)$​。也就是说，我们只需要计算 $w_i=w_O$​ 位置的交叉熵即可，如下图所示。 </p>
 <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210813001314.jpg" alt></p>
 <script type="math/tex; mode=display">
-\mathcal{L}_{\theta} = H(y_i, w_i) = -\sum_{i=1}^{V}y_i\log p(w_i|w_I) \overset{i=O}{=} -\log p(w_O|w_I)</script><p>式中 $\theta$ 表示我们需要训练的参数。如上面介绍的，交叉熵是用来度量两个分布的差异性的指标。对于我们的模型来说，当然是 $\boldsymbol{y}<em>{ture}$ 和 $\boldsymbol{y}</em>{pred}$​ 的差异越小越好。所以我们模型训练最终的目的是<strong>最小化交叉熵</strong>。</p>
+\mathcal{L}_{\theta} = H(y_i, w_i) = -\sum_{i=1}^{V}y_i\log p(w_i|w_I) \overset{i=O}{=} -\log p(w_O|w_I)</script><p>式中 $\theta$ 表示我们需要训练的参数。如上面介绍的，交叉熵是用来度量两个分布的差异性的指标。对于我们的模型来说，当然是 $\boldsymbol{y}_{ture}$ 和 $\boldsymbol{y}_{pred}$​ 的差异越小越好。所以我们模型训练最终的目的是<strong>最小化交叉熵</strong>。</p>
 <p>将 $p(w_O|w_I)$ 的 full softmax 公式代入交叉熵损失函数中得到：</p>
 <script type="math/tex; mode=display">
-\mathcal{L}_{\theta} = -\log \frac{\exp(\boldsymbol{v'}_{O}^\mathsf{T} \cdot \boldsymbol{v}_I)}{\sum_{j=1}^V\exp(\boldsymbol{v'}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I)}=-\boldsymbol{v'}_{O}^\mathsf{T} \cdot \boldsymbol{v}_I + \log \sum_{j=1}^V \exp(\boldsymbol{v'}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I)</script><p>使用随机梯度下降算法对模型开始训练，需要计算损失函数的梯度。为了简化，我们令 $z<em>{IO}=\boldsymbol{v’}</em>{O}^\mathsf{T} \cdot \boldsymbol{v}<em>I$​ 及 $z</em>{Ij}=\boldsymbol{v’}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I$​。</p>
+\mathcal{L}_{\theta} = -\log \frac{\exp(\boldsymbol{v'}_{O}^\mathsf{T} \cdot \boldsymbol{v}_I)}{\sum_{j=1}^V\exp(\boldsymbol{v'}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I)}=-\boldsymbol{v'}_{O}^\mathsf{T} \cdot \boldsymbol{v}_I + \log \sum_{j=1}^V \exp(\boldsymbol{v'}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I)</script><p>使用随机梯度下降算法对模型开始训练，需要计算损失函数的梯度。为了简化，我们令 $z_{IO}=\boldsymbol{v’}_{O}^\mathsf{T} \cdot \boldsymbol{v}_I$​ 及 $z_{Ij}=\boldsymbol{v’}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I$​。</p>
 <script type="math/tex; mode=display">
 \begin{equation} \nonumber
 \begin{aligned}
@@ -636,7 +636,7 @@ H(\boldsymbol{y}_{true}, \boldsymbol{y}_{pred}) = -\sum \boldsymbol{y}_{true}\cd
                                  &= -\nabla_\theta z_{IO} + \sum_{j=1}^V p(w_j|w_I) \cdot \nabla_\theta z_{Ij} \\\\
                                  &= -\nabla_\theta z_{IO} + \mathbb{E}_{w_j \sim Q(\bar{w})} \cdot \nabla_\theta z_{Ij}
 \end{aligned}
-\end{equation}</script><p>将 $z<em>{IO}$ 和 $z</em>{Ij}$ 代回原式，根据下面两式：</p>
+\end{equation}</script><p>将 $z_{IO}$ 和 $z_{Ij}$ 代回原式，根据下面两式：</p>
 <script type="math/tex; mode=display">
 \nabla_\theta z_{IO} =  \frac{\partial (\boldsymbol{v'}_{O}^\mathsf{T} \cdot \boldsymbol{v}_I)}{\partial \boldsymbol{v}_I} = \boldsymbol{v'}_{O} ,\quad
 \nabla_\theta z_{Ij} = \frac{\partial (\boldsymbol{v'}_{j}^\mathsf{T} \cdot \boldsymbol{v}_I)}{\partial \boldsymbol{v}_I} = \boldsymbol{v'}_{j} \\\\</script><p>可得：</p>
@@ -650,7 +650,7 @@ H(\boldsymbol{y}_{true}, \boldsymbol{y}_{pred}) = -\sum \boldsymbol{y}_{true}\cd
 \mathcal{L}_\theta = - \left[ \log p(d=1 \vert w_O, w_I) + \sum_{i=1, \tilde{w}_i \sim Q}^N \log p(d=0|\tilde{w}_i, w_I) \right]</script><p>$d$ 表示二分类器的输出标签。</p>
 <p>当 $N$ 足够大时，根据<a href="https://en.wikipedia.org/wiki/Law_of_large_numbers" target="_blank" rel="noopener">大数定理</a>可得:</p>
 <script type="math/tex; mode=display">
-\mathcal{L}_\theta = - \left[ \log p(d=1 \vert w_O, w_I) + N\mathbb{E}_{\tilde{w}_i \sim Q} \log p(d=0|\tilde{w}_i, w_I) \right]</script><p>为了计算概率分布 $p(d=1 \vert w<em>O, w_I)$，我们可以从联合概率 $p(d, w_j \vert w_I), w_j \in [w_O, \tilde{w}_1, \tilde{w}_2, \dots, \tilde{w}_N]$。我们有 $1/(N+1)$ 的概率得到 $w_j=w_O$，这个概率是一个条件概率 $p(w_j=w_O\vert w_I)$，同时我们有 $N/(N+1)$ 的概率得到噪声词 $q(\tilde{w}</em>{1:N})$。</p>
+\mathcal{L}_\theta = - \left[ \log p(d=1 \vert w_O, w_I) + N\mathbb{E}_{\tilde{w}_i \sim Q} \log p(d=0|\tilde{w}_i, w_I) \right]</script><p>为了计算概率分布 $p(d=1 \vert w_O, w_I)$，我们可以从联合概率 $p(d, w_j \vert w_I), w_j \in [w_O, \tilde{w}_1, \tilde{w}_2, \dots, \tilde{w}_N]$。我们有 $1/(N+1)$ 的概率得到 $w_j=w_O$，这个概率是一个条件概率 $p(w_j=w_O\vert w_I)$，同时我们有 $N/(N+1)$ 的概率得到噪声词 $q(\tilde{w}_{1:N})$。</p>
 <script type="math/tex; mode=display">
 p(d, w_j | w_I) = 
 \begin{cases} 
@@ -680,7 +680,7 @@ p(d=0 \vert w, w_I) &= \frac{p(d=0, w \vert w_I)}{p(d=1, w \vert w_I) + p(d=0, w
 <li><p>将 $Z(w_I)$ 视作常数。<a href="https://www.cs.toronto.edu/~amnih/papers/ncelm.pdf" target="_blank" rel="noopener">Mnih &amp; Teh, 2012</a> 证明对于参数量很大的神经网络模型来说，将 $Z(w_I)$ 固定为 1 对每个 $w_I$ 仍是成立的。此时，上面的损失函数可以简化成：</p>
 <script type="math/tex; mode=display">
 \mathcal{L}_\theta = - \left[ \log \frac{\exp({v'_w}^{\top}{v_{w_I}})}{\exp({v'_w}^{\top}{v_{w_I}}) + Nq(\tilde{w})} + \sum_{\substack{i=1 \\ \tilde{w}_i \sim Q}}^N \log \frac{Nq(\tilde{w}_i)}{\exp({v'_w}^{\top}{v_{w_I}}) + Nq(\tilde{w}_i)}\right]</script><ul>
-<li><p>这种情况下，我们可以证明，当 $N \to \infty$ 时，$\nabla<em>\theta \mathcal{L}</em>{NCE}=\nabla<em>\theta\mathcal{L}</em>{entrpy}$。证明过程可参看 <a href="https://www.cs.toronto.edu/~amnih/papers/ncelm.pdf" target="_blank" rel="noopener">Mnih &amp; Teh, 2012</a>。所以 NCE 的优化目标和交叉熵是一样的。作者还发现，当 $N=25$ 时，效果就已经与标准 softmax 效果差不多了，但是速度提升了 45 倍。</p>
+<li><p>这种情况下，我们可以证明，当 $N \to \infty$ 时，$\nabla_\theta \mathcal{L}_{NCE}=\nabla_\theta\mathcal{L}_{entrpy}$。证明过程可参看 <a href="https://www.cs.toronto.edu/~amnih/papers/ncelm.pdf" target="_blank" rel="noopener">Mnih &amp; Teh, 2012</a>。所以 NCE 的优化目标和交叉熵是一样的。作者还发现，当 $N=25$ 时，效果就已经与标准 softmax 效果差不多了，但是速度提升了 45 倍。</p>
 </li>
 <li><p>实际上 $Z(w_I)$ 到底取值是多少，不同作者都有过不同的尝试。但是从表现来看，不同点只是开始的时候收敛速度不同，最终的结果相差不大。</p>
 </li>
@@ -697,7 +697,7 @@ p(d=0 \vert w, w_I) &= \frac{p(d=0, w \vert w_I)}{p(d=1, w \vert w_I) + p(d=0, w
 <p>NCE 处理似乎是故意绕开了标准 Softmax 计算量最大的分母，但其背后有充分的理论推导和证明。如果直接在最大似然估计上用这两种假设（之一）是否可行？</p>
 <p>答案还真是不行。两种情况：</p>
 <ol>
-<li>如果最大似然估计中的 $Z(w<em>I)$ 为常数，那么 $\mathcal{L}</em>\theta$ 的第二项 $\log Z(w<em>I)$ 就是常数，这就意味着 $\mathcal{L}</em>\theta$ 的导数的第二项就为 0。也就是噪声词的词向量缺少约束，模型只需要让目标词的概率变大即可，最坏情况下预测所有词的概率为 1 即可。</li>
+<li>如果最大似然估计中的 $Z(w_I)$ 为常数，那么 $\mathcal{L}_\theta$ 的第二项 $\log Z(w_I)$ 就是常数，这就意味着 $\mathcal{L}_\theta$ 的导数的第二项就为 0。也就是噪声词的词向量缺少约束，模型只需要让目标词的概率变大即可，最坏情况下预测所有词的概率为 1 即可。</li>
 <li>如果 $Z(w_I)$ 为可训练的一个参数，这个参数没有和数据产生任何联系，只需要简单的变小，就可以让似然概率变大，得到一个完全与数据无关的结果，所以也不可行。</li>
 </ol>
 <h3 id="2-3-5-Negative-Sampling"><a href="#2-3-5-Negative-Sampling" class="headerlink" title="2.3.5 Negative Sampling"></a>2.3.5 Negative Sampling</h3><p><em><a href="https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf" target="_blank" rel="noopener">Mikolov</a></em> 等人 2013 年提出的负采样方法是 NCE 的一个简化版变种。因为 word2vec 的目标是训练高质量的词向量，而不是对自然语言中的词进行建模。所以，<em>Mikolov</em> 等人在 NCE 的基础上进一步简化。</p>
@@ -715,13 +715,13 @@ p(d=0\vert w, w_I) &= \frac{1}{p(w \vert w_I) + 1} \\\\
 <script type="math/tex; mode=display">
 \mathcal{L}_\theta =  - \left[ \log \sigma({v'_{w}}^\top v_{w_I}) + \sum_{\substack{i=1 \\ \tilde{w}_i \sim Q}}^N \log \sigma(-{v'_{\tilde{w}_i}}^\top v_{w_I}) \right]</script><p>因为 $Nq(\tilde{w})=1$，所以 $q(\tilde{w})=1/N$ 是一个均匀分布。这里的均匀采样并不是每个词采样概率相同，而是在总的语料中进行均匀采样。这就意味着，它实际上是按照每个词本身的词频来进行采样的，词频越高，采样的概率就越高。这种情况下，模型最终拟合的实际是词的互信息。详细解答看这里：<a href="https://spaces.ac.cn/archives/5617" target="_blank" rel="noopener">“噪声对比估计”杂谈：曲径通幽之妙</a>。互信息与条件概率的区别就类似：条件概率反映“我认识周杰伦，周杰伦却不认识我”，而互信息反映的是“你认识我，我也认识你”。所以，通常负采样的效果比层次 softmax 要好一些。</p>
 <h2 id="2-4-一些小技巧"><a href="#2-4-一些小技巧" class="headerlink" title="2.4 一些小技巧"></a>2.4 一些小技巧</h2><ul>
-<li><p><strong>Soft slide window</strong>。利用滑动窗口构建输入词和输出词样本对的时候，我们可以给距离较远的词更低的权重。比如，设置窗口就最大值 $s<em>{\text{max}}$，然后每次训练时的真实窗口大小是从 $[1, s</em>{\text{max}}]$ 中进行随机采样。因此，每个上下文词都有 $1/(d)$ 的概率被取到，其中 $d$ 表示到中心词的距离。</p>
+<li><p><strong>Soft slide window</strong>。利用滑动窗口构建输入词和输出词样本对的时候，我们可以给距离较远的词更低的权重。比如，设置窗口就最大值 $s_{\text{max}}$，然后每次训练时的真实窗口大小是从 $[1, s_{\text{max}}]$ 中进行随机采样。因此，每个上下文词都有 $1/(d)$ 的概率被取到，其中 $d$ 表示到中心词的距离。</p>
 </li>
 <li><p><strong>下采样高频词</strong>。极端高端的词可能由于太常见而无法得以区分（比如停用词）。而低频词可能会带有很重要的信息。为了平衡高频词和低频词，<em>Mikolov</em> 等人提出采样时对每个词施加一个采样概率 $1-\sqrt{t/f(w)}$。其中 $f(w)$ 表示词频，$t$ 表示相关性阈值，通常取值为 $10^{-5}$。</p>
 </li>
 <li><p><strong>先学词组</strong>。词组表示一个有意义的概念单元，而非简单的独立单词的组合。先学习这些词组将他们作为一个词单元来处理可以提升词向量的质量。比如基于 unigram 和 bigram 统计：</p>
 <script type="math/tex; mode=display">
-s_{\text{phrase}} = \frac{C(w_i w_j) - \delta}{ C(w_i)C(w_j)}</script><p>其中 $C(\cdot)$ 表示 unigram $w<em>i$ 或 bigram $w_iw_j$ 的数量，$\delta$ 表示衰减阈值，防止过高频的词或词组。$s</em>{\text{phrase}}$ 得分越高则采样几率越高。为了形成长于两个单词的短语，我们可以随着分数截止值的降低多次扫描词汇表。</p>
+s_{\text{phrase}} = \frac{C(w_i w_j) - \delta}{ C(w_i)C(w_j)}</script><p>其中 $C(\cdot)$ 表示 unigram $w_i$ 或 bigram $w_iw_j$ 的数量，$\delta$ 表示衰减阈值，防止过高频的词或词组。$s_{\text{phrase}}$ 得分越高则采样几率越高。为了形成长于两个单词的短语，我们可以随着分数截止值的降低多次扫描词汇表。</p>
 </li>
 </ul>
 <h1 id="3-Count-based-GloVe"><a href="#3-Count-based-GloVe" class="headerlink" title="3. Count-based: GloVe"></a>3. Count-based: GloVe</h1><p>GloVe（<em>The Global Vector</em>）是 <a href="http://www.aclweb.org/anthology/D14-1162" target="_blank" rel="noopener">Pennington</a> 等人于 2014 年提出的模型。 GloVe 结合了 矩阵分解和 skip-gram 模型。</p>
@@ -729,7 +729,7 @@ s_{\text{phrase}} = \frac{C(w_i w_j) - \delta}{ C(w_i)C(w_j)}</script><p>其中 
 <script type="math/tex; mode=display">
 p_{\text{co}}(w_k \vert w_i) = \frac{C(w_i, w_k)}{C(w_i)}</script><p>$C(w_i, w_k)$ 表示 $w_i$ 和 $w_k$ 的共现频率。假设有两个词 $w_i=”ice”$ 和 $w_j=”steam”$，第三个词 $\tilde{w}_k=”solid”$ 与 $”ice”$ 相关，但是与 $”steam”$ 无关，我们希望：</p>
 <script type="math/tex; mode=display">
-p_{\text{co}}(\tilde{w}_k \vert w_i) > p_{\text{co}}(\tilde{w}_k \vert w_j)</script><p>因此 $\frac{p<em>{\text{co}}(\tilde{w}_k \vert w_i)}{p</em>{\text{co}}(\tilde{w}<em>k \vert w_j)}$ 会非常大。而如果 $\tilde{w}_k=”water”$ 与 $”ice”$ 和 $”steam”$ 都有关系，或者 $\tilde{w}_k=”fashion”$ 与两者都没有关系，$\frac{p</em>{\text{co}}(\tilde{w}<em>k \vert w_i)}{p</em>{\text{co}}(\tilde{w}_k \vert w_j)}$ 会接近 1。</p>
+p_{\text{co}}(\tilde{w}_k \vert w_i) > p_{\text{co}}(\tilde{w}_k \vert w_j)</script><p>因此 $\frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}$ 会非常大。而如果 $\tilde{w}_k=”water”$ 与 $”ice”$ 和 $”steam”$ 都有关系，或者 $\tilde{w}_k=”fashion”$ 与两者都没有关系，$\frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}$ 会接近 1。</p>
 <p>以上描述给我们的直观感受就是，词义是通过共现概率分布的比例得到的，而非共现概率本身。所以，GloVe 模型是将第三个词的向量取决于另两个词之间的关系：</p>
 <script type="math/tex; mode=display">
 F(w_i, w_j, \tilde{w}_k) = \frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}</script><p>确定 $F$ 的函数形式过程如下：</p>
@@ -737,7 +737,7 @@ F(w_i, w_j, \tilde{w}_k) = \frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{
 <li><p>$F(w_i, w_j, \tilde{w}_k)$ 是考察 $i, j, k$ 三个词的相似关系，不妨单独考察 $i, j$ 两个词。在线性空间中，两个向量的相似性最简单的就是欧氏距离 $v_i, v_j$，所以 $F$ 可以是</p>
 <script type="math/tex; mode=display">
 F(w_i-w_j, \tilde{w}_k) = \frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}</script></li>
-<li><p>$\frac{p<em>{\text{co}}(\tilde{w}_k \vert w_i)}{p</em>{\text{co}}(\tilde{w}_k \vert w_j)}$ 是一个标量，而 $F$ 是作用在两个向量上的，向量与矢量之间的关系自然就可以想到内积，所以进一步确定 $F$ 的形式：</p>
+<li><p>$\frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}$ 是一个标量，而 $F$ 是作用在两个向量上的，向量与矢量之间的关系自然就可以想到内积，所以进一步确定 $F$ 的形式：</p>
 <script type="math/tex; mode=display">
 F((w_i-w_j) \top \tilde{w}_k) = F(w_i\top \tilde{w}_k-w_j \top \tilde{w}_k) = \frac{p_{\text{co}}(\tilde{w}_k \vert w_i)}{p_{\text{co}}(\tilde{w}_k \vert w_j)}</script></li>
 <li><p>上式中，左边是差，右边是商。可以通过 $\exp(\cdot)$ 函数将两者结合在一起：</p>
@@ -821,10 +821,10 @@ f(x) = \begin{cases}
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -1210,12 +1210,12 @@ f(x) = \begin{cases}
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1487,7 +1487,7 @@ f(x) = \begin{cases}
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1495,7 +1495,7 @@ f(x) = \begin{cases}
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1526,7 +1526,7 @@ f(x) = \begin{cases}
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1876,5 +1876,21 @@ f(x) = \begin{cases}
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

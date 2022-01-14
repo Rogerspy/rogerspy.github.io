@@ -211,12 +211,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -458,23 +458,23 @@
 <p>本文继续介绍关于<em>transformer</em>在<em>non-auto regression</em>方面的研究，今天要介绍的是<em>Gu et al. 2018</em> 发表在<em>ICLR 2018</em>上的文章<a href="http://arxiv.org/abs/1711.02281" target="_blank" rel="noopener">Non-autoregressive neural machine translation</a> 。</p>
 <a id="more"></a>
 <h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><p>之前我们介绍了由于<em>transformer</em>的<em>auto-regression</em>机制，导致模型在做推理的时候会变得非常慢。针对这个问题很多研究者都做了探索，之前介绍的几篇论文都没有真正做到<em>non-auto regression</em>，而今天我们要介绍的这篇文章则从根本上做到了<em>non-auto regression</em>。</p>
-<h2 id="1-1-Auto-Regressive-Decoding"><a href="#1-1-Auto-Regressive-Decoding" class="headerlink" title="1.1 Auto-Regressive Decoding"></a>1.1 Auto-Regressive Decoding</h2><p>给定一个源序列$X={x<em>1, x_2, …, x</em>{T’}}$，翻译模型通过链式条件概率的方式预测输出序列$Y = { y_1, y_2, …, y_T}$:</p>
+<h2 id="1-1-Auto-Regressive-Decoding"><a href="#1-1-Auto-Regressive-Decoding" class="headerlink" title="1.1 Auto-Regressive Decoding"></a>1.1 Auto-Regressive Decoding</h2><p>给定一个源序列$X=\{x_1, x_2, …, x_{T’}\}$，翻译模型通过链式条件概率的方式预测输出序列$Y = \{ y_1, y_2, …, y_T\}$:</p>
 <script type="math/tex; mode=display">
-p_{AR}(Y|X;\theta) = \Pi_{t=1}^{T+1} p(y_t|y_{0:t-1}, x_{1:T'};\theta)</script><p>其中$y<em>0$表示句子开始符，比如$BOS$；$y</em>{T+1}$表示句子结束符，比如$EOS$ 。</p>
+p_{AR}(Y|X;\theta) = \Pi_{t=1}^{T+1} p(y_t|y_{0:t-1}, x_{1:T'};\theta)</script><p>其中$y_0$表示句子开始符，比如$BOS$；$y_{T+1}$表示句子结束符，比如$EOS$ 。</p>
 <h2 id="1-2-Maximum-Likelihood-training"><a href="#1-2-Maximum-Likelihood-training" class="headerlink" title="1.2  Maximum Likelihood training"></a>1.2  Maximum Likelihood training</h2><p>训练的时候直接使用<em>Maximum Likelihood training</em>方法对模型进行训练：</p>
 <script type="math/tex; mode=display">
-L_{ML} = \log P_{AR}\{Y|X;\theta\} = \sum_{t=1}^{T+1} \log p(y_t|y_{0:t-1},x_{1:T'};\theta)</script><h2 id="1-3-Non-Auto-regressive-Decoding"><a href="#1-3-Non-Auto-regressive-Decoding" class="headerlink" title="1.3 Non-Auto regressive Decoding"></a>1.3 Non-Auto regressive Decoding</h2><p>从上面的$p_{AR}(Y|X;\theta)$中可以看出，实际上要预测$Y={y_t}$需要两个条件：</p>
+L_{ML} = \log P_{AR}\{Y|X;\theta\} = \sum_{t=1}^{T+1} \log p(y_t|y_{0:t-1},x_{1:T'};\theta)</script><h2 id="1-3-Non-Auto-regressive-Decoding"><a href="#1-3-Non-Auto-regressive-Decoding" class="headerlink" title="1.3 Non-Auto regressive Decoding"></a>1.3 Non-Auto regressive Decoding</h2><p>从上面的$p_{AR}(Y|X;\theta)$中可以看出，实际上要预测$Y=\{y_t\}$需要两个条件：</p>
 <ul>
 <li>知道$Y$的长度$T$，虽然对于<em>auto-regression</em>来说，解码过程并不知道$T$显示的值，但是由于编码的开始和结束可以通过句子开始符（$&lt; BOS&gt;$）和句子结束符（$&lt; EOS&gt;$）来控制，编码过程是一个词一个词的生成 ，知道遇到结束符，则编码过程结束。因此，模型可以隐式的知道$T$的值。但是对于并行生成句子序列，我们必须提前知道句子的长度，才能一次性生成一个长度为$T$的序列，所以对于<em>Non-auto reregression</em>来说$T$必须是显式的；</li>
 <li>第二点当然就是$Y$序列本身了，当知道了需要预测的序列长度，就可以根据输入预测输出了。</li>
 </ul>
-<p>因此，我们可以把预测$Y={y_t}$任务分为两部分，第一部分预测$T$的大小，第二部分生成长度为$T$的序列：</p>
+<p>因此，我们可以把预测$Y=\{y_t\}$任务分为两部分，第一部分预测$T$的大小，第二部分生成长度为$T$的序列：</p>
 <script type="math/tex; mode=display">
 p_{NA}(Y|X;\theta) = p_L(T|x_{1:T'};\theta)\cdot \Pi_{t=1}^{T} p(y_t|x_{1:T'};\theta)</script><p>这样我们就可以分别独立的训练这两部分，而在推理的时候 能并行计算。</p>
 <h2 id="1-4-多模态问题"><a href="#1-4-多模态问题" class="headerlink" title="1.4 多模态问题"></a>1.4 多模态问题</h2><p>这种简单的方法虽然看起来合理，但是实际上有一个很大的问题：多模态问题 。具体来说就是同一句话有多种翻译方式，比如<em>Thank you</em>可以翻译成<em>谢谢</em>、<em>感谢</em>等。由于$p(y_t)$只与$X$有关，所以无法获得训练数据中<em>谢谢</em>、<em>感谢</em> 等不同翻译方式的分布。</p>
 <p>当<em>A B</em>既可以翻译成<em>1 2 3</em>，又可以翻译成<em>4 5 6</em>时，实际上相当于</p>
 <script type="math/tex; mode=display">
-\{A, B\} => \{1, 2, 3, 4, 5, 6\}</script><p>的一个映射，而最佳的映射组合是${1,2,3}$和${4,5,6}$，但是由于<em>non-auto regression</em>每个词都是独立的，所以无法获取到词与词之间的依赖关系，每种序列组合称为<em>mode</em>。</p>
+\{A, B\} => \{1, 2, 3, 4, 5, 6\}</script><p>的一个映射，而最佳的映射组合是$\{1,2,3\}$和$\{4,5,6\}$，但是由于<em>non-auto regression</em>每个词都是独立的，所以无法获取到词与词之间的依赖关系，每种序列组合称为<em>mode</em>。</p>
 <p>另外使用<em>Maxium Likelihood</em>进行训练的时候，模型倾向于使用在训练集中出现概率最大的<em>mode</em>覆盖掉其他小概率<em>mode</em>，这实际上是有一定问题的。</p>
 <p>要解决多模态问题，一般有三种方法：</p>
 <ul>
@@ -504,7 +504,7 @@ Round(T't/T)</script><p>假设源序列长度是$T’$，目标序列长度是$T
 <p>源序列：[Thank, you, !]</p>
 <p>目标序列：[谢谢, ！]</p>
 </blockquote>
-<p>源序列的长度是3，目标序列的长度是2。那么解码器的输入第0个位置的元素应该对应源序列中第 $3 \times 0/2=0$，个元素，即<em>Thank</em>；解码器的输入序列的第1个元素，应该对应源序列中第$3 \times 1/2=1.5$，四舍五入得2，即<em>！</em>。那么解码器的输入序列应该为${Thank , !}$。</p>
+<p>源序列的长度是3，目标序列的长度是2。那么解码器的输入第0个位置的元素应该对应源序列中第 $3 \times 0/2=0$，个元素，即<em>Thank</em>；解码器的输入序列的第1个元素，应该对应源序列中第$3 \times 1/2=1.5$，四舍五入得2，即<em>！</em>。那么解码器的输入序列应该为$\{Thank , !\}$。</p>
 <ul>
 <li><strong>Copy source inputs using fertilities</strong>：同样是从源序列中拷贝一个序列出来作为解码器的输入，但是拷贝规则有了变化。如同结构图中显示的，编码器会在编码结束后除了输出注意力状态，还会输出一个长度与源序列长度相同的序列，序列中每个元素都是一个整数。将源序列中的每个位置上的元素拷贝相应的整数倍之后作为解码器的输入，而解码器的输入长度$T$则是编码器输出的整数序列之和。举个例子：</li>
 </ul>
@@ -512,7 +512,7 @@ Round(T't/T)</script><p>假设源序列长度是$T’$，目标序列长度是$T
 <p>源序列：[Thank, you, !]</p>
 <p>encoder output: [1, 0, 1] </p>
 </blockquote>
-<p>那么解码器的输入序列为： ${Thank \times 1, you \times 0, ! \times 1 }$，即${Thank, !}$为解码器的输入。</p>
+<p>那么解码器的输入序列为： $\{Thank \times 1, you \times 0, ! \times 1 \}$，即$\{Thank, !\}$为解码器的输入。</p>
 <h2 id="2-1-2-Non-causal-self-attention"><a href="#2-1-2-Non-causal-self-attention" class="headerlink" title="2.1.2 Non-causal self-attention"></a>2.1.2 Non-causal self-attention</h2><p>由于这里是并行生成目标序列，因此不需要对注意力权重矩阵进行mask。但是在实际的测试过程中作者发现把元素自身所在的位置mask掉后会取得更好的结果，即（深色部分表示被mask掉的）：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/beac1906681d79de2a36ba7e872129973babd4.png" alt></p>
 <h3 id="2-1-3-Positional-Attention"><a href="#2-1-3-Positional-Attention" class="headerlink" title="2.1.3 Positional Attention"></a>2.1.3 Positional Attention</h3><p>作者还在每个<em>decoder layer</em>中加入了<em>positional attention</em>，使得模型获得序列位置向量的能力更强了。而所谓的<em>positional attention</em>顾名思义就是<em>positional encoding + attention</em>，分别对应<em>transformer</em>中的<em>positional encoding</em>和<em>multi-head attention</em>：</p>
@@ -532,7 +532,7 @@ p_{NA}(Y|X;\theta) = \sum_z\left[ p_z(z|x_{1:T'};\theta)\cdot p_L(T|x_{1:T'};\th
 <p>所以，模型的关键是对$z$建模。本文中$z$就是<em>decoder</em>的输入——利用<em>Fertility</em>的思想从<em>encoder</em>输入中拷贝元素。所谓<em>fertility</em>指的是，源序列中每个元素会被翻译多少次。这种思想源于早期的统计机器翻译中，每个词被翻译的次数不同，则输出序列会不，比如<em>Thank</em>被翻译一次可能是<em>谢谢</em>，而如果翻译两次的话可能会输出<em>多谢</em>。每个词的翻译次数实际上是个隐藏的含义，并不具有显式意义，因此它是一种<em>Latent Variable</em>，可以用来表示一种<em>translation mode</em>。</p>
 <p>因此根据<em>fertitlity</em>我们可以把方程写成：</p>
 <script type="math/tex; mode=display">
-p_{NA}(Y|X;\theta) = \sum_{f_1, ..., f_T'\in F}\left( \Pi_{t'=1}^{T'}p_F(f_{t'}|x_{1:T'};\theta) \cdot \Pi_{t=1}^{T}p(y_t|x_1\{f_1\}, ...x_{T'}\{f_{T'};\theta\})\right)</script><p>其中$F={f<em>1, …, f</em>{T’} | \sum<em>{t’=1}^{T’}f</em>{t’}=T, f_{t’}\in \mathbb{Z^*}}$。</p>
+p_{NA}(Y|X;\theta) = \sum_{f_1, ..., f_T'\in F}\left( \Pi_{t'=1}^{T'}p_F(f_{t'}|x_{1:T'};\theta) \cdot \Pi_{t=1}^{T}p(y_t|x_1\{f_1\}, ...x_{T'}\{f_{T'};\theta\})\right)</script><p>其中$F=\{f_1, …, f_{T’} | \sum_{t’=1}^{T’}f_{t’}=T, f_{t’}\in \mathbb{Z^*}\}$。</p>
 <p><em>Fertility</em>序列中每个词重复的次数通过一个<em>softmax</em>层预测。</p>
 <h1 id="3-训练"><a href="#3-训练" class="headerlink" title="3. 训练"></a>3. 训练</h1><p>由于模型中引入了离散的隐变量，是的整个模型不能直接使用后向传播进行训练。作者引入了一个外部的对齐函数——<em>Fast-align</em>。<em>Fast-align</em>能够将输入输出进行词对齐，即目标序列中的每个词对应源序列中的相应的词。这样我们就可以得到一个外部的<em>Fertility</em>序列。我们可以用这个外部的<em>fertility</em>序列当成<em>fertility</em>的监督项，这样整个模型的损失项来源于两部分：<em>decoding</em>和<em>fertility</em>：</p>
 <script type="math/tex; mode=display">
@@ -543,7 +543,7 @@ L_{ML} \ge \mathbb{E}_{f_{1:T'}\sim q}(\underbrace{\sum_{t=1}^T\log(y_t|x_1\{f_1
 <p>知识蒸馏其实蒸馏的就是<em>mode</em>，通过减少<em>mode</em>数，从而提升模型的学习效果。这里使用的方法是先用一个标准的<em>Transformer</em>学习一个模型，将这个标准<em>Transformer</em>的推理结果作为<em>NAT</em>的目标序列。</p>
 <h2 id="3-2-Fune-Tuning"><a href="#3-2-Fune-Tuning" class="headerlink" title="3.2 Fune Tuning"></a>3.2 Fune Tuning</h2><p>前面我们提到使用<em>Maximum Likelihood</em>本身更倾向于学习概率更大的<em>mode</em>，因此作者在这里引入一个微调项，用来做目标纠正——<em>reverse K-L divergence</em>:</p>
 <script type="math/tex; mode=display">
-L_{RKL}(f_{1:T'};\theta) = \sum_{t=1}^{T}\sum_{y_t} [\log p_{AR}(y_t|\hat{y}_{1:t},x_{1:T'})\cdot p_{NA}(y_t|x_{1:T'},f_{1:T'};\theta)]</script><p>其中$\hat{y}<em>{1:T}=G(x</em>{1:T’}, f_{1:T’};\theta)$，所以最终的损失函数为：</p>
+L_{RKL}(f_{1:T'};\theta) = \sum_{t=1}^{T}\sum_{y_t} [\log p_{AR}(y_t|\hat{y}_{1:t},x_{1:T'})\cdot p_{NA}(y_t|x_{1:T'},f_{1:T'};\theta)]</script><p>其中$\hat{y}_{1:T}=G(x_{1:T’}, f_{1:T’};\theta)$，所以最终的损失函数为：</p>
 <script type="math/tex; mode=display">
 L_{FT} = \lambda(\underbrace{\mathbb{E}_{f_{1:T'}\sim p_F}(L_{RKL}(f_{1:T'})-L_{RKL}(\overline{f_{1:T'}}))}_{L_{RL}}+\underbrace{\mathbb{E}_{f_{1:T'}}(L_{RKL}(f_{1:T'}))}_{L_{BP}})+(1-\lambda)L_{KD}</script><h1 id="4-推理"><a href="#4-推理" class="headerlink" title="4. 推理"></a>4. 推理</h1><p>推理阶段主要的任务是获取<em>fertility</em>序列，作者提出三种方法：</p>
 <ul>
@@ -581,10 +581,10 @@ L_{FT} = \lambda(\underbrace{\mathbb{E}_{f_{1:T'}\sim p_F}(L_{RKL}(f_{1:T'})-L_{
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -970,12 +970,12 @@ L_{FT} = \lambda(\underbrace{\mathbb{E}_{f_{1:T'}\sim p_F}(L_{RKL}(f_{1:T'})-L_{
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1247,7 +1247,7 @@ L_{FT} = \lambda(\underbrace{\mathbb{E}_{f_{1:T'}\sim p_F}(L_{RKL}(f_{1:T'})-L_{
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1255,7 +1255,7 @@ L_{FT} = \lambda(\underbrace{\mathbb{E}_{f_{1:T'}\sim p_F}(L_{RKL}(f_{1:T'})-L_{
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1286,7 +1286,7 @@ L_{FT} = \lambda(\underbrace{\mathbb{E}_{f_{1:T'}\sim p_F}(L_{RKL}(f_{1:T'})-L_{
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1636,5 +1636,21 @@ L_{FT} = \lambda(\underbrace{\mathbb{E}_{f_{1:T'}\sim p_F}(L_{RKL}(f_{1:T'})-L_{
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

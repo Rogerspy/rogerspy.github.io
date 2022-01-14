@@ -211,12 +211,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -458,9 +458,9 @@
 <p>之前提到<em>Auto-regression</em>的decoding方法使得<em>transformer</em>在推理上的表现很慢，所以很多研究者在这方面做了很多研究，本文就介绍一个使用<em>Non-Auto Regression</em>的方法——<strong>Discrete Latent Variable</strong>。该方法与<em>Auto-regression</em>方法相比，效果上要稍差 一些，但是取得了比其他<em>Non-auto regression</em>方法都好的结果，而效率上也有很大的提升。</p>
 <a id="more"></a>
 <h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><h2 id="1-1-Auto-Regression"><a href="#1-1-Auto-Regression" class="headerlink" title="1.1 Auto-Regression"></a>1.1 Auto-Regression</h2><p><em>RNN</em>在机器翻译领域有着非常重要的应用，但是它本身由于不能进行并行计算，限制了它的效率，所以后来有些研究者希望能用<em>CNN</em>替代<em>RNN</em>。而<em>Transformer</em>的横空出世，使得机器翻译在训练效果和效率上都上了一个台阶，但是仍然存在一个问题。</p>
-<p><em>Transformer</em>在生成一个序列的时候，通常需要根据之前的序列来预测下一个词，即当预测$y<em>n$时，需要利用$y_1, y_2, …, y</em>{n-1}$作为模型的输入。所以<em>transformer</em>在生成序列的时候是一个词一个词的生成，每生成一个词就需要进行一次推理，因此造成效率很低。这也就是所谓的<em>Auto-regression</em>问题。而<em>transformer</em>的<em>auto-regression</em>问题比<em>RNN</em>和<em>CNN</em>更加严重，因为<em>RNN</em>是根据前一个状态预测下一个状态，<em>CNN</em>是根据前<em>K</em>（kernel大小）个状态预测下一个状态，而<em>transformer</em>则是利用之前的所有状态预测下一个状态。虽然<em>transformer</em>在训练的时候可以很高效的训练，这是因为训练时的输出序列都已知，所以不需要<em>auto-regression</em>；但在进行decoding的时候输出是未知的，必须进行<em>auto-regression</em>，所以效率反而更低。</p>
+<p><em>Transformer</em>在生成一个序列的时候，通常需要根据之前的序列来预测下一个词，即当预测$y_n$时，需要利用$y_1, y_2, …, y_{n-1}$作为模型的输入。所以<em>transformer</em>在生成序列的时候是一个词一个词的生成，每生成一个词就需要进行一次推理，因此造成效率很低。这也就是所谓的<em>Auto-regression</em>问题。而<em>transformer</em>的<em>auto-regression</em>问题比<em>RNN</em>和<em>CNN</em>更加严重，因为<em>RNN</em>是根据前一个状态预测下一个状态，<em>CNN</em>是根据前<em>K</em>（kernel大小）个状态预测下一个状态，而<em>transformer</em>则是利用之前的所有状态预测下一个状态。虽然<em>transformer</em>在训练的时候可以很高效的训练，这是因为训练时的输出序列都已知，所以不需要<em>auto-regression</em>；但在进行decoding的时候输出是未知的，必须进行<em>auto-regression</em>，所以效率反而更低。</p>
 <h2 id="1-2-Latent-Transformer"><a href="#1-2-Latent-Transformer" class="headerlink" title="1.2 Latent Transformer"></a>1.2 Latent Transformer</h2><p>为了克服<em>Auto-regression</em>问题，<a href="https://arxiv.org/pdf/1803.03382.pdf" target="_blank" rel="noopener">Kaiser et al. 2018</a>提出使用离散隐变量方法加速decoding推理。这种方法算不上真正解决了<em>Auto-regression</em>问题，但是算是对问题进行了优化吧，或者应该叫做<em>Semi-auto regression</em>。</p>
-<p>这种方法简而言之就是，先用<em>auto-regression</em>生成一个固定长度的短的序列$l= {l_1, l_2, …, l_m}$，其中$m&lt;n$，然后再用$l$并行生成$y = {y_1, y_2, …, y_n}$。为了实现这种方法，我们需要变分自编码器。由于句子序列是离散的序列，在使用离散隐变量的时候会遇到不可求导的问题，因此如何解决这个问题就需要一些离散化的技术了。</p>
+<p>这种方法简而言之就是，先用<em>auto-regression</em>生成一个固定长度的短的序列$l= \{l_1, l_2, …, l_m\}$，其中$m&lt;n$，然后再用$l$并行生成$y = \{y_1, y_2, …, y_n\}$。为了实现这种方法，我们需要变分自编码器。由于句子序列是离散的序列，在使用离散隐变量的时候会遇到不可求导的问题，因此如何解决这个问题就需要一些离散化的技术了。</p>
 <h1 id="2-离散化技术"><a href="#2-离散化技术" class="headerlink" title="2. 离散化技术"></a>2. 离散化技术</h1><p>我们主要介绍四种离散化技术：</p>
 <ul>
 <li>Gumbel-softmax (<a href="http://arxiv.org/abs/1611.01144" target="_blank" rel="noopener">Jang et al., 2016;</a> <a href="https://arxiv.org/abs/1611.00712" target="_blank" rel="noopener">Maddison et al., 2016</a>)</li>
@@ -468,7 +468,7 @@
 <li>VQ-VAE (<a href="http://arxiv.org/abs/1711.00937" target="_blank" rel="noopener">van den Oord et al., 2017</a>)</li>
 <li>Decomposed Vector Quantization</li>
 </ul>
-<p>给定目标序列$y={y_1, y_2, …, y_n}$，将$y$输入到一个编码器（自编码器中的编码器，并非机器翻译模型中的编码器，下文的解码器同理，如非特殊说明<em>encoder</em>和<em>decoder</em>指的都是自编码器中的编码器和解码器）中产生一个隐变量表示$enc(y) \in \mathbb{R}^D$，其中$D$是隐变量空间的维度。令$K$为隐变量空间的大小，$[K]$表示集合${1, 2, …, K}$。将连续隐变量$enc(y)$传入到一个<em>discretization bottleneck</em>中产生离散隐变量$z_d(y) \in [K]$，然后输入$z_q(y)$到解码器$dec$中。对于整数$i, m$我们使用$\tau_m(i)$代表用$m$ bits表示的二进制$i$，即用$\tau_m^{-1}$将$i$从二进制转换成 十进制。</p>
+<p>给定目标序列$y=\{y_1, y_2, …, y_n\}$，将$y$输入到一个编码器（自编码器中的编码器，并非机器翻译模型中的编码器，下文的解码器同理，如非特殊说明<em>encoder</em>和<em>decoder</em>指的都是自编码器中的编码器和解码器）中产生一个隐变量表示$enc(y) \in \mathbb{R}^D$，其中$D$是隐变量空间的维度。令$K$为隐变量空间的大小，$[K]$表示集合$\{1, 2, …, K\}$。将连续隐变量$enc(y)$传入到一个<em>discretization bottleneck</em>中产生离散隐变量$z_d(y) \in [K]$，然后输入$z_q(y)$到解码器$dec$中。对于整数$i, m$我们使用$\tau_m(i)$代表用$m$ bits表示的二进制$i$，即用$\tau_m^{-1}$将$i$从二进制转换成 十进制。</p>
 <p>下面我们主要介绍<em>discretization bottleneck</em>涉及到的离散化技术。</p>
 <blockquote>
 <p>实际上离散化技术是一个在VAE、GAN、RL中都有很重要应用的技术，本文只简单介绍它在文本生成方向的应用，而涉及到技术细节以及数学原理等更加详细的内容，以后会专门讨论，这里只说怎么用不说为什么。</p>
@@ -578,10 +578,10 @@ L = l_r + l</script><h3 id="3-1-ae-y-x-函数"><a href="#3-1-ae-y-x-函数" clas
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -967,12 +967,12 @@ L = l_r + l</script><h3 id="3-1-ae-y-x-函数"><a href="#3-1-ae-y-x-函数" clas
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1244,7 +1244,7 @@ L = l_r + l</script><h3 id="3-1-ae-y-x-函数"><a href="#3-1-ae-y-x-函数" clas
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1252,7 +1252,7 @@ L = l_r + l</script><h3 id="3-1-ae-y-x-函数"><a href="#3-1-ae-y-x-函数" clas
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1283,7 +1283,7 @@ L = l_r + l</script><h3 id="3-1-ae-y-x-函数"><a href="#3-1-ae-y-x-函数" clas
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1633,5 +1633,21 @@ L = l_r + l</script><h3 id="3-1-ae-y-x-函数"><a href="#3-1-ae-y-x-函数" clas
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

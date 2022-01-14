@@ -211,12 +211,12 @@
 							</li>
       			
   						<li>
-								<a class="nav flat-box" href="/blog/archives/"
+								<a class="nav flat-box" href="/archives/"
                   
                     rel="nofollow"
                   
                   
-                  id="blogarchives">
+                  id="archives">
 									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
 								</a>
 							</li>
@@ -480,7 +480,7 @@
 <p>相对删除操作，插入就比较复杂了，因为你进要预测插入的词，还要预测插入的位置，我们还希望在同一个位置尽可能多的插入更多的词，这样就相当于模型具有并行的能力。这里作者将插入位置的预测称之为占位符预测（<em>placeholder prediction</em>）；将词的预测称之为词预测（<em>token prediction</em>）。</p>
 <p><strong>第一步：占位符预测</strong></p>
 <script type="math/tex; mode=display">
-(y_i, y_{i+1}) = \pi^{\mathrm{plh}} (p|i, \pmb{y})</script><p>$(y<em>i, y</em>{i+1})$ 表示接下来的词插入到 $y<em>i, y</em>{i+1}$ 之间。注意这里可以预测多个插入位置。</p>
+(y_i, y_{i+1}) = \pi^{\mathrm{plh}} (p|i, \pmb{y})</script><p>$(y_i, y_{i+1})$ 表示接下来的词插入到 $y_i, y_{i+1}$ 之间。注意这里可以预测多个插入位置。</p>
 <p><strong>第二步：词预测</strong></p>
 <script type="math/tex; mode=display">
 tokens = \pi^{\mathrm{tok}}(t|i, \pmb{y})</script><p>每个位置可以有多个词。</p>
@@ -488,7 +488,7 @@ tokens = \pi^{\mathrm{tok}}(t|i, \pmb{y})</script><p>每个位置可以有多个
 </li>
 <li><p><strong>删除和插入的综合</strong></p>
 <p>最后，作者将序列的生成分成三个阶段：① 删除词；② 插入占位符；③ 用词替换占位符。其中每一步都是可以并行处理的。</p>
-<p>给定序列 $\pmb{y}=(y<em>0, …, y_n)$，预测行为 $a = {\underbrace{d_0, …, d_n}</em>{删除操作}; \underbrace{p<em>0,…,p</em>{n-1}}<em>{占位符预测}; \underbrace{t_0^1,…,t_0^{p_0},…,t</em>{n-1}^{p<em>{n-1}}}</em>{词预测}}$：</p>
+<p>给定序列 $\pmb{y}=(y_0, …, y_n)$，预测行为 $a = \{\underbrace{d_0, …, d_n}_{删除操作}; \underbrace{p_0,…,p_{n-1}}_{占位符预测}; \underbrace{t_0^1,…,t_0^{p_0},…,t_{n-1}^{p_{n-1}}}_{词预测}\}$：</p>
 <script type="math/tex; mode=display">
 \pi(\pmb{a}|\pmb{y}) = \prod_{d_1 \in \pmb{d}}\pi^{\mathrm{del}}(d_i|i, \pmb{y})\cdot \prod_{p_i \in \pmb{p}}\pi^{\mathrm{plh}} (p_i|i, \pmb{y'}) \cdot \prod_{t_i \in \pmb{t}}\pi^{\mathrm{tok}}(t_i|i, \pmb{y''})</script><p>其中 $\pmb{y’}=\mathcal{E}(\pmb{y}, \pmb{d})$，$\pmb{y’’}=\mathcal{E}(\pmb{y’}, \pmb{p})$。</p>
 </li>
@@ -499,7 +499,7 @@ tokens = \pi^{\mathrm{tok}}(t|i, \pmb{y})</script><p>每个位置可以有多个
 \pmb{h}_0^{(l+1)}, ..., \pmb{h}_n^{(l+1)} = \begin{cases}
 E_{y_0}+P_0, ..., E_{y_n} + P_n, & l=0 \\\\
 \mathrm{TransformerBlock}_l(\pmb{h}_0^{(l)}, ..., \pmb{h}_n^{(l)})， & l \ne 0
-\end{cases}</script><p>其中 $E \in \mathbb{R}^{\mathcal{|V|}\times d<em>{model}}$ 表示词向量，$P \in \mathbb{R}^{N</em>\max \times N_\max}$ 表示位置向量。</p>
+\end{cases}</script><p>其中 $E \in \mathbb{R}^{\mathcal{|V|}\times d_{model}}$ 表示词向量，$P \in \mathbb{R}^{N_\max \times N_\max}$ 表示位置向量。</p>
 <p>从图中我们可以看到，解码器的输出 $(\pmb{h}_0,…,\pmb{h}_n)$ 被传入到三个分类器中：删除分类器、占位符分类器和词分类器。</p>
 <ul>
 <li><p><strong>删除分类器</strong></p>
@@ -508,7 +508,7 @@ E_{y_0}+P_0, ..., E_{y_n} + P_n, & l=0 \\\\
 </li>
 <li><p><strong>占位符分类器</strong></p>
 <script type="math/tex; mode=display">
-\pi_\theta^{\mathrm{plh}}(p|i, \pmb{y}) = \mathrm{softmax}(\mathrm{concate}(\pmb{h}_i,\pmb{h}_{i+1}) \cdot B^T)</script><p>其中 $B \in \mathbb{R}^{(K<em>\max+1)\times (2d</em>{model})}$，$(0 \sim K_\max)$ 表示在当前位置上插入占位符的个数，本文中占位符用 <code>[PLH]</code> 表示。比如 $(A, D) \rightarrow (A, [\mathrm{PLH}], [\mathrm{PLH}], D)$。</p>
+\pi_\theta^{\mathrm{plh}}(p|i, \pmb{y}) = \mathrm{softmax}(\mathrm{concate}(\pmb{h}_i,\pmb{h}_{i+1}) \cdot B^T)</script><p>其中 $B \in \mathbb{R}^{(K_\max+1)\times (2d_{model})}$，$(0 \sim K_\max)$ 表示在当前位置上插入占位符的个数，本文中占位符用 <code>[PLH]</code> 表示。比如 $(A, D) \rightarrow (A, [\mathrm{PLH}], [\mathrm{PLH}], D)$。</p>
 </li>
 <li><p><strong>词分类器</strong></p>
 <script type="math/tex; mode=display">
@@ -519,7 +519,7 @@ E_{y_0}+P_0, ..., E_{y_n} + P_n, & l=0 \\\\
 <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200428185949.png" alt></p>
 <p>假设我们现在有一个参考策略 $\pi^{\star}$，这个参考策略要么使用真值，要么可以加入少许噪声。我们的目标是最大化以下期望值：</p>
 <script type="math/tex; mode=display">
-\underbrace{\mathop{\mathbb{E}_{\pmb{y}_{\mathrm{del}} \sim d_{\tilde{\pi}_{\mathrm{del}}}}} \limits_{\pmb{d}^\star \sim \pi^\star} \sum_{d_i^\star \in \pmb{d}^\star} \log \pi_\theta^{\mathrm{del}}(d^\star_i|i, \pmb{y}_{\mathrm{del}})}_{删除操作的目标}+\underbrace{\mathop{\mathbb{E}_{\pmb{y}_{\mathrm{ins}}\sim d_{\tilde{\pi}_{\mathrm{ins}}}}}\limits_{\pmb{p}^\star, \pmb{t}^\star \sim \pi^\star}\left[\sum_{p_i^\star \in \pmb{p}^\star} \log \pi_\theta^{\mathrm{plh}}(p_i^\star|i, \pmb{y}_{\mathrm{ins}})+\sum_{t_i^\star \in \pmb{t}^\star}\log \pi_\theta^{\mathrm{tok}}(t_i^\star|i, \pmb{y'}_{\mathrm{ins}})\right]}_{插入操作的目标}</script><p>其中 $\pmb{y’}<em>\mathrm{ins}$ 表示在 $\pmb{y}$ 上插入占位符以后的序列。$\tilde{\pi}</em>\mathrm{del}, \tilde{\pi}_\mathrm{ins}$ 是输入策略，我们不断从由它们导致的状态分布中抽样分布（序列），这些状态首先由参考策略运行，然后返回其行为，我们就是要去最大化这些行为概率。我们有两种方法定义输入策略：① 在真值上加噪； ② 使用对抗策略。如下图所示：</p>
+\underbrace{\mathop{\mathbb{E}_{\pmb{y}_{\mathrm{del}} \sim d_{\tilde{\pi}_{\mathrm{del}}}}} \limits_{\pmb{d}^\star \sim \pi^\star} \sum_{d_i^\star \in \pmb{d}^\star} \log \pi_\theta^{\mathrm{del}}(d^\star_i|i, \pmb{y}_{\mathrm{del}})}_{删除操作的目标}+\underbrace{\mathop{\mathbb{E}_{\pmb{y}_{\mathrm{ins}}\sim d_{\tilde{\pi}_{\mathrm{ins}}}}}\limits_{\pmb{p}^\star, \pmb{t}^\star \sim \pi^\star}\left[\sum_{p_i^\star \in \pmb{p}^\star} \log \pi_\theta^{\mathrm{plh}}(p_i^\star|i, \pmb{y}_{\mathrm{ins}})+\sum_{t_i^\star \in \pmb{t}^\star}\log \pi_\theta^{\mathrm{tok}}(t_i^\star|i, \pmb{y'}_{\mathrm{ins}})\right]}_{插入操作的目标}</script><p>其中 $\pmb{y’}_\mathrm{ins}$ 表示在 $\pmb{y}$ 上插入占位符以后的序列。$\tilde{\pi}_\mathrm{del}, \tilde{\pi}_\mathrm{ins}$ 是输入策略，我们不断从由它们导致的状态分布中抽样分布（序列），这些状态首先由参考策略运行，然后返回其行为，我们就是要去最大化这些行为概率。我们有两种方法定义输入策略：① 在真值上加噪； ② 使用对抗策略。如下图所示：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200428173803.png" alt></p>
 <ol>
 <li><p>删除操作，我们可以定义：</p>
@@ -573,10 +573,10 @@ d_{\tilde{\pi}_\mathrm{ins}} = \begin{cases}
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-09-15T23:36:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>最后更新于 2021年9月15日</p>
+    <p>最后更新于 2022年1月12日</p>
   </a>
 </div>
 
@@ -962,12 +962,12 @@ d_{\tilde{\pi}_\mathrm{ins}} = \begin{cases}
           杂文天地
         </a></li>
       
-        <li><a class="flat-box" " href="/blog/archives/"
+        <li><a class="flat-box" " href="/archives/"
           
             rel="nofollow"
           
           
-          id="blogarchives">
+          id="archives">
           
             <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
           
@@ -1239,7 +1239,7 @@ d_{\tilde{\pi}_\mathrm{ins}} = \begin{cases}
         
           <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(6)</div></a></li>
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
         
           <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
         
@@ -1247,7 +1247,7 @@ d_{\tilde{\pi}_\mathrm{ins}} = \begin{cases}
         
           <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
         
-          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(10)</div></a></li>
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(12)</div></a></li>
         
       </ul>
     </div>
@@ -1278,7 +1278,7 @@ d_{\tilde{\pi}_\mathrm{ins}} = \begin{cases}
 </header>
 
     <div class='content pure'>
-      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 16.5px; color: #888">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 17.75px; color: #808080">KG</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 19px; color: #777">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/queue/" style="font-size: 19px; color: #777">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 14px; color: #999">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 14px; color: #999">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
     </div>
   </section>
 
@@ -1628,5 +1628,21 @@ d_{\tilde{\pi}_\mathrm{ins}} = \begin{cases}
 
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
