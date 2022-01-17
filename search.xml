@@ -31,6 +31,33 @@
     
     
     <entry>
+      <title>预训练语言模型：CVT</title>
+      <link href="/2021/09/30/ptm-cvt/"/>
+      <url>/2021/09/30/ptm-cvt/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220117183503.png" alt></p><p>之前介绍的预训练模型都是将预训练过程和下游特定任务分成两阶段进行训练， <a href="https://arxiv.org/pdf/1809.08370.pdf" target="_blank" rel="noopener">Cross-View Training</a> 将着来年各个阶段合并成一个统一的半监督学习过程：bi-LSTM 编码器通过有标注数据的监督学习和无标注数据的无监督学习同时训练。</p><a id="more"></a><h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>同时使用标注数据和无标注数据进行模型训练，这种训练方式是典型的半监督学习。CVT 引入半监督学习中的自学习机制（self-training）用于神经网络序列建模。</p><p>假设标注数据集和无标注数据集分别为 $D_{l}$ 和 $D_u$，经典的自学习机制过程如下：</p><ul><li>首先从 $D_l$ 中训练一个模型 $M$；</li><li>然后将从 $D_u$ 中抽取部分数据 $D’_u$ 出来，用 $M$ 进行预测：$y’=M(D’_u)$；</li><li>将 $M$ 的预测结果 $y’$ 与 $D’_u$ 视为新的标注数据 $(D’_u, y’)$ 放进 $D_l$ 中；</li><li>重复上面的步骤，知道所有数据都变成 $D_l$。</li></ul><p>自学习机制的缺点也很明显：一旦在第二步中出错，在以后的训练中错误会越来越深。在 CV 领域人们提出给无标注数据加噪声的方法，使模型泛化性得到了有效的提升。但是对于 NLP 这种离散序列数据来说，如何加噪声就变得很棘手了。</p><p>受<a href="https://arxiv.org/pdf/1304.5634.pdf" target="_blank" rel="noopener">多视角学习（multi-view learning）</a> 的启发，CVT 增加了额外的预测模块用来对无标注数据进行预测。</p><h1 id="2-Cross-View-Training"><a href="#2-Cross-View-Training" class="headerlink" title="2. Cross-View Training"></a>2. Cross-View Training</h1><h2 id="2-1-Method"><a href="#2-1-Method" class="headerlink" title="2.1 Method"></a>2.1 Method</h2><ul><li>$D_l = \{(x_1, y_1), (x_2, y_2),…,(x_N, y_N)\}$ 表示标注数据；</li><li>$D_u = \{x_1, x_2,…,x_M\}$ 表示无标注数据；</li><li><p>$p_\theta(y|x_i)$ 表示模型参数为 $\theta$ 时，输入 $x_i$ 模型的输出结果。</p></li><li><p>在有标注的数据上，所有的模型参数都以标准的监督学习方式进行更新，模型的损失函数是标准的交叉熵损失函数：</p><script type="math/tex; mode=display">\mathcal{L}_{\text{sup}}(\theta) = \frac{1}{|D_l|} \sum_{x_i,y_i \in D_l} \text{Cross-Entropy}(y_i, p_\theta(y|x_i))</script><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220117154228.png" style="zoom:80%;"></p></li><li><p>在无标注的数据上：</p><p>① 首先用原始预测模块（primary prediction models）对无标注数据进行预测得：$p_\theta(y|x_i)$；</p><p>② 然后用 $k$ 个附加预测模块（auxiliary prediction modules）将 $p_\theta(y|x_i)$ 作为 ground truth，用加噪声的无标注数据进行预测，然后计算损失：</p><script type="math/tex; mode=display">\mathcal{L}_{\text{CVT}}(\theta) = \frac{1}{D_u} \sum_{x_i\in D_u} \sum_{j=1}^k KL(p_\theta(y|x_i), p_\theta^j(y|x_i^j))</script></li></ul><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220117154257.png" style="zoom:80%;"></p><ul><li>最后，整个模型的损失为：<script type="math/tex; mode=display">\mathcal{L} = \mathcal{L}_{\text{sup}} + \mathcal{L}_{\text{CVT}}</script></li></ul><h2 id="2-2-Multi-Task-Learning"><a href="#2-2-Multi-Task-Learning" class="headerlink" title="2.2 Multi-Task Learning"></a>2.2 Multi-Task Learning</h2><p>对多任务同时进行训练时，CVT 增加了几个相应的原始预测模块。所有原始预测模块共享句子表示编码器。进行监督学习时，模型随机选择一个任务进行训练。此时，模型的句子表示编码器和任务预测器的参数会随着训练更新，与选定任务无关的预测器的参数不会更新。比如，同时训练分类和序列标注时，当模型随机选择分类任务进行训练时，序列标注的预测器参数不会随训练更新。</p><p>当进行 CVT 学习时，模型的所有参数都会更新。比如训练分类任务和序列标注任务时，首先用原始预测模块分别预测类别 $c_1$ 和输出序列 $s_1$，然后以此为 ground truth，对 $x_i$ 进行加噪声，利用加噪声后的 $x_i^j$ 再分别预测类别 $c_1^j$ 和输出序列 $s_i^j$，然后分别计算 $(c_1, c_1^j)$ 和 $(s_1, s_1^j)$ 的损失，然后利用后向传播，对参数进行更新。</p><p>多任务学习可以使模型泛化能力得到加强，同时可以得到一个副产物：将所有无标注数据进行标注得到标注数据。</p><h1 id="3-Cross-View-Training-Models"><a href="#3-Cross-View-Training-Models" class="headerlink" title="3. Cross-View Training Models"></a>3. Cross-View Training Models</h1><p>由于 CVT 依赖的附加预测模块需要对输入进行加噪声，即限制输入的“视角”。下面我们介绍一些特定任务下，加噪声的方法。</p><blockquote><p>需要注意的是：当原始预测模块有 dropout 的时候，在进行监督学习时可以让 dropout 正常工作，但是在进行无监督训练时 dropout 需要关闭。</p></blockquote><h2 id="3-1-Bi-LSTM-句子编码"><a href="#3-1-Bi-LSTM-句子编码" class="headerlink" title="3.1 Bi-LSTM 句子编码"></a>3.1 Bi-LSTM 句子编码</h2><ul><li>输入： $x_i = [x_i^1, x_i^2, …, x_i^T]$；</li><li>词向量：$v = \text{word embedding}(x_i) + \text{CNN}(\text{char}(x_i))$：</li><li>$\text{layer}-1 \text{bi-LSTM}$：$h_1=\text{bi-LSTM}(v)=[\overrightarrow{h}{_1^1} \oplus \overleftarrow{h}{_1^1}, \overrightarrow{h}{_1^2} \oplus \overleftarrow{h}{_1^2} …, \overrightarrow{h}{_1^T} \oplus \overleftarrow{h}{_1^T}]$ ；</li><li>$\text{layer}-2 \text{bi-LSTM}$：$h_2=\text{bi-LSTM}(h_1)=[\overrightarrow{h}_2^1 \oplus \overleftarrow{h}{_2^1}, \overrightarrow{h}_2^2 \oplus \overleftarrow{h}{_2^2} …, \overrightarrow{h}{_2^T} \oplus \overleftarrow{h}{_2^T}]$；</li></ul><h2 id="3-2-序列标注"><a href="#3-2-序列标注" class="headerlink" title="3.2 序列标注"></a>3.2 序列标注</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220117173747.png" alt></p><p>序列标注任务（比如词性标注、命名实体识别）中，模型对序列中的每个词进行分类，预测模块包含一个全连接层和一个 softmax 层：</p><script type="math/tex; mode=display">\begin{equation} \nonumber\begin{aligned}p(y^t|x_i) &= \text{NN}(h_1^t \oplus h_2^t) \\           &= \text{softmax}(U\cdot \text{ReLU}(W(h_1^t \oplus h_2^t)) + b)\end{aligned}\end{equation}</script><p>在进行额外预测任务时，只给第一层 bi-LSTM 输入单向序列。因为这样的话，模型只观察到部分序列，就必须像语言模型那样对“未来”词进行预测：</p><script type="math/tex; mode=display">p{_\theta}^\text{fwd}(y^t|x_i) = \text{NN}^\text{fwd}(\overrightarrow h{_1^t}(x_i))\\p{_\theta}^\text{bwd}(y^t|x_i) = \text{NN}^\text{bwd}(\overleftarrow h{_1^t}(x_i))\\p{_\theta}^\text{futher}(y^t|x_i) = \text{NN}^\text{future}(\overrightarrow h{_1^t}(x_i))\\p{_\theta}^\text{past}(y^t|x_i) = \text{NN}^\text{past}(\overleftarrow h{_1^t}(x_i))</script><p>其中 forward 表示模型还没看到右侧的信息做出的预测，future 表示该词没有右侧或者该词本身信息做出的预测，两者的区别在于 forward 表示待预测的词右侧是有下文的，而 future 表示的是待预测的词右侧没有下文。</p><h2 id="3-3-Dependency-Parsing"><a href="#3-3-Dependency-Parsing" class="headerlink" title="3.3 Dependency Parsing"></a>3.3 Dependency Parsing</h2><p>依存句法分析任务中，句子中的词被当做是图的节点。词与词之间用有向边进行连接，形成一棵用来描述语法结构的树。$y_i^t = (u, t, r)$ 表示 $x_i^u$ 与 $x_i^t$ 相连，他们的关系是 $r$。</p><script type="math/tex; mode=display">p_\theta((u,t,r)|x_i) \propto e^{s(h_1^u(x_i) \oplus h_2^u(x_i), h_1^t(x_i) \oplus h_2^t(x_i), r)}</script><p>其中</p><script type="math/tex; mode=display">\begin{equation} \nonumber\begin{aligned}s(z_1, z_2, r) = \text{ReLU}(W_\text{head}z_1 + b_\text{head})\cdot (W_r+W) \cdot \text{ReLU}(W_\text{dep}z_2+b_\text{dep})\end{aligned}\end{equation}</script><p>额外预测任务：</p><script type="math/tex; mode=display">p_\theta^\text{fwd-fwd}((u,t,r)|x_i) \propto e^{s^\text{fwd-fwd}(\overrightarrow h{_1^u}(x_i), \overrightarrow h{_1^t}(x_i), r)}\\p_\theta^\text{fwd-bwd}((u,t,r)|x_i) \propto e^{s^\text{fwd-bwd}(\overrightarrow h{_1^u}(x_i), \overleftarrow h{_1^t}(x_i), r)}\\p_\theta^\text{bwd-fwd}((u,t,r)|x_i) \propto e^{s^\text{bwd-fwd}(\overleftarrow h{_1^u}(x_i), \overrightarrow h{_1^t}(x_i), r)}\\p_\theta^\text{bwd-bwd}((u,t,r)|x_i) \propto e^{s^\text{bwd-bwd}(\overleftarrow h{_1^u}(x_i), \overleftarrow h{_1^t}(x_i), r)}\\</script><p>每一个句子都会丢失一部分上下文。</p><h2 id="3-4-Sequence-to-Sequence-Learning"><a href="#3-4-Sequence-to-Sequence-Learning" class="headerlink" title="3.4 Sequence-to-Sequence Learning"></a>3.4 Sequence-to-Sequence Learning</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/151034571.png" alt></p><ul><li>源序列：$x_i = x_i^1,…x_i^T$；</li><li>目标序列：$y_i=y_i^1,…,y_i^K$；</li><li>注意力得分：$\alpha_j \propto e^{h^jW_\alpha h^t}$；</li><li>注意力加权的源序列编码：$c_t = \sum_j\alpha_jh^j$；</li><li>隐状态：$a_t=\tanh(W_a[c_t, h_t])$；</li><li>预测输出：$p(y_i^t|y_i^{&lt;t}, x_i)=\text{softmax}(W_sa_t)$。</li></ul><p>两个附加预测解码器，LSTM 权重共享，但是注意力权重和 softmax 权重是不同的：</p><ol><li><p>对第一个解码器的注意力权重采用 dropout;</p></li><li><p>让第二个解码器预测目标序列的下一个词，而不是当前词：</p><script type="math/tex; mode=display">p_\theta^\text{future}(y_i^t|y_i^{<t}, x_i) = \text{softmax}(W_s^\text{future}a_{t-1}^\text{future})</script></li></ol><h1 id="4-Experiments"><a href="#4-Experiments" class="headerlink" title="4. Experiments"></a>4. Experiments</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220117184738.png" alt></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol><li><a href="https://arxiv.org/pdf/1809.08370.pdf" target="_blank" rel="noopener">Semi-Supervised Sequence Modeling with Cross-View Training</a>, <em>Kevin Clark, Minh-Thang Luong, Christopher D. Manning, Quoc V. Le. 2018. arxiv: 1809.08370</em></li><li><a href="https://lilianweng.github.io/lil-log/2019/01/31/generalized-language-models.html#cross-view-training" target="_blank" rel="noopener">Generalized Language Models</a>，<em>Lil’Log</em></li><li><a href="https://zhuanlan.zhihu.com/p/32922326" target="_blank" rel="noopener">Lecture13 - Semi-Supervised Learning</a>, <em>幻想家皮霸霸丶</em> </li><li><a href="https://www.cs.cmu.edu/~avrim/Papers/cotrain.pdf" target="_blank" rel="noopener">Combining labeled and unlabeled data with co-training.</a> <em>Avrim Blum and Tom Mitchell. 1998. In COLT. ACM.</em></li><li><a href="https://arxiv.org/pdf/1304.5634.pdf" target="_blank" rel="noopener">A survey on multi-view learning</a>. <em>Chang Xu, Dacheng Tao, and Chao Xu. 2013. arXiv preprint arXiv:1304.5634.</em> </li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 语言模型 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Language Model </tag>
+            
+            <tag> CVT </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>预训练语言模型：Pre-trained seq2seq</title>
       <link href="/2021/09/17/ptm-pre-trained-seq2seq/"/>
       <url>/2021/09/17/ptm-pre-trained-seq2seq/</url>
@@ -349,6 +376,33 @@
     
     
     <entry>
+      <title>预训练语言模型：CoVe</title>
+      <link href="/2021/08/25/ptm-cove/"/>
+      <url>/2021/08/25/ptm-cove/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://aylien.com/images/uploads/general/tumblr_inline_o8tinsmw081u37g00_540.png" alt></p><p>上一篇文章我们介绍了预训练词向量，它的缺点很明显：一旦训练完，每个词的词向量都固定下来了。而我们平时生活中面临的情况却复杂的多，一个最重要的问题就是一词多义，即同一个词在不同语境下有不同的含义。<a href="https://arxiv.org/pdf/1708.00107.pdf" target="_blank" rel="noopener">CoVe（Contextual Word Vectors）</a>同样是用来表示词向量的模型，但不同于 <a href="https://rogerspy.github.io/2021/08/11/ptm-word-embedding/" target="_blank" rel="noopener">word emebdding</a>，它是将整个序列作为输入，根据不同序列得到不同的词向量输出的函数。也就是说，CoVe 会根据不同的上下文得到不同的词向量表示。</p><a id="more"></a><h1 id="1-神经网络机器翻译"><a href="#1-神经网络机器翻译" class="headerlink" title="1. 神经网络机器翻译"></a>1. 神经网络机器翻译</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/nmt-recap.png" alt></p><p>上图是一个经典的 attention seq2seq 模型：</p><ul><li><p>源语言 $x = [x_1, x_2, …, x_n]$;</p></li><li><p>目标语言：$y = [y_1, y_2, …, y_m]$;</p></li><li><p>用 <a href="https://rogerspy.github.io/2021/08/11/ptm-word-embedding/" target="_blank" rel="noopener">GloVe</a> 将源语言的词转换成词向量；</p></li><li><p>编码器是 bi-LSTM，输出一个隐状态序列：</p><script type="math/tex; mode=display">\begin{equation} \nonumber\begin{aligned}h &= [h_1, h_2, ..., h_n] \\  &= \text{bi-LSTM}(\text{GloVe}(x))\end{aligned}\end{equation}</script><p>其中 $h_t = [\overrightarrow{h_t}; \overleftarrow{h_t}]$，$\overrightarrow{h_t}=\text{LSTM}(x_t, \overrightarrow{h}_{t-1})$；$\overleftarrow{h_t}=\text{LSTM}(x_t, \overleftarrow{h}_{t-1})$。</p></li><li><p>注意力加持的解码器：</p><script type="math/tex; mode=display">\begin{equation} \nonumber\begin{aligned}\text{decoder hidden state:} \quad s_t &= \text{LSTM}([z_{t-1};\tilde{h}_{t-1}], s_{t-1}) \\\text{attention weights:} \quad \alpha_t &= \text{softmax}(H(W_1s_t+b_1)) \\\text{context-adjusted hidden state:} \quad \tilde{h}_t &= \tanh(W_2[H^\top \alpha_t; s_t]+b_2) \\\text{decoder output: } \quad p(y_t|H, y_1, ..., y_{t-1}) &=\text{softmax}(W_{out}\tilde{h}_t+b_{out})\end{aligned} \end{equation}</script></li></ul><p>seq2seq 训练完成之后，将编码器的输出作为 CoVe 用于下游任务。</p><h1 id="2-CoVe-在下游任务中的应用"><a href="#2-CoVe-在下游任务中的应用" class="headerlink" title="2. CoVe 在下游任务中的应用"></a>2. CoVe 在下游任务中的应用</h1><p>seq2seq 编码器的隐状态作为下游任务的语义向量：</p><script type="math/tex; mode=display">\text{CoVe}(x) = \text{bi-LSTM}(\text{GloVe}(x))</script><p>论文中提出将 GloVe 和 CoVe 进行拼接用于问答和分类任务。GloVe 是通过词共现比例学习到的向量，因此它没有句子上下文。而 CoVe 是通过处理文本序列学习到的向量，本身就具有上下文信息：</p><script type="math/tex; mode=display">v = [\text{GloVe}(x);\text{CoVe}(x)]</script><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220117101548.png" alt></p><p>给定下游任务，首先将输入的词用上面的方法转化成向量，然后输入到特定任务模型中进行训练。</p><h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h1><p>CoVe 的缺点是显而易见的：</p><ol><li>因为预训练过程是有监督训练，所以训练效果严重依赖标注数据（平行语料）；</li><li>CoVe 的性能受限于特定任务的模型结构。</li></ol><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol><li><a href="https://arxiv.org/pdf/1708.00107.pdf" target="_blank" rel="noopener">Learned in Translation: Contextualized Word Vectors</a>， <em>Bryan McCann，James Bradbury，Caiming Xiong，Richard Socher. 2017</em></li><li><a href="https://lilianweng.github.io/lil-log/2019/01/31/generalized-language-models.html" target="_blank" rel="noopener">Generalized Language Models</a>, <em>Jan 31, 2019 by Lilian Weng</em></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 语言模型 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Language Model </tag>
+            
+            <tag> 词向量 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>知识图谱：知识建模（二）构建本体的方法论</title>
       <link href="/2021/08/23/kg-build-ontology-method/"/>
       <url>/2021/08/23/kg-build-ontology-method/</url>
@@ -365,9 +419,9 @@
       
         <tags>
             
-            <tag> KG </tag>
-            
             <tag> ontology </tag>
+            
+            <tag> KG </tag>
             
         </tags>
       
@@ -754,9 +808,9 @@
       
         <tags>
             
-            <tag> CNNLM </tag>
-            
             <tag> Language Model </tag>
+            
+            <tag> CNNLM </tag>
             
         </tags>
       
