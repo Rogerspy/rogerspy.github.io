@@ -875,9 +875,9 @@
       
         <tags>
             
-            <tag> Language Model </tag>
-            
             <tag> CNNLM </tag>
+            
+            <tag> Language Model </tag>
             
         </tags>
       
@@ -1780,9 +1780,9 @@
       
         <tags>
             
-            <tag> Attention </tag>
-            
             <tag> Transformer </tag>
+            
+            <tag> Attention </tag>
             
         </tags>
       
@@ -1807,9 +1807,9 @@
       
         <tags>
             
-            <tag> Attention </tag>
-            
             <tag> Transformer </tag>
+            
+            <tag> Attention </tag>
             
         </tags>
       
