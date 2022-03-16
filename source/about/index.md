@@ -620,3 +620,194 @@ meta:
 word_count: true
 ```
 
+# 11. hexo中的mathjax数学公式渲染优化
+
+> 转载自 [hexo中的mathjax数学公式渲染优化](https://wxwoo.top/2019/05/15/hexo-mathjax-renderer-optimization/)
+
+在使用hexo博客和material-x等博客主题时，难免会遇到mathjax数学公式渲染失败或者与markdown渲染冲突的问题。
+
+xaoxuu给出了解决方案，只需在`_config.yml`里加入`mathjax: true`即可解决，可以解决大量的mathjax公式渲染，但仍有部分复杂的公式渲染出现问题。
+
+我在这里给出一种解决方案。
+
+*注：部分资料来自互联网*
+
+## 11.1 mathjax渲染修改
+
+### 11.1.1 修改渲染引擎
+
+更改hexo的默认渲染引擎，使其支持mathjax
+
+打开cmd，cd到hexo博客文件夹下，输入：
+
+```bash
+npm uninstall hexo-renderer-marked --save
+npm install hexo-renderer-kramed --save
+```
+
+### 11.1.2 更改配置
+
+找到`/node_modules/hexo-renderer-kramed/lib/renderer.js`，将
+
+```js
+function formatText(text) {
+    // Fit kramed's rule:  $$ + \1 + $$ 
+    return text.replace(/`\ $(.*?)\$ `/g, ' $$$$$ 1 $$$$ ');
+}
+```
+
+改为
+
+```js
+function formatText(text) {
+    return text;
+}
+```
+
+### 11.1.3 修改数学包
+
+在cmd中输入
+
+```bash
+npm uninstall hexo-math --save
+npm install hexo-renderer-mathjax --save
+```
+
+### 11.1.4 更新mathjax配置文件
+
+找到`/node_modules/hexo-renderer-mathjax/mathjax.html`，将最下面那一行`<script>`注释掉，改成
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+```
+
+### 11.1.5 修改转义规则
+
+因为 markdown 和 mathjax 语法有冲突，我们修改转义规则以避免冲突
+
+找到`\node_modules\kramed\lib\rules\inline.js`，将`escape`和`em`这两行注释掉，改成
+
+```js
+escape: /^\\([`*\[\]()# +\-.!_>])/,
+
+em: /^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,
+```
+
+## 6. 开始使用
+
+找到`\_config.yml`，加上一行`mathjax: true`就可以了。
+
+## 11.2 mathjax渲染优化
+
+其实这应该就结束了
+
+但不知什么原因，部分情况直接渲染出来会有一个灰色的框，十分难看
+
+所以我们还要进行优化
+
+打开`/node_modules/hexo-renderer-mathjax/mathjax.html`，在`MathJax.Hub.Config`中加上
+
+```html
+extensions: ["tex2jax.js"],
+jax: ["input/TeX", "output/HTML-CSS"],
+```
+
+将刚刚第4步修改的链接修改为
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLCSS"></script>
+```
+
+就可以了
+
+但是仍然有一些不尽人意的地方，比如：
+
+### 11.2.1 部分公式渲染出错
+
+比如这个公式：
+
+```markdown
+$\dfrac{1}{2}$
+```
+
+显示`Undefined control sequence \dfrac`
+
+不仅是这个，还有很多会出错，比如`\geqslant`
+
+这是由于更改链接后，缺少了`amsmath`包
+
+在`MathJax.Hub.Config`中加上
+
+```js
+TeX: { 
+    equationNumbers: { autoNumber: "AMS" },
+    extensions: ["AMSmath.js", "AMSsymbols.js"]
+},
+```
+
+即可解决。
+
+### 11.2.2 修改字体
+
+在`MathJax.Hub.Config`中加上
+
+```js
+"HTML-CSS": {
+	preferredFont: "TeX", 
+    availableFonts: ["STIX","TeX"]
+}
+```
+
+~~其实这没什么用~~。
+
+### 11.2.3 关闭右下角加载信息
+
+在`MathJax.Hub.Config`中加上
+
+```js
+showProcessingMessages: false,
+messageStyle: "none",
+```
+
+### 11.2.4 关闭右键菜单
+
+在`"HTML-CSS"`中加上
+
+```js
+showMathMenu: false
+```
+
+### 11.2.5 代码整合
+
+可以根据需要自行修改
+
+```html
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        TeX: { 
+            equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"]
+        },
+        "HTML-CSS": {
+            preferredFont: "TeX", 
+            availableFonts: ["STIX", "TeX"],
+            showMathMenu: false
+        },
+        showProcessingMessages: false,
+		messageStyle: "none",
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: { 
+            inlineMath: [ ["$","$"] ],  
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'a']
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLCSS"></script>
+```
+

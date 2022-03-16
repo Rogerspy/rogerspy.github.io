@@ -194,7 +194,7 @@ $$
 
 下面我们讨论一下这个惩罚项的有效性（原始论文中作者最先考虑的是*KL*散度，但是在实际测试过程中发现效果并不理想，所以才考虑添加这样一个惩罚项）。
 
-考虑$\Lambda = \{\alpha_a, \alpha_p\}$，由于$\alpha_a$和$\alpha_p$都经过了*softmax*，因此$\alpha_a$和$\alpha_p$可以被认为是离散概率分布中的概率质量（*probability mass*），对于$\Lambda \Lambda^T$矩阵中任意非对角的元素$\alpha_{ij}(i\neq j)$，对应于两个分布的元素级乘积求和：
+考虑 $\Lambda = \{\alpha_a, \alpha_p\}$，由于$\alpha_a$和$\alpha_p$都经过了*softmax*，因此$\alpha_a$和$\alpha_p$可以被认为是离散概率分布中的概率质量（*probability mass*），对于$\Lambda \Lambda^T$矩阵中任意非对角的元素$\alpha_{ij}(i\neq j)$，对应于两个分布的元素级乘积求和：
 $$
 0 \lt \alpha_{ij}=\sum_{k=1}^n\alpha_k^i\alpha_k^j \lt 1
 $$

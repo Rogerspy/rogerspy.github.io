@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>预训练语言模型-前言 | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <div class="cover-wrapper">
+    <cover class='cover post half'>
+      
+        
+  <h1 class='title'>Rogerspy's Home</h1>
+
+
+  <div class="m_search">
+    <form name="searchform" class="form u-search-form">
+      <input type="text" class="input u-search-input" placeholder="" />
+      <i class="icon fas fa-search fa-fw"></i>
+    </form>
+  </div>
+
+<div class='menu navgation'>
+  <ul class='h-list'>
+    
+      
+        <li>
+          <a class="nav home" href="/"
+            
+            
+            id="home">
+            <i class='fas fa-edit fa-fw'></i>&nbsp;博文
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/video/"
+            
+            
+            id="video">
+            <i class='fas fa-film fa-fw'></i>&nbsp;视频
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/material/"
+            
+              rel="nofollow"
+            
+            
+            id="material">
+            <i class='fas fa-briefcase fa-fw'></i>&nbsp;资料
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/about/"
+            
+              rel="nofollow"
+            
+            
+            id="about">
+            <i class='fas fa-info-circle fa-fw'></i>&nbsp;关于
+          </a>
+        </li>
+      
+    
+  </ul>
+</div>
+
+      
+    </cover>
+    <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+  </div>
+
+
+  <div class="l_body">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2020/10/13/ptm-introduction/">
+        预训练语言模型-前言
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2020-10-13</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/语言模型/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>语言模型</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">16.9k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">62分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/PLMfamily.jpg" alt></p>
+<p>自从 2017 年 <em>Vaswani</em> 等人提出 <em>Transformer</em> 模型以后 <em>NLP</em> 开启了一个新的时代——预训练语言模型。而 2018 年的 <em>BERT</em> 横空出世则宣告着 <em>NLP</em> 的王者降临。那么，什么是预训练？什么是语言模型？它为什么有效？</p>
+<a id="more"></a>
+<p>在本系列文章中我们将会讨论跟预训练语言模型相关的技术。目前初步制定的计划如下：</p>
+<p>一、前言</p>
+<p>二、语言模型</p>
+<p>三、NLP 中的迁移学习</p>
+<p>四、预训练语言模型</p>
+<p>五、预训练语言模型的应用</p>
+<p>六、预训练语言模型的压缩</p>
+<p>大体分成以上六个部分，本文为第一部分，将会对预训练语言模型的发展、技术路线做一个综述，使得我们能对这一领域有一个整体的认识。</p>
+<h1 id="1-语言模型"><a href="#1-语言模型" class="headerlink" title="1. 语言模型"></a>1. 语言模型</h1><p>狭义上的语言模型就是对自然语言进行建模，自然语言指的是人类文明演化过程创造的用于人与人交流的语言，不包括编程语言等。自然语言通常包含语音和文字，语言模型指的是对文字进行建模。广义上来说，语言模型可以用来对任意的系列化结构进行建模。这里我们讨论的是狭义上的文字语言模型。</p>
+<p>语言模型简单来讲就是让计算机判断一个词序是不是正常的句子，如果是则给出高概率，反之则给出低概率。本质上就是构建一个词序概率分布，一个序列的概率由序列中每个词出现的概率相乘得到，而每个词出现的概率由其前后出现的词来确定。用形式化语言描述为：</p>
+<p>给定一个词表 $\mathcal{V}$，对于序列 $s = w_1w_2…w_n$，其中 $w_i \in \mathcal{V}, i \in {1, …, (n-1)}$ 以及 $n \ge 1$，$w_n$ 通常是一个特殊符号，用于标志序列的结束。语言模型可以定义为：</p>
+<script type="math/tex; mode=display">
+\begin{equation}\nonumber
+\begin{aligned}
+p(s) &= p(w_1, w_2, ..., w_n)\\\\
+     &= p(w_1)p(w_2|w_1)...p(w_n|w_1,...,w_{n-1})\\\\
+     &= p(w_1)\prod_{i=2}^np(w_i|w_1,...,w_{n-1})
+\end{aligned}
+\end{equation}</script><p>语言模型在 <em>NLP</em> 领域有广泛的用途，比如机器翻译过程中，模型给出几个候选翻译结果，然后再根据语言模型选出最符合自然语言的句子，使得翻译结果更加流畅。</p>
+<h2 id="1-1-统计语言模型"><a href="#1-1-统计语言模型" class="headerlink" title="1.1 统计语言模型"></a>1.1 统计语言模型</h2><p>在神经网络技术出现之前，人们通常是使用统计学方法从训练语料中去学习模型参数，因此此时的语言模型也称为统计语言模型（<em>Statistical Language Model</em>）。</p>
+<p>标准的语言模型存在两个问题：</p>
+<ul>
+<li>参数空间过大。假设序列中的词全部来自 $\mathcal{V}$，那么对于一个长度为 $n$ 的序列来说，模型具有 $\mathcal{V}^n$ 个自有参数。我们可以看出，模型的自由参数随着序列长度增加成指数级增长。</li>
+<li>数据稀疏性。表面上看，序列中的每个词都具有 $\mathcal{V}$ 种可能的取值，那么长度为 $n$ 的序列可以有 $\mathcal{V}$ 种组合方式，但是实际上我们的语料不可能出现这么多种组合。</li>
+</ul>
+<p>因此，直接对上面的语言模型进行求解几乎是不可能的，我们需要对问题进行一些合理的假设，从而简化模型。</p>
+<h3 id="n-gram-语言模型"><a href="#n-gram-语言模型" class="headerlink" title="n-gram 语言模型"></a>n-gram 语言模型</h3><p>马尔科夫假设：</p>
+<blockquote>
+<p>句子中第 $i$ 个词出现的概率只依赖于前面 $i-1$ 个词。</p>
+</blockquote>
+<p>我们将这个假设再进一步弱化：</p>
+<blockquote>
+<p>句子中第 $i$ 个词出现的概率只依赖于前面 $n-1$ 个词，其中 $n \le i$。</p>
+</blockquote>
+<p>基于这个假设，我们就能够理解 <em>n-gram</em> 中的 <em>n</em> 实际上就是前面 <em>n-1</em> 个词的意思。（为啥说是 <em>n-1</em> 个词呢，因为通常认为第 <em>n</em> 个词表示第 <em>i</em> 个词本身）</p>
+<p>比如：</p>
+<blockquote>
+<p>$n=1$ uni-gram:     $p(w_1, w_2, …, w_n) = p(w_i)$</p>
+<p>$n=2$ bi-gram:     $p(w_1, w_2, …, w_n) = p(w_1)\prod_{i=2}^np(w_i|w_{i-1})$</p>
+<p>$n=3$ tri-gram:     $p(w_1, w_2, …, w_n) = p(w_1)\prod_{i=2}^np(w_i|w_{i-2},w_{i-1})$</p>
+<p>…</p>
+<p>$n=n$ n-gram:     $p(w_1, w_2, …, w_n)=p(w_1)\prod_{i=2}^np(w_i|w_(i-1),…,w_{i-n+1})$</p>
+</blockquote>
+<p>在实际应用中，$n$ 的选取通常从计算复杂度和模型效果两个方面去考虑，假设 $|\mathcal{V}| = 2 \times 10^5$, 下表给出了常见的 $n$ 的取值对应的计算复杂度和模型效果：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">n-gram order</th>
+<th style="text-align:center">模型参数量</th>
+<th style="text-align:center">perplexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$2 \times 10^5$</td>
+<td style="text-align:center">$962$</td>
+</tr>
+<tr>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$(2 \times 10^5)^2=4 \times 10^{10}$</td>
+<td style="text-align:center">$170$</td>
+</tr>
+<tr>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$(2 \times 10^5)^3 = 8 \times 10^{15}$</td>
+<td style="text-align:center">$109$</td>
+</tr>
+<tr>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$(2 \times 10^5)^4=16 \times 10^{20}$</td>
+<td style="text-align:center">$99$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>上表中 <em>perplexity</em> 表示语言模型的评估指标，值越小表明语言模型越好。</p>
+<p>从表中我们可以看出，随着 $n$ 增大，模型参数量级是指数增加的，在实际应用中通常采用 $n=3$。</p>
+<p>尽管 <em>n-gram</em> 模型将参数量大大降低，但是技术的发展，尤其是互联网技术的发展，我们可以轻松获得大量的语料。对于语言模型来说，一个基本的事实是语料越多模型效果越好，但是另一方面，模型的参数量也会随着词表的增大而剧增，这样就极大的限制了语言模型的发展。</p>
+<h2 id="1-2-神经网络语言模型"><a href="#1-2-神经网络语言模型" class="headerlink" title="1.2 神经网络语言模型"></a>1.2 神经网络语言模型</h2><p>为了解决上述问题，人们开始考虑使用神经网络技术将语言模型映射到连续空间中，我们称之为“语义空间”。</p>
+<p>最早提出使用神经网络对语言进行建模思想的是百度徐伟，在其 2000 年的论文《<a href="https://www.isca-speech.org/archive/archive_papers/icslp_2000/i00_1202.pdf" target="_blank" rel="noopener">Can Artificial Neural Networks Learn Language Models?</a>》提出一种构建 <em>2-gram</em> 语言模型（$p(w_i|w_{i-1})$）的方法。该方法的基本思路与后来的神经网络语言模型的建模方法已经差别不大了，但是由于他采用的是只有输入层和输出层，而没有隐藏层的神经网络，且只是二元语言模型，因此限制了其模型泛化能力和上下文语义捕捉能力。</p>
+<p>到 2003 年 <a href="https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf" target="_blank" rel="noopener"><em>Bengio</em></a> 等人提出了真正意义上的神经网络语言模型（<em>Feedforward Neural Network Language Model, FFNNLM</em>），该模型采用四层神经网络来构建语言模型——输入层、投影层、隐藏层和输出层。该模型不仅解决了统计语言模型的维度灾难问题和稀疏性问题，同时还诞生了一个非常重要的副产物——词向量（<em>word vector</em>）。词向量我们会在下文详细介绍。</p>
+<p>直到 2010 年，<a href="https://www.isca-speech.org/archive/archive_papers/interspeech_2010/i10_1045.pdf" target="_blank" rel="noopener"><em>Mikolov</em></a> 等人提出基于 <em>RNN</em> 的语言模型。自此，神经网络语言模型逐渐成为语言模型的主流并得到快速发展。</p>
+<p>2012 年，<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.248.4448&amp;rep=rep1&amp;type=pdf" target="_blank" rel="noopener"><em>Sundermeyer</em></a> 等人提出使用 <em>LSTM</em> 构建语言模型，用来解决长程依赖问题。</p>
+<p>随后的时间，各种神经网络语言模型如雨后春笋般涌现，用来解决各种各样的问题。直到 2018 年，以 <em>ELMO</em>、<em>GPT</em> 和 <em>BERT</em> 为代表的语言模型的出现，正式宣布预训练语言模型时代的到来。本小节先不讨论预训练语言模型的相关内容，留待下文讲解。这里我们先简单介绍一下 <em>FFNN</em>、<em>RNN</em> 、<em>LSTM</em> 三种里程碑式的语言模型的发展，为后续预训练技术在语言模型上的发展奠定基础。</p>
+<h3 id="1-2-1-FFNN-语言模型"><a href="#1-2-1-FFNN-语言模型" class="headerlink" title="1.2.1 FFNN 语言模型"></a>1.2.1 FFNN 语言模型</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201019145634.png" alt></p>
+<p><em>Bengio</em> 等人 2003 年提出的第一个 <em>FFNN</em> 语言模型结构如上图所示。图中最下方表示输入层，$w_{t-n+1}, …, w_{t-2}, w_{t-1}$ 表示前 $n-1$ 个词。上面一层表示投影层，$C(w)$ 表示将词投影到相应的词向量上，$C$ 表示一个大小为 $|\mathcal{V}| \times m$ 的词向量矩阵，矩阵中每一行对应词表中的一个词的词向量，$m$ 代表词向量的维度。实际上 $C(w)$ 就表示从 $C$ 矩阵中找到 $w$ 对应的向量。将词映射成词向量以后，将 $C(w_{t-n+1}),…,C(w_{t-2}), C(w_{t-1})$ 这 $n-1$ 个词向量首尾相接，得到一个 $(n-1)\times m$ 维的向量，记为 $x$。第三层为隐藏层，通过下式计算得到：</p>
+<script type="math/tex; mode=display">
+o = \tanh(d + Hx)</script><p>其中，$H \in \mathbb{R}^{h \times (n-1)m}$。最后就是输出层：</p>
+<script type="math/tex; mode=display">
+y = \mathrm{softmax}(b+Wx+U\cdot o)</script><p>其中 $U \in \mathbb{R}^{|\mathcal{V}|\times h}$，$W \in \mathbb{R}^{|\mathcal{V}| \times ({n-1})m}$。</p>
+<p><em>FFNN</em> 语言模型存在以下几个问题：</p>
+<ol>
+<li>不能处理变长句子序列。由于输入层的神经元是固定的，因此模型必须输入固定长度的序列。</li>
+<li>由于输入序列长度是固定的，因此，模型只能对固定长度的上下文进行建模，而不是对整段序列进行建模。</li>
+<li>序列中的词没有包含位置信息，而实际上我们知道，对于相同的几个词，放在不同的位置整句话就会表达不同的意思。</li>
+<li>尽管全接连神经网络需要学习的参数量远小于 <em>n-gram</em> 但是相比于其他结构的神经网络，其参数量还是过大。</li>
+</ol>
+<p>因此，<em>Bengio</em> 在论文最后提到，可以使用循环神经网络（<em>RNN</em>）来降低参数量。这就是后来 <em>Mikolov</em> 提出的 <em>RNN</em> 神经网络。</p>
+<h3 id="1-2-2-RNN-语言模型"><a href="#1-2-2-RNN-语言模型" class="headerlink" title="1.2.2 RNN 语言模型"></a>1.2.2 RNN 语言模型</h3><p><img width="648" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/rnnlm.jpg"></p>
+<p><em>Mikolov</em> 等人提出的 <em>RNN</em> 语言模型，将一个 <em>RNN</em> 神经网络展开，得到如上图所示的结构。每个时间步，句子中的当前词经过隐层编码预测下一个词。注意 $h_0$ 通常是零向量进行初始化。由于隐层 $h_t$  的传递性， <em>RNN</em> 语言模型实际上就相当于 <em>n-gram</em> 语言模型，而这个 <em>n</em> 是一个变量，即整个句子的长度。这样避免了马尔科夫假设，使得我们能够得到更加精准的语言模型。</p>
+<p>我们将其中一个时间步展开可得到如下图所示的结构：</p>
+<p><img width="512" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/rnnlm.png"></p>
+<p>其中 $x_t$ 表示第 $t$ 个词，$y_t$ 表示第 $t$ 个词经过编码以后的输出，$h_t^{(i)}$ 表示第 $t$ 个隐藏层的第 $i$ 层，$p_t$ 表示通过第 $t$ 个词预测的第 $t+1$ 个词，$E$ 为词向量矩阵，$W_h$ 和 $W_o$ 分别表示隐层和输出层的权重矩阵。计算过程如下：</p>
+<ol>
+<li>将词映射成词向量：$h_t^{(0)} = Ex_t$</li>
+<li>隐层编码：$h_t^{(1)} = \tanh(W_h[h_t^{(0)};h_{t-1}^{(1)}]^T)$</li>
+<li>计算输出层：$y_t=W_oh_t^{(1)}$</li>
+<li>计算输出概率：$p_t=\mathrm{softmax}(y_t)$</li>
+</ol>
+<p>注意：$[h_t^{(0)};h_{t-1}^{(1)}]^T$ 表示 $h_t^{(0)}, h_{t-1}^{(1)}$ 两个向量的首尾拼接。</p>
+<p>相比于 <em>FFNN</em> 语言模型，<em>RNN</em> 语言模型能够处理变长序列，相当于对整个句子进行编码，即根据句子前面所有的词来预测当前词。这样我们能够获得更加准确的语言模型。另外由于隐层是共享权重的，因此语言模型的参数量被大大降低了。</p>
+<p>虽然 <em>RNN</em> 语言模型有诸多优点，但是也存在严重缺陷。最棘手的问题是由于神经网络梯度消失或者爆炸导致模型在处理远程依赖问题上的无能为力。为了解决这个问题，<em>Sundermeyer</em> 等人提出了 <em>LSTM</em> 语言模型。</p>
+<h3 id="1-2-3-LSTM-语言模型"><a href="#1-2-3-LSTM-语言模型" class="headerlink" title="1.2.3 LSTM 语言模型"></a>1.2.3 LSTM 语言模型</h3><p><img width="648" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/rnnlm_example.png"></p>
+<p><em>LSTM</em> 是 <em>RNN</em> 的一种变体，包含了三个门结构：输入门，遗忘门和输出门。对于神经网络而言，造成梯度消失或者梯度爆炸的罪魁祸首是过深的连乘结构，而 <em>LSTM</em> 通过这三个门结构将原来的连乘结构，一部分连乘改成了加法形式，从而缓解了梯度消失或者爆炸问题。<em>LSTM</em> 语言模型就是利用这种特性对语言进行建模从而能够更好的处理长程依赖问题。</p>
+<p>尽管 <em>RNN</em> 、<em>LSTM</em> 语言模型表现良好，但仍然存在一系列问题，比如训练慢、<em>OOV</em> 问题、<em>softmax</em> 需要考虑全部词表等等，后续的研究也在一步一步提出更加完善的语言模型。但无论如何，以这三种经典的神经网络语言模型为基础，神经网络语言模型正在蓬勃发展，这也为后来的预训练语言模型打下了坚实的基础。</p>
+<h1 id="2-预训练"><a href="#2-预训练" class="headerlink" title="2. 预训练"></a>2. 预训练</h1><p>自然语言处理技术的发展大体经历了：基于规则处理方法、基l于统计概率的处理方法和基于神经网络的处理方法三个阶段。尤其是随着神经网络技术的发展，自然语言处理在各项任务上也取得了突飞猛进的发展。然而  <a href="https://arxiv.org/abs/1707.07328" target="_blank" rel="noopener">Jia and Liang, 2017</a> 和 <a href="https://arxiv.org/abs/1711.02173" target="_blank" rel="noopener">Belinkov and Bisk, 2018</a> 的研究指出，基于神经网络的 <em>NLP</em> 算法在泛化性上仍然非常脆弱，模型只能对在训练数据中“见过”的特征进行建模，一旦遇到“未见过”的数据，模型就会失效。</p>
+<p>为了解决（或者说缓解）这个问题，通常的做法是使用更大的数据集去训练模型，但是这样又带来一个问题，训练神经网络模型通常是需要大量的标注数据的，更多的训练数据意味着更多的人工标注，使得训练模型的成本大大增加。</p>
+<p>我们希望训练好的模型能够将学习到的知识应用到具有相似性的问题上去，即使新的问题在训练数据中从来没有出现过，就像人类一样具有“举一反三”，“照猫画虎”的能力，这样模型的泛化能力将会得到大大的增强。而这正是迁移学习的思想，预训练则可以认为就是一种迁移学习。</p>
+<p>预训练首先在图像领域发光发热，这就不得不提 <strong><em>ImageNet</em></strong>。</p>
+<h2 id="2-1-ImageNet"><a href="#2-1-ImageNet" class="headerlink" title="2.1 ImageNet"></a>2.1 ImageNet</h2><p>早期的目标识别任务面临一个过拟合的问题，因为当时训练模型的数据集都非常小。斯坦福大学的李飞飞受到 <em>George Miller</em> 的 <em>WordNet</em> 的启发，决定构建一个能够”覆盖世界上所有物体”（<em>map out the entire world of objects</em>）的数据集。</p>
+<p><em>ImageNet</em> 项目正式启动于 2007 年，在短短三年的时间内构建了 300 多万张经过人工标注的图片，并将图片分成 5000 多个类别。2012 年，多伦多大学的 <em>Hinton</em> 研究小组发布了深度卷积神经网络（<em>CNN</em>）—— <em>AlexNet</em>，该网络在 <em>ImageNet</em> 上将错误率下降到 25%，这直接导致了深度学习的爆发。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/alexnet_ispravljeno.png" alt></p>
+<p>研究人员很快发现，在 <em>ImageNet</em> 上训练好的最佳模型的权重参数可以被用来初始化新的模型，然后在新的数据集上进行训练，而且这种方法可以明显提升模型的能力。这一发现就为图像识别的打开了预训练方法的大门。</p>
+<p>假设我们有一个任务 <em>A</em>，但是用于模型训练的数据十分匮乏并不能直接从头开始训练一个模型。但是我们有大量的其他类型的数据，这个时候我们可以先试用这些数据训练一个模型， 然后使用这个模型的权重来初始化我们的任务模型，然后在我们自己的任务数据上再训练模型，这样可以极大的加快模型收敛速度，同时提升模型效果。我们将在大数据集上训练模型的过程称之为“预训练（<em>Pre-Training</em>）”，将在我们自己的数据集上训练的过程称之为“微调（<em>Fine-Tuning</em>）”。</p>
+<p>具体的做法如下：</p>
+<ol>
+<li>假设我们想要一个图像分类器，用于区分“大象”和“狮子”，但是“大象”和“狮子”的图片很少，但是我们有大量的“斑马”和“猴子”的图片，这个时候我们可以使用 <em>CNN</em> 先在“斑马”和“猴子”的图片上训练一个分类器。将训练好的权重参数保存下来。</li>
+<li>然后采用和上面相同结构的网络模型，在比较浅的几层采用上面预训练模型相应层的权重作为初始化权重，在接近任务端的较深的几层仍然采用随机初始化。</li>
+<li>之后我们就可以训练这个“大象”和“狮子”的分类器了。通常有三种训练方法：① 浅层加载的参数在训练过程不参与训练，称之为 “<em>Frozen</em>”；② 浅层加载的参数也参与训练，但是学习率会小于深层随机初始化的参数，使得浅层参数在一个较小的范围内变化；③ 浅层参数与深层参数一起训练，后两种称之为 “<em>Fine-Tuning</em>”。（实际上，一般人们说的 <em>Fine-Tuning</em> 指的是目标任务模型整个训练过程）</li>
+</ol>
+<p><img width="512" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/transfer-learning-768x431.jpg"></p>
+<p>这么做的好处是，首先我们可以在较少的任务数据下训练一个可用的模型。其次，预训练模型具有可复用性。比如，这次我们需要的是“大象狮子”分类器，下次我们需要“熊猫老虎”分类器，仍然可以使用预训练的模型参数。再次，加载预训练模型参数的目标模型在训练的时候收敛速度更快，效果更好。最后，随着开源社区的发展，很多大公司比如微软、谷歌都愿意将自己的模型开源。这些机构通常有海量的数据和计算资源，使得它们能够在完成海量数据的训练任务，这样它们开源出来的预训练模型本身就是一个非常优秀的模型，对于下游的任务而言有非常大的帮助。因此，这种 <em>Pre-Training</em> + <em>Fine-Tuning</em> 的模式在图像领域很快就流行起来了。</p>
+<p>一个自然而然会产生的问题是：预训练方法为什么有效？</p>
+<p>这其实就是知识的成功迁移。以人脸识别为例，对于层级 <em>CNN</em> 模型来说，不同层的网络学习到了不同的特征：最底层学习到了线段特征；第二层学习到了人脸的五官轮廓；第三层学习到了人脸的轮廓……研究发现，越浅层的网络学习到的特征越基础，越具有通用性。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201016104427.png" alt></p>
+<p>既然预训练方法具有如此神奇的功效，为什么只在图像领域有效？为什么没有引入到自然语言处理领域呢？实际上这两个问题是不成立的，因为预训练方法很早就有人用在了自然语言处理领域，但是并没有取得像图像领域那么大的成功。下面我们就聊一聊 <em>NLP</em> 领域的预训练。</p>
+<h2 id="2-2-Word-Embedding"><a href="#2-2-Word-Embedding" class="headerlink" title="2.2 Word Embedding"></a>2.2 Word Embedding</h2><p>语言是人类智慧的结晶，想要将计算机发展成一种具有通用智能的系统，对人类语言的理解是一个不可或缺的能力，由此诞生了自然语言处理（<em>NLP</em>）这门学科。对于自然语言来说，<strong>词</strong> 被认为是构成语言的有意义的最小单位，对于更高级的结构，比如词组、句子则是由词构成的，对于更低级的结构，比如单个字、字母通常是没有意义的。因此，如何将词转换成计算能够理解的表达（称之为“词向量”）就变成了一个非常重要的任务。</p>
+<h3 id="2-2-1-ASCII-码表示法"><a href="#2-2-1-ASCII-码表示法" class="headerlink" title="2.2.1 ASCII 码表示法"></a>2.2.1 ASCII 码表示法</h3><p>一个最基础的想法是，计算集中的每个字（字母）都对应一个 <em>ASCII</em> 码，由于词是由字构成的，那么我们可以使用每个字对应的 <em>ASCII</em> 码组成的序列来表示词。比如：“desk“ 和 ”table“，可以分别表示成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">desk: 01100100 01100101 01110011 01101011</span><br><span class="line">table: 01110100 01100001 01100010 01101100 01100101</span><br></pre></td></tr></table></figure>
+<p>但是这种表示法有一下几个缺陷：</p>
+<ol>
+<li>变长。由于词是由不同个数的字组成的，使用这种方式表示的词的长度也是变化的，不利于矩阵运算；</li>
+<li>稀疏。以英文为例，英文字母有26个，英文单词通常由 1-20 个字母组成，为了说明问题我们这里取 10 作为平均数。这 26 个字母有 $26^{10}$ 种排列组合方式，但实际上的英文单词个数远小于这个数。也就是说，真正的英文单词在这种排列组合情况下式非常稀疏的。这种稀疏化的表示方法会给后续的工作带来一系列问题，比如存储、计算等。</li>
+<li>无法表达词与词之间的关联性。比如上面的 “desk” 和 “table” 都有 “桌子” 的意思，那么他们应该具有相似的语义。但是这种 <em>ASCII</em> 码表示法完全无法将这种语义关联性表示出来。</li>
+</ol>
+<h3 id="2-2-2-One-Hot-表示法"><a href="#2-2-2-One-Hot-表示法" class="headerlink" title="2.2.2 One-Hot 表示法"></a>2.2.2 One-Hot 表示法</h3><p>给定一个固定的词表：$\mathcal{V}=\{w_1, w_2, …, w_{|\mathcal{V}|}\}$。我们使用一个维度为 $\mathcal{|V|}$ 的向量对每个词进行编码，这个向量中对应该词在词表中的索引的维度为 1， 其余为 0：</p>
+<script type="math/tex; mode=display">
+w_i = \begin{cases}
+1 & \mathrm{if} ~ w = w_i\\\\
+0 & \mathrm{otherwise}
+\end{cases}</script><p>举个例子， 假设我们的词表为 [desk, table, apple, orange]，那么词表中的每个词可以用 <em>one-hot</em> 表示成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">desk: [1, 0, 0, 0]</span><br><span class="line">table: [0, 1, 0, 0]</span><br><span class="line">apple: [0, 0, 1, 0]</span><br><span class="line">orange: [0, 0, 0, 1]</span><br></pre></td></tr></table></figure>
+<p>看起来 <em>one-hot</em> 的表示形式比 <em>ASCII</em> 码表示形式要好一些，至少每个词都有了固定的长度，而且不存在使用字母进行排列组合导致的词稀疏问题。在传统的机器学习算法上， 比如最大熵、SVM、CRF 等模型上，<em>one-hot</em> 表示法都是非常常见的。但是，这种表示法仍然存在问题：</p>
+<ol>
+<li>稀疏。从上面的定义我们可以看出，词的维度和词表的大小是一致的，那么如果一个词表过大会造成词向量（简单理解为词的向量化表示）的维度过高，而一个词中只有一个维度的值是 1， 其余全部是 0，这样也会造成高维稀疏化问题；</li>
+<li>同 <em>ASCII</em> 码表示法一样，无法表达词与词之间的关联性；</li>
+<li>如果遇到新词需要添加到词表中，词表中的每个词的维度都需要相应的增加，这样在实际使用过程中是非常不方便的， 甚至有可能会导致一些问题。</li>
+</ol>
+<h3 id="2-2-3-向量空间模型"><a href="#2-2-3-向量空间模型" class="headerlink" title="2.2.3 向量空间模型"></a>2.2.3 向量空间模型</h3><p><a href="https://www.tandfonline.com/doi/pdf/10.1080/00437956.1954.11659520" target="_blank" rel="noopener">Harris</a> 和 <a href="http://cs.brown.edu/courses/csci2952d/readings/lecture1-firth.pdf" target="_blank" rel="noopener">Firth</a> 分别在 1954 年和 1957 年提出了分布式假设（<em>distributional hypothesis</em>）：</p>
+<blockquote>
+<p>对于语义词表示学习而言，具有相似分布的的语言对象具有相似的含义。</p>
+</blockquote>
+<p>也就是说，如果两个词具有相似的分布，那么它们的语义也具有相似性。这个假设为后来的分布式词表示法奠定了基础。</p>
+<div style="background: #FFCCCC"> 这里的分布式词表示法指的是 <i>distributed representation</i>，另外还有一个术语叫做 <i>distributional representation</i> 指的是在上述分布式假设下学习到的词义。</div>
+
+<p><a href="https://dl.acm.org/doi/10.1145/361219.361220" target="_blank" rel="noopener">Salton</a> 等人于 1975 年提出向量空间模型（<em>Vector Space Model</em>），该模型最初是为了在信息检索中对文档进行建模，但是随着它的成功应用，逐渐扩展到其他领域。向量空间模型将词表示成一个连续向量，向量空间表示语义空间。</p>
+<p>比如，[desk, table, apple, orange] 我们可以表示成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">desk: [0.1, 0.2, 0.5]</span><br><span class="line">table: [0.2, 0.4, 0.6]</span><br><span class="line">apple: [0.1, 0.5, 0.1]</span><br><span class="line">orange: [0.2, 0.9, 0.4]</span><br></pre></td></tr></table></figure>
+<p>这样做的好处是：</p>
+<ol>
+<li>我们可以就算两个向量之间的距离，用于表示语义相似性；</li>
+<li>向量维度可以大大降低；</li>
+<li>由于是连续性分布，所以不存在稀疏性问题。</li>
+</ol>
+<p>早期的向量空间模型主要是基于词频统计（共现矩阵）的方法，比如布朗聚类（<em>Brown Cluster</em>），潜在语义分析（<em>Latent Semantic Analysis</em>）等方法。然而这些方法通常会存在参数量过大以及需要某种程度的降维等问题。因此仍然具有一定的局限性。</p>
+<h3 id="2-2-4-词嵌入表示法"><a href="#2-2-4-词嵌入表示法" class="headerlink" title="2.2.4 词嵌入表示法"></a>2.2.4 词嵌入表示法</h3><p><em>Word Embedding</em> 通常翻译为词嵌入，实际上也属于 <em>distributed representation</em>，这里特指使用神经网络训练得到的词向量。</p>
+<p>随着神经网络技术的发展，深度学习掀起了机器学习的革命风潮，词向量的研究也迎来了新的转机。谷歌于 2013 年发表的 <em>Word2Vec</em> 模型可以说是词嵌入的里程碑式模型。它能够从大量的语料中高效的学习到词向量。<em>Word2Vec</em> 几乎解决了以上提到的所有问题。</p>
+<p>在介绍 <em>Word2Vec</em> 之前，我们先回顾一下词向量的发展。</p>
+<ul>
+<li><strong>FFNNLM</strong></li>
+</ul>
+<p>词向量通常是在训练语言模型的时候得到的副产物。前面我们在介绍 <em>FFNN</em> 语言模型的时候说过，词向量最初就是在训练在该模型中第一次通过神经网络训练得到的。</p>
+<p>在 <em>FFNN</em> 语言模型中，有一个 $C$ 矩阵，该矩阵就是词向量。开始训练之前，将矩阵中的参数随机初始化，利用梯度下降对模型进行训练，模型训练结束的时候也表明，$C$ 矩阵得到了充分的训练，即词向量训练完成。</p>
+<ul>
+<li><strong>SENNA</strong></li>
+</ul>
+<p><a href="http://www.thespermwhale.com/jaseweston/papers/unified_nlp.pdf" target="_blank" rel="noopener"><em>Ronan Collobert</em> 和 <em>Jason Weston</em></a> 在 2008 年提出了一种新的词向量训练方法，并开源了他们的方法——<a href="http://ml.nec-labs.com/senna/" target="_blank" rel="noopener">SENNA</a>。实际上最初他们并不是想训练一份好的词向量，甚至不想训练语言模型，而是想要去完成 <em>NLP</em> 中的各种任务，比如词性标注、命名实体识别、语义角色标注等。</p>
+<p><em>SENNA</em> 的训练思路是对一个窗口中的 $n$ 个连续的词进行打分，而不是预测下一个词的概率。这实际上是直接尝试近似求解 $p(w_{t-n+1}, …, w_{t-1}, w_t)$，打分越高说明越接近正常的话，打分越低说明越不像一句正常的话。有了这个假设，就可以定义目标函数：</p>
+<script type="math/tex; mode=display">
+\sum_{x \in \mathcal{X}} \sum_{w \in \mathcal{D}} \max\{0, 1-f(x)+f(x^{(w)})\}</script><p>其中 $\mathcal{X}$ 为训练接中素有连续 $n$ 元短语，$\mathcal{D}$ 表示整个词表。 第一个求和相当于选取训练语料中的所有 $n$ 元短语作为正样本，第二个求和相当于随机选择词表中的词构建负样本，构建方法就是将短语 $x$ 最中间的词替换为 $w$，即$x^{(w)}$。这样构建负样本的好处是，通常情况下，一个正常的 $n$ 元短语被替换掉中间的词之后确实会变成负样本，这样保证负样本的可靠性，即使出现替换掉之后仍然是正样本的情况，也属于少数情况，不影响大局；另一方面，由于负样本仅仅是修改了正样本中的一个词，不会让正负样本距离太大影响分类效果。最后希望正样本的打分要比负样本的打分至少高 1 分。</p>
+<p><em>SENNA</em> 模型的整体结构与 <em>FFNNLM</em> 类似，但是由于 <em>SENNA</em> 最后的输出是一个分数而不是下一个词的概率分布，因此输出层只有一个节点，这样大大降低了计算复杂度。</p>
+<ul>
+<li><strong>HLBL</strong></li>
+</ul>
+<p><em>HLBL</em> 是 “<em>Hierarchical Log-BiLinear</em>” 的简称，该模型是 <em>Andriy Mnih</em> 和 <em>Geoffrey Hinton</em> 于 2007 年和 2008 年连续两年致力于神经网络语言模型和词向量训练的研究成果。从最基本的受限玻尔兹曼机（<em>RBM</em>）逐步发展出来的模型。</p>
+<p>2007 年的文章 <a href="https://icml.cc/imls/conferences/2007/proceedings/papers/425.pdf" target="_blank" rel="noopener">《Three new graphical models for statistical language modelling》</a> 提出 <em>Log-Bilinear</em> 模型：</p>
+<script type="math/tex; mode=display">
+y_i = \sum_{i=1}^{n-1}C(w_j)^TH_iC(w_i)</script><p>通常我们将形如 $x^TWy$ 的模型称之为 “Bilinear”，上式中 $C(w)$ 表示词向量。</p>
+<p>我们仔细看这个模型会惊喜的发现，这不就是注意力机制吗？$H_i$ 相当于是注意力权重，计算结果就是 $w_i$ 和 $w_j$ 的相似度。（关于注意力机制的介绍可以看<a href="https://rogerspy.gitee.io/2019/08/26/NLP%E4%B8%AD%E7%9A%84%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E7%AE%80%E4%BB%8B%EF%BC%88%E4%B8%80%EF%BC%89/">这里</a>）</p>
+<p>受限于当时计算机的内存和算力，最终模型只考虑了 3-5 个词的上下文，然后通过最后的 <em>softmax</em> 得到下一个词的概率分布。</p>
+<p>由于这个模型最后做预测的时候还是用的 <em>softmax</em> 获得下一个词的概率分布，计算复杂度仍然很高。因此， <em>Andriy Mnih</em> 和 <em>Geoffrey Hinton</em> 在 2008 年又发表一篇论文 《<a href="https://www.cs.toronto.edu/~amnih/papers/hlbl_final.pdf" target="_blank" rel="noopener">A scalable hierarchical distributed language model</a>》引入层级结构做最后的预测，该层级结构将 <em>softmax</em> 的 $O(|\mathcal{V}|)$ 复杂度降为 $O(\log_2(|\mathcal{V}|))$，大大提升了预测效率。</p>
+<p><a href="https://arxiv.org/abs/cs/0108006" target="_blank" rel="noopener"><em>Goodman</em></a> 在 2001 年的时候提出了一种加速预测下一个词的方法——基于分类的思想。简单来说，假设我们词表中有 10000 个词，在传统的方法是在这 10000 个词上做 <em>softmax</em> 获得每个词的概率分布，然后取出概率最大的词，这样我们需要计算 10000 次。如果我们将这 10000 个词进行分类，假设分成 100 个类别，每个类别 100 个词。这个时候我们的计算过程是，先用一个 <em>softmax</em> 计算下一个词是属于什么类别，然后再用一个 <em>softmax</em> 计算概率最大的类别中的词的概率分布，这样我们只需要两个 100 次的计算量，计算速度直接提升 50 倍。</p>
+<p>基于这个思想，<a href="https://www.iro.umontreal.ca/~lisa/pointeurs/hierarchical-nnlm-aistats05.pdf" target="_blank" rel="noopener"><em>Frederic Morin &amp; Yoshua Bengio</em></a> 于 2005 年提出使用平衡二叉树来构建这种分类关系，能够将计算复杂度降到 $O(\log_2(|\mathcal{V}|))$。但是在他们的模型中分类使用的是 <em>WordNet</em> 中的 <em>IS-A</em> 关系，最后虽然达到了加速预测的效果，但是模型效果较差。</p>
+<p><em>Andriy Mnih</em> 和 <em>Geoffrey Hinton</em> 希望从语料中学习并能自动构建一棵平衡二叉树。他们采用 <em>bootstrapping</em> 的方法，从随机树开始，根据分类结果不断调整迭代，最后得到一棵平衡二叉树。</p>
+<p>值得一提的是，在他们的模型中，同一个词可能出现在多个不同的叶节点上，这实际上表示一词多义现象。歧义是自然语言处理中的一个非常重要的问题，也是早期限制预训练技术在自然语言处理领域发挥作用的重要阻碍。但是<em>Mnih</em> 和 <em>Hinton</em> 并没有重视模型中的这一细节。</p>
+<ul>
+<li><strong>MWP</strong></li>
+</ul>
+<p><em>Bengio</em> 2003 年的论文最后提到了多义词的问题，<em>Eric H. Huang</em> 等人在其 2012 年的论文<a href="https://www.aclweb.org/anthology/P12-1092/" target="_blank" rel="noopener">《Improving Word Representations via Global Context and Multiple Word Prototypes》</a> 中给出了一种解决方案。从论文题目我们可以看出，作者主要有两个贡献，首先是改进了 <em>SENNA</em> 模型，从局部信息扩展到全局信息，得到了更好的词向量，这一部分不过多介绍。另一个更重要的工作是创新的使用多个词向量来表示多义词。</p>
+<p>他们提出的方法是将每个词的上下文各取 5 个词，对这 10 个词的词向量使用 <em>idf</em> 做加权平均，然后对得到的平均向量做 <em>k-means</em> 聚类，根据聚类的结果给每个词打上标签，不同类别中的同一个词当成不同词，然后重新训练词向量。思想很简单，但是最后的效果还不错。</p>
+<ul>
+<li><strong>Word2Vec</strong></li>
+</ul>
+<p>时间来到 2013 年，<em>Mikolov</em> 等人发表两篇开山之作—— <a href="https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf" target="_blank" rel="noopener">Distributed Representations of Words and Phrases and their Compositionality</a> 和 <a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener">Efficient estimation of word representations in vector space</a> 宣告着 <em>Word2Vec</em> 的到来。相比于之前的工作，<em>Word2Vec</em> 极大的降低了计算复杂度，从而使我们能够在超大规模的语料上学习更高维的词向量。</p>
+<p><em>Word2Vec</em> 提出了两种新的模型架构：<em>CBOW</em> 和 <em>Skip-Gram</em>。<em>CBOW</em> 的核心思想是从一个窗口中将中间的词扣掉，然后利用这个词的前后几个词来预测中间的词；<em>Skip-gram</em> 正好相反，利用中间的词来预测两边的词。</p>
+<table><tr>
+    <td><img width="300" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/word2vec-cbow.png"></td>
+    <td><img width="300" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/word2vec-skip-gram.png"></td>
+</tr></table>            
+
+<p>模型结构和 <em>FFNN</em> 语言模型的结构类似，不同点在于，<em>FFNN</em> 语言模型是利用上文预测下文，对于 <em>FFNN</em> 语言模型来说，词向量只是一个副产物，但对于 <em>Word2Vec</em> 来说，词向量才是主产物。</p>
+<p>如之前讨论的那样，直接对预测输出使用 <em>softmax</em> 计算，计算复杂度非常高，因此，作者提出两种优化方案：层级 <em>softmax</em>（<em>Hierarchical softmax</em>） 和负采样（<em>Negative Sampling</em>）。关于 <em>word2vec</em> 的公开资料非常丰富，这里就不再赘述。</p>
+<h2 id="2-3-词向量怎么用？"><a href="#2-3-词向量怎么用？" class="headerlink" title="2.3 词向量怎么用？"></a>2.3 词向量怎么用？</h2><p>我们前面花了很大篇幅介绍了词向量，那么词向量和预训练有什么关系呢？实际上，对于 <em>NLP</em> 来说（至少在 2018 年之前）词向量对应 <em>ImageNet</em> 预训练的底层权重。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/example-classification.png" alt></p>
+<p>以分类任务为例，如果我们要从头开始训练一个分类模型，那么模型中的参数都是随机初始化的，模型的泛化能力很大程度上取决于数据量。如果我们能从海量的语料中学习一套词向量，在做分类任务的时候，使用预训练好的词向量对输入端的词向量矩阵做初始化，相当于我们在模型中注入了一定的先验知识。然后在后续的模型训练过程中，词向量矩阵不参与训练。这样有两个好处：1. 减少可训练参数，加快训练速度；2. 知识的迁移使得模型更具有泛化能力。</p>
+<p>这个过程其实就是 <em>NLP</em> 中的预训练，与图像领域的预训练基本是一致的，只是 <em>word embedding</em> 只能初始化第一层，更高层就无能为力了，但通常 <em>NLP</em> 模型的深度也都比较浅。</p>
+<p>既然采用的是基本相同的预训练方法，为什么在图像领域就取得巨大的成功，而在自然语言处理领域，不能说没有帮助，但是帮助非常有限呢？很显然，问题出在 <em>word embedding</em> 上。回想我们之前在介绍 <em>Huang</em> 等人提出的训练词向量的方法，一个非常重要的任务就是解决一词多义的问题。</p>
+<p>在通常的 <em>NLP</em> 任务中，每个词对应的只有一个词向量，也就是只有一个语义。但一词多义在自然语言中是非常常见的现象，只用一个词向量是无法表达多个语义的。虽然 <em>Huang</em> 的方法是一个词训练多个词向量用来解决一词多义的问题，但是这种做法在 <em>NLP</em> 中并不常见，原因也很简单：1. 通常为了避免（缓解）<em>OOV</em> 问题，模型需要一个较大的词表，一般情况下，词向量的维度我们会选择 100-300 维。这样的话，单单是在词向量矩阵这部分就包含了几百上千万的参数，如果再考虑一个词对应多个词向量，那么这个数字还要大上几倍；2. 即使我们采用了一个词对应多个词向量的方法来解决一词多义的问题，那么每个词在具体的句子中要使用哪一个词向量呢？这也是一个问题。如果再在模型层面解决词向量选取的问题，那我们会发现，一个简单的分类模型的重点反而成了解决歧义问题，整个模型就显得头重脚轻。</p>
+<h2 id="2-4-Sentence-Embedding"><a href="#2-4-Sentence-Embedding" class="headerlink" title="2.4 Sentence Embedding"></a>2.4 Sentence Embedding</h2><p>既然词可以变成向量，那么句子是不是也可以变成向量呢？如果我们把句子变成向量是不是就不需要考虑词的多义性问题了呢？</p>
+<h3 id="2-4-1-Paragraph-vector"><a href="#2-4-1-Paragraph-vector" class="headerlink" title="2.4.1 Paragraph vector"></a>2.4.1 Paragraph vector</h3><p>2014 年，<em>Mikolov</em> 在提出 <em>word2vec</em> 不久之后就提出 <em>paragraph vector</em> 的设想，从论文题目《<a href="https://cs.stanford.edu/~quocle/paragraph_vector.pdf" target="_blank" rel="noopener"><em>Distributed Representations of Sentences and Documents</em></a>》就不难看出，他是想将句子和篇章也表达成固定维度的分布式向量。文章中他借鉴了 <em>CBOW</em> 和 <em>Skip-gram</em>，提出 <em>PV-DM</em> 和 <em>PV-DBOW</em>。</p>
+<table><tr>
+    <td align="center"><img width="300" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201026153641.png"></td>
+    <td align="center"><img width="300" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201026153707.png"></td>
+</tr>
+<tr>
+    <td align="center">PV-DM</td>
+    <td align="center">PV-DBOW</td>
+</tr>    
+</table>            
+
+<ul>
+<li><strong><em>PV-DM</em></strong></li>
+</ul>
+<p><em>PV-DM</em>（<em>Distributed Memory Model of Paragraph Vectors</em>），通过上文预测下一个词，但是在输入层的时候不仅输入上文的词，还需要输入一个文档的 id，然后模型预测下一个词。由于输入多了一个文档 id, 因此我们还需要另外维护一个文档表（<em>look-up table</em>），用于通过 id 查找到对应的向量。训练结束后，对于现有的文档，便可以直接通过查表的方式快速得到该文档的向量，而对于新的一篇文档则需要将重新分配一个 id 给他，添加到 <em>look-up table</em> 中。然后重新训一遍模型，此时其他参数是固定的，只需要更新 <em>look-up table</em> 即可，收敛后便可以得到新文档对应的向量了。</p>
+<ul>
+<li><strong><em>PV-DBOW</em></strong></li>
+</ul>
+<p><em>PV-DBOW</em>（<em>Distributed Bag of Words version of Paragraph Vector</em>）是通过文档来预测文档中的词。首先先随机选取一个文档片段，然后随机从片段中选取一个词，然后让模型去预测这个词。和上面一样，如果此时有一个新的文档，要想获得它的向量，我们需要重新跑一遍模型。</p>
+<p>由于上面两种方法都需要重新训练来获得新的文档向量，因此这两种方法并没有得到广泛应用。</p>
+<h3 id="2-4-2-Skip-thoughts"><a href="#2-4-2-Skip-thoughts" class="headerlink" title="2.4.2 Skip-thoughts"></a>2.4.2 Skip-thoughts</h3><p>2015 年，<em>Kiros</em> 等人借鉴 <em>Skip-gram</em> 的思想提出 <a href="https://arxiv.org/pdf/1506.06726.pdf" target="_blank" rel="noopener"><em>Skip-thoughts</em></a> 方法。<em>Skip-gram</em> 是根据一个词去预测它的上下文，这里的基本单位是词，而 <em>Skip-thought</em> 的基本单位是句子。具体来说就是，利用当前的句子预测前一句和后一句。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201026170057.png" alt></p>
+<p>首先利用 <em>RNN</em> 对当前句子进行建模，然后再用一个 <em>RNN</em> 来生成上一个句子和下一个句子。本质上这其实就是 <em>encoder-decoder</em> 结构的 <em>seq2seq</em> 模型，只不过 <em>Skip-thoughts</em> 有两个 <em>decoder</em>。</p>
+<h3 id="2-4-3-Quick-thoughts"><a href="#2-4-3-Quick-thoughts" class="headerlink" title="2.4.3 Quick-thoughts"></a>2.4.3 Quick-thoughts</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201026171857.png" alt></p>
+<p>2018 年，<em>Logeswaran</em> 等人觉得 <em>Skip-thoughts</em> 的 <em>decode</em> 效率太低，且无法在大规模的语料上很好的训练。所以，他们把预测上下句的生成任务变成了分类任务，提出了 <a href="https://arxiv.org/pdf/1803.02893.pdf" target="_blank" rel="noopener"><em>Quick-thoughts</em></a>。具体来说就是，选取一个窗口，把窗口内的句子标记为正例，窗口外的句子标记为负例，将这些句子输入模型，让模型判断这些句子是否是同一个窗口的句子。（几个月后的 <em>BERT</em> 也借鉴了这一思路）</p>
+<h3 id="2-4-4-InferSent"><a href="#2-4-4-InferSent" class="headerlink" title="2.4.4 InferSent"></a>2.4.4 InferSent</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201026173831.png" alt></p>
+<p>除了上述的无监督任务，研究人员还在监督学习任务上进行了尝试。比如 <em>Conneau</em> 等人提出 <a href><em>InferSent</em></a> 模型，基本思想是先在 <em>SNLI</em> （<em>Stanford Natural Language Inference</em>）数据集上训练一个特征提取器，然后利用这个特征提取器将句子转化成向量，再将句子向量应用于分类任务上，以此来判断句向量的质量。</p>
+<h3 id="2-4-5-General-Purpose-Sentence-Representation"><a href="#2-4-5-General-Purpose-Sentence-Representation" class="headerlink" title="2.4.5 General Purpose Sentence Representation"></a>2.4.5 General Purpose Sentence Representation</h3><p>除了单任务的预训练，<em>Subramanian</em> 等人在 2018 年还提出使用多任务来预训练模型。他们在 2018 年发表的论文《<a href><em>Learning General Purpose Distributed Sentence Representations via Large Scale Multi-task Learning</em></a>》提出使用多任务联合学习来对模型进行预训练。论文中包含四种任务：<em>Natural Language Inference, Skip-thougts, Neural Machine Translation</em> 以及 <em>Constituency Parsing</em>，作者希望通过不同侧重点的任务，而不是特定任务来学习句子表征，达到 <em>general</em> 的目的。</p>
+<p>具体的做法还是先在以上四个任务上做联合预训练，预训练好的模型保持不变，顶层添加一个全连接层作为分类器，然后训练一个新的分类器。在训练分类器的过程中，原来预训练的部分不参与训练，只训练顶层的全连接层。最后的实验结果也表明这种训练方式的有效性。</p>
+<h3 id="2-4-6-Universal-Sentence-Encoder"><a href="#2-4-6-Universal-Sentence-Encoder" class="headerlink" title="2.4.6 Universal Sentence Encoder"></a>2.4.6 Universal Sentence Encoder</h3><p>同样在 2018 年，<em>Daniel Cer</em> 等人提出了和 <em>General Purpose Sentence Representation</em> 相同的方法，只是将其中的网络替换成了 <em>Transformer</em>。最后结果发现，利用 <em>Transformer</em> 作为特征提取器效果更好。</p>
+<h2 id="2-5-小结"><a href="#2-5-小结" class="headerlink" title="2.5 小结"></a>2.5 小结</h2><p>直到此时我们会发现，人们对于应该如何在 <em>NLP</em> 上进行预训练还是没有一个清晰的认知。比如，采用什么网络结构，在什么任务上进行预训练，怎样使用预训练的模型等等问题都还是处在一个摸索的阶段。我们也应该看到，虽然没有形成统一的认识，但是一个大致的发展脉络已经隐约可见了，从最初的只使用词向量，到后来开始考虑上下文，再到直接使用预训练模型进行特征抽取；从最初使用简单的 <em>DNN</em>，到后来使用 <em>RNN</em> 或 <em>LSTM</em>，再到 <em>Transformer</em> 的尝试等等，都逐渐呈现拨开云雾见光明的趋势。虽然经历了在不同的任务上进行预训练，但是在语言模型上的尝试也在快速发展，接下来就是预训练语言模型的舞台了。</p>
+<h1 id="3-预训练语言模型"><a href="#3-预训练语言模型" class="headerlink" title="3. 预训练语言模型"></a>3. 预训练语言模型</h1><p>在这部分，我们先简单介绍预训练语言模型的发展历史，随着预训练语言模型的发展，产生了不同的技术流派，我们也将对这些技术流派进行简单的梳理。</p>
+<h2 id="3-1-预训练语言模型发展简史"><a href="#3-1-预训练语言模型发展简史" class="headerlink" title="3.1 预训练语言模型发展简史"></a>3.1 预训练语言模型发展简史</h2><p>首先我们将预训练语言模型的发展分成几个时期：</p>
+<ul>
+<li>2015 年至 2017 年：技术探索期</li>
+<li>2017 年至 2018 年：技术成长期</li>
+<li>2018 年：技术爆发期</li>
+<li>2019 年至今： 百家争鸣期</li>
+</ul>
+<h3 id="3-1-1-技术探索期"><a href="#3-1-1-技术探索期" class="headerlink" title="3.1.1 技术探索期"></a>3.1.1 技术探索期</h3><p>2015 年，<em>Andrew M. Dai</em> 和 <em>Quoc V. Le</em> 首次尝试先使用语言模型在大规模无标注语料上进行预训练，然后以整个语言模型来初始化下游的分类模型的方法。</p>
+<p>他们的提出两种预训练方法：</p>
+<ol>
+<li><p>使用 <em>LSTM</em> 训练一个标准的语言模型，即根据上文预测下一个词；</p>
+</li>
+<li><p>使用 <em>LSTM</em> 作为序列自编码器，将整个序列输入到模型中，将序列编码成一个固定维度的向量，然后根据这个向量去预测输入序列本身。</p>
+</li>
+</ol>
+<p>然后使用训练好的 <em>LSTM</em> 权重去初始化一个 <em>LSTM</em> 分类模型，发现上述两种预训练方法不仅提升了模型的分类效果，而且在更多的相关数据集上进行预训练可以极大的提升泛化能力。</p>
+<p>2017 年 4 月， <em>AllenAI</em> 研究小组提出了一个模型——<a href="https://arxiv.org/pdf/1705.00108.pdf" target="_blank" rel="noopener"><em>TagLM</em></a>，如下图所示：</p>
+<p><img width="350" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201022102114.png"></p>
+<p>可以看到，模型采用两段式训练方法（虽然写了三个步骤）：① 从无标记的数据中学习词向量和语言模型，② 将句子作为输入传递给训练好的语言模型，然后将语言模型的输出与 <em>RNN</em> 第一层输出拼接在一起作为序列标记任务模型的输入传递给下游序列标记模型，然后训练下游模型。这个思路与后来的 <em>ELMO</em> 模型是基本一致的，而且由于 <em>ELMO</em> 也是 <em>AllenAI</em> 小组的研究成果，因此我们可以认为 <em>TagLM</em> 模型是 <em>ELMO</em> 的一次初探。</p>
+<p>2017 年 8 月，<em>McCann</em> 等人从机器翻译角度出发，训练了一个两层 <em>Bi-LSTM</em> 的 <em>seq2sqe</em> 翻译模型。然后，将训练好的 <em>encoder</em> 部分拿出来作为预训练的权重用于分类任务。</p>
+<p>2018 年 1 月，<em>Howard</em> 等人提出的 <a href="https://arxiv.org/pdf/1801.06146.pdf" target="_blank" rel="noopener"><em>ULMFiT</em></a> 开始对 <em>NLP</em> 中的预训练方法展开了另一次新的尝试：</p>
+<p><img width="648" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201022103646.png"></p>
+<p>该模型采用的是三段式训练方法：① 在通用语料上训练词向量和语言模型；② 在专业领域语料上对词向量和语言模型进行 <em>fine-tuning</em>；③ 将训练好的语言模型作为句子特征提取器应用于下游分类任务。</p>
+<p>可以看到，以上这些工作已经初现了现在的预训练方法：① 多段式训练，先在相关的数据上预训练一个模型，然后在具体任务数据上进行微调；② 不再只是单纯的使用预训练的词向量，而是开始考虑使用上下文。</p>
+<p>这个时期的预训练更多的是尝试性的工作，比如应该如何训练语言模型，预训练的模型该怎么应用到下游任务等等。随着各种技术尝试的开展，从最开始的发散式尝试，逐渐开始有了一些技术聚焦点：从语言模型角度进行更多的尝试，采用双向 <em>LSTM</em> 网络结构，预训练方法在分类和序列标注任务上都有不俗的表现，这些都为后来的技术成长做好了铺垫。</p>
+<h3 id="3-1-2-技术成长期"><a href="#3-1-2-技术成长期" class="headerlink" title="3.1.2 技术成长期"></a>3.1.2 技术成长期</h3><ul>
+<li><strong>EMLo</strong></li>
+</ul>
+<p><em>ELMo</em> 全称 <em>“Embedding from Language Models”</em>，其核心点在于它的论文名《<a href="Deep contextualized word representations"><em>Deep contextualized word representations</em></a>》，即根据上下文（动态）生成词向量。比如：“我喜欢吃苹果”和“我喜欢苹果手机”，这两句话中的“苹果”分别表示两种含义，他们的词向量应该是不同的，那么 <em>ELMo</em> 可以根据这两句话表达的语义给“苹果”生成两个不同的词向量。</p>
+<p><em>ELMo</em> 是一个两段式训练模型：先在语料上训练一个语言模型，然后利用训练好的语言模型去动态生成词向量，应用于下游任务。第一阶段训练语言模型使用的是双向 <em>LSTM</em> 网络，所谓双向 <em>LSTM</em> 就是一个前向 <em>LSTM</em> 和 一个后向 <em>LSTM</em>，前向 <em>LSTM</em> 通过给定的前 $k-1$ 个词预测第 $k$ 个词，后向 <em>LSTM</em> 就是通过给定的反向的 $k-1$ 个词预测第 $k$ 个词。</p>
+<p>假设模型有 $L$ 层双向 <em>LSTM</em>，那么我们可以得到 $2L+1$ 个向量：前向和后向各一个向量，加上输入层的词向量。</p>
+<p><img width="512" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/elmo-forward-backward-language-model-embedding.png"></p>
+<p>语言模型预训练好以后，在下游任务中我们怎么用这 $2L+1$ 个向量呢？首先是将每层的前向和后向的向量拼接在一起，然后对每层的向量进行加权求和，每层的权重可以通过学习得到。求和之后再进行一定程度的缩放，将缩放后的向量与输入层的词向量再进行加权求和。这样我们就将 $2L+1$ 个向量整合成了一个向量，然后将这个向量作为下游任务的输入，训练下游任务模型。</p>
+<p><img width="512" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/elmo-embedding.png"></p>
+<p>在实验中，作者使用的是两层的双向 <em>LSTM</em>，第一层学习到语法信息，第二层学习语义信息。从上面我们可以看到，<em>ELMo</em> 相比于之前的工作，并没有本质上的创新，基本上是对前人工作的引申和扩展，但是他的效果又是如此的惊艳，在 2018 年初的时候横扫了 <em>NLP</em> 中 6 大任务的最好结果。</p>
+<p>那么 <em>ELMo</em> 有什么缺点呢？</p>
+<ol>
+<li>2017 年谷歌提出了 <em>Transformer</em> 模型，很多研究表明 <em>Transformer</em> 的特征提取能力是要强于 <em>LSTM</em> 的，比如我们上面提到的 <em>Universal Sentence Encoder</em>;</li>
+<li><em>ELMo</em> 采用的特征融合方法还是比较传统的拼接加权求和等方式，相比于后来的 <em>BERT</em> 的一体化融合方式，融合能力弱了一些。</li>
+<li><em>ELMo</em> 是基于特征融合的方式来影响下游任务的，而从 <em>ImageNet</em> 的角度来看，也许 <em>fine-tuning</em> 的方式更适合下游任务（知识迁移）。</li>
+</ol>
+<ul>
+<li><strong><em>GPT</em></strong></li>
+</ul>
+<table><tr>
+    <td align="center"><img width="300" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/640.png"></td>
+    <td align="center"><img width="512" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/OpenAI-GPT-transformer-decoder_web.jpg"></td>
+    </tr>
+</table>  
+
+<p><em>GPT</em> 全称 <em>Generative Pre-Training</em>，模型的大致结构如上图左侧所示。<em>GPT</em> 与之前的预训练模型一样，首先是预训练一个语言模型，然后将语言模型应用到下游任务。它与 <em>ELMo</em> 的不同点在于：</p>
+<ol>
+<li>采用 <em>Transformer</em> 作为特征抽取器；</li>
+<li>采用的是单向的语言模型；</li>
+<li>将预训练和 <em>fine-tuning</em> 的结构进行统一，不再需要特征融合。</li>
+</ol>
+<p>其中 <em>Transformer</em> 部分是经过改造的 <em>decoder</em> 层，如上图右侧所示。由于原始的 <em>Transformer</em> 是 <em>encoder-decoder</em> 结构的机器翻译模型，在 <em>decoder</em> 部分需要与 <em>encoder</em> 语义融合所以多了一个 <em>multi-head attention</em> 层，而在语言建模时，不需要语义融合，因此可以将其去掉。（更多关于 <em>Transformer</em> 的内容可参见【<a href="https://rogerspy.gitee.io/2019/08/26/NLP%E4%B8%AD%E7%9A%84%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E7%AE%80%E4%BB%8B%EF%BC%88%E4%B8%80%EF%BC%89/">1</a>】、【<a href="https://rogerspy.gitee.io/2019/08/27/NLP%E4%B8%AD%E7%9A%84%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E7%AE%80%E4%BB%8B%EF%BC%88%E4%BA%8C%EF%BC%89/">2</a>】、【<a href="https://rogerspy.gitee.io/2019/09/01/analyse-transformer/">3</a>】、【<a href="https://rogerspy.gitee.io/2019/09/11/Transformer%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-pytorch/">4</a>】、【<a href="https://rogerspy.gitee.io/2019/09/16/Transformer%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-tensorflow/">5</a>】、【<a href="https://rogerspy.gitee.io/2019/09/18/transformer%E7%BC%96%E7%A0%81%E5%B1%82%E8%A1%A8%E7%A4%BA/">6</a>】）</p>
+<p>预训练好语言模型以后，怎么用到下游任务呢？以前的预训练语言模型在做下游任务的时候，可以任意设计自己的网络结构，而预训练语言模型只作为一个特征抽取器而已，在训练下游任务模型的时候，预训练的语言模型参数固定不变，只更新下游任务模型的参数。但是 <em>GPT</em> 说，我不要做配角，我要做主角！所以在利用 <em>GPT</em> 做下游任务的时候，我们需要把下游任务的网络结构设计成 <em>GPT</em> 的样子，利用预训练好的 <em>GPT</em> 初始化下游模型参数，然后利用任务数据对整个模型进行 <em>fine-tuning</em>。这样做的好处是，一来不需要特征融合（设计特征融合的方式也加入了过多的人工干预）；二是和 <em>ULMFiT</em> 一样的思路，先在通用领域的是语料上预训练语言模型，在下游任务 <em>fine-tuning</em> 的时候相当于在训练下游任务的同时，也在利用领域语料 <em>fine-tuning</em> 语言模型，相比于 <em>ULMFiT</em>，<em>GPT</em> 更加简洁明了。</p>
+<p>那么问题来了， <em>NLP</em> 的各种任务花样百出，怎么改造才能靠近 <em>GPT</em> 的网络结构呢？</p>
+<p><img width="648" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201028113642.png"></p>
+<p>论文给出的改造方案也很简单：</p>
+<ul>
+<li>分类问题：直接在文本前后加上开始和结束符号；</li>
+<li>判断句子关系问题：在两个句子之间添加一个分隔符即可；</li>
+<li>文本相似性问题：将两个句子顺序颠倒做出两个输入，句子间仍然添加分隔符，之所以做成两个输入主要是告诉模型，句子的顺序不重要；</li>
+<li>多选问题：制作多路输入，每一路是将文章和答案选项使用分隔符拼接在一起即可。</li>
+</ul>
+<p>从图中我们可以看出，不同 <em>NLP</em> 任务的改造并不困难，只需要修改输入部分即可。而输出部分也是一个简单的全连接层。</p>
+<p><em>GPT</em> 最终的效果也是相当的惊艳，在实验涉及到的 12 项任务中，9 个达到了最佳效果！</p>
+<p>但是，由于 <em>GPT</em> 采用的是单向语言模型，使得 <em>GPT</em> 存在语言建模过程中信息不健全的固有缺陷，而正是这一缺陷给了后来者 <em>BERT</em> 的可乘之机。</p>
+<h3 id="3-1-3-技术爆发期"><a href="#3-1-3-技术爆发期" class="headerlink" title="3.1.3 技术爆发期"></a>3.1.3 技术爆发期</h3><p>时间来到 2018 年 10 月 11 日，这是一个本来平凡到不能再平凡的日子，一切都很平静。但是随着 <em>Jacob Devlin</em> 及其合作者在 <em>Arxiv</em> 上悄悄的放了一篇他们的最新论文 《<a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener"><em>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</em></a>》，犹如一声惊雷彻底打破了宁静。首先是在 <em>Twitter</em> 上引发了巨大的浪潮，随后中文各大社区包括但不限于微信公众号、微博等几乎被刷屏。狂揽 11 项 <em>NLP</em> 任务的最佳效果，彻底宣告预训练语言模型的王者降临。</p>
+<p><img width="512" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201028162625.png"></p>
+<p><em>BERT</em> 采用和 <em>GPT</em> 完全一致的两个阶段训练方式。与 <em>GPT</em> 最大的不同是采用了双向语言建模，为了防止双向语言建模时发生泄密，<em>BERT</em> 采用的是 <em>Mask Language Model</em> 方式训练语言模型。另外，<em>BERT</em> 还借鉴了 <em>Skip-thoughts</em> 的思想，通过预测下一个句子来获取句子信息（<em>Next Sentence Prediction， NSP</em>）。</p>
+<ul>
+<li><strong>输入层</strong></li>
+</ul>
+<p><em>BERT</em> 的输入包含三种 <em>Embedding</em>：<em>Token Embedding, Segment Embedding, Position Embedding</em>。其中 <em>Token Embedding</em> 和 <em>Position Embedding</em> 分别对应词向量和位置向量，这个不难理解。那个 <em>Segment Embedding</em> 是用于区分两种句子的向量，正如我们上面说的， <em>BERT</em> 不仅是从语言模型中得到信息，还有一个 <em>NSP</em> 任务。<em>BERT</em> 对 <em>NSP</em> 任务的处理方式和 <em>GPT</em> 类似，将两个句子用一个分隔符拼接在一起，如下图所示。</p>
+<p><img width="512" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201028162702.png"></p>
+<ul>
+<li><strong><em>Transformer Encoder</em></strong></li>
+</ul>
+<p>前面我们说，<em>BERT</em> 采用的是双向语言建模。我们知道 <em>transformer encoder</em> 是采用的自注意力机制，是一个并行结构，而不是像 <em>LSTM</em> 那样的串行结构。对于串行结构来说，我们将句子中的词按照正向顺序输入网络就得到正向模型，按照反向顺序输入模型就得到反向模型，将正向和反向的模型结合在一起就是双向模型。而对于并行结构来说，句子中的所有词是一起输入到模型中，并没有一个先后顺序，此时我们应该怎么理解 <em>BERT</em> 中的”双向“这个概念呢？</p>
+<table>
+    <tr>
+        <td align="center"><img width="200" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201029112541.png"></td>
+        <td align="center"><img width="128" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/1566120593103.png"></td>
+    </tr>
+</table>
+
+<p>如上左图，自注意力机制是将一句话中的每个词分别于其余的词计算点积（注意力权重），比如“我 爱 北京 天安门 。”，对于“北京”来说，当计算它与“我”、“爱”的注意力权重的时候即为前向，与“天安门”、“。”计算注意力权重的时候为后向。其实就是正常的自注意力的计算过程，被论文作者换了一个名字。</p>
+<p>但是这里有一个问题，无监督的训练神经网络语言模型通常是使网络通过上文或者下文去预测当前的词，<em>GPT</em> 之所以用的是 <em>Transformer decoder</em> 很大程度考虑的也是通过 <em>Mask multi-head attention</em> 掩盖掉下文，避免下文信息泄露。而 <em>BERT</em> 直接采用 <em>encoder</em> 是对句子中的所有词都进行自注意力计算，这样就无可避免的会存在一个下文信息泄露。为了解决这个问题，<em>Devlin</em> 等人提出 <em>Masked Language Model</em>， 其核心思想就是随机将一些词替换成 “[Mask]” ，然后在训练过程中让模型利用上下文信息去预测被替换掉的词。其实它的本质和 <em>CBOW</em> 是一致的，只是说这里我们只预测 “[Mask]”。</p>
+<p>但是这里会有一个问题：在训练的时候，训练数据中包含了大量的 “[Mask]”，但是在预测的时候，数据中是不包含 “[Mask]” 的，相当于认为地使在训练数据和真实数据产生了分布上的偏差，会使得模型在使用过程中出现问题。为了避免这个问题，<em>BERT</em> 的做法是：</p>
+<ol>
+<li><p>随机挑选 15% 的词；</p>
+</li>
+<li><p>将选中的词中的 80% 替换成 [Mask];</p>
+</li>
+<li><p>将选中的词中的 10% 随机替换成其他的词；</p>
+</li>
+<li><p>将选中的词中的 10% 不变。</p>
+</li>
+</ol>
+<p>将 80% 的词替换成 [Mask] 是为了防止泄密，这个正如我们上面所说的。将 10% 的词随机替换成其他词，这样做的目的是使模型不知道哪些词被 [Mask] 了，迫使模型尽量学习每一个词的全局表征，使得 <em>BERT</em> 能更好的的获得上下文相关的词向量。将 10% 的词不做替换，是为了使模型得到一定程度的 <em>bias</em>，相当于是额外的奖励，将模型对于词的表征能够拉向词的真实表征。</p>
+<ul>
+<li><strong>输出层</strong></li>
+</ul>
+<p><em>BERT</em> 的下游任务主要有四种：句子关系分类、单句分类、阅读理解和序列标注。为了能适配这四种任务，<em>BERT</em> 设计了相应的输出层：</p>
+<ol>
+<li>句子关系分类：输出序列的第一个位置后面链接一个 <em>softmax</em> 层用于分类；</li>
+<li>单句分类：输出序列的第一个位置后面链接一个 <em>softmax</em> 层用于分类；</li>
+<li>阅读理解：输出序列中每个词的分类，并将起始和终止位置中间的词取出即可；</li>
+<li>序列标注：输出序列中每个词的分类，将对应列类别取出即可。</li>
+</ol>
+<table>
+    <tr>
+        <td align="center"><img width="256" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201028190537.png"></td>
+        <td align="center"><img width="256" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201028190550.png"></td>
+    </tr>
+    <tr>
+        <td align="center"><img width="256" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201028190607.png"></td>
+        <td align="center"><img width="256" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201028190625.png"></td>
+    </tr>
+</table>
+
+<p>其实通过上面的介绍我们可以看出，<em>BERT</em> 本身的创新型并不强，算是一个前人工作的一个集大成者，类似于 <em>Transformer</em> 之于注意力。比如双向语言建模的特性是 <em>Transformer encoder</em> 自带的能力，<em>Masked Language Model</em> 实际上借鉴了 <em>CBOW</em> 的思想，而 <em>NSP</em> 则是借鉴 <em>Skip-thoughts</em>，在输出层的多任务适配更是借鉴了 <em>GPT</em> 的操作。</p>
+<p>但是 <em>BERT</em> 的诞生也是具有划时代意义的：</p>
+<ol>
+<li>明确了 <em>NLP</em> 的一个发展方向，两段式训练，双向语言模型，自注意力机制等都在后来的工作中大放异彩；</li>
+<li>给了 <em>NLP</em> 一个做知识迁移的优雅的解决方案，单单是这一点就足以使 <em>BERT</em> 成为与计算机视觉中 <em>ImageNet</em> 相媲美的里程碑式成就，甚至可能比 <em>ImageNet</em> 更有意义，因为 <em>BERT</em> 预训练用的是无监督学习，无需人工标注，而 <em>ImageNet</em> 仍然是标注数据；</li>
+<li>将 <em>NLP</em> 的发展推向了一个新的高度。在此之后，预训练语言模型迎来了爆发式的大发展，同时预训练语言模型也进入了百家争鸣的时代。</li>
+</ol>
+<h3 id="3-1-4-百家争鸣期"><a href="#3-1-4-百家争鸣期" class="headerlink" title="3.1.4 百家争鸣期"></a>3.1.4 百家争鸣期</h3><p><em>BERT</em> 诞生以后，彻底掀起了预训练语言模型的研究热潮，有针对性 <em>BERT</em> 的各种改进版，有提出新思路的创新版。在短短两年的时间内，预训练语言模型已经发展成了一个大家族，为了厘清家族成员之间的关系，复旦大学的邱锡鹏老师小组对两年来预训练语言模型进行了一下梳理，并根据不同视角将预训练语言模型进行了分类：</p>
+<ul>
+<li>根据向量表示法将模型分成：上下文相关模型和非上下文相关模型；</li>
+<li>根据模型结构将模型分成：使用 <em>LSTM</em> 模型；使用 <em>Transformer encoder</em> 模型；使用 <em>Transformer deocder</em> 模型；使用 <em>Transformer</em> 模型</li>
+<li>根据预训练任务类型将模型分成：<em>Language Model</em>；<em>Masked Language Model</em>；<em>Permuted Language Model</em>；<em>Denoising Autoencoder</em>；<em>Contrastive Learning</em>；</li>
+<li>根据模型的外围扩展：知识增强型；多语言型；特定语言；多模态；特定领域以及压缩模型等。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20201030094701.png" alt></p>
+<h2 id="3-2-小结"><a href="#3-2-小结" class="headerlink" title="3.2 小结"></a>3.2 小结</h2><p>预训练语言模型在 <em>NLP</em> 各领域的强大能力令人兴奋，从 <em>BERT</em> 的提出到现在（2020.10.30）满打满算也不过两年的时间。预训练语言模型的发展也处于百花齐放的阶段，如同预训练技术在 <em>NLP</em> 的发展一样，经历了各种尝试，最后才发现了语言模型这条道路。预训练语言模型也一样，虽然现在每隔一段时间就会有一个新的模型出来刷榜，但是什么样的模型架构，以什么样的形式训练语言模型等等都还在处于探索阶段。在更高一层来看，目前的预训练语言模型并不能真正解决语言的认知能力问题。预训练语言模型的发展还远远没有达到成熟的阶段，但是基于这两年的发展，我们仍然能总结一些规律，也许能够使我们在往更强的模型发展上有迹可循。</p>
+<p>首先，在保证数据质量的前提下，数据量越大，模型容量越大，训练越充分，预训练的模型效果越好；</p>
+<p>其次，训练方式从传统的两段式扩展到四段式能达到更好的效果：</p>
+<ol>
+<li>在大规模通用数据集上预训练大模型；</li>
+<li>在预训练好的通用领域模型上利用领域数据再训练一个领域预训练模型；</li>
+<li>在任务数据上，去掉标签，进行一次任务预训练；</li>
+<li>最后再在具体任务上进行微调</li>
+</ol>
+<p>再次，基于 <em>Transformer</em> 的架构往往能取得最佳效果，未来能否有新的架构取而代之我们拭目以待。</p>
+<p>而目前预训练语言模型也存在着一些问题，比如有些新模型宣称能达到比 <em>BERT</em> 更好的效果，但实际上我们不能确定是因为新模型的模型结构在起作用还是由于它比 <em>BERT</em> 训练的更充分在起作用。也就是说，我们应该如何找到一个模型的能力上限是一个很重要的问题。另外，现在的预训练语言模型越来越大，训练数据越来越多，越来越考验计算硬件的能力，会将研究中心集中在一些资金充裕的地方，严重约束它的发展。</p>
+<p>无论如何，预训练语言模型的成功使我们离 <em>AI</em> 更近了一步，目前存在的问题只有在一点一点的尝试、研究中去解决。</p>
+<h1 id="4-为什么是语言模型？"><a href="#4-为什么是语言模型？" class="headerlink" title="4. 为什么是语言模型？"></a>4. 为什么是语言模型？</h1><p>我们回过头来看，<em>NLP</em> 有众多任务分支：阅读理解、机器翻译、语法分析、自然语言推理、语言模型等等，为什么最后是语言模型成了 <em>NLP</em> 的 <em>ImageNet</em>？</p>
+<p>为了预测句子中下一个最可能的词，语言模型不仅需要学习到语法知识，还需要了解句子的语义。就像 <em>ELMo</em> 成功的关键就在于，他能从浅层获得句法特征，然后从深层获得语义特征一样。不仅如此，一个好的模型还要能从语料中学习到一些常识，比如 <em>“The service was poor, but the food was”</em>，为了预测下一个词，模型必须具备以下能力：</p>
+<ol>
+<li>知道下一个词是用来描述 <em>“food”</em> 的；</li>
+<li>知道 <em>“but”</em> 表示语义转折，并且知道对应的词是 <em>“poor”</em> 的反义词；</li>
+<li>知道 <em>“poor”</em> 的反义词都有哪些。</li>
+</ol>
+<p>语言模型能够获得与下游任务相关的信息，比如长程依赖、层级结构、感情信息等等。相比于 <em>Skip-thoughts</em> 和 <em>autoencoding</em> 等无监督的任务，语言模型更能获得语法信息（<a href="https://openreview.net/forum?id=BJeYYeaVJ7" target="_blank" rel="noopener"><em>Kelly et al. 2018</em></a>）。</p>
+<p>而对于其他比如分类，机器翻译等任务来说，语言模型是无监督的。这样，语言模型的训练预料可以认为是无穷无尽的，而又无需人工标注。这一点对于 <em>NLP</em> 来说是至关重要的，目前世界上超过 1000 人使用的语言有 4500 多种，其中绝大多数的语言都是小语种，无论是直接获取语料资源还是进行人工标注，对于 <em>NLP</em> 任务来书都是巨大的挑战。有了无监督的语言模型，我们可以先在一些容易获取的，资源丰富的语言上先进性预训练，然后再在那些低资源（<em>low-resource</em>）语言上进行微调，对于小语种 <em>NLP</em> 的发展具有重要的意义。</p>
+<p>从实际的发展来看，也印证了我们上面的说法，从 <em>ELMo</em> 到 <em>BERT</em> 正式开启了 <em>NLP</em> 的预训练时代，而这正是归功于预训练语言模型的发展。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://zhuanlan.zhihu.com/p/109954774" target="_blank" rel="noopener">02. 语言模型（language Model）发展历史</a> <em>crazysnailer</em></li>
+<li><a href="https://www.isca-speech.org/archive/archive_papers/icslp_2000/i00_1202.pdf" target="_blank" rel="noopener">Can artificial neural network learn language models?</a> <em>W. Xu and A. Rudnicky</em></li>
+<li><a href="jmlr.org/papers/volume3/bengio03a/bengio03a.pdf">A Neural Probabilistic Language Model</a> <em>Yoshua Bengio, Réjean Ducharme, Pascal Vincent, Christian Jauvin</em></li>
+<li><a href="https://ruder.io/nlp-imagenet/" target="_blank" rel="noopener">NLP’s ImageNet moment has arrived</a> <em>Sebastian Ruder,  Andrey Kurenkov, Eric Wang, and Aditya Ganesh</em></li>
+<li><a href="https://www.isca-speech.org/archive/archive_papers/interspeech_2010/i10_1045.pdf" target="_blank" rel="noopener">Recurrent neural network based language model</a> <em>T. Mikolov, M. Karafiat, L. Burget, ´J. Cernocky, and S. Khudanpur</em></li>
+<li><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.248.4448&amp;rep=rep1&amp;type=pdf" target="_blank" rel="noopener">LSTM neural networks for language modeling</a> <em>M. Sundermeyer, R. Schluter, and H. Ney</em></li>
+<li><a href="https://docs.chainer.org/en/stable/examples/ptb.html" target="_blank" rel="noopener">RNN Language Models</a> <em>Chainer</em></li>
+<li><a href="http://jd92.wang/assets/files/transfer_learning_tutorial_wjd.pdf" target="_blank" rel="noopener">迁移学习简明手册</a> <em>王晋东</em></li>
+<li><a href="https://ruder.io/transfer-learning/index.html#whatistransferlearning" target="_blank" rel="noopener">Transfer Learning - Machine Learning’s Next Frontier</a> <em>Sebastian Ruder</em></li>
+<li><a href="https://www.gehealthcare.com/article/what-is-imagenet-and-why-2012-was-so-important" target="_blank" rel="noopener">What is ImageNet and Why 2012 Was So Important</a> <em>GE Healthcare</em></li>
+<li><a href="https://zhuanlan.zhihu.com/p/49271699" target="_blank" rel="noopener">从Word Embedding到Bert模型—自然语言处理中的预训练技术发展史</a> <em>张俊林</em></li>
+<li><a href="http://josecamachocollados.com/book_embNLP_draft.pdf" target="_blank" rel="noopener">Embeddings in Natural Language Processing——Theory and Advances in Vector Representation of Meaning</a> <em>Mohammad Taher Pilehvar, Jose Camacho-Collados</em></li>
+<li><a href="http://cs.brown.edu/courses/csci2952d/readings/lecture1-firth.pdf" target="_blank" rel="noopener">A synopsis of linguistic theory</a> <em>John R Firth</em></li>
+<li><a href="https://www.tandfonline.com/doi/pdf/10.1080/00437956.1954.11659520" target="_blank" rel="noopener">Distributional structure</a> <em>Zellig S Harris</em></li>
+<li><a href="https://www.aclweb.org/anthology/J92-4003" target="_blank" rel="noopener">Class-based n-gram models of natural language</a> <em>Peter F Brown, Peter V Desouza, Robert L Mercer, Vincent J Della Pietra, and Jenifer C Lai</em></li>
+<li><a href="https://dl.acm.org/doi/10.1145/361219.361220" target="_blank" rel="noopener">A vector space model for automatic indexing</a> <em>Gerard Salton, A. Wong, and C. S. Yang</em></li>
+<li><a href="https://www.springer.com/gp/book/9789811555725" target="_blank" rel="noopener">Representation Learning for Natural Language Processing</a> <em>Liu, Zhiyuan, Lin, Yankai, Sun, Maosong</em></li>
+<li><a href="http://www.thespermwhale.com/jaseweston/papers/unified_nlp.pdf" target="_blank" rel="noopener">A Unified Architecture for Natural Language Processing: Deep Neural Networks with Multitask Learning</a> <em>Ronan Collobert, Jason Weston</em></li>
+<li><a href="https://dl.acm.org/doi/10.5555/1953048.2078186" target="_blank" rel="noopener">Natural Language Processing (Almost) from Scratch</a> <em>Ronan Collobert, Jason Weston, Leon Bottou, Michael Karlen, Koray Kavukcuoglu, Pavel Kuksa</em></li>
+<li><a href="https://icml.cc/imls/conferences/2007/proceedings/papers/425.pdf" target="_blank" rel="noopener">Three new graphical models for statistical language modelling</a> <em>Andriy Mnih, Geoffrey Hinton</em></li>
+<li><a href="https://www.cs.toronto.edu/~amnih/papers/hlbl_final.pdf" target="_blank" rel="noopener">A scalable hierarchical distributed language model</a> <em>Andriy Mnih, Geoffrey Hinton</em></li>
+<li><a href="https://arxiv.org/abs/cs/0108006" target="_blank" rel="noopener">Classes for fast maximum entropy training</a> <em>Goodman, J.</em></li>
+<li><a href="https://www.iro.umontreal.ca/~lisa/pointeurs/hierarchical-nnlm-aistats05.pdf" target="_blank" rel="noopener">Hierarchical probabilistic neural network language model</a> <em>Frederic Morin &amp; Yoshua Bengio</em></li>
+<li><a href="https://www.aclweb.org/anthology/P12-1092/" target="_blank" rel="noopener">Improving Word Representations via Global Context and Multiple Word Prototypes</a> <em>Eric Huang, Richard Socher, Christopher Manning, Andrew Ng</em></li>
+<li><a href="https://www.jianshu.com/p/81dddec296fa" target="_blank" rel="noopener">NLP的巨人肩膀（中）</a> <em>weizier</em></li>
+<li><a href="https://cs.stanford.edu/~quocle/paragraph_vector.pdf" target="_blank" rel="noopener">Distributed Representations of Sentences and Documents</a> <em>Quoc Le, Tomas Mikolov</em></li>
+<li><a href="https://arxiv.org/pdf/1506.06726.pdf" target="_blank" rel="noopener">Skip-Thought Vectors</a> <em>Ryan Kiros, Yukun Zhu, Ruslan Salakhutdinov, Richard S. Zemel, Antonio Torralba, Raquel Urtasun, Sanja Fidler</em> </li>
+<li><a href="https://arxiv.org/pdf/1803.02893.pdf" target="_blank" rel="noopener">AN EFFICIENT FRAMEWORK FOR LEARNING SENTENCE REPRESENTATIONS</a> <em>Lajanugen Logeswaran &amp; Honglak Lee</em></li>
+<li><a href="https://arxiv.org/pdf/1705.02364.pdf" target="_blank" rel="noopener">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data</a> <em>Alexis Conneau, Douwe Kiela, Holger Schwenk, Loic Barrault, Antoine Bordes</em></li>
+<li><a href="https://arxiv.org/abs/1804.00079" target="_blank" rel="noopener">Learning General Purpose Distributed Sentence Representations via Large Scale Multi-task Learning</a> <em>Sandeep Subramanian, Adam Trischler, Yoshua Bengio, Christopher J Pal</em></li>
+<li><a href="https://arxiv.org/pdf/1803.11175.pdf" target="_blank" rel="noopener">Universal Sentence Encoder</a> <em>Daniel Cer, Yinfei Yang, Sheng-yi Kong, Nan Hua, Nicole Limtiaco, Rhomni St. John, Noah Constant, Mario Guajardo-Cespedes, Steve Yuan, Chris Tar, Yun-Hsuan Sung, Brian Strope, Ray Kurzweil</em></li>
+<li><a href="https://arxiv.org/pdf/1511.01432.pdf" target="_blank" rel="noopener">Semi-supervised Sequence Learning</a> <em>Andrew M. Dai &amp; Quoc V. Le</em></li>
+<li><a href="https://www.aclweb.org/anthology/K16-1006.pdf" target="_blank" rel="noopener">context2vec: Learning Generic Context Embedding with Bidirectional LSTM</a> <em>Oren Melamud, Jacob Goldberger, Ido Dagan</em></li>
+<li><a href="https://arxiv.org/pdf/1705.00108.pdf" target="_blank" rel="noopener">Semi-supervised sequence tagging with bidirectional language models</a> <em>Matthew E. Peters, Waleed Ammar, Chandra Bhagavatula, Russell Power</em></li>
+<li><a href="https://arxiv.org/pdf/1801.06146.pdf" target="_blank" rel="noopener">Universal Language Model Fine-tuning for Text Classification</a> <em>Jeremy Howard, Sebastian Ruder</em></li>
+<li><a href="https://zhuanlan.zhihu.com/p/54743941" target="_blank" rel="noopener">放弃幻想，全面拥抱Transformer：自然语言处理三大特征抽取器（CNN/RNN/TF）比较</a> <em>张俊林</em></li>
+<li><a href="https://zhuanlan.zhihu.com/p/254821426" target="_blank" rel="noopener">乘风破浪的PTM：两年来预训练模型的技术进展</a> <em>张俊林</em></li>
+<li><a href="https://arxiv.org/abs/1906.03591" target="_blank" rel="noopener">A Survey on Neural Network Language Models</a> <em>Kun Jing and Jungang Xu</em></li>
+<li><a href="https://arxiv.org/abs/2003.08271" target="_blank" rel="noopener">Pre-trained Models for Natural Language Processing: A Survey</a> <em>Xipeng Qiu, Tianxiang Sun, Yige Xu, Yunfan Shao, Ning Dai &amp; Xuanjing Huang</em></li>
+<li><a href="http://licstar.net/archives/328" target="_blank" rel="noopener">Deep Learning in NLP （一）词向量和语言模型</a> <em>LICSTAR</em></li>
+<li><a href="https://ruder.io/thesis/neural_transfer_learning_for_nlp.pdf" target="_blank" rel="noopener">Neural Transfer Learning for Natural Language Processing</a> <em>Sebastian Ruder</em></li>
+<li><a href="https://arxiv.org/abs/1707.07328" target="_blank" rel="noopener">Adversarial Examples for Evaluating Reading Comprehension Systems</a> <em>Jia, R. and Liang, P. (2017)</em></li>
+<li><a href="https://arxiv.org/abs/1711.02173" target="_blank" rel="noopener">Synthetic and Natural Noise Both Break Neural Machine Translation</a> <em>Belinkov, Y. and Bisk, Y. (2018)</em></li>
+<li><a href="Deep contextualized word representations"><em>Deep contextualized word representations</em></a> <em>Matthew E. Peters, Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, Luke Zettlemoyer</em></li>
+<li><a href="https://openreview.net/forum?id=BJeYYeaVJ7" target="_blank" rel="noopener">Language Modeling Teaches You More than Translation Does: Lessons Learned Through Auxiliary Task Analysis </a> <em>Kelly W. Zhang, Samuel R. Bowman</em></li>
+<li><a href="https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank" rel="noopener">Improving Language Understanding by Generative Pre-Training</a> <em>Alec Radford，Karthik Narasimhan，Tim Salimans，Ilya Sutskever</em></li>
+<li><a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a> <em>Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova</em></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzIwMTc4ODE0Mw==&amp;mid=2247498922&amp;idx=1&amp;sn=d38ba70d63352f4355df21f41f07502e&amp;chksm=96ea232aa19daa3c27086a06ef3f8c9dfd7db011228b4bbf9622aee457d02728fea3cbab67b1&amp;scene=21" target="_blank" rel="noopener">后 BERT 时代的那些 NLP 预训练模型</a> <em>李理</em></li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/nlp/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>NLP</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/language-model/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Language Model</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2020/10/13/ptm-introduction/&title=预训练语言模型-前言 | Rogerspy's Home&summary=
+自从 2017 年 Vaswani 等人提出 Transformer 模型以后 NLP 开启了一个新的时代——预训练语言模型。而 2018 年的 BERT 横空出世则宣告着 NLP 的王者降临。那么，什么是预训练？什么是语言模型？它为什么有效？"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2020/10/13/ptm-introduction/&title=预训练语言模型-前言 | Rogerspy's Home&summary=
+自从 2017 年 Vaswani 等人提出 Transformer 模型以后 NLP 开启了一个新的时代——预训练语言模型。而 2018 年的 BERT 横空出世则宣告着 NLP 的王者降临。那么，什么是预训练？什么是语言模型？它为什么有效？"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrklEQVR42u3cy06lUBAFUP//p29PetBJh+uulxqzGBFUOIsBBbsqfnzE2+uf7f/jye+/4u3p/E/XWtjw8PDwBkt/utjTkXwpyRnyW5nfIDw8PLw73tNl8v3qUnJY77p4eHh4P41XPdKj4uHh4f0OXi9c6O1PChIeHh7eNS9fXP4Qf/9iPY9ClrMWPDw8vJiXd5F+zv5Jfw8PDw9v3FW/aOpXm1u9df79Wzw8PLwDXr64ajSQN8B6wUTh9uHh4eGt8vIIoPfZ38NU22yP+3h4eHgHvOqpk0B2HvL2XsSjHAUPDw/vgJcwkry0d4bqwFZ0FTw8PLxV3taCknKS35Tlrh0eHh7eF44FTPrveUOr1wYrvNzj4eHhrfK2lpsUjK2Bqvy6eHh4eBe8eSOqFyL0Wm556cLDw8O741UbUdWxqmo8UQ0+opKAh4eHd8Crtr6qt2NrtKscauDh4eEd86rP1SQamN+avAgVcgs8PDy8VV4e4PZCil6rrEnFw8PDO+BNPv6TkrD1Ol49/gkSDw8Pb8CbD0JVg4w8zJ0XGDw8PLyv4VUvX402qoMF1fijnKbg4eHhdd5Cm/+0bhQHxE2y5PxR4oKHh4e3xJuMC/RehefDB4UShYeHh3fAqz6sJ335SSzbK2B4eHh4d7zep35SAPLgozeMVQgj8PDw8A54vYD1fQnJm2G9gYOo4uHh4eEd8/JQIGEkxaA3dFUobHh4eHirvEnbqYfPS1H1pjw2wPDw8PBWebut/V7wOikthXYXHh4e3iqvt+j8xfc13noNOTw8PLxrXq8xNhm3Ko9JxWHE4+gAHh4e3rfyJiFFHjf0WmILhQEPDw9vlTcZNahiFoJmPDw8vDNeLwjIH9x5sPt+udWQAg8PD++CV/3gT36ajwXkEXD1VR4PDw/vgPcHb7LQdfSNJIsAAAAASUVORK5CYII='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2020/10/13/ptm-introduction/&title=预训练语言模型-前言 | Rogerspy's Home&summary=
+自从 2017 年 Vaswani 等人提出 Transformer 模型以后 NLP 开启了一个新的时代——预训练语言模型。而 2018 年的 BERT 横空出世则宣告着 NLP 的王者降临。那么，什么是预训练？什么是语言模型？它为什么有效？"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/02/15/knowledge-distilling/" rel="prev" title="模型压缩——知识蒸馏">
+                                  
+                                      模型压缩——知识蒸馏
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/knowledge-distillation/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>knowledge distillation</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2020/05/23/transformer家族-deep/" rel="prev" title="Transformer家族之Deep Transformer">
+                                    
+                                        Transformer家族之Deep Transformer
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/deep/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Deep</a> <a class="tag" href="/tags/initialization/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Initialization</a> <a class="tag" href="/tags/norm/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Norm</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '预训练语言模型-前言',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-语言模型"><span class="toc-text">1. 语言模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-统计语言模型"><span class="toc-text">1.1 统计语言模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#n-gram-语言模型"><span class="toc-text">n-gram 语言模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-神经网络语言模型"><span class="toc-text">1.2 神经网络语言模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-FFNN-语言模型"><span class="toc-text">1.2.1 FFNN 语言模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-RNN-语言模型"><span class="toc-text">1.2.2 RNN 语言模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-LSTM-语言模型"><span class="toc-text">1.2.3 LSTM 语言模型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-预训练"><span class="toc-text">2. 预训练</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-ImageNet"><span class="toc-text">2.1 ImageNet</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Word-Embedding"><span class="toc-text">2.2 Word Embedding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-ASCII-码表示法"><span class="toc-text">2.2.1 ASCII 码表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-One-Hot-表示法"><span class="toc-text">2.2.2 One-Hot 表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-向量空间模型"><span class="toc-text">2.2.3 向量空间模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-4-词嵌入表示法"><span class="toc-text">2.2.4 词嵌入表示法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-词向量怎么用？"><span class="toc-text">2.3 词向量怎么用？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Sentence-Embedding"><span class="toc-text">2.4 Sentence Embedding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-Paragraph-vector"><span class="toc-text">2.4.1 Paragraph vector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-Skip-thoughts"><span class="toc-text">2.4.2 Skip-thoughts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-3-Quick-thoughts"><span class="toc-text">2.4.3 Quick-thoughts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-4-InferSent"><span class="toc-text">2.4.4 InferSent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-5-General-Purpose-Sentence-Representation"><span class="toc-text">2.4.5 General Purpose Sentence Representation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-6-Universal-Sentence-Encoder"><span class="toc-text">2.4.6 Universal Sentence Encoder</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-小结"><span class="toc-text">2.5 小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-预训练语言模型"><span class="toc-text">3. 预训练语言模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-预训练语言模型发展简史"><span class="toc-text">3.1 预训练语言模型发展简史</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-技术探索期"><span class="toc-text">3.1.1 技术探索期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-技术成长期"><span class="toc-text">3.1.2 技术成长期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-技术爆发期"><span class="toc-text">3.1.3 技术爆发期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-百家争鸣期"><span class="toc-text">3.1.4 百家争鸣期</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-小结"><span class="toc-text">3.2 小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-为什么是语言模型？"><span class="toc-text">4. 为什么是语言模型？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(14)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19px; color: #777">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.25px; color: #6f6f6f">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 17.75px; color: #808080">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 16.5px; color: #888">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.25px; color: #919191">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

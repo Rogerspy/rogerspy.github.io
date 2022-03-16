@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Transformer代码实现-Tensoflow版 | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <div class="cover-wrapper">
+    <cover class='cover post half'>
+      
+        
+  <h1 class='title'>Rogerspy's Home</h1>
+
+
+  <div class="m_search">
+    <form name="searchform" class="form u-search-form">
+      <input type="text" class="input u-search-input" placeholder="" />
+      <i class="icon fas fa-search fa-fw"></i>
+    </form>
+  </div>
+
+<div class='menu navgation'>
+  <ul class='h-list'>
+    
+      
+        <li>
+          <a class="nav home" href="/"
+            
+            
+            id="home">
+            <i class='fas fa-edit fa-fw'></i>&nbsp;博文
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/video/"
+            
+            
+            id="video">
+            <i class='fas fa-film fa-fw'></i>&nbsp;视频
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/material/"
+            
+              rel="nofollow"
+            
+            
+            id="material">
+            <i class='fas fa-briefcase fa-fw'></i>&nbsp;资料
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/about/"
+            
+              rel="nofollow"
+            
+            
+            id="about">
+            <i class='fas fa-info-circle fa-fw'></i>&nbsp;关于
+          </a>
+        </li>
+      
+    
+  </ul>
+</div>
+
+      
+    </cover>
+    <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+  </div>
+
+
+  <div class="l_body">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2019/09/16/Transformer代码实现-tensorflow/">
+        Transformer代码实现-Tensoflow版
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2019-09-16</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/nlp/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>NLP</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">6.8k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">40分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p>前面介绍了Transformer的<code>pytorch</code>版的代码实现，下面我们再介绍一下<code>tensorflow</code>版的代码实现。</p>
+<a id="more"></a>
+<p>本文主要参考的是<code>tensorflow</code><a href="https://www.tensorflow.org/beta/tutorials/text/transformer" target="_blank" rel="noopener">官方教程</a>，使用的是<code>tensoflow 2.0</code>，因此首先还是要先搭建代码环境，可以参考这里：<a href="https://tf.wiki/zh/basic/installation.html" target="_blank" rel="noopener">简单粗暴 TensorFlow 2.0</a>。</p>
+<h1 id="1-前期准备"><a href="#1-前期准备" class="headerlink" title="1. 前期准备"></a>1. 前期准备</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import, division, print_function, unicode_literals</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    %tensorflow_version <span class="number">2.</span>x</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">import</span> tensorflow_datasets <span class="keyword">as</span> tfds</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+<h1 id="2-Scaled-Dot-Product-Attention"><a href="#2-Scaled-Dot-Product-Attention" class="headerlink" title="2. Scaled Dot-Product Attention"></a>2. Scaled Dot-Product Attention</h1><p><img src="https://img.vim-cn.com/ed/97e04d7d6067cb360e8fef1d29cf41978d353e.png" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">scaled_dot_product_attention</span><span class="params">(q, k, v, mask)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Calculate the attention weights.</span></span><br><span class="line"><span class="string">    q, k, v must have matching leading dimension.</span></span><br><span class="line"><span class="string">    k, v must have matching penultimate dimension, i.e.:seq_len_k = seq_len_v.</span></span><br><span class="line"><span class="string">    The mask has different shapes depending on its type (padding or look ahead)</span></span><br><span class="line"><span class="string">    but it must be broadcastable for addition.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :params q: query shape == (..., seq_len_q, depth)</span></span><br><span class="line"><span class="string">    :params k: key shape == (..., seq_len_k, depth)</span></span><br><span class="line"><span class="string">    :params v: value shape == (..., seq_len_v, depth)</span></span><br><span class="line"><span class="string">    :params mask: Float tensor with shape bradcastable to </span></span><br><span class="line"><span class="string">                  (None, seq_len_q, seq_len_k), Default is None.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># MatMul step in above Fig</span></span><br><span class="line">    matmul_qk = tf.matmul(q, k, transpose_b=<span class="literal">True</span>)  <span class="comment"># (..., seq_len_q, seq_len_k)</span></span><br><span class="line">   </span><br><span class="line">    <span class="comment"># Scale step in above Fig</span></span><br><span class="line">    <span class="comment"># This is done because for large values of depth, the dot product grows </span></span><br><span class="line">    <span class="comment"># large in magnitude pushing the softmax function where it has small </span></span><br><span class="line">    <span class="comment"># gradients resulting in a very hard softmax.</span></span><br><span class="line">    dk = tf.cast(tf.shape(k)[<span class="number">-1</span>], tf.float32)</span><br><span class="line">    scaled_attention = matmul_qk / tf.math.sqrt(dk)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Mask step in above Fig</span></span><br><span class="line">    <span class="comment"># This is done because the mask is summed with the scaled matrix </span></span><br><span class="line">    <span class="comment"># multiplication of Q and K and is applied immediately before a softmax. </span></span><br><span class="line">    <span class="comment"># The goal is to zero out these cells, and large negative inputs to </span></span><br><span class="line">    <span class="comment"># softmax are near zero in the output.</span></span><br><span class="line">    <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        scaled_attention += (mask * <span class="number">-1e9</span>) </span><br><span class="line">        </span><br><span class="line">    <span class="comment"># SoftMax step in above Fig</span></span><br><span class="line">    <span class="comment"># softmax is normalized on the last axis (seq_len_k) so that the scores add up to 1</span></span><br><span class="line">    attention_weights = tf.nn.softmax(scaled_attention, axis=<span class="number">-1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># The last MatMul step in above Fig</span></span><br><span class="line">    out = tf.matmul(attention_weights, v)  <span class="comment"># (..., seq_len_q, depth_v)</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> out, attention_weights</span><br></pre></td></tr></table></figure>
+<h1 id="3-Multi-Head-Attention"><a href="#3-Multi-Head-Attention" class="headerlink" title="3. Multi-Head Attention"></a>3. Multi-Head Attention</h1><p><img src="https://img.vim-cn.com/b1/e4bc841abc55d366813340f92f6696c5d59e95.png" alt></p>
+<p><em>Multi-Head Attention</em>有四部分组成：</p>
+<ul>
+<li>线性转换层和multi-head (Q, K, V)</li>
+<li><em>Multi-head Scaled dot-product attention</em></li>
+<li><em>Concatenation of heads</em></li>
+<li>最后的线性转换层</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MultiHeadAttention</span><span class="params">(tf.keras.layers.Layer)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Implement Multi=head attention layer.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, d_mode, num_heads)</span>:</span></span><br><span class="line">        super(MultiHeadAttention, self).__init__()</span><br><span class="line">        self.d_model= d_model</span><br><span class="line">        self.num_heads = num_heads</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># after `Concat`, concatenated heads dimension must equal to d_model</span></span><br><span class="line">        <span class="keyword">assert</span> d_model % num_heads == <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        self.depth = d_model // num_heads</span><br><span class="line">        </span><br><span class="line">        self.wq = tf.keras.layers.Dense(d_model)</span><br><span class="line">        self.wk = tf.keras.layers.Dense(d_model)</span><br><span class="line">        self.wv = tf.keras.layers.Dense(d_model)</span><br><span class="line">        </span><br><span class="line">        self.dense = tf.keras.layers.Dense(d_model)</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">split_heads</span><span class="params">(self, x, batch_size)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Split the last dimension (word vector dimension) into (num_heads, depth).</span></span><br><span class="line"><span class="string">        Transpose the result such that the shape is </span></span><br><span class="line"><span class="string">        (batch_size, num_heads, seq_len, depth)</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        x = tf.reshape(x, (batch_size, <span class="number">-1</span>, self.num_heads, self.depth))</span><br><span class="line">        <span class="keyword">return</span> tf.transpose(x, perm=[<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, q, k, v, mask)</span>:</span></span><br><span class="line">        batch_size = tf.shape(q)[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># First linear transition step in above Fig</span></span><br><span class="line">        q = self.wq(q)  <span class="comment"># (batch_size, seq_len, d_model)</span></span><br><span class="line">        k = self.wk(k)  <span class="comment"># (batch_size, seq_len, d_model)</span></span><br><span class="line">        v = self.wv(v)  <span class="comment"># (batch_size, seq_len, d_model</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Split K, Q, V into multi-heads</span></span><br><span class="line">        q = self.split_heads(q, batch_size)  <span class="comment"># (batch_size, num_heads, seq_len_q, depth)</span></span><br><span class="line">        k = self.split_heads(k, batch_size)  <span class="comment"># (batch_size, num_heads, seq_len_k, depth)</span></span><br><span class="line">        v = self.split_heads(v, batch_size)  <span class="comment"># (batch_size, num_heads, seq_len_v, depth)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Scaled Dot-Product Attention step in above Fig</span></span><br><span class="line">        scaled_attention, attention_weights = scaled_dot_product_attention(q, k, v, mask)</span><br><span class="line">        <span class="comment"># scaled_attention.shape == (batch_size, num_heads, seq_len_q, depth)</span></span><br><span class="line">        <span class="comment"># attention_weights.shape == (batch_size, num_heads, seq_len_q, seq_len_k)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Concat step in above Fig</span></span><br><span class="line">        scaled_attention = tf.transpose(scaled_attention, perm=[<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>])</span><br><span class="line">        <span class="comment"># scale_attention.shape == (batch_size, seq_len_q, num_heads, depth)</span></span><br><span class="line">        concat_attention = tf.reshape(scaled_attention, (batch_size, <span class="number">-1</span>, self.d_model))</span><br><span class="line">        <span class="comment"># concate_attention.shaoe == (batch_size, seq_len_q, d_model)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Final linear transition step in above Fig</span></span><br><span class="line">        out = self.dense(concat_attention)  <span class="comment"># (batch_size, seq_len_q, d_model)</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> out, attention_weights</span><br></pre></td></tr></table></figure>
+<h1 id="4-Point-wise-feed-forward-network"><a href="#4-Point-wise-feed-forward-network" class="headerlink" title="4. Point wise feed forward network"></a>4. Point wise feed forward network</h1><p><em>Point wise feed forward network</em>由两个全连接层组成，激活函数使用<em>Relu</em>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">point_wise_feed_forward_network</span><span class="params">(d_model, d_ff)</span>:</span></span><br><span class="line">    ffn = tf.keras.Sequential([</span><br><span class="line">        tf.keras.layers.Dense(d_ff, activation=<span class="string">'relu'</span>),  <span class="comment"># (batch_size, seq_len, d_ff)</span></span><br><span class="line">        tf.keras.layers.Dense(d_model)  <span class="comment"># (batch_size, seq_len, d_model)</span></span><br><span class="line">    ])</span><br><span class="line">    <span class="keyword">return</span> ffn</span><br></pre></td></tr></table></figure>
+<h1 id="5-Positional-encoding"><a href="#5-Positional-encoding" class="headerlink" title="5. Positional encoding"></a>5. Positional encoding</h1><script type="math/tex; mode=display">
+PE_{(pos, 2i)} = sin(pos/10000^{2i/d_{model}})</script><script type="math/tex; mode=display">
+PE_{(pos, 2i+1)} = cos(pos/10000^{2i/d_{model}})</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_angles</span><span class="params">(pos, i, d_model)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Get the absolute position angle from each word.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :params pos: position index</span></span><br><span class="line"><span class="string">    :params i: word embedding dimension index at each position</span></span><br><span class="line"><span class="string">    :params d_model: model dimension</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    angle_rates = <span class="number">1</span> / np.power(<span class="number">10000</span>, (<span class="number">2</span>*(i//<span class="number">2</span>)) / np.float32(d_model))</span><br><span class="line">    <span class="keyword">return</span> pos * angle_rates</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">positional_encoding</span><span class="params">(position, d_model)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Compute positional encoding.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :params position: length of sentence</span></span><br><span class="line"><span class="string">    :params d_model: model dimension</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    angle_rads = get_angles(np.arange(position)[:, np.newaxis],</span><br><span class="line">                            np.arange(d_model)[np.newaxis, :],</span><br><span class="line">                            d_model)  <span class="comment"># (position, d_model)</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># apply sin to even indices in the array; 2i</span></span><br><span class="line">    angle_rads[:, <span class="number">0</span>::<span class="number">2</span>] = np.sin(angle_rads[:, <span class="number">0</span>::<span class="number">2</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># apply cos to odd indices in the array; 2i+1</span></span><br><span class="line">    angle_rads[:, <span class="number">1</span>::<span class="number">2</span>] = np.cos(angle_rads[:, <span class="number">1</span>::<span class="number">2</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># positional encoding</span></span><br><span class="line">    positional_encoding = angle_rads[np.newaxis, ...]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tf.cast(positional_encoding, dtype=tf.float32)</span><br></pre></td></tr></table></figure>
+<h1 id="6-Masking"><a href="#6-Masking" class="headerlink" title="6. Masking"></a>6. Masking</h1><p>这里有两种Mask，一种用来mask掉输入序列中的padding，一种用来mask掉解码过程中“未来词”。</p>
+<ul>
+<li>Mask每个batch中所有序列的padding token，使得模型不会把padding token当成输入：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_padding_mask</span><span class="params">(seq)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Mask all the pad tokens in the batch of sequence. </span></span><br><span class="line"><span class="string">    It ensures that the model does not treat padding as the input. </span></span><br><span class="line"><span class="string">    The mask indicates where pad value 0 is present: </span></span><br><span class="line"><span class="string">    it outputs a 1 at those locations, and a 0 otherwise.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    seq = tf.cast(tf.math.equal(seq, <span class="number">0</span>), tf.float32)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># add extra dimensions to add the padding to the attention logits.</span></span><br><span class="line">    <span class="keyword">return</span> seq[:, tf.newaxis, tf.newaxis, :]  <span class="comment"># (batch_size, 1, 1, seq_len)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Mask掉解码过程中的“未来词”：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_look_ahead_mask</span><span class="params">(size)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    The look-ahead mask is used to mask the future tokens in a sequence. </span></span><br><span class="line"><span class="string">    In other words, the mask indicates which entries should not be used.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    mask = <span class="number">1</span> - tf.linalg.band_part(tf.ones((size, size)), <span class="number">-1</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> mask  <span class="comment"># (seq_len, seq_len)</span></span><br></pre></td></tr></table></figure>
+<h1 id="7-Encoder-and-Decoder"><a href="#7-Encoder-and-Decoder" class="headerlink" title="7. Encoder and Decoder"></a>7. Encoder and Decoder</h1><p><img src="https://img.vim-cn.com/3a/78ea12dca1ce0f99f9a9705466afc16c58c3cf.png" alt></p>
+<p>Transformer和标准的<em>seq2seq with attention</em>模型一样，采用<em>encoder-decoder</em>结构，<em>encoder / decoder</em>都包含了6个结构相同的<em>encoder layer</em>和<em>decoder layer</em>。</p>
+<h2 id="7-1-Encoder"><a href="#7-1-Encoder" class="headerlink" title="7.1 Encoder"></a>7.1 Encoder</h2><p><em>Encoder layer</em>由两个sub-layer组成：</p>
+<ul>
+<li>Multi-head attention</li>
+<li>Point wise feed forward network</li>
+</ul>
+<p>每个sub-layer后面都接一个layer normalization，使用残差连接防止梯度消失。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EncoderLayer</span><span class="params">(tf.keras.layers.Layer)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Implements Encoder Layer.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, d_model, num_heads, d_ff, rate=<span class="number">0.1</span>)</span>:</span></span><br><span class="line">        super(EncoderLayer, self).__init__()</span><br><span class="line">        </span><br><span class="line">        self.multihead_attention = MultiHeadAttention(d_model, num_heads)</span><br><span class="line">        self.ffn = point_wise_feed_forward_network(d_model, d_ff)</span><br><span class="line">        </span><br><span class="line">        self.layernorm1 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.layernorm2 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        </span><br><span class="line">        self.dropout1 = tf.keras.layers.Dropout(rate)</span><br><span class="line">        self.fropout2 = tf.keras.layers.Dropout(rate)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, x, training, padding_mask)</span>:</span></span><br><span class="line">        <span class="comment"># Multi-head attention sub-layer</span></span><br><span class="line">        attention_out, _ = self.multihead_attention(x, x, x, padding_mask)  </span><br><span class="line">        <span class="comment"># attention_out.shape == (batch_size, input_seq_len, d_model)</span></span><br><span class="line">        attention_out = self.dropout1(attention_out, training=training)</span><br><span class="line">        attn_norm_out = self.layernorm1(x + attention_out)  </span><br><span class="line">        <span class="comment"># attn_norm_out.shape == (batch_size, input_seq_len, d_model)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># point wise feed forward network sub-layer</span></span><br><span class="line">        ffn_out = self.ffn(attn_norm_out)  <span class="comment"># (batch_size, input_seq_len, d_model)</span></span><br><span class="line">        ffn_out = self.dropout2(ffn_out, training)</span><br><span class="line">        ffn_norm_out = self.layernorm2(attn_norm_out + ffn_out)  </span><br><span class="line">        <span class="comment"># ffn_norm_out.shape == (batch_size, input_seq_len, d_model)</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> ffn_norm_out</span><br></pre></td></tr></table></figure>
+<p><em>Encoder</em>由三部分组成：</p>
+<ul>
+<li>输入Embedding</li>
+<li>Positional Encoding</li>
+<li>N个<em>encoder layer</em></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Encoder</span><span class="params">(tf.keras.layers.Layer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_layers, d_model, num_heads, </span></span></span><br><span class="line"><span class="function"><span class="params">                 d_ff, input_vocab_size, rate=<span class="number">0.1</span>)</span>:</span></span><br><span class="line">        super(Encoder, self).__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_layers = num_layers</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Embedding layer</span></span><br><span class="line">        self.embedding = tf.keras.layers.Embedding(input_vocab_size, d_model)</span><br><span class="line">        <span class="comment"># Positional encoding layer</span></span><br><span class="line">        self.pos_encoding = positional_encoding(input_vocab_size, d_model)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># encoder layers</span></span><br><span class="line">        self.encoder_layers = [EncoderLayer(d_model, num_heads, d_ff, rate)</span><br><span class="line">                               <span class="keyword">for</span> _ <span class="keyword">in</span> range(num_layers)]</span><br><span class="line">        self.dropout = tf.keras.layers.Dropout(rate)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, x, training, padding_mask)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        The input is put through an embedding which is summed with the positional encoding.</span></span><br><span class="line"><span class="string">        The output of this summation is the input to the encoder layers. </span></span><br><span class="line"><span class="string">        The output of the encoder is the input to the decoder.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        seq_len = tf.shape(x)[<span class="number">1</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># adding embedding and positional encoding</span></span><br><span class="line">        x = self.embedding(x)  <span class="comment"># (batch_size, input_seq_len, d_model)</span></span><br><span class="line">        x *= tf.math.sqrt(tf.cast(self.d_model, tf.float32))  <span class="comment"># ????</span></span><br><span class="line">        x += self.pos_encoding[:, :seq_len, :]</span><br><span class="line">        x = self.dropout(x, training=training)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># encoder layer</span></span><br><span class="line">        <span class="keyword">for</span> encoder <span class="keyword">in</span> self.encoder_layers:</span><br><span class="line">            x =encoder(x, training, padding_mask)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> x  <span class="comment"># (batch_size, input_seq_len, d_model)</span></span><br></pre></td></tr></table></figure>
+<h2 id="7-2-Decoder"><a href="#7-2-Decoder" class="headerlink" title="7.2 Decoder"></a>7.2 Decoder</h2><p><em>Decoder layer</em>由三个sub-layer组成：</p>
+<ul>
+<li>Masked multi-head attention (with look ahead mask and padding mask)</li>
+<li>Multi-head attention (with padding mask)。其中Q（query）来自于前一层（或者输入层）的输出， K（key）和V（value）来源于<em>Encoder</em>的输出。</li>
+<li>Point wise feed forward networks</li>
+</ul>
+<p>与<em>encoder layer</em>类似，每个sub-layer后面会接一个layer normalization，同样使用残差连接。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecoderLayer</span><span class="params">(tf.keras.layers.Layer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, d_model, num_heads, d_ff, rate=<span class="number">0.1</span>)</span>:</span></span><br><span class="line">        super(DecoderLayer, self).__init__()</span><br><span class="line">        </span><br><span class="line">        self.multihead_attention1 = MultiHeadAttention(d_model, num_heads)</span><br><span class="line">        self.multihead_attention2 = MultiHeadAttention(d_model, num_heads)</span><br><span class="line">        </span><br><span class="line">        self.ffn = point_wise_feed_forward_network(d_model, d_ff)</span><br><span class="line">        </span><br><span class="line">        self.layernorm1 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.layernorm2 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.layernorm3 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line"></span><br><span class="line">        self.dropout1 = tf.keras.layers.Dropout(rate)</span><br><span class="line">        self.dropout2 = tf.keras.layers.Dropout(rate)</span><br><span class="line">        self.dropout3 = tf.keras.layers.Dropout(rate)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, x, encoder_out, training, look_ahead_mask, padding_mask)</span>:</span></span><br><span class="line">        <span class="comment"># enc_output.shape == (batch_size, input_seq_len, d_model)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Masked multi-head attention (with look ahead mask and padding mask)</span></span><br><span class="line">        attention_out1, attn_weights1 = self.multihead_attention1(x, x, x, padding_mask)</span><br><span class="line">        <span class="comment"># attention_out.shape == (batch_size, target_seq_len, d_model)</span></span><br><span class="line">        attention_out1 = self.dropout1(attention_out1, training=training)</span><br><span class="line">        attn_norm_out1 = self.layernorm1(attention_out1 + x)</span><br><span class="line">        <span class="comment"># attn_nor_out.shape == (batch_size, target_seq_len, d_model)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Multi-head attention (with padding mask)</span></span><br><span class="line">        attention_out2, attn_weights2 = self.multihead_attention2(attention_out1, </span><br><span class="line">                                                                  encoder_out,</span><br><span class="line">                                                                  encoder_out,</span><br><span class="line">                                                                  padding_mask)</span><br><span class="line">        <span class="comment"># attention_out2.shape == (batch_size, target_seq_len, d_model)</span></span><br><span class="line">        attention_out2 = self.dropout2(attention_out2, training=training)</span><br><span class="line">        attn_norm_out2 = self.layernorm2(attention_out2 + attn_norm_out1)</span><br><span class="line">        <span class="comment"># attn_nor_out2.shape == # (batch_size, target_seq_len, d_model)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Point wise feed forward networks</span></span><br><span class="line">        ffn_out = self.ffn(attn_norm_out2)  <span class="comment"># (Point wise feed forward networks)</span></span><br><span class="line">        ffn_out = self.dropout3(ffn_out, training=training)</span><br><span class="line">        ffn_norm_out = self.layernorm3(ffn_out + attn_norm_out2)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> ffn_norm_out, attn_weights1, attn_weights2</span><br></pre></td></tr></table></figure>
+<p><em>Decoder</em>由三部分组成：</p>
+<ul>
+<li>Output Embedding</li>
+<li>Positional Encoding</li>
+<li>N个<em>decoder layer</em></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Decoder</span><span class="params">(tf.keras.layers.Layer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_layers, d_model, num_heads, d_ff, target_vocab_size, rate=<span class="number">0.1</span>)</span>:</span></span><br><span class="line">        super(Decoder, self).__init__()</span><br><span class="line">        </span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_layers = num_layers</span><br><span class="line"></span><br><span class="line">        self.embedding = tf.keras.layers.Embedding(target_vocab_size, d_model)</span><br><span class="line">        self.pos_encoding = positional_encoding(target_vocab_size, d_model)</span><br><span class="line"></span><br><span class="line">        self.decoder_layers = [DecoderLayer(d_model, num_heads, dff, rate) </span><br><span class="line">                           <span class="keyword">for</span> _ <span class="keyword">in</span> range(num_layers)]</span><br><span class="line">        self.dropout = tf.keras.layers.Dropout(rate)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, x, encoder_out, training, look_ahead_mask, padding_mask)</span>:</span></span><br><span class="line">        seq_len = tf.shape(x)[<span class="number">1</span>]</span><br><span class="line">        attention_weights = &#123;&#125;</span><br><span class="line">        </span><br><span class="line">        x = self.embedding(x)  <span class="comment"># (batch_size, target_seq_len, d_model)</span></span><br><span class="line">        x *= tf.math.sqrt(tf.cast(self.d_model, tf.float32))</span><br><span class="line">        x += self.pos_encoding[:, :seq_len, :]</span><br><span class="line">        </span><br><span class="line">        x = self.dropout(x, training=training)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_layers):</span><br><span class="line">            x, block1, block2 = self.decoder_layers[i](x, encoder_out, training, </span><br><span class="line">                                        look_ahead_mask, padding_mask)</span><br><span class="line">            attention_weights[<span class="string">'decoder_layer&#123;&#125;_block1'</span>.format(i+<span class="number">1</span>)] = block1</span><br><span class="line">            attention_weights[<span class="string">'decoder_layer&#123;&#125;_block2'</span>.format(i+<span class="number">1</span>)] = block2</span><br><span class="line">            </span><br><span class="line">        <span class="comment"># x.shape == (batch_size, target_seq_len, d_model)</span></span><br><span class="line">        <span class="keyword">return</span> x, attention_weights</span><br></pre></td></tr></table></figure>
+<h1 id="8-Create-the-Transformer"><a href="#8-Create-the-Transformer" class="headerlink" title="8. Create the Transformer"></a>8. Create the Transformer</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Transformer</span><span class="params">(tf.keras.Model)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_layers, d_model, num_heads, d_ff, </span></span></span><br><span class="line"><span class="function"><span class="params">                 input_vocab_size, target_vocab_size, rate=<span class="number">0.1</span>)</span>:</span></span><br><span class="line">        super(Transformer, self).__init__()</span><br><span class="line">        </span><br><span class="line">        self.encoder = Encoder(num_layers, d_model, num_heads, d_ff, </span><br><span class="line">                               input_vocab_size, rate)</span><br><span class="line">        self.decoder = Decoder(num_layers, d_model, num_heads, d_ff,</span><br><span class="line">                               target_vocab_size, rate)</span><br><span class="line">        </span><br><span class="line">        self.final_layer = tf.keras.layers.Dense(target_vocab_size)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, inputs, targets, training, encode_padding_mask,</span></span></span><br><span class="line"><span class="function"><span class="params">             look_ahead_mask, decode_padding_mask)</span>:</span></span><br><span class="line">        encoder_output = self.encoder(inputs, training, encode_padding_mask)</span><br><span class="line">        <span class="comment"># encoder_output.shape = (batch_size, inp_seq_len, d_model)</span></span><br><span class="line">        </span><br><span class="line">        decoder_output, attention_weights = self.decoder(</span><br><span class="line">            targets, encoder_output, training, look_ahead_mask, decode_padding_mask</span><br><span class="line">        )</span><br><span class="line">        <span class="comment"># decoder_output.shape = (batch_size, tar_seq_len, d_model)</span></span><br><span class="line">        </span><br><span class="line">        final_output = self.final_layer(decoder_output)</span><br><span class="line">        <span class="comment"># final_output.shape = (batch_size, tar_seq_len, target_vocab_size)</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> final_output, attention_weights</span><br></pre></td></tr></table></figure>
+<h1 id="9-实验"><a href="#9-实验" class="headerlink" title="9. 实验"></a>9. 实验</h1><p>我们的实验还是将Transformer用于机器翻译——葡萄牙语翻译成英语。模型训练以后，我们输入葡萄牙语，模型返回英语。</p>
+<h2 id="9-1-优化器"><a href="#9-1-优化器" class="headerlink" title="9.1 优化器"></a>9.1 优化器</h2><p>论文中使用的优化器是<em>Adam</em>， 使用下式自定义学习率：</p>
+<script type="math/tex; mode=display">
+l_{rate} = d_{model}^{-0.5} \cdot \min(step\_num^{-0.5}, step\_num \cdot warmup\_steps^{-1.5})</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomSchedule</span><span class="params">(tf.keras.optimizers.schedules.LearningRateSchedule)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, d_model, warmup_steps=<span class="number">4000</span>)</span>:</span></span><br><span class="line">        super(CustomSchedule, self).__init__()</span><br><span class="line">        </span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.d_model = tf.cast(self.d_model, tf.float32)</span><br><span class="line">        </span><br><span class="line">        self.warmup_steps = warmup_steps</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, step)</span>:</span></span><br><span class="line">        arg1 = tf.math.rsqrt(step)</span><br><span class="line">        arg2 = step * (self.warup_steps ** <span class="number">-1.5</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> tf.math.rsqrt(self.d_model) * tf.math.minimum(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">learning_rate = CustomSchedule(d_model)</span><br><span class="line">optimizer = tf.keras.optimizers.Adam(learning_rate, beta_1=<span class="number">0.9</span>, beta_2=<span class="number">0.98</span>, epsilon=<span class="number">1e-9</span>)c</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">temp_learning_rate_schedule = CustomSchedule(d_model)</span><br><span class="line"></span><br><span class="line">plt.plot(temp_learning_rate_schedule(tf.range(<span class="number">40000</span>, dtype=tf.float32)))</span><br><span class="line">plt.ylabel(<span class="string">"Learning Rate"</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Train Step"</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tensorflow.org/beta/tutorials/text/transformer_files/output_f33ZCgvHpPdG_1.png" alt="png"></p>
+<h2 id="9-2-Loss-and-Metrics"><a href="#9-2-Loss-and-Metrics" class="headerlink" title="9.2 Loss and Metrics"></a>9.2 Loss and Metrics</h2><p>由于target sentence被padding了，因此计算损失的时候使用padding mask也是至关重要的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">loss_object = tf.keras.losses.SparseCategoricalCrossentropy(</span><br><span class="line">    from_logits=<span class="literal">True</span>, reduction=<span class="string">"none"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loss_function</span><span class="params">(real, pred)</span>:</span></span><br><span class="line">    mask = tf.math.logical_not(tf.math.equal(real, <span class="number">0</span>))</span><br><span class="line">    loss_ = loss_object(real, pred)</span><br><span class="line">    </span><br><span class="line">    mask = tf.cast(mask, dtype=loss_.dtype)</span><br><span class="line">    loss_ *= mask</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tf.reduce_mean(loss_)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train_loss = tf.keras.metrics.Mean(name=<span class="string">'train_loss'</span>)</span><br><span class="line">train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name=<span class="string">'train_accuracy'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="9-3-模型超参数设置"><a href="#9-3-模型超参数设置" class="headerlink" title="9.3 模型超参数设置"></a>9.3 模型超参数设置</h2><p>为了保证模型较小，训练速度相对够快，实验过程中的超参数不会和论文保持一致， <em>num_layers</em>，<em>d_model</em>，<em>d_ff</em>都会有所减小：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">num_layers = <span class="number">4</span></span><br><span class="line">d_model = <span class="number">128</span></span><br><span class="line">dff = <span class="number">512</span></span><br><span class="line">num_heads = <span class="number">8</span></span><br><span class="line"></span><br><span class="line">input_vocab_size = tokenizer_pt.vocab_size + <span class="number">2</span></span><br><span class="line">target_vocab_size = tokenizer_en.vocab_size + <span class="number">2</span></span><br><span class="line">dropout_rate = <span class="number">0.1</span></span><br></pre></td></tr></table></figure>
+<h2 id="9-4-数据pipeline"><a href="#9-4-数据pipeline" class="headerlink" title="9.4 数据pipeline"></a>9.4 数据pipeline</h2><ul>
+<li>数据集</li>
+</ul>
+<p>数据集使用<a href="https://www.tensorflow.org/datasets" target="_blank" rel="noopener">TFDS</a>从<a href="https://www.ted.com/participate/translate" target="_blank" rel="noopener">TED Talks Open Translation Project</a>中加载 <a href="https://github.com/neulab/word-embeddings-for-nmt" target="_blank" rel="noopener">Portugese-English translation dataset</a>。这个数据集包含大概5万训练数据，1100验证数据和2000测试数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">examples, metadata = tfds.load(<span class="string">'ted_hrlr_translate/pt_to_en'</span>, with_info=<span class="literal">True</span>,</span><br><span class="line">                               as_supervised=<span class="literal">True</span>)</span><br><span class="line">train_examples, val_examples = examples[<span class="string">'train'</span>], examples[<span class="string">'validation'</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Tokenizer</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tokenizer_en = tfds.features.text.SubwordTextEncoder.build_from_corpus(</span><br><span class="line">    (en.numpy() <span class="keyword">for</span> pt, en <span class="keyword">in</span> train_examples), target_vocab_size=<span class="number">2</span>**<span class="number">13</span>)</span><br><span class="line"></span><br><span class="line">tokenizer_pt = tfds.features.text.SubwordTextEncoder.build_from_corpus(</span><br><span class="line">    (pt.numpy() <span class="keyword">for</span> pt, en <span class="keyword">in</span> train_examples), target_vocab_size=<span class="number">2</span>**<span class="number">13</span>)</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sample_string = <span class="string">'Transformer is awesome.'</span></span><br><span class="line"></span><br><span class="line">tokenized_string = tokenizer_en.encode(sample_string)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'Tokenized string is &#123;&#125;'</span>.format(tokenized_string))</span><br><span class="line"></span><br><span class="line">original_string = tokenizer_en.decode(tokenized_string)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'The original string: &#123;&#125;'</span>.format(original_string))</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> original_string == sample_string</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Tokenized string is [7915, 1248, 7946, 7194, 13, 2799, 7877]<br>The original string: Transformer is awesome.</p>
+</blockquote>
+<p>Tokenizer会将不在词表中的词拆分成子字符串：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ts <span class="keyword">in</span> tokenized_string:</span><br><span class="line">    print(<span class="string">'&#123;&#125;---&gt;&#123;&#125;'</span>.format(ts, tokenizer_en.decode([ts])))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>7915 ——&gt; T<br>1248 ——&gt; ran<br>7946 ——&gt; s<br>7194 ——&gt; former<br>13 ——&gt; is<br>2799 ——&gt; awesome<br>7877 ——&gt; .</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BUFFER_SIZE = <span class="number">20000</span></span><br><span class="line">BATCH_SIZE = <span class="number">64</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>向输入和输出中添加开始和结束符</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encode</span><span class="params">(lang1, lang2)</span>:</span></span><br><span class="line">    lang1 = [tokenizer_pt.vocab_size] + tokenizer_pt.encode(</span><br><span class="line">             lang1.numpy()) + [tokenizer_pt.vocab_size+<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    lang2 = [tokenizer_en.vocab_size] + tokenizer_en.encode(</span><br><span class="line">             lang2.numpy()) + [tokenizer_en.vocab_size+<span class="number">1</span>]</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> lang1, lang2</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tf_encode</span><span class="params">(pt, en)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.py_function(encode, [pt, en], [tf.float64, tf.float64])</span><br></pre></td></tr></table></figure>
+<ul>
+<li>为了使模型不至于太大，且实验相对较快，我们过滤掉太长的句子</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MAX_LEN = <span class="number">40</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">filter_max_len</span><span class="params">(x, y, max_len=MAX_LEN)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.logical_and(tf.size(x) &lt;= max_len, tf.size(y) &lt;= max_len)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">train_dataset = train_examples.map(tf_encode)</span><br><span class="line">train_dataset = train_dataset.filter(filter_max_length)</span><br><span class="line"><span class="comment"># cache the dataset to memory to get a speedup while reading from it.</span></span><br><span class="line">train_dataset = train_dataset.cache()</span><br><span class="line">train_dataset = train_dataset.shuffle(BUFFER_SIZE).padded_batch(</span><br><span class="line">    BATCH_SIZE, padded_shapes=([<span class="number">-1</span>], [<span class="number">-1</span>]))</span><br><span class="line">train_dataset = train_dataset.prefetch(tf.data.experimental.AUTOTUNE)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">val_dataset = val_examples.map(tf_encode)</span><br><span class="line">val_dataset = val_dataset.filter(filter_max_length).padded_batch(</span><br><span class="line">    BATCH_SIZE, padded_shapes=([<span class="number">-1</span>], [<span class="number">-1</span>]))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pt_batch, en_batch = next(iter(val_dataset))</span><br><span class="line">pt_batch, en_batch</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>(<tf.tensor: id="207697," shape="(64," 40), dtype="int64," numpy="array([[8214," 1259, 5, ..., 0, 0], [8214, 299, 13, 59, 8, 95, 3, 5157, 1, 4479, 7990, 0]])>,<br> <tf.tensor: id="207698," shape="(64," 40), dtype="int64," numpy="array([[8087," 18, 12, ..., 0, 0], [8087, 634, 30, 16, 13, 20, 17, 4981, 5453, 0]])>)</tf.tensor:></tf.tensor:></p>
+</blockquote>
+<h2 id="9-5-Training-and-checkpointing"><a href="#9-5-Training-and-checkpointing" class="headerlink" title="9.5 Training and checkpointing"></a>9.5 Training and checkpointing</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">transformer = Transformer(num_layers, d_model, num_heads, dff,</span><br><span class="line">                          input_vocab_size, target_vocab_size, dropout_rate)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_masks</span><span class="params">(inp, tar)</span>:</span></span><br><span class="line">    <span class="comment"># Encoder padding mask</span></span><br><span class="line">    encode_padding_mask = create_padding_mask(inp)</span><br><span class="line">  </span><br><span class="line">    <span class="comment"># Used in the 2nd attention block in the decoder.</span></span><br><span class="line">    <span class="comment"># This padding mask is used to mask the encoder outputs.</span></span><br><span class="line">    decode_padding_mask = create_padding_mask(inp)</span><br><span class="line">  </span><br><span class="line">    <span class="comment"># Used in the 1st attention block in the decoder.</span></span><br><span class="line">    <span class="comment"># It is used to pad and mask future tokens in the input received by </span></span><br><span class="line">    <span class="comment"># the decoder.</span></span><br><span class="line">    look_ahead_mask = create_look_ahead_mask(tf.shape(tar)[<span class="number">1</span>])</span><br><span class="line">    decode_target_padding_mask = create_padding_mask(tar)</span><br><span class="line">    combined_mask = tf.maximum(decode_target_padding_mask, look_ahead_mask)</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> encode_padding_mask, combined_mask, decode_padding_mask</span><br></pre></td></tr></table></figure>
+<p>管理checkpoint，每N轮保存一次</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">checkpoint_path = <span class="string">"./checkpoints/train"</span></span><br><span class="line"></span><br><span class="line">ckpt = tf.train.Checkpoint(transformer=transformer,</span><br><span class="line">                           optimizer=optimizer)</span><br><span class="line"></span><br><span class="line">ckpt_manager = tf.train.CheckpointManager(ckpt, checkpoint_path, max_to_keep=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># if a checkpoint exists, restore the latest checkpoint.</span></span><br><span class="line"><span class="keyword">if</span> ckpt_manager.latest_checkpoint:</span><br><span class="line">    ckpt.restore(ckpt_manager.latest_checkpoint)</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'Latest checkpoint restored!!'</span>)</span><br></pre></td></tr></table></figure>
+<p>target被分成两份：<code>tar_inp</code>和<code>tar_real</code>。其中<code>tar_inp</code>用于传入给<code>decoder</code>，<code>tar_real</code>是和输入一样的，只是向右移动一个位置，例如：</p>
+<p><code>sentence = &quot;SOS A lion in the jungle is sleeping EOS&quot;</code></p>
+<p><code>tar_inp = &quot;SOS A lion in the jungle is sleeping&quot;</code></p>
+<p><code>tar_real = &quot;A lion in the jungle is sleeping EOS&quot;</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># The @tf.function trace-compiles train_step into a TF graph for faster</span></span><br><span class="line"><span class="comment"># execution. The function specializes to the precise shape of the argument</span></span><br><span class="line"><span class="comment"># tensors. To avoid re-tracing due to the variable sequence lengths or variable</span></span><br><span class="line"><span class="comment"># batch sizes (the last batch is smaller), use input_signature to specify</span></span><br><span class="line"><span class="comment"># more generic shapes.</span></span><br><span class="line"></span><br><span class="line">train_step_signature = [</span><br><span class="line">    tf.TensorSpec(shape=(<span class="literal">None</span>, <span class="literal">None</span>), dtype=tf.int64),</span><br><span class="line">    tf.TensorSpec(shape=(<span class="literal">None</span>, <span class="literal">None</span>), dtype=tf.int64),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="meta">@tf.function(input_signature=train_step_signature)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_step</span><span class="params">(inp, tar)</span>:</span></span><br><span class="line">    tar_inp = tar[:, :<span class="number">-1</span>]</span><br><span class="line">    tar_real = tar[:, <span class="number">1</span>:]</span><br><span class="line">  </span><br><span class="line">    enc_padding_mask, combined_mask, dec_padding_mask = create_masks(inp, tar_inp)</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        predictions, _ = transformer(inp, tar_inp, </span><br><span class="line">                                     <span class="literal">True</span>, </span><br><span class="line">                                     enc_padding_mask, </span><br><span class="line">                                     combined_mask, </span><br><span class="line">                                     dec_padding_mask)</span><br><span class="line">        loss = loss_function(tar_real, predictions)</span><br><span class="line"></span><br><span class="line">    gradients = tape.gradient(loss, transformer.trainable_variables)    </span><br><span class="line">    optimizer.apply_gradients(zip(gradients, transformer.trainable_variables))</span><br><span class="line">  </span><br><span class="line">    train_loss(loss)</span><br><span class="line">    train_accuracy(tar_real, predictions)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">EPOCHS = <span class="number">20</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(EPOCHS):</span><br><span class="line">    start = time.time()</span><br><span class="line">  </span><br><span class="line">    train_loss.reset_states()</span><br><span class="line">    train_accuracy.reset_states()</span><br><span class="line">  </span><br><span class="line">    <span class="comment"># inp -&gt; portuguese, tar -&gt; english</span></span><br><span class="line">    <span class="keyword">for</span> (batch, (inp, tar)) <span class="keyword">in</span> enumerate(train_dataset):</span><br><span class="line">        train_step(inp, tar)</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">if</span> batch % <span class="number">50</span> == <span class="number">0</span>:</span><br><span class="line">          <span class="keyword">print</span> (<span class="string">'Epoch &#123;&#125; Batch &#123;&#125; Loss &#123;:.4f&#125; Accuracy &#123;:.4f&#125;'</span>.format(</span><br><span class="line">                  epoch + <span class="number">1</span>, batch, train_loss.result(), train_accuracy.result()))</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">if</span> (epoch + <span class="number">1</span>) % <span class="number">5</span> == <span class="number">0</span>:</span><br><span class="line">        ckpt_save_path = ckpt_manager.save()</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'Saving checkpoint for epoch &#123;&#125; at &#123;&#125;'</span>.format(epoch+<span class="number">1</span>,</span><br><span class="line">                                                         ckpt_save_path))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'Epoch &#123;&#125; Loss &#123;:.4f&#125; Accuracy &#123;:.4f&#125;'</span>.format(epoch + <span class="number">1</span>, </span><br><span class="line">                                                train_loss.result(), </span><br><span class="line">                                                train_accuracy.result()))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'Time taken for 1 epoch: &#123;&#125; secs\n'</span>.format(time.time() - start))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>W0814 01:06:36.753235 140098807473920 deprecation.py:323] From /tmpfs/src/tf_docs_env/lib/python3.5/site-packages/tensorflow_core/python/keras/optimizer_v2/optimizer_v2.py:455: BaseResourceVariable.constraint (from tensorflow.python.ops.resource_variable_ops) is deprecated and will be removed in a future version.<br>Instructions for updating:<br>Apply a constraint manually following the optimizer update step.</p>
+<p>Epoch 1 Batch 0 Loss 4.7365 Accuracy 0.0000<br>Epoch 1 Batch 50 Loss 4.3028 Accuracy 0.0033<br>Epoch 1 Batch 100 Loss 4.1992 Accuracy 0.0140<br>Epoch 1 Batch 150 Loss 4.1569 Accuracy 0.0182<br>Epoch 1 Batch 200 Loss 4.0963 Accuracy 0.0204<br>Epoch 1 Batch 250 Loss 4.0199 Accuracy 0.0217<br>Epoch 1 Batch 300 Loss 3.9262 Accuracy 0.0242<br>Epoch 1 Batch 350 Loss 3.8337 Accuracy 0.0278<br>Epoch 1 Batch 400 Loss 3.7477 Accuracy 0.0305<br>Epoch 1 Batch 450 Loss 3.6682 Accuracy 0.0332<br>Epoch 1 Batch 500 Loss 3.6032 Accuracy 0.0367<br>Epoch 1 Batch 550 Loss 3.5408 Accuracy 0.0405<br>Epoch 1 Batch 600 Loss 3.4777 Accuracy 0.0443<br>Epoch 1 Batch 650 Loss 3.4197 Accuracy 0.0479<br>Epoch 1 Batch 700 Loss 3.3672 Accuracy 0.0514<br>Epoch 1 Loss 3.3650 Accuracy 0.0515<br>Time taken for 1 epoch: 576.2345867156982 secs</p>
+<p>Epoch 2 Batch 0 Loss 2.4194 Accuracy 0.1030<br>Epoch 2 Batch 50 Loss 2.5576 Accuracy 0.1030<br>Epoch 2 Batch 100 Loss 2.5341 Accuracy 0.1051<br>Epoch 2 Batch 150 Loss 2.5218 Accuracy 0.1076<br>Epoch 2 Batch 200 Loss 2.4960 Accuracy 0.1095<br>Epoch 2 Batch 250 Loss 2.4707 Accuracy 0.1115<br>Epoch 2 Batch 300 Loss 2.4528 Accuracy 0.1133<br>Epoch 2 Batch 350 Loss 2.4393 Accuracy 0.1150<br>Epoch 2 Batch 400 Loss 2.4268 Accuracy 0.1165<br>Epoch 2 Batch 450 Loss 2.4125 Accuracy 0.1182<br>Epoch 2 Batch 500 Loss 2.4002 Accuracy 0.1196<br>Epoch 2 Batch 550 Loss 2.3885 Accuracy 0.1209<br>Epoch 2 Batch 600 Loss 2.3758 Accuracy 0.1222<br>Epoch 2 Batch 650 Loss 2.3651 Accuracy 0.1235<br>Epoch 2 Batch 700 Loss 2.3557 Accuracy 0.1247<br>Epoch 2 Loss 2.3552 Accuracy 0.1247<br>Time taken for 1 epoch: 341.75365233421326 secs</p>
+<p>Epoch 3 Batch 0 Loss 1.8798 Accuracy 0.1347<br>Epoch 3 Batch 50 Loss 2.1781 Accuracy 0.1438<br>Epoch 3 Batch 100 Loss 2.1810 Accuracy 0.1444<br>Epoch 3 Batch 150 Loss 2.1796 Accuracy 0.1452<br>Epoch 3 Batch 200 Loss 2.1759 Accuracy 0.1462<br>Epoch 3 Batch 250 Loss 2.1710 Accuracy 0.1471<br>Epoch 3 Batch 300 Loss 2.1625 Accuracy 0.1473<br>Epoch 3 Batch 350 Loss 2.1520 Accuracy 0.1476<br>Epoch 3 Batch 400 Loss 2.1411 Accuracy 0.1481<br>Epoch 3 Batch 450 Loss 2.1306 Accuracy 0.1484<br>Epoch 3 Batch 500 Loss 2.1276 Accuracy 0.1490<br>Epoch 3 Batch 550 Loss 2.1231 Accuracy 0.1497<br>Epoch 3 Batch 600 Loss 2.1143 Accuracy 0.1500<br>Epoch 3 Batch 650 Loss 2.1063 Accuracy 0.1508<br>Epoch 3 Batch 700 Loss 2.1034 Accuracy 0.1519<br>Epoch 3 Loss 2.1036 Accuracy 0.1519<br>Time taken for 1 epoch: 328.1187334060669 secs</p>
+<p>Epoch 4 Batch 0 Loss 2.0632 Accuracy 0.1622<br>Epoch 4 Batch 50 Loss 1.9662 Accuracy 0.1642<br>Epoch 4 Batch 100 Loss 1.9674 Accuracy 0.1656<br>Epoch 4 Batch 150 Loss 1.9682 Accuracy 0.1667<br>Epoch 4 Batch 200 Loss 1.9538 Accuracy 0.1679<br>Epoch 4 Batch 250 Loss 1.9385 Accuracy 0.1683<br>Epoch 4 Batch 300 Loss 1.9296 Accuracy 0.1694<br>Epoch 4 Batch 350 Loss 1.9248 Accuracy 0.1705<br>Epoch 4 Batch 400 Loss 1.9178 Accuracy 0.1716<br>Epoch 4 Batch 450 Loss 1.9068 Accuracy 0.1724<br>Epoch 4 Batch 500 Loss 1.8983 Accuracy 0.1735<br>Epoch 4 Batch 550 Loss 1.8905 Accuracy 0.1745<br>Epoch 4 Batch 600 Loss 1.8851 Accuracy 0.1757<br>Epoch 4 Batch 650 Loss 1.8793 Accuracy 0.1768<br>Epoch 4 Batch 700 Loss 1.8742 Accuracy 0.1779<br>Epoch 4 Loss 1.8746 Accuracy 0.1780<br>Time taken for 1 epoch: 326.3032810688019 secs</p>
+<p>Epoch 5 Batch 0 Loss 1.9596 Accuracy 0.1979<br>Epoch 5 Batch 50 Loss 1.7048 Accuracy 0.1961<br>Epoch 5 Batch 100 Loss 1.6949 Accuracy 0.1969<br>Epoch 5 Batch 150 Loss 1.6942 Accuracy 0.1986<br>Epoch 5 Batch 200 Loss 1.6876 Accuracy 0.1992<br>Epoch 5 Batch 250 Loss 1.6827 Accuracy 0.1994<br>Epoch 5 Batch 300 Loss 1.6776 Accuracy 0.2006<br>Epoch 5 Batch 350 Loss 1.6740 Accuracy 0.2013<br>Epoch 5 Batch 400 Loss 1.6706 Accuracy 0.2019<br>Epoch 5 Batch 450 Loss 1.6656 Accuracy 0.2028<br>Epoch 5 Batch 500 Loss 1.6599 Accuracy 0.2035<br>Epoch 5 Batch 550 Loss 1.6558 Accuracy 0.2040<br>Epoch 5 Batch 600 Loss 1.6519 Accuracy 0.2047<br>Epoch 5 Batch 650 Loss 1.6510 Accuracy 0.2053<br>Epoch 5 Batch 700 Loss 1.6453 Accuracy 0.2058<br>Saving checkpoint for epoch 5 at ./checkpoints/train/ckpt-1<br>Epoch 5 Loss 1.6453 Accuracy 0.2058<br>Time taken for 1 epoch: 307.13636589050293 secs</p>
+<p>Epoch 6 Batch 0 Loss 1.5280 Accuracy 0.2127<br>Epoch 6 Batch 50 Loss 1.5062 Accuracy 0.2214<br>Epoch 6 Batch 100 Loss 1.5121 Accuracy 0.2225<br>Epoch 6 Batch 150 Loss 1.5051 Accuracy 0.2216<br>Epoch 6 Batch 200 Loss 1.5014 Accuracy 0.2219<br>Epoch 6 Batch 250 Loss 1.4984 Accuracy 0.2222<br>Epoch 6 Batch 300 Loss 1.4966 Accuracy 0.2232<br>Epoch 6 Batch 350 Loss 1.4929 Accuracy 0.2231<br>Epoch 6 Batch 400 Loss 1.4900 Accuracy 0.2234<br>Epoch 6 Batch 450 Loss 1.4836 Accuracy 0.2237<br>Epoch 6 Batch 500 Loss 1.4792 Accuracy 0.2241<br>Epoch 6 Batch 550 Loss 1.4727 Accuracy 0.2245<br>Epoch 6 Batch 600 Loss 1.4695 Accuracy 0.2251<br>Epoch 6 Batch 650 Loss 1.4659 Accuracy 0.2256<br>Epoch 6 Batch 700 Loss 1.4625 Accuracy 0.2262<br>Epoch 6 Loss 1.4619 Accuracy 0.2262<br>Time taken for 1 epoch: 303.32839941978455 secs</p>
+<p>Epoch 7 Batch 0 Loss 1.1667 Accuracy 0.2262<br>Epoch 7 Batch 50 Loss 1.3010 Accuracy 0.2407<br>Epoch 7 Batch 100 Loss 1.3009 Accuracy 0.2400<br>Epoch 7 Batch 150 Loss 1.2983 Accuracy 0.2414<br>Epoch 7 Batch 200 Loss 1.2959 Accuracy 0.2428<br>Epoch 7 Batch 250 Loss 1.2948 Accuracy 0.2436<br>Epoch 7 Batch 300 Loss 1.2928 Accuracy 0.2439<br>Epoch 7 Batch 350 Loss 1.2901 Accuracy 0.2442<br>Epoch 7 Batch 400 Loss 1.2831 Accuracy 0.2448<br>Epoch 7 Batch 450 Loss 1.2844 Accuracy 0.2458<br>Epoch 7 Batch 500 Loss 1.2832 Accuracy 0.2463<br>Epoch 7 Batch 550 Loss 1.2827 Accuracy 0.2469<br>Epoch 7 Batch 600 Loss 1.2786 Accuracy 0.2470<br>Epoch 7 Batch 650 Loss 1.2738 Accuracy 0.2473<br>Epoch 7 Batch 700 Loss 1.2737 Accuracy 0.2480<br>Epoch 7 Loss 1.2737 Accuracy 0.2480<br>Time taken for 1 epoch: 314.8111472129822 secs</p>
+<p>Epoch 8 Batch 0 Loss 1.1562 Accuracy 0.2611<br>Epoch 8 Batch 50 Loss 1.1305 Accuracy 0.2637<br>Epoch 8 Batch 100 Loss 1.1262 Accuracy 0.2644<br>Epoch 8 Batch 150 Loss 1.1193 Accuracy 0.2639<br>Epoch 8 Batch 200 Loss 1.1210 Accuracy 0.2645<br>Epoch 8 Batch 250 Loss 1.1177 Accuracy 0.2651<br>Epoch 8 Batch 300 Loss 1.1182 Accuracy 0.2648<br>Epoch 8 Batch 350 Loss 1.1200 Accuracy 0.2653<br>Epoch 8 Batch 400 Loss 1.1212 Accuracy 0.2655<br>Epoch 8 Batch 450 Loss 1.1207 Accuracy 0.2653<br>Epoch 8 Batch 500 Loss 1.1222 Accuracy 0.2660<br>Epoch 8 Batch 550 Loss 1.1219 Accuracy 0.2664<br>Epoch 8 Batch 600 Loss 1.1229 Accuracy 0.2663<br>Epoch 8 Batch 650 Loss 1.1211 Accuracy 0.2664<br>Epoch 8 Batch 700 Loss 1.1206 Accuracy 0.2668<br>Epoch 8 Loss 1.1207 Accuracy 0.2668<br>Time taken for 1 epoch: 301.5652780532837 secs</p>
+<p>Epoch 9 Batch 0 Loss 0.8384 Accuracy 0.2751<br>Epoch 9 Batch 50 Loss 0.9923 Accuracy 0.2793<br>Epoch 9 Batch 100 Loss 0.9958 Accuracy 0.2796<br>Epoch 9 Batch 150 Loss 0.9953 Accuracy 0.2787<br>Epoch 9 Batch 200 Loss 0.9937 Accuracy 0.2790<br>Epoch 9 Batch 250 Loss 0.9988 Accuracy 0.2800<br>Epoch 9 Batch 300 Loss 0.9999 Accuracy 0.2801<br>Epoch 9 Batch 350 Loss 1.0021 Accuracy 0.2800<br>Epoch 9 Batch 400 Loss 1.0001 Accuracy 0.2800<br>Epoch 9 Batch 450 Loss 1.0013 Accuracy 0.2800<br>Epoch 9 Batch 500 Loss 1.0027 Accuracy 0.2805<br>Epoch 9 Batch 550 Loss 1.0034 Accuracy 0.2804<br>Epoch 9 Batch 600 Loss 1.0071 Accuracy 0.2810<br>Epoch 9 Batch 650 Loss 1.0076 Accuracy 0.2810<br>Epoch 9 Batch 700 Loss 1.0075 Accuracy 0.2806<br>Epoch 9 Loss 1.0076 Accuracy 0.2806<br>Time taken for 1 epoch: 304.53144931793213 secs</p>
+<p>Epoch 10 Batch 0 Loss 0.9130 Accuracy 0.3057<br>Epoch 10 Batch 50 Loss 0.8950 Accuracy 0.2966<br>Epoch 10 Batch 100 Loss 0.9066 Accuracy 0.2967<br>Epoch 10 Batch 150 Loss 0.9128 Accuracy 0.2958<br>Epoch 10 Batch 200 Loss 0.9099 Accuracy 0.2943<br>Epoch 10 Batch 250 Loss 0.9131 Accuracy 0.2935<br>Epoch 10 Batch 300 Loss 0.9155 Accuracy 0.2930<br>Epoch 10 Batch 350 Loss 0.9144 Accuracy 0.2922<br>Epoch 10 Batch 400 Loss 0.9148 Accuracy 0.2922<br>Epoch 10 Batch 450 Loss 0.9170 Accuracy 0.2916<br>Epoch 10 Batch 500 Loss 0.9164 Accuracy 0.2910<br>Epoch 10 Batch 550 Loss 0.9175 Accuracy 0.2908<br>Epoch 10 Batch 600 Loss 0.9193 Accuracy 0.2908<br>Epoch 10 Batch 650 Loss 0.9229 Accuracy 0.2907<br>Epoch 10 Batch 700 Loss 0.9245 Accuracy 0.2910<br>Saving checkpoint for epoch 10 at ./checkpoints/train/ckpt-2<br>Epoch 10 Loss 0.9247 Accuracy 0.2910<br>Time taken for 1 epoch: 308.50231170654297 secs</p>
+<p>Epoch 11 Batch 0 Loss 0.8796 Accuracy 0.3030<br>Epoch 11 Batch 50 Loss 0.8186 Accuracy 0.3025<br>Epoch 11 Batch 100 Loss 0.8268 Accuracy 0.3020<br>Epoch 11 Batch 150 Loss 0.8422 Accuracy 0.3026<br>Epoch 11 Batch 200 Loss 0.8453 Accuracy 0.3023<br>Epoch 11 Batch 250 Loss 0.8472 Accuracy 0.3020<br>Epoch 11 Batch 300 Loss 0.8478 Accuracy 0.3019<br>Epoch 11 Batch 350 Loss 0.8488 Accuracy 0.3018<br>Epoch 11 Batch 400 Loss 0.8509 Accuracy 0.3017<br>Epoch 11 Batch 450 Loss 0.8505 Accuracy 0.3012<br>Epoch 11 Batch 500 Loss 0.8505 Accuracy 0.3009<br>Epoch 11 Batch 550 Loss 0.8514 Accuracy 0.3005<br>Epoch 11 Batch 600 Loss 0.8541 Accuracy 0.3001<br>Epoch 11 Batch 650 Loss 0.8568 Accuracy 0.2998<br>Epoch 11 Batch 700 Loss 0.8581 Accuracy 0.2995<br>Epoch 11 Loss 0.8586 Accuracy 0.2996<br>Time taken for 1 epoch: 326.4959843158722 secs</p>
+<p>Epoch 12 Batch 0 Loss 0.8353 Accuracy 0.3318<br>Epoch 12 Batch 50 Loss 0.7892 Accuracy 0.3161<br>Epoch 12 Batch 100 Loss 0.7778 Accuracy 0.3134<br>Epoch 12 Batch 150 Loss 0.7817 Accuracy 0.3132<br>Epoch 12 Batch 200 Loss 0.7845 Accuracy 0.3132<br>Epoch 12 Batch 250 Loss 0.7881 Accuracy 0.3124<br>Epoch 12 Batch 300 Loss 0.7903 Accuracy 0.3122<br>Epoch 12 Batch 350 Loss 0.7894 Accuracy 0.3107<br>Epoch 12 Batch 400 Loss 0.7889 Accuracy 0.3097<br>Epoch 12 Batch 450 Loss 0.7917 Accuracy 0.3089<br>Epoch 12 Batch 500 Loss 0.7947 Accuracy 0.3089<br>Epoch 12 Batch 550 Loss 0.7965 Accuracy 0.3087<br>Epoch 12 Batch 600 Loss 0.7990 Accuracy 0.3082<br>Epoch 12 Batch 650 Loss 0.8002 Accuracy 0.3077<br>Epoch 12 Batch 700 Loss 0.8026 Accuracy 0.3076<br>Epoch 12 Loss 0.8028 Accuracy 0.3076<br>Time taken for 1 epoch: 306.4404299259186 secs</p>
+<p>Epoch 13 Batch 0 Loss 0.7718 Accuracy 0.3059<br>Epoch 13 Batch 50 Loss 0.7275 Accuracy 0.3206<br>Epoch 13 Batch 100 Loss 0.7308 Accuracy 0.3206<br>Epoch 13 Batch 150 Loss 0.7317 Accuracy 0.3186<br>Epoch 13 Batch 200 Loss 0.7342 Accuracy 0.3174<br>Epoch 13 Batch 250 Loss 0.7349 Accuracy 0.3171<br>Epoch 13 Batch 300 Loss 0.7374 Accuracy 0.3167<br>Epoch 13 Batch 350 Loss 0.7397 Accuracy 0.3166<br>Epoch 13 Batch 400 Loss 0.7410 Accuracy 0.3163<br>Epoch 13 Batch 450 Loss 0.7415 Accuracy 0.3154<br>Epoch 13 Batch 500 Loss 0.7434 Accuracy 0.3150<br>Epoch 13 Batch 550 Loss 0.7466 Accuracy 0.3148<br>Epoch 13 Batch 600 Loss 0.7490 Accuracy 0.3142<br>Epoch 13 Batch 650 Loss 0.7522 Accuracy 0.3142<br>Epoch 13 Batch 700 Loss 0.7552 Accuracy 0.3142<br>Epoch 13 Loss 0.7554 Accuracy 0.3142<br>Time taken for 1 epoch: 299.16382122039795 secs</p>
+<p>Epoch 14 Batch 0 Loss 0.6654 Accuracy 0.3193<br>Epoch 14 Batch 50 Loss 0.6744 Accuracy 0.3277<br>Epoch 14 Batch 100 Loss 0.6809 Accuracy 0.3237<br>Epoch 14 Batch 150 Loss 0.6830 Accuracy 0.3238<br>Epoch 14 Batch 200 Loss 0.6875 Accuracy 0.3235<br>Epoch 14 Batch 250 Loss 0.6942 Accuracy 0.3238<br>Epoch 14 Batch 300 Loss 0.6976 Accuracy 0.3231<br>Epoch 14 Batch 350 Loss 0.7000 Accuracy 0.3230<br>Epoch 14 Batch 400 Loss 0.7019 Accuracy 0.3222<br>Epoch 14 Batch 450 Loss 0.7035 Accuracy 0.3212<br>Epoch 14 Batch 500 Loss 0.7077 Accuracy 0.3207<br>Epoch 14 Batch 550 Loss 0.7078 Accuracy 0.3201<br>Epoch 14 Batch 600 Loss 0.7095 Accuracy 0.3196<br>Epoch 14 Batch 650 Loss 0.7127 Accuracy 0.3197<br>Epoch 14 Batch 700 Loss 0.7148 Accuracy 0.3193<br>Epoch 14 Loss 0.7153 Accuracy 0.3194<br>Time taken for 1 epoch: 294.01167726516724 secs</p>
+<p>Epoch 15 Batch 0 Loss 0.6159 Accuracy 0.3546<br>Epoch 15 Batch 50 Loss 0.6416 Accuracy 0.3339<br>Epoch 15 Batch 100 Loss 0.6477 Accuracy 0.3323<br>Epoch 15 Batch 150 Loss 0.6480 Accuracy 0.3300<br>Epoch 15 Batch 200 Loss 0.6518 Accuracy 0.3286<br>Epoch 15 Batch 250 Loss 0.6536 Accuracy 0.3283<br>Epoch 15 Batch 300 Loss 0.6576 Accuracy 0.3276<br>Epoch 15 Batch 350 Loss 0.6618 Accuracy 0.3274<br>Epoch 15 Batch 400 Loss 0.6657 Accuracy 0.3272<br>Epoch 15 Batch 450 Loss 0.6689 Accuracy 0.3269<br>Epoch 15 Batch 500 Loss 0.6693 Accuracy 0.3263<br>Epoch 15 Batch 550 Loss 0.6711 Accuracy 0.3255<br>Epoch 15 Batch 600 Loss 0.6740 Accuracy 0.3249<br>Epoch 15 Batch 650 Loss 0.6775 Accuracy 0.3250<br>Epoch 15 Batch 700 Loss 0.6796 Accuracy 0.3247<br>Saving checkpoint for epoch 15 at ./checkpoints/train/ckpt-3<br>Epoch 15 Loss 0.6800 Accuracy 0.3247<br>Time taken for 1 epoch: 296.7416775226593 secs</p>
+<p>Epoch 16 Batch 0 Loss 0.6764 Accuracy 0.3298<br>Epoch 16 Batch 50 Loss 0.6024 Accuracy 0.3335<br>Epoch 16 Batch 100 Loss 0.6089 Accuracy 0.3345<br>Epoch 16 Batch 150 Loss 0.6135 Accuracy 0.3315<br>Epoch 16 Batch 200 Loss 0.6191 Accuracy 0.3323<br>Epoch 16 Batch 250 Loss 0.6214 Accuracy 0.3324<br>Epoch 16 Batch 300 Loss 0.6230 Accuracy 0.3315<br>Epoch 16 Batch 350 Loss 0.6268 Accuracy 0.3313<br>Epoch 16 Batch 400 Loss 0.6294 Accuracy 0.3309<br>Epoch 16 Batch 450 Loss 0.6325 Accuracy 0.3306<br>Epoch 16 Batch 500 Loss 0.6350 Accuracy 0.3300<br>Epoch 16 Batch 550 Loss 0.6385 Accuracy 0.3298<br>Epoch 16 Batch 600 Loss 0.6405 Accuracy 0.3293<br>Epoch 16 Batch 650 Loss 0.6434 Accuracy 0.3291<br>Epoch 16 Batch 700 Loss 0.6472 Accuracy 0.3289<br>Epoch 16 Loss 0.6476 Accuracy 0.3290<br>Time taken for 1 epoch: 302.5653040409088 secs</p>
+<p>Epoch 17 Batch 0 Loss 0.7453 Accuracy 0.3696<br>Epoch 17 Batch 50 Loss 0.5800 Accuracy 0.3427<br>Epoch 17 Batch 100 Loss 0.5841 Accuracy 0.3422<br>Epoch 17 Batch 150 Loss 0.5912 Accuracy 0.3409<br>Epoch 17 Batch 200 Loss 0.5911 Accuracy 0.3384<br>Epoch 17 Batch 250 Loss 0.5962 Accuracy 0.3389<br>Epoch 17 Batch 300 Loss 0.5997 Accuracy 0.3389<br>Epoch 17 Batch 350 Loss 0.6017 Accuracy 0.3383<br>Epoch 17 Batch 400 Loss 0.6042 Accuracy 0.3376<br>Epoch 17 Batch 450 Loss 0.6077 Accuracy 0.3375<br>Epoch 17 Batch 500 Loss 0.6106 Accuracy 0.3369<br>Epoch 17 Batch 550 Loss 0.6127 Accuracy 0.3361<br>Epoch 17 Batch 600 Loss 0.6148 Accuracy 0.3352<br>Epoch 17 Batch 650 Loss 0.6171 Accuracy 0.3346<br>Epoch 17 Batch 700 Loss 0.6195 Accuracy 0.3339<br>Epoch 17 Loss 0.6196 Accuracy 0.3339<br>Time taken for 1 epoch: 303.3943374156952 secs</p>
+<p>Epoch 18 Batch 0 Loss 0.4733 Accuracy 0.3313<br>Epoch 18 Batch 50 Loss 0.5544 Accuracy 0.3395<br>Epoch 18 Batch 100 Loss 0.5637 Accuracy 0.3435<br>Epoch 18 Batch 150 Loss 0.5625 Accuracy 0.3421<br>Epoch 18 Batch 200 Loss 0.5686 Accuracy 0.3421<br>Epoch 18 Batch 250 Loss 0.5714 Accuracy 0.3413<br>Epoch 18 Batch 300 Loss 0.5727 Accuracy 0.3407<br>Epoch 18 Batch 350 Loss 0.5770 Accuracy 0.3406<br>Epoch 18 Batch 400 Loss 0.5759 Accuracy 0.3394<br>Epoch 18 Batch 450 Loss 0.5779 Accuracy 0.3390<br>Epoch 18 Batch 500 Loss 0.5810 Accuracy 0.3392<br>Epoch 18 Batch 550 Loss 0.5836 Accuracy 0.3388<br>Epoch 18 Batch 600 Loss 0.5870 Accuracy 0.3379<br>Epoch 18 Batch 650 Loss 0.5905 Accuracy 0.3378<br>Epoch 18 Batch 700 Loss 0.5945 Accuracy 0.3376<br>Epoch 18 Loss 0.5947 Accuracy 0.3376<br>Time taken for 1 epoch: 298.2541983127594 secs</p>
+<p>Epoch 19 Batch 0 Loss 0.5082 Accuracy 0.3261<br>Epoch 19 Batch 50 Loss 0.5285 Accuracy 0.3451<br>Epoch 19 Batch 100 Loss 0.5336 Accuracy 0.3472<br>Epoch 19 Batch 150 Loss 0.5322 Accuracy 0.3440<br>Epoch 19 Batch 200 Loss 0.5355 Accuracy 0.3439<br>Epoch 19 Batch 250 Loss 0.5413 Accuracy 0.3441<br>Epoch 19 Batch 300 Loss 0.5461 Accuracy 0.3443<br>Epoch 19 Batch 350 Loss 0.5519 Accuracy 0.3441<br>Epoch 19 Batch 400 Loss 0.5548 Accuracy 0.3436<br>Epoch 19 Batch 450 Loss 0.5561 Accuracy 0.3427<br>Epoch 19 Batch 500 Loss 0.5595 Accuracy 0.3423<br>Epoch 19 Batch 550 Loss 0.5616 Accuracy 0.3416<br>Epoch 19 Batch 600 Loss 0.5658 Accuracy 0.3412<br>Epoch 19 Batch 650 Loss 0.5684 Accuracy 0.3407<br>Epoch 19 Batch 700 Loss 0.5707 Accuracy 0.3405<br>Epoch 19 Loss 0.5709 Accuracy 0.3406<br>Time taken for 1 epoch: 297.59109830856323 secs</p>
+<p>Epoch 20 Batch 0 Loss 0.6551 Accuracy 0.3720<br>Epoch 20 Batch 50 Loss 0.5086 Accuracy 0.3527<br>Epoch 20 Batch 100 Loss 0.5160 Accuracy 0.3495<br>Epoch 20 Batch 150 Loss 0.5196 Accuracy 0.3495<br>Epoch 20 Batch 200 Loss 0.5210 Accuracy 0.3490<br>Epoch 20 Batch 250 Loss 0.5241 Accuracy 0.3487<br>Epoch 20 Batch 300 Loss 0.5287 Accuracy 0.3486<br>Epoch 20 Batch 350 Loss 0.5312 Accuracy 0.3477<br>Epoch 20 Batch 400 Loss 0.5337 Accuracy 0.3475<br>Epoch 20 Batch 450 Loss 0.5369 Accuracy 0.3469<br>Epoch 20 Batch 500 Loss 0.5377 Accuracy 0.3458<br>Epoch 20 Batch 550 Loss 0.5400 Accuracy 0.3453<br>Epoch 20 Batch 600 Loss 0.5441 Accuracy 0.3450<br>Epoch 20 Batch 650 Loss 0.5469 Accuracy 0.3445<br>Epoch 20 Batch 700 Loss 0.5507 Accuracy 0.3440<br>Saving checkpoint for epoch 20 at ./checkpoints/train/ckpt-4<br>Epoch 20 Loss 0.5507 Accuracy 0.3440<br>Time taken for 1 epoch: 303.6011939048767 secs</p>
+</blockquote>
+<h2 id="9-6-评估"><a href="#9-6-评估" class="headerlink" title="9.6 评估"></a>9.6 评估</h2><p>评估过程包含以下步骤：</p>
+<ul>
+<li>使用<code>Portuguese tokenizer</code>对输入语句进行编码</li>
+<li>解码输入<code>start token == tokenizer_en.vocab_size</code></li>
+<li>计算<code>padding_mask</code>和<code>look_ahead_mask</code></li>
+<li><code>decoder</code>输出预测结果</li>
+<li>选择最后一个词，并且计算它的<code>argmax</code></li>
+<li>将之前输出的词拼接起来，作为<code>deocder</code>的输入，用于预测后面的词</li>
+<li>最后的到最终的预测结果</li>
+</ul>
+<blockquote>
+<p>这个评估过程非常重要，实际上这也是模型训练好以后，我们使用模型进行翻译的过程。我们可以看到这个过程是一步一步进行的，专业术语叫做<em>Auto-Regression</em>。虽然transformer的训练很快，但是推理却很慢，主要原因就是它做的是<em>Auto-regression</em>，不能进行并行化推理，所以后续很多对transformer的改进工作都是在这上面做的改进，我会在后续的博客中详细介绍相关模型。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">evaluate</span><span class="params">(inp_sentence)</span>:</span></span><br><span class="line">    start_token = [tokenizer_pt.vocab_size]</span><br><span class="line">    end_token = [tokenizer_pt.vocab_size + <span class="number">1</span>]</span><br><span class="line">  </span><br><span class="line">    <span class="comment"># inp sentence is portuguese, hence adding the start and end token</span></span><br><span class="line">    inp_sentence = start_token + tokenizer_pt.encode(inp_sentence) + end_token</span><br><span class="line">    encoder_input = tf.expand_dims(inp_sentence, <span class="number">0</span>)</span><br><span class="line">  </span><br><span class="line">    <span class="comment"># as the target is english, the first word to the transformer should be the</span></span><br><span class="line">    <span class="comment"># english start token.</span></span><br><span class="line">    decoder_input = [tokenizer_en.vocab_size]</span><br><span class="line">    output = tf.expand_dims(decoder_input, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(MAX_LENGTH):</span><br><span class="line">        enc_padding_mask, combined_mask, dec_padding_mask = create_masks(</span><br><span class="line">            encoder_input, output)</span><br><span class="line">  </span><br><span class="line">        <span class="comment"># predictions.shape == (batch_size, seq_len, vocab_size)</span></span><br><span class="line">        predictions, attention_weights = transformer(encoder_input, </span><br><span class="line">                                                     output,</span><br><span class="line">                                                     <span class="literal">False</span>,</span><br><span class="line">                                                     enc_padding_mask,</span><br><span class="line">                                                     combined_mask,</span><br><span class="line">                                                     dec_padding_mask)</span><br><span class="line">    </span><br><span class="line">        <span class="comment"># select the last word from the seq_len dimension</span></span><br><span class="line">        predictions = predictions[: ,<span class="number">-1</span>:, :]  <span class="comment"># (batch_size, 1, vocab_size)</span></span><br><span class="line"></span><br><span class="line">        predicted_id = tf.cast(tf.argmax(predictions, axis=<span class="number">-1</span>), tf.int32)</span><br><span class="line">      </span><br><span class="line">        <span class="comment"># return the result if the predicted_id is equal to the end token</span></span><br><span class="line">        <span class="keyword">if</span> predicted_id == tokenizer_en.vocab_size+<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> tf.squeeze(output, axis=<span class="number">0</span>), attention_weights</span><br><span class="line">    </span><br><span class="line">        <span class="comment"># concatentate the predicted_id to the output which is given to the decoder</span></span><br><span class="line">        <span class="comment"># as its input.</span></span><br><span class="line">        output = tf.concat([output, predicted_id], axis=<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tf.squeeze(output, axis=<span class="number">0</span>), attention_weights</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_attention_weights</span><span class="params">(attention, sentence, result, layer)</span>:</span></span><br><span class="line">    fig = plt.figure(figsize=(<span class="number">16</span>, <span class="number">8</span>))</span><br><span class="line">  </span><br><span class="line">    sentence = tokenizer_pt.encode(sentence)</span><br><span class="line">  </span><br><span class="line">    attention = tf.squeeze(attention[layer], axis=<span class="number">0</span>)</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> head <span class="keyword">in</span> range(attention.shape[<span class="number">0</span>]):</span><br><span class="line">        ax = fig.add_subplot(<span class="number">2</span>, <span class="number">4</span>, head+<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">        <span class="comment"># plot the attention weights</span></span><br><span class="line">        ax.matshow(attention[head][:<span class="number">-1</span>, :], cmap=<span class="string">'viridis'</span>)</span><br><span class="line"></span><br><span class="line">        fontdict = &#123;<span class="string">'fontsize'</span>: <span class="number">10</span>&#125;</span><br><span class="line">    </span><br><span class="line">        ax.set_xticks(range(len(sentence)+<span class="number">2</span>))</span><br><span class="line">        ax.set_yticks(range(len(result)))</span><br><span class="line">    </span><br><span class="line">        ax.set_ylim(len(result)<span class="number">-1.5</span>, <span class="number">-0.5</span>)</span><br><span class="line">        </span><br><span class="line">        ax.set_xticklabels(</span><br><span class="line">            [<span class="string">'&lt;start&gt;'</span>]+[tokenizer_pt.decode([i]) <span class="keyword">for</span> i <span class="keyword">in</span> sentence]+[<span class="string">'&lt;end&gt;'</span>], </span><br><span class="line">            fontdict=fontdict, rotation=<span class="number">90</span>)</span><br><span class="line">    </span><br><span class="line">        ax.set_yticklabels([tokenizer_en.decode([i]) <span class="keyword">for</span> i <span class="keyword">in</span> result </span><br><span class="line">                           <span class="keyword">if</span> i &lt; tokenizer_en.vocab_size], </span><br><span class="line">                           fontdict=fontdict)</span><br><span class="line">    </span><br><span class="line">        ax.set_xlabel(<span class="string">'Head &#123;&#125;'</span>.format(head+<span class="number">1</span>))</span><br><span class="line">  </span><br><span class="line">    plt.tight_layout()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">translate</span><span class="params">(sentence, plot=<span class="string">''</span>)</span>:</span></span><br><span class="line">    result, attention_weights = evaluate(sentence)</span><br><span class="line">  </span><br><span class="line">    predicted_sentence = tokenizer_en.decode([i <span class="keyword">for</span> i <span class="keyword">in</span> result </span><br><span class="line">                                              <span class="keyword">if</span> i &lt; tokenizer_en.vocab_size])  </span><br><span class="line"></span><br><span class="line">    print(<span class="string">'Input: &#123;&#125;'</span>.format(sentence))</span><br><span class="line">    print(<span class="string">'Predicted translation: &#123;&#125;'</span>.format(predicted_sentence))</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> plot:</span><br><span class="line">        plot_attention_weights(attention_weights, sentence, result, plot)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>translate(“este é um problema que temos que resolver.”)<br>print (“Real translation: this is a problem we have to solve .”)</p>
+</blockquote>
+<p><img src="https://www.tensorflow.org/beta/tutorials/text/transformer_files/output_t-kFyiOLH0xg_1.png" alt="png"></p>
+<h1 id="10-参考资料"><a href="#10-参考资料" class="headerlink" title="10. 参考资料"></a>10. 参考资料</h1><p><a href="https://www.tensorflow.org/beta/tutorials/text/transformer" target="_blank" rel="noopener">Transformer model for language understanding</a></p>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/transformer/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Transformer</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/tensorflow/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>tensorflow</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2019/09/16/Transformer代码实现-tensorflow/&title=Transformer代码实现-Tensoflow版 | Rogerspy's Home&summary=前面介绍了Transformer的pytorch版的代码实现，下面我们再介绍一下tensorflow版的代码实现。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2019/09/16/Transformer代码实现-tensorflow/&title=Transformer代码实现-Tensoflow版 | Rogerspy's Home&summary=前面介绍了Transformer的pytorch版的代码实现，下面我们再介绍一下tensorflow版的代码实现。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACt0lEQVR42u3awWojMRAEUP//T+/C3pZgp6pbshN4czJ4PKOngKRU9+MRX3/+XV8/f73n9bev73/9+dmTD1x4eHh4o6E/u1peAthPUDJmPDw8vNu8/HHJ2ps/f7bl5FOMh4eH91le/uJ8IvJJwcPDw/uNvPyQ3U5NEjTg4eHh/TReEka0QWoCaMPci1kLHh4eXszbFMA+9flN9T08PDy8MhrIi2F5lJAf02cj/O+ZeHh4eBd4SZSwOSK/PgTnpDYciToa8PDw8Ba8fEFvH7eJIWbtC8O/JB4eHt6I1xax8omYBcFtmPvNW/Dw8PCu8fLIYL+FtAv9LPLAw8PDO8ubDb2eudER+UBNDw8PD+8yrygpBb9th7jvgHha+sLDw8O7xtuUvlpS3qCwaTjAw8PDu8dry1dtCSofXNvy9c0z8fDw8K7xZhFt/ppNpLu6Hw8PD+8CL/9BXqzaLPFtcFxEHnh4eHiHeEXTUjlnSbiw2Wzqbgg8PDy8a7yz9fekaWBWSEtCDTw8PLzbvNng8nU4/zaBRb/Fw8PDeyNv1kywCRo2h/KnFjw8PLwLvFnLVL5Yt3FwO3HRcRwPDw/vAi8vxufLcX5PHhzPSnF4eHh4N3izF+QRQztNm6hieH7Hw8PDi3ntP/ynnpA3BLTbDB4eHt57eJsmqv02U7QClBEzHh4e3g1eHrkmS/y+VHa2eQsPDw/vBq9tdZqFDrNwNt9gvtn38PDw8C7zimJ8fBTehB35RDw9TOPh4eEd5dVL7aLVYNNesN9+8PDw8M7yks2gLYO1QW0bJRfNW3h4eHjXeG2BKg9q84lopzUKlPHw8PA+ysuX+HZTmRXekvUfDw8P76fxNrFvskm003d4Y8DDw8N7yUvCiKTAn7Pbdq524vDw8PDu8doCWLtwJyW0WaT7OHXh4eHhpby/ajAr8AePoDQAAAAASUVORK5CYII='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2019/09/16/Transformer代码实现-tensorflow/&title=Transformer代码实现-Tensoflow版 | Rogerspy's Home&summary=前面介绍了Transformer的pytorch版的代码实现，下面我们再介绍一下tensorflow版的代码实现。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2019/09/18/transformer编码层表示/" rel="prev" title="Transformer的每一个编码层都学到了什么？">
+                                  
+                                      Transformer的每一个编码层都学到了什么？
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2019/09/11/Transformer代码实现-pytorch/" rel="prev" title="Transformer代码实现-Pytorch版">
+                                    
+                                        Transformer代码实现-Pytorch版
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/pytorch/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>pytorch</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: 'Transformer代码实现-Tensoflow版',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-前期准备"><span class="toc-text">1. 前期准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Scaled-Dot-Product-Attention"><span class="toc-text">2. Scaled Dot-Product Attention</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Multi-Head-Attention"><span class="toc-text">3. Multi-Head Attention</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Point-wise-feed-forward-network"><span class="toc-text">4. Point wise feed forward network</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Positional-encoding"><span class="toc-text">5. Positional encoding</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Masking"><span class="toc-text">6. Masking</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-Encoder-and-Decoder"><span class="toc-text">7. Encoder and Decoder</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-Encoder"><span class="toc-text">7.1 Encoder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-Decoder"><span class="toc-text">7.2 Decoder</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-Create-the-Transformer"><span class="toc-text">8. Create the Transformer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-实验"><span class="toc-text">9. 实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#9-1-优化器"><span class="toc-text">9.1 优化器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-2-Loss-and-Metrics"><span class="toc-text">9.2 Loss and Metrics</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-3-模型超参数设置"><span class="toc-text">9.3 模型超参数设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-4-数据pipeline"><span class="toc-text">9.4 数据pipeline</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-5-Training-and-checkpointing"><span class="toc-text">9.5 Training and checkpointing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-6-评估"><span class="toc-text">9.6 评估</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-参考资料"><span class="toc-text">10. 参考资料</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(14)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19px; color: #777">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.25px; color: #6f6f6f">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 17.75px; color: #808080">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 16.5px; color: #888">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.25px; color: #919191">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

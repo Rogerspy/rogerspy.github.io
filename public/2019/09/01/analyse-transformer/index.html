@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>关于Transformer的分析 | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <div class="cover-wrapper">
+    <cover class='cover post half'>
+      
+        
+  <h1 class='title'>Rogerspy's Home</h1>
+
+
+  <div class="m_search">
+    <form name="searchform" class="form u-search-form">
+      <input type="text" class="input u-search-input" placeholder="" />
+      <i class="icon fas fa-search fa-fw"></i>
+    </form>
+  </div>
+
+<div class='menu navgation'>
+  <ul class='h-list'>
+    
+      
+        <li>
+          <a class="nav home" href="/"
+            
+            
+            id="home">
+            <i class='fas fa-edit fa-fw'></i>&nbsp;博文
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/video/"
+            
+            
+            id="video">
+            <i class='fas fa-film fa-fw'></i>&nbsp;视频
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/material/"
+            
+              rel="nofollow"
+            
+            
+            id="material">
+            <i class='fas fa-briefcase fa-fw'></i>&nbsp;资料
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/about/"
+            
+              rel="nofollow"
+            
+            
+            id="about">
+            <i class='fas fa-info-circle fa-fw'></i>&nbsp;关于
+          </a>
+        </li>
+      
+    
+  </ul>
+</div>
+
+      
+    </cover>
+    <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+  </div>
+
+
+  <div class="l_body">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2019/09/01/analyse-transformer/">
+        关于Transformer的分析
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2019-09-01</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/nlp/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>NLP</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">10.9k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">44分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><em>Transformer</em> 的模型框架我们已经介绍完了，接下来这篇文章我们讨论一下更多关于 <em>Transformer</em> 的模型细节。比如多头注意力的头越多越好吗？自注意力为什么要进行归一化？训练的时候 <em>Warm-up</em> 有什么用？</p>
+<a id="more"></a>
+<h1 id="1-模型总览"><a href="#1-模型总览" class="headerlink" title="1. 模型总览"></a>1. 模型总览</h1><p><img src="https://img.vim-cn.com/3a/78ea12dca1ce0f99f9a9705466afc16c58c3cf.png" alt></p>
+<p>在进入正题之前，我们先回顾一下 <em>Transformer</em>  的整体结构，大致包含以下几个部分：</p>
+<ul>
+<li><em>Input Embedding</em></li>
+<li><em>Positional Encoding</em></li>
+<li><em>Multi-head Attention</em></li>
+<li><em>Add &amp; Norm</em></li>
+<li><em>Feed Forward</em></li>
+<li><em>Masked Multi-head Attention</em></li>
+<li><em>Linear</em></li>
+<li><em>softmax</em></li>
+</ul>
+<h1 id="2-Input-Embedding"><a href="#2-Input-Embedding" class="headerlink" title="2. Input Embedding"></a>2. Input Embedding</h1><p><em>Input Embedding</em> 实际上可以看成两部分：<em>Input</em> 和 <em>Embedding</em>。神经网络在处理自然语言问题的时候，一个基础的工作就是词向量化。要将自然语言问题转化成计算问题，首先就要将自然语言符号表示转化成数字表示，最简单的表示方法就是 <em>one-hot</em> ，但是 <em>one-hot</em> 有两个问题：① 数据稀疏；② 无法表示词语此之间的语义关系。所以后来人们发明了 <em>embedding</em> 表示法，就是将自然语言符号表示成低维连续的向量，这样可以同时解决上述两个问题。</p>
+<p>向量化是自然语言处理的一个必不可少的工作，一般的词向量化有两种方式：</p>
+<ul>
+<li>通过一些算法（比如，<em>word2vec</em> 或者 <em>glov2vec</em>）预训练一个词向量表，之后通过查表的方式将句子转化成词向量表示。然后在模型的训练的时候词向量不参与训练；</li>
+<li>在模型输入阶段随机初始化一张词向量表，同样是通过查表的方式将句子表示成向量形式，而这张词向量表随着模型一起训练。</li>
+</ul>
+<p>以上基本就是任意使用神经网络处理的自然语言问题的必经之路。其中的向量化过程我们不再赘述（在后续的系列文章中会专门讨论自然语言处理中的预训练技术），这里我们详细讨论一下 <strong>Input</strong> 部分。</p>
+<p>上面我们说到我们需要一张词向量表将自然语言符号映射成向量，自然而然地我们同样需要一张词表，这张词表包含的元素就是自然语言符号。在训练模型的时候我们是使用一张固定大小的词表，也就是说模型只能处理词表中出现过的词。一个显然的问题是，大千世界，我们人类发明的自然语言符号虽然不是无穷无尽的，但是却是数量非常庞大的，而且还在不断的增长中，所以我们不可能将所有的符号都纳入到词表中。即使我们将当前所有的符号都纳入到词表中也会面临两个问题：</p>
+<ul>
+<li>过于庞大的词表就意味着庞大的词向量表，如此庞大的词向量表会使模型参数量爆炸，大参数量不仅意味着大计算量，同时还有可能意味着较高的错误率。比如机器翻译过程中最后的输出由 <em>softmax</em> 挑选最合适的词进行输出，一个简单的直觉就是从更大的词表中选择会有更大的概率出错；</li>
+<li>在所有的符号中，有些是常用的，有些是非常罕见的。对于常用的符号，模型可以得到充分的训练，但对于稀有的符号模型得不到充分训练，实际的效果也不会好。</li>
+</ul>
+<p>这就意味着我们的模型只能使用一个有限的词表进行训练，但是当我们的模型训练好了以后，让它去处理实际问题的时候，它面临的却是开放的世界，它需要处理的也是所有的自然语言符号，一旦遇到词表之外的符号，模型就无能为力了。这就是自然语言处理过程中的 <em>OOV（out-of-vocabulary）</em> 问题。</p>
+<p>为了解决 <em>OOV</em> 问题，研究人员展开了大量的研究工作，研究的核心就在于以什么样的方式表示自然语言符号。</p>
+<ul>
+<li><strong>以词为单位</strong>。通常，我们认为一个句子的基本元素是词（<em>word</em>），所以我们通常是使用一个个词组成一个序列，用来表示句子。而使用词作为自然语言符号表示法的话，就会面临上述的所有问题。而且以词为单位不利于模型学习词缀之间的关系，比如模型学到的“old”, “older”, and “oldest”之间的关系无法泛化到“smart”, “smarter”, and “smartest”。</li>
+<li><strong>以字为单位</strong>。后来人们想到用字（<em>character</em>）来表示。虽然真实世界的词浩如烟海，但是组成词的字却是非常有限的，比如英文只有 26 个字母。但是这种处理方法粒度太细，丢失了词带给句子的潜藏语义关联，因此通常效果不如以词为基础单元的模型。</li>
+<li><strong>以子词为单位</strong>。什么是子词<em>（sub-word）</em>？就是将一般的词，比如 <em>older</em> 分解成更小单元，<em>old+er</em>，这样这些小单元可以几个词共用，减小了词表大小，同时还能使模型学习到词缀之间的关系。因此子词可以很好的平衡 <em>OOV</em> 问题。所以下面我们详细介绍一下子词技术。</li>
+</ul>
+<h2 id="2-1-Byte-Pair-Encoding"><a href="#2-1-Byte-Pair-Encoding" class="headerlink" title="2.1 Byte Pair Encoding"></a>2.1 Byte Pair Encoding</h2><p><em>Byte Pair Encoding（BPE）</em> 算法最早是由 <a href="https://dl.acm.org/doi/10.5555/177910.177914" target="_blank" rel="noopener">Gage</a> 于1994 年提出的一种用于数据压缩的算法，而在 2015 年被 <a href="https://arxiv.org/abs/1508.07909" target="_blank" rel="noopener">Sennrich</a> 等人推广到了自然语言处理领域。</p>
+<ul>
+<li><strong>算法过程</strong></li>
+</ul>
+<p>算法过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 准备足够大的训练语料;</span><br><span class="line">2. 确定期望的子词表大小；</span><br><span class="line">3. 将单词拆分为字符序列并在末尾添加后缀“&lt;/w&gt;”，统计单词频率；</span><br><span class="line">4. 统计每一个连续字节对的出现频率；</span><br><span class="line">5. 选择最高频者合并成新的子词；</span><br><span class="line">6. 重复 4 ~ 5 步直到达到第2步设定的子词表大小或下一个最高频的字节对出现频率为 1。</span><br></pre></td></tr></table></figure>
+<p>举个例子：</p>
+<blockquote>
+<ul>
+<li><p>假设我们准备了一份语料，语料中包含：$(low, lower, newest, widest)$ 这几个词;</p>
+</li>
+<li><p>将单词拆分成字符，并在后面添加 “&lt;/w&gt;”，然后统计词频，得到：</p>
+<p>vocab = {‘l o w &lt;/w&gt;’: 5, ‘l o w e r &lt;/w&gt;’: 2, ‘n e w e s t &lt;/w&gt;’: 6, ‘w i d e s t &lt;/w&gt;’: 3}</p>
+</li>
+<li><p>统计连续字符对出现的频率：</p>
+<p>{(‘l’, ‘o’): 7, (‘o’, ‘w’): 7, (‘w’, ‘&lt;/w&gt;’): 5, (‘w’, ‘e’): 8, (‘e’, ‘r’): 2, (‘r’, ‘&lt;/w&gt;’): 2, (‘n’, ‘e’): 6, (‘e’, ‘w’): 6, (‘e’, ‘s’): 9, (‘s’, ‘t’): 9, (‘t’, ‘&lt;/w&gt;’): 9, (‘w’, ‘i’): 3, (‘i’, ‘d’): 3, (‘d’, ‘e’): 3}</p>
+</li>
+<li><p>最高频连续字节对 (“e”, “s”)，合并成 “es”，得到：</p>
+<p>{‘l o w &lt;/w&gt;’: 5, ‘l o w e r &lt;/w&gt;’: 2, ‘n e w es t &lt;/w&gt;’: 6, ‘w i d es t &lt;/w&gt;’: 3}</p>
+</li>
+<li><p>重复以上步骤</p>
+</li>
+</ul>
+</blockquote>
+<p><strong>注意：</strong>停止符”&lt;/w&gt;”的意义在于表示subword是词后缀。举例来说：”st”字词不加”&lt;/w&gt;”可以出现在词首如”st ar”，加了”&lt;/w&gt;”表明改字词位于词尾，如”wide st&lt;/w&gt;”，二者意义截然不同。</p>
+<ul>
+<li><strong>代码实现</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re, collections</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_stats</span><span class="params">(vocab)</span>:</span></span><br><span class="line">    pairs = collections.defaultdict(int)</span><br><span class="line">    <span class="keyword">for</span> word, freq <span class="keyword">in</span> vocab.items():</span><br><span class="line">        symbols = word.split()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(symbols)<span class="number">-1</span>):</span><br><span class="line">            pairs[symbols[i],symbols[i+<span class="number">1</span>]] += freq</span><br><span class="line">    <span class="keyword">return</span> pairs</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_vocab</span><span class="params">(pair, v_in)</span>:</span></span><br><span class="line">    v_out = &#123;&#125;</span><br><span class="line">    bigram = re.escape(<span class="string">' '</span>.join(pair))</span><br><span class="line">    p = re.compile(<span class="string">r'(?&lt;!\S)'</span> + bigram + <span class="string">r'(?!\S)'</span>)</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> v_in:</span><br><span class="line">        w_out = p.sub(<span class="string">''</span>.join(pair), word)</span><br><span class="line">        v_out[w_out] = v_in[word]</span><br><span class="line">    <span class="keyword">return</span> v_out</span><br></pre></td></tr></table></figure>
+<p>训练示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">vocab = &#123;<span class="string">'l o w &lt;/w&gt;'</span>: <span class="number">5</span>, </span><br><span class="line">         <span class="string">'l o w e r &lt;/w&gt;'</span>: <span class="number">2</span>, </span><br><span class="line">         <span class="string">'n e w e s t &lt;/w&gt;'</span>: <span class="number">6</span>, </span><br><span class="line">         <span class="string">'w i d e s t &lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">num_merges = <span class="number">1000</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_merges):</span><br><span class="line">    pairs = get_stats(vocab)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> pairs:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    best = max(pairs, key=pairs.get)</span><br><span class="line">    vocab = merge_vocab(best, vocab)</span><br><span class="line">    print(best)</span><br><span class="line">    print(vocab)</span><br><span class="line">    print(<span class="string">'='</span>*<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">'e'</span>, <span class="string">'s'</span>)</span><br><span class="line">&#123;<span class="string">'l o w &lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'l o w e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'n e w es t &lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'w i d es t &lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'es'</span>, <span class="string">'t'</span>)</span><br><span class="line">&#123;<span class="string">'l o w &lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'l o w e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'n e w est &lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'w i d est &lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'est'</span>, <span class="string">'&lt;/w&gt;'</span>)</span><br><span class="line">&#123;<span class="string">'l o w &lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'l o w e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'n e w est&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'w i d est&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'l'</span>, <span class="string">'o'</span>)</span><br><span class="line">&#123;<span class="string">'lo w &lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'lo w e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'n e w est&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'w i d est&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'lo'</span>, <span class="string">'w'</span>)</span><br><span class="line">&#123;<span class="string">'low &lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'low e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'n e w est&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'w i d est&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'n'</span>, <span class="string">'e'</span>)</span><br><span class="line">&#123;<span class="string">'low &lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'low e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'ne w est&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'w i d est&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'ne'</span>, <span class="string">'w'</span>)</span><br><span class="line">&#123;<span class="string">'low &lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'low e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'new est&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'w i d est&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'new'</span>, <span class="string">'est&lt;/w&gt;'</span>)</span><br><span class="line">&#123;<span class="string">'low &lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'low e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'newest&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'w i d est&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'low'</span>, <span class="string">'&lt;/w&gt;'</span>)</span><br><span class="line">&#123;<span class="string">'low&lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'low e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'newest&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'w i d est&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'w'</span>, <span class="string">'i'</span>)</span><br><span class="line">&#123;<span class="string">'low&lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'low e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'newest&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'wi d est&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'wi'</span>, <span class="string">'d'</span>)</span><br><span class="line">&#123;<span class="string">'low&lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'low e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'newest&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'wid est&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'wid'</span>, <span class="string">'est&lt;/w&gt;'</span>)</span><br><span class="line">&#123;<span class="string">'low&lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'low e r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'newest&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'widest&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'low'</span>, <span class="string">'e'</span>)</span><br><span class="line">&#123;<span class="string">'low&lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'lowe r &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'newest&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'widest&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'lowe'</span>, <span class="string">'r'</span>)</span><br><span class="line">&#123;<span class="string">'low&lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'lower &lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'newest&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'widest&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br><span class="line">(<span class="string">'lower'</span>, <span class="string">'&lt;/w&gt;'</span>)</span><br><span class="line">&#123;<span class="string">'low&lt;/w&gt;'</span>: <span class="number">5</span>, <span class="string">'lower&lt;/w&gt;'</span>: <span class="number">2</span>, <span class="string">'newest&lt;/w&gt;'</span>: <span class="number">6</span>, <span class="string">'widest&lt;/w&gt;'</span>: <span class="number">3</span>&#125;</span><br><span class="line">====================</span><br></pre></td></tr></table></figure>
+<h2 id="2-2-WordPiece"><a href="#2-2-WordPiece" class="headerlink" title="2.2 WordPiece"></a>2.2 WordPiece</h2><p><em>WordPiece</em> 算法可以看作是 <em>BPE</em> 的变种。不同点在于，<em>WordPiece</em> 基于概率生成新的子词而不是最高频字节对。</p>
+<ul>
+<li><strong>算法过程</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 准备足够大的训练语料;</span><br><span class="line">2. 确定期望的子词表大小;</span><br><span class="line">3. 将单词拆分成字符序列;</span><br><span class="line">4. 基于第3步数据训练语言模型;</span><br><span class="line">5. 从所有可能的子词单元中选择加入语言模型后能最大程度地增加训练数据概率的单元作为新的单元;</span><br><span class="line">6. 重复第5步直到达到第2步设定的子词表大小或概率增量低于某一阈值;</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong>因为加入每个可能的词对都需重新训练语言模型，这样需要的计算资源会很大，因此作者通过以下策略降低计算量：</p>
+<blockquote>
+<ol>
+<li>只测试语料中出现的词对；</li>
+<li>只测试有很大可能（高优先）是最好词对的候选；</li>
+<li>同时测试几个词对，只要它们互不影响；</li>
+<li>重训语言模型（并不需要是神经网络型），只重新计算受影响的部分。</li>
+</ol>
+</blockquote>
+<h2 id="2-3-Unigram-Language-Model"><a href="#2-3-Unigram-Language-Model" class="headerlink" title="2.3 Unigram Language Model"></a>2.3 Unigram Language Model</h2><p><em>ULM</em> 是另外一种子词分隔算法，它能够输出带概率的多个子词分段。它引入了一个假设：所有子词的出现都是独立的，并且子词序列由子词出现概率的乘积产生。</p>
+<p><em>ULM</em> 和 <em>WordPiece</em> 一样都是利用语言模型建立子词表。与前两者都不相同的是，前两者构建词表的时候是增量的，而 <em>ULM</em> 是减量的。</p>
+<ul>
+<li><strong>算法过程</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 先建立一个足够大的种子词表，可以用所有字符的组合加上语料中常见的子字符串。</span><br><span class="line">   对于种子词表，也能用 BPE 法来生成。</span><br><span class="line">2. 固定词表，用 EM 算法来最优化当前词表在语料上的概率；</span><br><span class="line">3. 之后计算每个子词的 loss，对应的 loss 相当于该子词有多大可能使总的 loss 降低；</span><br><span class="line">4. 接着按照每个子词 loss 大小来排序，保留最大一定比例（比如说80%）的子词，</span><br><span class="line">   为了避免OOV，建议保留字符级的单元；</span><br><span class="line">6. 不断重复 2 ~ 4，直到词表量减少到限定范围。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>子词采样</strong></li>
+</ul>
+<p>相比于之前的两种方法，分词结果是确定的，<em>ULM</em> 会使用一定的概率对分词结果进行采样。这样给训练过程带来了随机性。结果表明相比起只用一种方案的确定性分词法，子词正则能够获得很大的提升。但同时也正如看到的，子词正则加上 <em>ULM</em> 法过于复杂，所以应用难度也相应增大，不像 <em>BPE</em> 应用广泛。</p>
+<h2 id="2-4-BPE-Dropout"><a href="#2-4-BPE-Dropout" class="headerlink" title="2.4 BPE-Dropout"></a>2.4 BPE-Dropout</h2><p>该方法非常简单，采取和子词正则相同思路，对 <em>BPE</em> 算法训练做了些改进，加入了一定的随机性。具体在每次对训练数据进行处理分词时，设定一定概率（10%）让一些融合不通过，于是即使是相同词，每次用 <em>BPE dropout</em> 生成出来的子词也都不一样。</p>
+<ul>
+<li><strong>算法过程</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 用 BPE 生成所有的融合候选子词；</span><br><span class="line">2. 根据一定的概率 p 删除一部分候选子词；</span><br></pre></td></tr></table></figure>
+<h2 id="2-5-小结"><a href="#2-5-小结" class="headerlink" title="2.5 小结"></a>2.5 小结</h2><ol>
+<li>子词可以平衡词汇量和对未知词的覆盖。 </li>
+<li>对于包括中文在内的许多亚洲语言，单词不能用空格分隔。 因此，初始词汇量需要比英语大很多。</li>
+<li>另外需要注意一点的是，对于中文这种不以空格分隔的语言，在应用子词技术的时候，需要先用分词算法进行分词。</li>
+</ol>
+<h1 id="3-Positional-Encoding"><a href="#3-Positional-Encoding" class="headerlink" title="3. Positional Encoding"></a>3. Positional Encoding</h1><h2 id="3-1-What-why-and-when？"><a href="#3-1-What-why-and-when？" class="headerlink" title="3.1 What, why and when？"></a>3.1 What, why and when？</h2><p>所谓位置编码指的是，在训练深度模型的时候，在输入训练数据的时候添加一种编码，使得模型的输出可以表征输入数据的时序特征。对于文本数据，词与词之间的顺序关系往往影响整个句子的含义。因此，在对文本进行建模的时候，词序是一个必须考虑的问题。但是否是所有的文本建模都需要使用位置编码呢？</p>
+<p>答案是：<strong>No!</strong></p>
+<p>只有当我们使用对位置不敏感（<em>position-insensitive</em>）的模型对文本数据建模的时候，才需要额外使用位置编码。那么什么是位置敏感模型？什么是位置不敏感模型呢？</p>
+<blockquote>
+<p>如果模型的输出会随着输入文本数据顺序的变化而变化，那么这个模型就是关于位置敏感的，反之则是位置不敏感的。</p>
+</blockquote>
+<p>用形式化的语言描述为：假设模型函数 $y = f(x)$，其中 $x = (x_1, …, x_n)$ 为输入序列，$y$ 为输出。如果将 $x$ 找那个任意元素的位置进行了置换， $x’ = (x_{k_1}, …x_{k_n})$。此时，如果 $f(x) = f(x’)$，那么我们称模型是位置不敏感的；反之则为位置敏感的。</p>
+<p>传统的 <em>RNN</em> 模型是关于位置敏感的模型，我们在使用 <em>RNN</em> 相关模型进行文本建模的时候是不需要位置编码的。只有使用位置不敏感的模型进行文本建模的时候才需要位置编码。</p>
+<h2 id="3-2-How"><a href="#3-2-How" class="headerlink" title="3.2 How?"></a>3.2 How?</h2><p>从直观上来讲，我们可以给序列中的第一个词的位置编码为 1，第二个词位置编码为 2 …… 依此类推。但是这种方法会带来两个问题：① 句子比较长的话，位置编码数字会变得很大；② 模型在推理的时候会遇到比训练数据更长的句子，这种编码会削弱模型的泛化性。</p>
+<p>我们直接能想到的第二种方法是，将序列长度归一化到 $[0, 1]$ 范围内，0 表示第一个词， 1 表示最后一个词。但是这种编码方式也是有问题的：句子是变长的，我们不知道模型遇到的句子的长度是多少，对于不同长度的句子，每个词对应的位置编码是不一样的，也就是说这样的位置编码是无效编码。举个例子：</p>
+<blockquote>
+<p>I love you</p>
+<p>I love you!</p>
+</blockquote>
+<p>这两句话，实际上意思相同，只不过第二句话多了一个句号，在用上面的方式进行位置编码的时候，两句话中对应的词的位置编码是不一样的，最后模型输出的结果也很难表征出相同的意思。因此，这种方式同样不可取。</p>
+<p>理想的位置编码应该具备以下几个特征：</p>
+<ul>
+<li>每一个词的位置都有一个唯一的编码；</li>
+<li>不同长度的句子中任意两个词之间的距离应该是相同的；</li>
+<li>编码值应该是有界的，而且可以轻松泛化到更长的句子中；</li>
+<li>必须具有确定性。</li>
+</ul>
+<p>目前主流的位置编码有三种：</p>
+<ol>
+<li>可学习的位置编码（<em>Learned Positional Embedding</em>）；</li>
+<li>正余弦位置编码（<em>Sinusoidal Position Encoding</em>）；</li>
+<li>相对位置编码（<em>Relative Position Representations</em>）。</li>
+</ol>
+<h3 id="3-2-1-可学习的位置编码"><a href="#3-2-1-可学习的位置编码" class="headerlink" title="3.2.1 可学习的位置编码"></a>3.2.1 可学习的位置编码</h3><p>这种编码方式相对简单也容易理解。它的做法是，随机初始化一个位置矩阵，然后加到（或者拼接）词向量矩阵上，输入给模型作为模型参数参与模型训练。</p>
+<h3 id="3-2-2-正弦位置编码"><a href="#3-2-2-正弦位置编码" class="headerlink" title="3.2.2 正弦位置编码"></a>3.2.2 正弦位置编码</h3><p>这种位置编码方式就是 <em>Transformer</em> 中使用的位置编码。假设 $t$ 是输入序列的位置，$\vec{p}_t \in \mathbb{R}^d$ 表示其对应的编码。$\vec{p}_t$ 定义如下：</p>
+<script type="math/tex; mode=display">
+\vec{p}_t^{(i)} = \begin{cases}
+\sin(\omega_k \cdot t),  i=2k \\\\
+\cos(\omega_k \cdot t),  i=2k+1
+\end{cases}</script><p>其中 $\omega_k = 1/10000^{2k/d}$。</p>
+<p>有了位置编码以后，将词向量与位置向量相加得到带有位置信息的新序列。注意为了相加操作的正确，要保证此项来那个维度和位置向量维度一致：</p>
+<script type="math/tex; mode=display">
+\psi'(\omega_t) = \psi(\omega_t) + \vec{p}_t</script><p>正弦位置编码的优势是，对于任意固定的偏移量 $k$，$\vec{p}_{t+k}$ 可以表示成 $\vec{p }_t$ 的线性函数。也就是说，模型可以很容易通过先验绝对位置编码学习到相对位置编码。通常对于句子中的词序，我们更关注的是词与词之间的相对位置。我们来证明一下吧。</p>
+<ul>
+<li><p><strong>问题描述</strong></p>
+<p>令 $ \vec{p}_t$ 表示第 $t$ 个位置的位置编码：</p>
+<script type="math/tex; mode=display">
+\vec{p}_t=\begin{bmatrix}
+\sin(\omega_1 \cdot t)\\\\
+\cos(\omega_1 \cdot t)\\\\
+\sin(\omega_2 \cdot t)\\\\
+\cos(\omega_2 \cdot t)\\\\
+\vdots \\\\
+\sin(\omega_{d_{model}/2} \cdot t)\\\\
+\cos(\omega_{d_{model}/2} \cdot t)
+\end{bmatrix}_{d_{model} \times 1}</script><p>我们希望能找到一个与 $t$ 无关的矩阵，使得 $\vec{p}_t$ 通过线性变换成为 $\vec{p}_{t+k}$。（因为如果是关于 $t$ 的矩阵， 那这个变换就是非线性的了）</p>
+</li>
+<li><p><strong>证明</strong></p>
+<p>我们令</p>
+<script type="math/tex; mode=display">
+\vec{p}_t=\begin{bmatrix}
+\begin{bmatrix}
+\sin(\omega_1 \cdot t)\\\\
+\cos(\omega_1 \cdot t)
+\end{bmatrix}\\\\
+\begin{bmatrix}
+\sin(\omega_2 \cdot t)\\\\
+\cos(\omega_2 \cdot t)
+\end{bmatrix}\\\\
+\vdots \\\\
+\begin{bmatrix}
+\sin(\omega_{d_{model}/2} \cdot t)\\\\
+\cos(\omega_{d_{model}/2} \cdot t)
+\end{bmatrix}
+\end{bmatrix}</script></li>
+</ul>
+<p>  我们希望找到一个 $M \in \mathbb{R}^{2 \times 2}$ ，使得 </p>
+<script type="math/tex; mode=display">
+  M \cdot \begin{bmatrix}
+  \sin(\omega_i \cdot t)\\\\
+  \cos(\omega_i \cdot t)
+  \end{bmatrix}=
+  \begin{bmatrix}
+  \sin(\omega_i \cdot (t+k))\\\\
+  \cos(\omega_i \cdot (t+k))
+  \end{bmatrix}</script><p>  令 $M = \begin{bmatrix}u_1 &amp; v_1 \\\ u_2 &amp; v_2\end{bmatrix}$，代入上式，并分解等式右边得</p>
+<script type="math/tex; mode=display">
+  \begin{bmatrix}
+  u_1 & v_1 \\\\ 
+  u_2 & v_2
+  \end{bmatrix} \cdot \begin{bmatrix}
+  \sin(\omega_i \cdot t)\\\\
+  \cos(\omega_i \cdot t)
+  \end{bmatrix}= \begin{bmatrix}
+  \sin(\omega_i \cdot t)\cos(\omega_i \cdot k) + \cos(\omega_i \cdot t)\sin(\omega_i \cdot k)\\\\
+  \cos(\omega_i \cdot t)\cos(\omega_i \cdot k) - \sin(\omega_i \cdot t)\sin(\omega_i \cdot k)
+  \end{bmatrix}</script><p>  由此可得：</p>
+<script type="math/tex; mode=display">
+  u_1\sin(\omega_i \cdot t) + v_1 \cos(\omega_i \cdot t) = \quad \cos(\omega_i \cdot k)\sin(\omega_i \cdot t) + \sin(\omega_i \cdot k)\cos(\omega_i \cdot t)\\\\
+  u_2\sin(\omega_i \cdot t) + v_2 \cos(\omega_i \cdot t) = -\sin(\omega_i \cdot k)\sin(\omega_i \cdot t) + \cos(\omega_i \cdot k)\cos(\omega_i \cdot t)\\\\</script><p>  通过对比等式两边，我们可以得到 $u_1, v_1, u_2, v_2$ 的一组解：</p>
+<script type="math/tex; mode=display">
+  u_1 = \quad \cos(\omega_i \cdot k) \quad v_1 = \sin(\omega_i \cdot k) \\\\
+  u_2 = -\sin(\omega_i \cdot k) \quad v_2 = \cos(\omega_i \cdot k)</script><p>  也就是说</p>
+<script type="math/tex; mode=display">
+  M = \begin{bmatrix}
+  \cos(\omega_i \cdot k) &  \sin(\omega_i \cdot k) \\\\
+  -\sin(\omega_i \cdot k) &  \cos(\omega_i \cdot k)
+  \end{bmatrix}</script><p>  我们可以看到 $M$ 是一个与 $t$ 无关的矩阵。最后，我们令</p>
+<script type="math/tex; mode=display">
+  T^{(k)} = \begin{bmatrix}
+  M_1^{(k)} & 0 & \cdots & 0 \\\\
+  0 & M_2^{(k)} & \cdots & 0 \\\\
+  \vdots & \vdots & \ddots & \vdots \\\\
+  0 & 0 & 0 & M_{d_{model}/2}^{(k)}
+  \end{bmatrix}</script><p>  其中 $0$ 表示 $2 \times 2$ 的全零矩阵。$T^{(k)}$ 即为我们想要的线性变换矩阵。</p>
+<ul>
+<li><p><strong>正弦位置编码的性质</strong></p>
+<p>在计算自注意力的时候， <em>Transformer</em> 是计算序列中任意两个元素的注意力权重。因此，我们这里探究一下正弦位置编码的内积的性质。</p>
+<p>① <strong>内积随相对位置递增而减小</strong></p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+\vec{p}_t \cdot \vec{p}_{t+k} &= \sum_{i=0}^{\frac{d_{model}}{2}-1} \mathrm{sin}(\omega_1\cdot t)\cdot \mathrm{sin}(\omega_i\cdot (t+k))+\cos(\omega_i\cdot t)\cdot \cos(\omega_i\cdot(t+k))\\\\
+&= \sum_{i=0}^{\frac{d_{model}}{2}-1} \cos(\omega_i\cdot(t-(t+k)))\\\\
+&= \sum_{i=0}^{\frac{d_{model}}{2}-1} \cos(\omega_i\cdot -k)\\\\
+&= \sum_{i=0}^{\frac{d_{model}}{2}-1} \cos(\omega_i\cdot k)
+\end{aligned}
+\end{equation}</script><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200522155328.png" alt></p>
+<p>由此我们可以发现，随着相对位置的递增，正弦位置编码的内积会减小。如上图所示，点积的结果是对称的，并且随 $|k|$ 增加而减少（但并不单调）。</p>
+<p>但是在 <em>Transformer</em> 中，由于需要经过映射，即两者间的点积实际是 $\vec{p}_t \cdot W \cdot \vec{p}_{t+k}$，下图展示了经过映射之后的位置向量点积：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200522155344.png" alt></p>
+<p>我们可以看到，此时位置向量的点积并没有展现出明确的趋势。</p>
+<p>② <strong>对称性</strong></p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+\vec{p}_t \cdot \vec{p}_{t-k} &= \sum_{i=0}^{\frac{d_{model}}{2}-1} \sin(\omega_1\cdot t)\cdot \mathrm{sin}(\omega_i\cdot (t-k))+\cos(\omega_i\cdot t)\cdot \cos(\omega_i\cdot(t-k))\\\\
+&= \sum_{i=0}^{\frac{d_{model}}{2}-1} \cos(\omega_i\cdot(t-(t-k)))\\\\
+&= \sum_{i=0}^{\frac{d_{model}}{2}-1} \cos(\omega_i\cdot k)
+\end{aligned}
+\end{equation}</script><p>由此我们发现，$ \vec{p}_t \cdot \vec{p}_{t+k} = \vec{p}_t \cdot \vec{p}_{t-k} $，这说明正弦位置编码无法区分词与词的前后关系。</p>
+</li>
+<li><p><strong>词向量和位置向量直接相加是否合理？</strong></p>
+<p><em>Transformer</em> 对模型输入的词向量和位置向量的处理是直接相加，作者并没有给出一个理论解释，为什么要直接相加。但是如果我们读过足够多的的 <em>NLP</em> 论文，我们会发现，对位置向量的处理通常只有两种方法：相加和拼接。这两种处理方式在不同的模型中有不同的表现，但总体上并没有太大的差别。<em>Transformer</em> 之所以使用相加的方式，可能主要是考虑减少模型参数，毕竟自注意力矩阵的参数已经足够多了。</p>
+<p>但是我们仔细考虑一下，无论是直接相加还是拼接，都隐含了一个假设：词向量和位置向量都是独立分布的。这个假设对词向量来说是成立的，因为词向量的 <em>index</em> 与我们使用的字典排序有关，而这个排序是任意的，任意的 <em>index</em> 与 <em>index+k</em> 或者 <em>index-k</em> 都没有任何依赖关系，所以这个假设是成立的。但是对于位置向量却并不满足这一假设，其顺序关系对模型理解文本有着重要的影响。我们称之为位置不敏感问题（<em>position-insensitive problem</em>）。</p>
+<p>为了解决这一问题 <a href="https://openreview.net/pdf?id=Hke-WTVtwr" target="_blank" rel="noopener">Wang</a> 等人提出关于位置的连续函数来表征词在位置上的表示，即：</p>
+<script type="math/tex; mode=display">
+f(j, t) = \pmb{g}_j(t) \in \mathbb{R}^D</script><p>其中 $\pmb{g}_j(t) = [g_{j,1}(t), g_{j, 2}(t), …, g_{j, D}(t)]$，$g_{j, d}(t)$ 是一个关于 $t$ 的函数。为了让这个函数更好的表征位置信息，$g_{j, d}(t)$ 必须要满足一下两个性质：</p>
+<ol>
+<li><p><strong>Position-free offset transformation</strong></p>
+<p>存在一个线性函数 $\mathrm{Transform}_k(\cdot)=\mathrm{Transform}(g(t))$ 使得</p>
+<script type="math/tex; mode=display">
+g(t+k) = \mathrm{Transform}(g(t))</script><p>也就是说在位置 $t+k$ 上的词 $w_{j,t+k}$ 可以通过位置 $t$ 上的词 $w_{i, t}$ 通过一个只和 $k$ 相关的变换得到，而与具体这个词无关。有点类似正弦位置编码的线性变换，只是这里不仅是位置的变换，还有词的变换。</p>
+</li>
+<li><p><strong>Boundedness</strong></p>
+<p>这个线性函数必须是有界的。这是一个非常合理的限制，不做过多解释。</p>
+</li>
+</ol>
+<p>最后，作者提出了 $g(t)$ 的函数形式：</p>
+<script type="math/tex; mode=display">
+g(t) = r \cdot e^{i(\omega \cdot t +\theta)}</script><p>我们可以看到这是一个复数形式的函数，其中 $r$ 为振幅， $\omega$ 为角频率，$\theta$ 为初相，都是需要学习的参数。</p>
+</li>
+</ul>
+<h3 id="3-2-3-相对位置编码"><a href="#3-2-3-相对位置编码" class="headerlink" title="3.2.3 相对位置编码"></a>3.2.3 相对位置编码</h3><p>无论是可学习位置编码还是正弦位置编码都是将位置编码作为额外的信息输入给模型，相对位置编码是将位置信息作为模型本身的属性，使模型不需要额外输入位置编码即可处理序列的位置信息。</p>
+<p>这部分因为涉及到的都是模型架构的修改，因此我们会在后续的论文解读中解读相关的论文，这里不做解释。有兴趣的话可以看以下几篇论文（这几篇论文都会在后面详细解读）：</p>
+<ol>
+<li><a href="https://arxiv.org/pdf/1803.02155.pdf" target="_blank" rel="noopener">Self-Attention with Relative Position Representations</a></li>
+<li><a href="https://arxiv.org/pdf/1901.02860.pdf" target="_blank" rel="noopener">Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context</a></li>
+<li><a href="https://www.aaai.org/ojs/index.php/AAAI/article/view/4614" target="_blank" rel="noopener">Gaussian Transformer: A Lightweight Approach for Natural Language Inference</a> </li>
+</ol>
+<h1 id="4-Multi-head-Attention"><a href="#4-Multi-head-Attention" class="headerlink" title="4. Multi-head Attention"></a>4. Multi-head Attention</h1><h2 id="4-1-为什么需要-K、Q、V，只用K、Q-K、V-Q、V行不行？"><a href="#4-1-为什么需要-K、Q、V，只用K、Q-K、V-Q、V行不行？" class="headerlink" title="4.1 为什么需要 K、Q、V，只用K、Q/K、V/Q、V行不行？"></a>4.1 为什么需要 K、Q、V，只用K、Q/K、V/Q、V行不行？</h2><p>实际上这个问题，我们在 <a href="https://rogerspy.gitee.io/2019/08/26/NLP中的注意力机制简介（一">NLP中的注意力机制简介（一）</a> 这篇文章中介绍过了。最初的注意力机制实际上是只用了两个值的，直到 <a href="https://arxiv.org/pdf/1503.08895.pdf" target="_blank" rel="noopener">Sukhbaatar et al., 2015</a> 将注意力机制引入到对话系统模型中才出现了 $k, q, v$ 三值的注意力形式。这样的注意力形式有两个好处：</p>
+<ul>
+<li>可复用性</li>
+<li>灵活性</li>
+</ul>
+<p>更详细的内容可以参考上面的博客以及论文，这里不赘述。</p>
+<h2 id="4-2-自注意力为什么scaled"><a href="#4-2-自注意力为什么scaled" class="headerlink" title="4.2 自注意力为什么scaled?"></a>4.2 自注意力为什么scaled?</h2><p>知乎上关于这个问题有很详细的讨论与解释，我就不自由发挥了，照抄过来。原文地址：<a href="https://www.zhihu.com/question/339723385" target="_blank" rel="noopener">transformer中的attention为什么scaled?</a> </p>
+<h3 id="4-2-1-为什么比较大的输入会使得-softmax-的梯度变得很小？"><a href="#4-2-1-为什么比较大的输入会使得-softmax-的梯度变得很小？" class="headerlink" title="4.2.1 为什么比较大的输入会使得 softmax 的梯度变得很小？"></a>4.2.1 为什么比较大的输入会使得 softmax 的梯度变得很小？</h3><p>对于输入向量 $\pmb{x} \in \mathbb{R}^d$，<em>softmax</em> 函数将其映射/归一化到一个 $\pmb{\hat{y}} \in \mathbb{R}^d$。这个过程中，<em>softmax</em> 先用一个自然底数 $e$ 将输入的元素距离先拉大，然后归一化为一个分布。假设某个输入 $\pmb{x}_k$ 表示最大的元素，<strong>如果输入的数量级变大（每个元素都很大），那么 $\pmb{x}_k$ 对应的 $\pmb{\hat{y}}_k$ 会非常接近 1。</strong> </p>
+<p>我们可以用一个小例子来看看。假定输入 $\pmb{x} = [a, a, 2a]^T$，</p>
+<ul>
+<li>$a = 1$ 时，$\hat{y}_2=0.5761168847658291$；</li>
+<li>$a=10$ 时，$\hat{y}_2 = 0.999909208284341$；</li>
+<li>$a = 100$ 时，$\hat{y}_2 \approx 1$ （计算机精度限制）。</li>
+</ul>
+<p>我们不妨把不同的 $a$ 对应的 $\hat{y}_2$ 绘制成一条曲线，更能清晰的看出问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> exp</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </span><br><span class="line">f = <span class="keyword">lambda</span> x: exp(x * <span class="number">2</span>) / (exp(x) + exp(x) + exp(x * <span class="number">2</span>))</span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>)</span><br><span class="line">y_3 = [f(x_i) <span class="keyword">for</span> x_i <span class="keyword">in</span> x]</span><br><span class="line">plt.plot(x, y_3)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200521094625.png" alt></p>
+<p>可以看到，数量级对 <em>softmax</em> 得到的分布影响非常大。<strong>在数量级较大时，softmax 将几乎全部的概率分布都分配给了最大值对应的标签</strong>。这里的数学证明请参考文章：<a href="https://zhuanlan.zhihu.com/p/79585726" target="_blank" rel="noopener">浅谈Softmax函数</a>（见A.补充）。</p>
+<p>然后我们来看 <em>softmax</em> 的梯度。不妨简记 <em>softmax</em> 函数为 $g(\cdot)$，$\pmb{\hat{y}} = g(\pmb{x})$ 对 $\pmb{x}$ 的梯度为：</p>
+<script type="math/tex; mode=display">
+\frac{\partial g({\pmb{x}})}{\partial \pmb{x}} = \begin{bmatrix}
+\hat{y}_0 & 0 & \cdots & 0 \\\\
+0 & \hat{y}_1 & \cdots & 0 \\\\
+\vdots & \vdots & \ddots & \vdots \\\\
+0 & 0 & \cdots & \hat{y}_{d-1}
+\end{bmatrix}-\begin{bmatrix}
+\hat{y}_0^2 & \hat{y}_0 \hat{y}_1 & \cdots & \hat{y}_0\hat{y}_{d-1} \\\\
+\hat{y}_1 \hat{y}_0 & \hat{y}_1^2 & \cdots & \hat{y}_1\hat{y}_{d-1} \\\\
+\vdots & \vdots & \ddots & \vdots \\\\
+\hat{y}_{d-1} \hat{y}_0 & \hat{y}_{d-1} \hat{y}_1 & \cdots & \hat{y}_{d-1}^2
+\end{bmatrix}</script><p>根据前面的讨论，当输入 $ \pmb{x}$ 的元素均较大时，<em>softmax</em> 会把大部分概率分布分配给最大的元素。假设我们的输入数量级很大，最大的元素是 $\pmb{x}_1$，那么就将产生一个接近 <em>one-hot</em> 的向量 $\pmb{\hat{y}} = [1, 0, \cdots, 0]^T$，此时此时上面的矩阵变为如下形式：</p>
+<script type="math/tex; mode=display">
+\frac{\partial g({\pmb{x}})}{\partial \pmb{x}} = \begin{bmatrix}
+1 & 0 & \cdots & 0 \\\\
+0 & 0 & \cdots & 0 \\\\
+\vdots & \vdots & \ddots & \vdots \\\\
+0 & 0 & \cdots & 0
+\end{bmatrix}-\begin{bmatrix}
+1 & 0 & \cdots & 0 \\\\
+0 & 0 & \cdots & 0 \\\\
+\vdots & \vdots & \ddots & \vdots \\\\
+0 & 0  & \cdots & 0
+\end{bmatrix} = \pmb{0}</script><p>也就是说，在输入的数量级很大时，<strong>梯度消失为0，造成参数更新困难</strong>。</p>
+<h3 id="4-2-2-维度与点积大小的关系是怎么样的，为什么使用维度的根号来放缩？"><a href="#4-2-2-维度与点积大小的关系是怎么样的，为什么使用维度的根号来放缩？" class="headerlink" title="4.2.2  维度与点积大小的关系是怎么样的，为什么使用维度的根号来放缩？"></a>4.2.2  维度与点积大小的关系是怎么样的，为什么使用维度的根号来放缩？</h3><p>假设向量 $\pmb{q}$ 和 $\pmb{k}$ 的各个分量是相互独立的随机变量，均值是 $0$，方差为 $1$，则点积 $\pmb{q \cdot k}$ 的均值为 $0$，方差为 $d_k$，$d_k$ 表示向量维度。这里给出一点详细的推导：</p>
+<p>$\forall i = 1, …, d_k$，$q_i$ 和 $k_i$ 都是随机变量。为方便书写，不妨记 $X = q_i, Y=k_i$。已知：$D(X) = D(Y) = 1$ ， $E(X)=E(Y)=0$。</p>
+<p>则有：</p>
+<ol>
+<li><p>$E(XY)=E(X)E(Y) = 0 \times 0 = 0$</p>
+</li>
+<li><script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+D(XY) &= E(X^2Y^2)-[E(XY)]^2 \\\\
+&= E(X^2)E(Y^2) - [E(X)E(Y)] \\\\
+&= E(X^2 - 0^2)E(Y^2-0^2) - [E(X)E(Y)]^2 \\\\
+&= E(X^2-[E(X)]^2)\cdot E(Y^2-[E(Y)]^2) - [E(X)E(Y)]^2 \\\\
+&= D(X)D(Y)-[E(X)E(Y)]^2 \\\\
+&= 1 \times 1 - (0 \times 0)^2 \\\\
+&= 1
+\end{aligned}
+\end{equation}</script></li>
+</ol>
+<p>由期望和方差的性质， 对相互独立的分量 $Z_i$ 有：</p>
+<script type="math/tex; mode=display">
+E(\sum_i Z_i) = \sum E(Z_i) \\\\
+D(\sum_i Z_i) = \sum D(Z_i)</script><p>所以 $\pmb{q} \cdot \pmb{k}$ 的均值 $E(\pmb{q \cdot k}) = 0$，方差 $D(\pmb{q \cdot k}) = d_k$。<strong>方差越大也就说明，点积的数量级越大（以越大的概率取大值）</strong>。那么一个自然的做法就是把方差稳定到 1，做法是将点积除以 $\sqrt{d_k}$：</p>
+<script type="math/tex; mode=display">
+D(\frac{\pmb{q \cdot k}}{\sqrt{d_k}}) = \frac{d_k}{(\sqrt{d_k})^2} = 1</script><p><strong>将方差控制为 1，也就有效地控制了前面提到的梯度消失的问题</strong>。</p>
+<h3 id="4-2-3-为什么在其他-softmax-的应用场景，不需要做-scaled"><a href="#4-2-3-为什么在其他-softmax-的应用场景，不需要做-scaled" class="headerlink" title="4.2.3 为什么在其他 softmax 的应用场景，不需要做 scaled?"></a>4.2.3 为什么在其他 softmax 的应用场景，不需要做 scaled?</h3><p>参考：<a href="https://arxiv.org/abs/1703.03906" target="_blank" rel="noopener">Massive Exploration of Neural Machine Translation Architectures</a> </p>
+<p>具体来说，分为以下两个层面：</p>
+<ul>
+<li><p><strong>为什么在普通形式的 attention 中，使用非 scaled 的 softmax？</strong></p>
+<p>最基础的注意力机制有两种形式， 一种是<a href="https://arxiv.org/abs/1409.0473v2" target="_blank" rel="noopener">加性的</a>，另一种是<a href="https://arxiv.org/abs/1508.04025" target="_blank" rel="noopener">乘性的</a>。数学描述为：</p>
+<script type="math/tex; mode=display">
+\mathrm{score}(\pmb{v}_i, \pmb{u}) = \pmb{w}^T \tanh(\pmb{W}[\pmb{v}_i; \pmb{u}]) \\\\
+\mathrm{score}(\pmb{v}_i, \pmb{u}) = \pmb{u}^T \pmb{v}_i</script><p>在计算自注意力的时候之所以用乘性注意力机制，主要是为了<strong>计算更快</strong>。因为虽然矩阵加法的计算更简单，但是加性注意力包含 $\tanh$ ，相当于是一个完整的神经网络层。在整体计算复杂度上两者接近，但是矩阵乘法已经有了非常成熟的加速实现。在 $d_k$ 较小的时候两者效果接近，但随着 $d_k$ 增大，加性效果开始明显超越乘性注意力。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200521115516.png" alt></p>
+<p>作者分析乘性注意力效果不佳的原因，认为是<strong>极大的点积值将整个 softmax 推向梯度平缓区，使得收敛困难</strong>。也就是上面讨论的梯度消失。这才有了 <em>scaled</em>。所以加性注意力机制天然不需要 <em>scaled</em>，在乘性注意力中，$d_k$ 较大的时候必须要做 <em>scaled</em>。</p>
+<p>那么，极大的点积值是从哪里来的呢？</p>
+<p>乘性注意力的极大点积值的来源上面讨论过，是由于两向量点积方差会从 $[0, 1]$ 范围扩散到 $[0, d_k]$ 范围。而加性的注意力，由于存在 $\tanh$ 将值限制在 $[-1, 1]$ 范围内，整体的方差和 $d_k$ 没有关系。</p>
+</li>
+<li><p><strong>为什么在分类层（最后一层），使用非 scaled 的 softmax？</strong></p>
+<p>同上面部分，分类层的 <em>softmax</em> 也没有两个随机变量相乘的情况。此外，这一层的 <em>softmax</em> 通常和交叉熵联合求导，在某个目标类别 $i$ 上的整体梯度会变成 $\pmb{y}’_i-\pmb{y}_i$，即预测值与真值的差。当出现某个极大值时，<em>softmax</em>  的输出概率会集中在该类别上。如果预测正确，整体梯度接近于 0，如果类别错误，整体梯度会接近于 1，给出最大程度的负反馈。</p>
+<p>也就是说，这个时候的梯度形式改变，不会出现极大值导致梯度消失的情况。</p>
+</li>
+</ul>
+<h2 id="4-3-Transformer-为什么要用-Multi-head？"><a href="#4-3-Transformer-为什么要用-Multi-head？" class="headerlink" title="4.3 Transformer 为什么要用 Multi-head？"></a>4.3 Transformer 为什么要用 Multi-head？</h2><p><em>Multi-head</em>  应该是借鉴的 <em>Multi-dimension attention</em> 的思想。最早由 <a href="http://www.aaai.org/Conferences/AAAI/2017/PreliminaryPapers/15-Wang-W-14441.pdf" target="_blank" rel="noopener">Wang et al., 2017</a> 提出 <em>2D-attention</em>，希望模型能在不同的语境下，关注句子中不同的点。后来由 <a href="https://openreview.net/pdf?id=BJC_jUqxe" target="_blank" rel="noopener">Lin et al. 2017</a> 将 <em>2D-attention</em> 扩展到 <em>Multi-dimension attention</em> 。多维注意力的初衷是使注意力形成多个子空间，可以让模型去关注不同方面的信息，多头注意力也继承了这一想法。但是在实际的训练中，模型真的如我们的预期那样，去学习了不同方面的特征吗？</p>
+<p>现在的研究表明，<em>Transformer</em> 的底层更偏向于关注语法，顶层更偏向于关注语义。虽然在同一层中多数头的关注模式是一样的，但是总有那么一两个头与众不同。这种模式是很普遍的，为什么会出现这种情况？目前还不清楚。</p>
+<p>针对不同的头，我们思考以下几个问题：</p>
+<ul>
+<li>同一层中，不同头之间的差距有多少？（用 $h_i$ 度量）</li>
+<li>同一层中，不同头的数量是否对 $h_i $ 有影响？</li>
+<li>$h_i$ 是否随层数的变化而变化？</li>
+<li>我们能否使用 <em>single-head</em> 达到 <em>multi-head</em> 的效果？</li>
+</ul>
+<blockquote>
+<p>另外，初始化对 $h_i$ 的影响也是一个值得探究的问题，这个我们专门开一篇文章讲解，这里略过。</p>
+</blockquote>
+<p>论文 <a href="https://arxiv.org/pdf/1906.04341v1.pdf" target="_blank" rel="noopener">What Does BERT Look At? An Analysis of BERT’s Attention</a> 研究指出，头之间的差距随着所在层数变大而减少。换句话说，<strong>头之间的方差随着所在层数的增大而减小</strong>。</p>
+<p>而在论文 <a href="https://arxiv.org/pdf/1905.09418.pdf" target="_blank" rel="noopener">Analyzing Multi-Head Self-Attention: Specialized Heads Do the Heavy Lifting, the Rest Can Be Pruned</a> 中，作者研究了翻译的质量在何种程度上依赖单个头以及能否去掉一些头而不失效果等问题。研究结果表明，<strong>只有一小部分头对翻译而言是重要的，其他的头都是次要的（可以丢掉）。</strong> 这说明注意力头并非越多越好，但要足够多，<em>single-head attention</em> 目前来看还是无法取代 <em>multi-head attention</em>。</p>
+<p>另外，其实还有一个有意思的问题是，不同头之间的差距有什么作用？在 <a href="https://openreview.net/pdf?id=BJC_jUqxe" target="_blank" rel="noopener">Lin et al. 2017</a> 的这篇文章中，通过引入一个正则化项，将不同头之间的注意力差距变大。他给出的解释是，是模型尽可能多的关注到不同的点上。那么拉大注意力头之间的差距在 <em>Transformer</em> 中有什么效果，目前还没有相关的实验。</p>
+<p>更多关于 <em>Multi-head attention</em> 的探讨可以参考：</p>
+<ul>
+<li><a href="https://blog.ml.cmu.edu/2020/03/20/are-sixteen-heads-really-better-than-one/" target="_blank" rel="noopener">Are Sixteen Heads Really Better than One?</a> （博客）</li>
+<li><a href="https://arxiv.org/pdf/1905.10650.pdf" target="_blank" rel="noopener">Are Sixteen Heads Really Better than One?</a> （论文）</li>
+<li><a href="https://www.aclweb.org/anthology/P18-1167.pdf" target="_blank" rel="noopener">How Much Attention Do You Need? A Granular Analysis of Neural Machine Translation Architectures</a> </li>
+</ul>
+<h1 id="5-Add-amp-Norm"><a href="#5-Add-amp-Norm" class="headerlink" title="5. Add &amp; Norm"></a>5. Add &amp; Norm</h1><p>还记得我们在介绍 <em>Transformer</em>  的时候，模型训练的初期我们使用了 <em>warm-up</em> 的小技巧。那么问题就来了，<em>warm-up</em> 为什么有效？</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DB1x8anVFPr" target="_blank" rel="noopener">On Layer Normalization in the Transformer Architecture</a> 就试图从 <em>LayerNorm</em> 的角度去解释。</p>
+<p>首先我们先思考：为什么 <em>warm-up</em> 是必须的？能不能把它去掉？本文的出发点是：既然 <em>warm-up</em> 是训练的初始阶段使用的，那肯定是训练的初始阶段优化有问题，包括模型的初始化。顺着这个思路，作者发现在训练的初始阶段，输出层附近的期望梯度非常大，如果没有 <em>warm-up</em>，模型优化过程就会炸裂，非常不稳定。使用 <em>warm-up</em> 既可以保持分布的平稳，也可以保持深层的稳定。</p>
+<p>作者发现这一现象与 <em>LayerNorm</em> 的位置有关。在原始的 <em>Transformer</em> 中，<em>LayerNorm</em> 在跟在 <em>Add</em> 之后的（也就是跟在残差之后），我们把这个称为 <code>Post-LN Transformer</code>。那我们很自然的想到，如果我们把 <em>LayerNorm</em> 换个位置，比如放到残差计算过程中（称为<code>Pre-LN Transformer</code>）会怎么样呢？</p>
+<p>下图是两种结构的示意图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200521170535.png" alt></p>
+<p>作者通过理论证明了：</p>
+<ul>
+<li><code>Post-LN Transformer</code>的梯度范数在输出层附近很大，因此很可能随着后向传播的进行梯度越来越小；</li>
+<li><code>Pre-LN Transformer</code>在每层的梯度范数都近似不变。</li>
+</ul>
+<p>因此， <em>warm-up</em> 对 <code>Post-LN Transformer</code> 来说是必不可少的，实验结果也证实了这一点。而对于 <code>Pre-LN Transformer</code> 来说，理论上 <em>warm-up</em> 是可有可无的。然后作者通过实验证明 <code>Pre-LN Transformer</code> 似乎的确不再需要 <em>warm-up</em> 了。</p>
+<h1 id="6-Masked-Multi-head-Attention"><a href="#6-Masked-Multi-head-Attention" class="headerlink" title="6. Masked Multi-head Attention"></a>6. Masked Multi-head Attention</h1><p><em>Mask</em> 在 <em>NLP</em> 中是一个很常规的操作，也有多种应用的场景和形式。那么 <em>Mask</em> 到底有什么用呢？先上结论：</p>
+<ul>
+<li>处理非定长序列</li>
+<li>防止标签泄露</li>
+</ul>
+<p>总的来说 <em>Mask</em> 无非就是这两种用途，下面我们详细解释一下。</p>
+<h2 id="6-1-处理非定长序列"><a href="#6-1-处理非定长序列" class="headerlink" title="6.1 处理非定长序列"></a>6.1 处理非定长序列</h2><p>在 <em>NLP</em> 中，文本一般是不定长的，所以在进行训练之前，要先进行长度的统一，过长的句子可以通过截断到固定的长度，过短的句子可以通过 <em>padding</em> 增加到固定的长度，但是 <em>padding</em> 对应的字符只是为了统一长度，并没有实际的价值，因此希望在之后的计算中屏蔽它们，这时候就需要 <em>Mask</em>。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/1162239951.png" alt></p>
+<p>上图中的 1 表示有效字，0 代表无效字。</p>
+<ul>
+<li><p><strong>RNN 中的 Mask</strong></p>
+<p>对于 <em>RNN</em> 等模型，本身是可以直接处理不定长数据的，因此它不需要提前告知序列长度。但是在实践中，为了 批量训练，一般会把不定长的序列 <em>padding</em> 到相同长度，再用 <em>mask</em> 去区分非 <em>padding</em> 部分和 <em>padding</em> 部分。做这样区分的目的是使得 <em>RNN</em> 只作用到它实际长度的句子，而不会处理无用的 <em>padding</em> 部分，这样 <em>RNN</em> 的输出和隐状态都会是对应句子实际的最后一位。另外，对于 <em>token</em> 级别的任务，也可以通过 <em>mask</em> 去忽略 <em>padding</em> 部分对应的 <em>loss</em>。 </p>
+</li>
+<li><p><strong>Attention 中的 Mask</strong></p>
+<p>在 <em>Transformer</em> 中，有两种不同的 <em>Mask</em>。其中作用在序列上的 <em>Mask</em> 同样是为了忽略 <em>padding</em> 部分的影响。</p>
+</li>
+</ul>
+<h2 id="6-2-防止标签泄露"><a href="#6-2-防止标签泄露" class="headerlink" title="6.2 防止标签泄露"></a>6.2 防止标签泄露</h2><p>在一些任务中，模型输入的序列中可能包含需要预测的一些信息，为了防止模型“提前看答案”，我们需要将输入序列中的一些信息 <em>mask</em> 掉。</p>
+<ul>
+<li><p><strong>Transformer 中的 mask</strong></p>
+<p><em>Transformer</em> 中 <em>masked multi-head attention</em> 中的 <em>mask</em> 目的就是掩盖输入序列中的一些信息。在进行机器翻译的时候，模型 <em>decoder</em> 的输入是目标序列（已经预测的部分），比如 $t$ 时刻，模型是不可能知道 $t+1$ 时刻的输入的，因此，在训练的时候我们要模拟这一过程。至于怎么样进行 <em>mask</em> 这个在 <em>Transformer</em> 的介绍中已经详细介绍过了，不再赘述。</p>
+</li>
+<li><p><strong>BERT 中的 Mask</strong></p>
+<p>BERT 实际上是 <em>Transformer</em> 的 <em>Encoder</em>，为了在语言模型的训练中，使用上下文信息又不泄露标签信息，采用了 <em>Masked LM</em>，简单来说就是随机的选择序列的部分 <em>token</em> 用 <code>[Mask]</code> 标记代替。至于这么做为什么有效，实际上 <a href="https://arxiv.org/abs/1703.02573" target="_blank" rel="noopener">Data Noising as Smoothing in Neural Network Language Models</a> 就首次提出了此方法，而且给出了理论解释。这种替换其实本质上属于语言建模里面基于 <em>interpolation</em> 的平滑方式。</p>
+</li>
+<li><p><strong>XLNet 中的 Mask</strong></p>
+<p><em>XLNet</em> 通过 <strong>Permutation Language Modeling</strong> 实现了不在输入中加 <code>[Mask]</code>，同样可以利用上下文信息。</p>
+<p>为了更直观的解释，我们举个例子：</p>
+<blockquote>
+<p>假设输入的序列是<code>[1,2,3,4]</code>, 排列共有 4x3x2=24 种。</p>
+<p>选其中的四种分别为<code>[3,2,4,1]</code>,<code>[2,4,3,1]</code>,<code>[1,4,2,3]</code>,<code>[4,3,1,2]</code>。</p>
+<p>在预测位置3的单词时，</p>
+<p>第一种排列看不到任何单词，第二种排列能看到<code>[2,4]</code></p>
+<p>第三种排列能看到<code>[1,2,4]</code>,第四种排列能看到<code>[4]</code>,</p>
+<p>所以预测位置 3 的单词时，不仅能看到上文<code>[1,2]</code>,也能看到下文的<code>[4]</code>。</p>
+</blockquote>
+</li>
+</ul>
+<p>关于 <em>Mask</em> 的讨论也就到此为止了。</p>
+<p>同时关于 <em>Transformer</em> 中的一些细节，以及引申出来的一些讨论，我们也就介绍到这。</p>
+<h1 id="7-Appendix"><a href="#7-Appendix" class="headerlink" title="7. Appendix"></a>7. Appendix</h1><h2 id="Appendix-A：-BPE-初始版本"><a href="#Appendix-A：-BPE-初始版本" class="headerlink" title="Appendix A： BPE 初始版本"></a>Appendix A： BPE 初始版本</h2><p>假设有一段序列 $aaabdaaabac$，我们想对其进行编码。通过观察我们会发现 $aa$ 的出现概率最高（只考虑字符对），那么我们用一个序列中没有出现过的字符 $Z$ 来代替 $aa$ ：</p>
+<script type="math/tex; mode=display">
+Z = aa \\\\
+aaabdaaabac \rightarrow ZabdZabac</script><p>得到新序列之后我们会发现 $ab$ 字符对出现的概率最高，同样的我们使用一个新序列中没有出现过的字符 $Y$ 来代替 $ab$ ：</p>
+<script type="math/tex; mode=display">
+Y = ab \\\\
+Z = aa \\\\
+ZabdZabac \rightarrow ZYdZYac</script><p>继续重复上面的步骤，我们得到：</p>
+<script type="math/tex; mode=display">
+X=ZY \\\\
+Y=ab \\\\
+Z=aa \\\\
+ZYdZYac \rightarrow XdXac</script><p>最后，序列中的所有字符对出现的频率都是 1，<em>BPE</em> 编码结束。解码的时候按照相反的顺序更新替换即可。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://arxiv.org/abs/1508.07909" target="_blank" rel="noopener">Neural machine translation of rare words with subword units.</a> <em>Rico Sennrich, Barry Haddow, Alexandra Birch. 2015. arXiv: 1508.07909</em></li>
+<li><a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/37842.pdf" target="_blank" rel="noopener">Japanese and Korean Voice Search.</a> <em>Schuster, Mike, and Kaisuke Nakajima. 2012.  IEEE</em></li>
+<li><a href="https://arxiv.org/abs/1910.13267" target="_blank" rel="noopener">BPE-Dropout: Simple and Effective Subword Regularization.</a> <em>Ivan Provilkov, Dmitrii Emelianenko, Elena Voita. 2019. arXiv:1910.13267</em></li>
+<li><a href="http://arxiv.org/abs/1804.10959" target="_blank" rel="noopener">Subword regularization: Improving neural network translation models with multiple subword candidates.</a> <em>Taku Kudo. 2018. arXiv: 1804.10959</em></li>
+<li><a href="https://zhuanlan.zhihu.com/p/86965595" target="_blank" rel="noopener">深入理解NLP Subword算法：BPE、WordPiece、ULM</a> <em>Luke</em>. 知乎</li>
+<li><a href="https://zhuanlan.zhihu.com/p/90151246" target="_blank" rel="noopener">子词技巧：The Tricks of Subword</a> <em>Andy Yang.</em> 知乎 </li>
+<li><a href="https://mp.weixin.qq.com/s/FTmkkFJzCw2hQtDDEDPqnQ" target="_blank" rel="noopener">一分钟搞懂的算法之BPE算法</a></li>
+<li><a href="https://kazemnejad.com/blog/transformer_architecture_positional_encoding/#what-is-positional-encoding-and-why-do-we-need-it-in-the-first-place" target="_blank" rel="noopener">Transformer Architecture: The Positional Encoding</a></li>
+<li><a href="https://timodenk.com/blog/linear-relationships-in-the-transformers-positional-encoding/" target="_blank" rel="noopener">Linear Relationships in the Transformer’s Positional Encoding</a> <em>Timo Denk’s Blog</em> </li>
+<li><a href="https://openreview.net/pdf?id=Hke-WTVtwr" target="_blank" rel="noopener">Encoding Word Oder In Complex Embeddings</a> <em>Benyou Wang, Donghao Zhao, Christina Lioma, Qiuchi Li, Peng Zhang, Jakob Grue Simonsen. 2020. ICLR</em></li>
+<li><a href="https://mp.weixin.qq.com/s/DQvhw6gTJt2V_8CPD0jHEQ" target="_blank" rel="noopener">如何优雅地编码文本中的位置信息？三种positioanl encoding方法简述</a> 小鹿鹿 <em>lulu</em>, 微信公众号</li>
+<li><a href="https://www.aclweb.org/anthology/P18-1167.pdf" target="_blank" rel="noopener">How Much Attention Do You Need? A Granular Analysis of Neural Machine Translation Architectures</a> <em>Tobias Domhan. 2018. ACL</em></li>
+<li><a href="https://arxiv.org/abs/1905.09418" target="_blank" rel="noopener">Analyzing Multi-Head Self-Attention: Specialized Heads Do the Heavy Lifting, the Rest Can Be Pruned</a> <em>Elena Voita, David Talbot, Fedor Moiseev, Rico Sennrich, Ivan Titov. 2019. arXiv: 1905.09418</em></li>
+<li><a href="https://arxiv.org/abs/1905.10650" target="_blank" rel="noopener">Are Sixteen Heads Really Better than One?</a> <em>Paul Michel, Omer Levy, Graham Neubig. 2019. arXiv: 1905.10650</em> </li>
+<li><a href="https://openreview.net/forum%3Fid%3DB1x8anVFPr" target="_blank" rel="noopener">On Layer Normalization in the Transformer Architecture</a> <em>Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Huishuai Zhang, Yanyan Lan, Liwei Wang, Tie-Yan Liu. 2020. ICLR (rejected)</em></li>
+<li><a href="https://mp.weixin.qq.com/s/0hUNG6tC-hlfyTJtuzwU5w" target="_blank" rel="noopener">NLP中的Mask全解</a>，海晨威 <em>PaperWeekly</em> </li>
+<li><a href="https://zhuanlan.zhihu.com/p/82391768?from_voters_page=true" target="_blank" rel="noopener">关于Transformer的若干问题整理记录</a> <em>Adherer</em> 知乎</li>
+<li><a href="https://zhuanlan.zhihu.com/p/84614490" target="_blank" rel="noopener">香侬读 | Transformer中warm-up和LayerNorm的重要性探究</a> 香侬科技， 知乎</li>
+<li><a href="https://www.zhihu.com/question/339723385" target="_blank" rel="noopener">transformer中的attention为什么scaled?</a> </li>
+<li><a href="https://arxiv.org/abs/1703.03906" target="_blank" rel="noopener">Massive Exploration of Neural Machine Translation Architectures</a>, <em>Denny Britz, Anna Goldie, Minh-Thang Luong, Quoc Le. 2017. arXiv: 1703.03906</em> </li>
+<li><a href="https://arxiv.org/pdf/1911.04474.pdf" target="_blank" rel="noopener">TENER: Adapting Transformer Encoder for Named Entity Recognition</a> <em>Hang Yan, Bocao Deng, Xiaonan Li, Xipeng Qiu. 2019. arXiv:1911.04474</em> </li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/attention/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Attention</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/transformer/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Transformer</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2019/09/01/analyse-transformer/&title=关于Transformer的分析 | Rogerspy's Home&summary=Transformer 的模型框架我们已经介绍完了，接下来这篇文章我们讨论一下更多关于 Transformer 的模型细节。比如多头注意力的头越多越好吗？自注意力为什么要进行归一化？训练的时候 Warm-up 有什么用？"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2019/09/01/analyse-transformer/&title=关于Transformer的分析 | Rogerspy's Home&summary=Transformer 的模型框架我们已经介绍完了，接下来这篇文章我们讨论一下更多关于 Transformer 的模型细节。比如多头注意力的头越多越好吗？自注意力为什么要进行归一化？训练的时候 Warm-up 有什么用？"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvklEQVR42u3aQW4bQQwEQP//084lhwDJSt3kTKIAtSfDXklTMrAkmvz6iq/vX66n3z/d8/v9T699/Ymv33l14eHh4S2O/vSRyV9fH+Lp3ZK/Jl/N45eLh4eHd42XHOjp/uToScHYFwk8PDy8z+S13WyLyYsHHh4e3v/FSwpA3qDP2m48PDy8f8vL44Y2nE2OOCsSh7MWPDw8vJjXNsef8POV+R4eHh7eeqreFol2eJbcPzvnz9fi4eHhXeDlD9z8KMmq1qmVr+hOPDw8vAu8PFxoh1j5Y322gpCsZ+Hh4eHd4LXLVTPMJsZdvRYPDw/vKK89brsytSkzm5ACDw8P7x4vYczGYDk7Lwabe/Dw8PDO8varTkkfOxuhbQZjeHh4eDd4eRmYjcGSRjxfTWj/GXh4eHj3eLPC0D7020/MV76GMS4eHh7edm4VFYZ8FSBvxGdxQ/sOeHh4eKd4OWAT+87KRruY9Yd78PDw8C7wipa0jBjaUGO2bhWNwfDw8PCO8tqRUvtQbgvMfuj1piTg4eHhHeIVicUotsgb6K/4Sr5QPDw8vBu85GPa9jdfSmijkFmhwsPDw7vBm13taD9/oM+WAw6Q8PDw8A7FuPlYKykqs3FXiy8GYHh4eHgLXhvOJkFA24LPatebSAUPDw/vAi95uOeh7SxiyNvx4bANDw8P7ygvb203QW3bEB9LVvDw8PCu8dqhVx49zNaqZqd9E0bg4eHh/RXeLCzIkWfncm+yFjw8PLw177u88tZ21hDnYUTU4uPh4eFd4LUP3BY8Wy/YDOFW9QQPDw8v5p1963wMNjtDHo7g4eHh3ea1j/jZsdqC0QYQj6sDeHh4eB/P2wy39uO364UBDw8PbxErzB7xs7IxC5rx8PDw7vFmQUAeTCQtch4T5yEFHh4e3g3ebFfrduB7KqrAw8PDO8r7AQGzK/ADA9wvAAAAAElFTkSuQmCC'>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2019/09/01/analyse-transformer/&title=关于Transformer的分析 | Rogerspy's Home&summary=Transformer 的模型框架我们已经介绍完了，接下来这篇文章我们讨论一下更多关于 Transformer 的模型细节。比如多头注意力的头越多越好吗？自注意力为什么要进行归一化？训练的时候 Warm-up 有什么用？"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2019/09/11/Transformer代码实现-pytorch/" rel="prev" title="Transformer代码实现-Pytorch版">
+                                  
+                                      Transformer代码实现-Pytorch版
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/pytorch/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>pytorch</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2019/08/27/NLP中的注意力机制简介（二）/" rel="prev" title="NLP中的注意力机制简介（二）">
+                                    
+                                        NLP中的注意力机制简介（二）
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/attention/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Attention</a> <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '关于Transformer的分析',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-模型总览"><span class="toc-text">1. 模型总览</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Input-Embedding"><span class="toc-text">2. Input Embedding</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Byte-Pair-Encoding"><span class="toc-text">2.1 Byte Pair Encoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-WordPiece"><span class="toc-text">2.2 WordPiece</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Unigram-Language-Model"><span class="toc-text">2.3 Unigram Language Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-BPE-Dropout"><span class="toc-text">2.4 BPE-Dropout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-小结"><span class="toc-text">2.5 小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Positional-Encoding"><span class="toc-text">3. Positional Encoding</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-What-why-and-when？"><span class="toc-text">3.1 What, why and when？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-How"><span class="toc-text">3.2 How?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-可学习的位置编码"><span class="toc-text">3.2.1 可学习的位置编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-正弦位置编码"><span class="toc-text">3.2.2 正弦位置编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-相对位置编码"><span class="toc-text">3.2.3 相对位置编码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Multi-head-Attention"><span class="toc-text">4. Multi-head Attention</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-为什么需要-K、Q、V，只用K、Q-K、V-Q、V行不行？"><span class="toc-text">4.1 为什么需要 K、Q、V，只用K、Q/K、V/Q、V行不行？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-自注意力为什么scaled"><span class="toc-text">4.2 自注意力为什么scaled?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-为什么比较大的输入会使得-softmax-的梯度变得很小？"><span class="toc-text">4.2.1 为什么比较大的输入会使得 softmax 的梯度变得很小？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-维度与点积大小的关系是怎么样的，为什么使用维度的根号来放缩？"><span class="toc-text">4.2.2  维度与点积大小的关系是怎么样的，为什么使用维度的根号来放缩？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-为什么在其他-softmax-的应用场景，不需要做-scaled"><span class="toc-text">4.2.3 为什么在其他 softmax 的应用场景，不需要做 scaled?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-Transformer-为什么要用-Multi-head？"><span class="toc-text">4.3 Transformer 为什么要用 Multi-head？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Add-amp-Norm"><span class="toc-text">5. Add &amp; Norm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Masked-Multi-head-Attention"><span class="toc-text">6. Masked Multi-head Attention</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-处理非定长序列"><span class="toc-text">6.1 处理非定长序列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-防止标签泄露"><span class="toc-text">6.2 防止标签泄露</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-Appendix"><span class="toc-text">7. Appendix</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Appendix-A：-BPE-初始版本"><span class="toc-text">Appendix A： BPE 初始版本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(14)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19px; color: #777">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.25px; color: #6f6f6f">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 17.75px; color: #808080">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 16.5px; color: #888">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.25px; color: #919191">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

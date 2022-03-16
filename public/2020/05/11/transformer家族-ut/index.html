@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Transformer家族之Universal Transformer | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2020/05/11/transformer家族-ut/">
+        Transformer家族之Universal Transformer
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2020-05-11</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/nlp/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>NLP</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">2.6k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">10分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/5396ee05ly1g5pqn3ch6zj20u092znph.jpg" alt></p>
+<p>自从 2017 年谷歌提出 <em>Transformer</em> 模型以后，其在多个任务上的表现都超过了前辈 <em>RNN</em>, 但是在某些任务上表现却差强人意，比如复制字符串（输入 <em>abc</em>， 输出 <em>abcabc</em>）。随后谷歌对原始的 <em>Transformer</em> 进行了改进，提出了 <em>Universal Transformer</em> 模型使其具有更强的泛用性，同时该模型也是<a href="https://www.zhihu.com/question/20115374/answer/288346717" target="_blank" rel="noopener">图灵完备</a>的。</p>
+<a id="more"></a>
+<h1 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h1><p><em>Transformer</em> 解决了 <em>RNN</em> 的最大缺陷：无法并行处理输入序列以及最大长度依赖问题（梯度消失）。但是同时也放弃了 <em>RNN</em> 的两大优势：对迭代学习的归纳偏置（<em>inductive bias towards learning iterative</em>）和递归转换（<em>recursive transformations</em>），而这些优势在某些任务中起到了至关重要的作用。所以 <em>Transformer</em> 会在某些任务中被 <em>RNN</em> 轻易打败。</p>
+<p>谷歌大脑的研究人员们针对这种情况，对 <em>Transformer</em> 进行了扩展，提出 <em>Universal Transfomer</em> 模型。该模型不仅保留了 <em>Transformer</em> 的并行能力和借助自注意力机制从距离较远的词中提取含义这两大优势，又引入时间并行的循环变换结构，相当于将 <em>RNN</em> 的两大优势也纳入其中。更重要的一点是：相比于 <em>RNN</em> 那种一个符号接着一个符号从左至右依次处理的序列处理方式，<em>Universal Transformer</em> 是一次同时处理所有的符号，而且 <em>Universal Transformer</em> 会<strong>根据自我注意力机制对每个符号的解释做数次并行的循环处理</strong>。</p>
+<p>时间并行循环的大致计算过程如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/image1.gif" alt></p>
+<p>在每个步骤中，每一个符号（比如句子中的一个词）的信息都可以借助自注意力机制与所有其他的符号进行沟通，就和原本的 <em>Transformer</em> 一样。不过，要对每个符号应用几次这种变换（也就是循环步骤的数目）可以预先手工设置为某个值（比如设置为定制，或者设置与输入长度相关），也可以由 <em>Universal Transformer</em> 自己在执行中动态地选择。为了能够达到后一种效果，研究人员为每个位置加入了一个自适应计算机制，它可以自定义在每个词上计算的次数。</p>
+<p>举个例子：<em>I arrived at the bank after crossing the river</em></p>
+<p>句子中 “<em>I</em>“, “<em>river</em>“ 等词意义比较明显，不存在什么歧义，所以模型可能只在这些词上计算 1 次（循环一次），但 “<em>bank</em>“ 就不一样了，这个词是一个歧c义词，需要通过上下文才能确定词义，因此，模型可能会多次计算该词的词义（循环多次）。这样的设定理论上讲，可以让 <em>UT</em> 具有更强的能力。</p>
+<h1 id="2-模型结构"><a href="#2-模型结构" class="headerlink" title="2. 模型结构"></a>2. 模型结构</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200511165708.png" alt></p>
+<p>对比 <em>Universal Transformer</em> 结构图和 <em>Transformer</em> 结构图可以发现，两者主要有三个区别：</p>
+<ul>
+<li>循环结构</li>
+<li>位置编码多了一个 <em>Timestep embedding</em>;</li>
+<li><em>FFN</em> 变成了 <em>Transition Function</em></li>
+</ul>
+<p>在循环结构上，如上面讨论的，对于每个词的循环次数可以有两种方法确定：① 作为超参数人工设定，如同 <em>Transformer</em> 那样设成 6；② 模型自动设定，要实现这个功能，模型需要加入一个新的机制 —— 自适应计算时间 （<em>Adaptive Computation Time</em>，即 <em>ACT</em>）</p>
+<p>下面我们针对这四个变化详细介绍一下。</p>
+<h2 id="2-1-Recurrent-机制"><a href="#2-1-Recurrent-机制" class="headerlink" title="2.1 Recurrent 机制"></a>2.1 Recurrent 机制</h2><h3 id="2-1-1-Encoder"><a href="#2-1-1-Encoder" class="headerlink" title="2.1.1 Encoder"></a>2.1.1 Encoder</h3><p>给定输入序列长度 $m$，词向量维度 $d$，初始序列嵌入矩阵 $H^0 \in \mathbb{R}^{m \times d}$。$H^t$ 表示经过 $t$ 次循环以后的序列嵌入矩阵。</p>
+<script type="math/tex; mode=display">
+\mathrm{Attention}(Q, K, V) = \mathrm{softmax}(\frac{QK^T}{\sqrt{d}})V\\\\
+\mathrm{MultiHeadAttention}(H^t) = \mathrm{Concat}(head_1, ..., head_k)W^O\\\\
+head_i=\mathrm{Attention}(H^tW_i^Q, H^tW_i^K, H^tW_i^V)</script><p>其中 $W^Q \in \mathbb{R}^{d \times d/k}$，$W^K \in \mathbb{R}^{d \times d/k}$， $W^V \in \mathbb{R}^{d \times d/k}$。</p>
+<p>在第 $t$ 步时， $H^t \in \mathbb{R}^{m \times d}$ 的计算如下：</p>
+<script type="math/tex; mode=display">
+H^t = \mathrm{LayerNorm}(A^t + \mathrm{Transition}(A^t)) \\\\
+A^t = \mathrm{LayerNorm}((H^{t-1}+P^t) + \mathrm{MultiHeadAttention}(H^{t-1}+P^t))</script><p>其中 $\mathrm{Transition}(\cdot)$ 为 <em>Transition Function</em>；$P^t$ 为 <em>Timestep embedding</em> （或者 <em>coordinate embedding</em>），在后面详细介绍。</p>
+<h3 id="2-1-2-Decoder"><a href="#2-1-2-Decoder" class="headerlink" title="2.1.2 Decoder"></a>2.1.2 Decoder</h3><p>解码器与编码器的循环结构基本相同，只是多了一个接受编码器最终状态的另一个多头注意力，其输入的 $Q$ 来自解码器， $K$ 和 $V$ 来自编码器。</p>
+<ul>
+<li><p><strong>训练</strong></p>
+<p>训练的时候，对于一组输入输出序列样本解码器接受右移动一位的输出序列样本作为输入，相应解码器的自注意力机制也被修改成只能访问它左边的预测结果。每轮生成一个字符，通过 <em>softmax</em> 获得每个字符的输出概率：</p>
+<script type="math/tex; mode=display">
+p(y_{pos}|y_{[1:pos-1]}, H^T)=\mathrm{softmax}(OH^T)</script><p>其中 $O \in \mathbb{R}^{d \times V}$。这部分和 <em>Transformer</em> 是一致的，不再赘述。</p>
+</li>
+<li><p><strong>推理</strong></p>
+<p>在生成时编码器只运行一次而解码器反复运行。解码器接受的输入为已经生成的结果，每<strong>次</strong>(一次可以有多轮)的输出为下一个位置的符号概率分布。我们选择出现概率最高符号作为修订后的符号。</p>
+</li>
+</ul>
+<h3 id="2-1-3-parallel-in-time-recurrent"><a href="#2-1-3-parallel-in-time-recurrent" class="headerlink" title="2.1.3 parallel-in-time recurrent"></a>2.1.3 parallel-in-time recurrent</h3><p>假设给定一个序列： $(a, b, c, d)$。<em>UT</em> 先将该序列经过 <em>embedding</em> 表示成 $(h^0_a, h^0_b, h^0_c, h^0_d)$ 初始化序列矩阵，然后经过 <em>MultiHeadAttention</em> 层和 <em>Transition</em> 层表示成 $(h^1_a, h^1_b, h^1_c, h^1_d)$。以此类推，经过 $t$ 次循环以后序列被表示成 $(h^t_a, h^t_b, h^t_c, h^t_d)$。</p>
+<p>这个循环过程与 <em>RNN</em> 有着截然不同的计算方式。<em>RNN</em> 的循环计算过程是，先计算 $h^0_a$，然后依次计算$h^0_b, h^0_c, h^0_d$，然后进入下一个循环，直到 $t$ 步以后生成 $(h^t_a, h^t_b, h^t_c, h^t_d)$。也就是相当于对于 <em>RNN</em> 来讲，要循环计算 $t$ 次 $m$ 长度的序列，模型需要计算 $m \times t$ 次运算，而 <em>UT</em> 只需要计算 $t$ 次。</p>
+<h2 id="2-2-Coordinate-Embedding"><a href="#2-2-Coordinate-Embedding" class="headerlink" title="2.2 Coordinate Embedding"></a>2.2 Coordinate Embedding</h2><p><em>Transformer</em> 中计算位置向量只需要考虑词的位置就好，这里又考虑了时间维度。</p>
+<script type="math/tex; mode=display">
+P^t_{i, 2j} = \sin(i/10000^{2j/d}) + \sin(t/10000^{2j/d}) \\\\
+P^{t}_{i, 2j+1} = \cos(i/10000^{2j/d}) + \cos(t/10000^{2j/d})</script><p>其中 $P^t \in \mathbb{R}^{m \times d}$，维度与序列矩阵保持一致。 </p>
+<h2 id="2-3-Transition-Function"><a href="#2-3-Transition-Function" class="headerlink" title="2.3 Transition Function"></a>2.3 Transition Function</h2><p>根据任务的不同，作者使用两种不同的 <em>transition function</em>：可分离卷积或全连接神经网络。</p>
+<h2 id="2-4-Adaptive-Computation-Time-ACT"><a href="#2-4-Adaptive-Computation-Time-ACT" class="headerlink" title="2.4 Adaptive Computation Time (ACT)"></a>2.4 Adaptive Computation Time (ACT)</h2><p>所谓自适应计算时间，是 <a href="https://arxiv.org/pdf/1603.08983v4.pdf" target="_blank" rel="noopener">Graves 等人 2016 年</a> 提出的一种算法，该算法能自动学习 <em>RNN</em> 需要计算多少轮。用在 <em>UT</em> 中，使得模型能够对序列中不同的词有不同的循环次数，比如序列 $(a,b,c,d)$ 中 $a$ 只循环计算 1 次， $b$ 可能计算 2次，$c$ 会计算 5 次， $d$  计算 8 次。而每个词的循环计算次数由 <em>ACT</em> 决定。当某个位置“停止”后，它的隐状态直接拷贝到下一步，直到所有位置都停止循环。</p>
+<p>简单来说 <em>ACT</em> 会计算每个位置上的词需要停止的概率 （$p \sim [0, 1]$），当 $p$ 大于某个阈值的时候该位置上的词及计算就会停止。为了避免死循环，还可以设置一个最大循环次数，当循环次数达到该值的时候，循环也会被强行停止。</p>
+<h1 id="3-Experiments"><a href="#3-Experiments" class="headerlink" title="3. Experiments"></a>3. Experiments</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200512151012.png" alt></p>
+<p>作者利用 bAbI 数据集和 WMT14 En-De 数据集在问答，语言模型，机器翻译等任务上做了充分的实验，实验结果表明 <em>UT</em> 的表现能达到更好的效果。上图我们只展示机器翻译的结果，更详细的实验可参看原文。</p>
+<h1 id="4-Personal-Thought"><a href="#4-Personal-Thought" class="headerlink" title="4. Personal Thought"></a>4. Personal Thought</h1><p>关于 <em>Universal Transformer</em> 的模型部分我们就介绍完了，总的来说 <em>UT</em> 具备了一些 <em>Transformer</em> 不具备的能力，解决了一些原有的缺陷。在问答、语言模型、翻译等任务上的表现都有所提升。</p>
+<ul>
+<li><em>Weight sharing</em>：归纳偏置是关于目标函数的假设，<em>CNN</em> 和 <em>RNN</em> 分别假设 <em>spatial translation invariance</em> 和 <em>time translation invariance</em>，体现为 <em>CNN</em> 卷积核在空间上的权重共享和 <em>RNN</em> 单元在时间上的权重共享，所以 <em>Universal Transformer</em> 也增加了这种假设，使 <em>recurrent</em> 机制中的权重共享，在增加了模型表达力的同时更加接近 <em>RNN</em> 的 <em>inductive bias</em>。</li>
+<li><em>Conditional Computation Time</em>：通过加入 <em>ACT</em> 控制模型的计算次数，比固定 <em>depth</em> 的 <em>Universal Transformer</em> 取得了更好的结果。</li>
+</ul>
+<p>但是还是有一些问题文章中并没有说的很清楚，可能为接下来进一步的研究和优化留出了空间：</p>
+<ul>
+<li>空间位置和时间位置向量的直接相加略显粗糙;</li>
+<li>为什么需要不同的 <em>Transition Function</em>，它们分别起到什么作用？</li>
+<li>图灵完备对模型有什么用？</li>
+</ul>
+<h1 id="5-UT-with-Dynamic-Halting"><a href="#5-UT-with-Dynamic-Halting" class="headerlink" title="5. UT with Dynamic Halting"></a>5. UT with Dynamic Halting</h1><p>作者在附录中给出了 <em>Tensorflow</em> 实现的 <em>ACT</em> 代码，这里抄录一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># while-loop stops when this predicate is False</span></span><br><span class="line"><span class="comment"># i.e. all ((probability &lt; threshold) &amp; (counter &lt; max_steps)) are False</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">should_continue</span><span class="params">(u0, u1, halting_probability, y2, n_updates, u3)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.reduce_any(</span><br><span class="line">        tf.logical_and(</span><br><span class="line">            tf.less(halting_probability, threshold),</span><br><span class="line">            tf.less(n_updates, max_steps)</span><br><span class="line">        )</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="comment"># do while loop iterations until predicate above is False</span></span><br><span class="line">(_, _, _, remainder, n_updates, new_state) = tf.while_loop(</span><br><span class="line">    should_continue, ut_with_dynamic_halting, </span><br><span class="line">    (state, step, halting_probability, remainders, n_updates, previous_state)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># the computations in each step</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ut_with_dynamic_halting</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    state,</span></span></span><br><span class="line"><span class="function"><span class="params">    step,</span></span></span><br><span class="line"><span class="function"><span class="params">    halting_probability,</span></span></span><br><span class="line"><span class="function"><span class="params">    remainders,</span></span></span><br><span class="line"><span class="function"><span class="params">    n_updates,</span></span></span><br><span class="line"><span class="function"><span class="params">    previous_state</span></span></span><br><span class="line"><span class="function"><span class="params">)</span>:</span></span><br><span class="line">    <span class="comment"># Claculate the probablities based on the state</span></span><br><span class="line">    p = common_layers.dense(state, <span class="number">1</span>, activation=tf.nn.sigmoid, use_bias=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># Mask for inputs which have not halted yet</span></span><br><span class="line">    still = tf.cast(tf.less(halting_probability, <span class="number">1.0</span>), tf.float32)</span><br><span class="line">    <span class="comment"># Mask for inputs which halted at this step</span></span><br><span class="line">    new_halted = tf.cast(</span><br><span class="line">        tf.greater(</span><br><span class="line">            halting_probability + p * still_running, threshlod</span><br><span class="line">        ), tf.float32</span><br><span class="line">    ) * still_running</span><br><span class="line">    <span class="comment"># Mask of inputs which haven't halted, and didn't halt this step</span></span><br><span class="line">    still_running = tf.cast(</span><br><span class="line">        tf.less_equal(</span><br><span class="line">            halting_probablity + p * still_running,</span><br><span class="line">            threshold</span><br><span class="line">        ), tf.float32</span><br><span class="line">    ) * still_running</span><br><span class="line">    <span class="comment"># Add the halting prinbability for this step to the halting</span></span><br><span class="line">    <span class="comment"># pribabilities for those inputs which have not halted yet</span></span><br><span class="line">    halting_probability += p * still_running</span><br><span class="line">    <span class="comment"># Compute remainders for the inputs which halteed at this step</span></span><br><span class="line">    remaindes += new_halted * (<span class="number">1</span> - halting_probability)</span><br><span class="line">    <span class="comment"># Add the remainders to those inputs which halted at this step</span></span><br><span class="line">    halting_probability += new_halted * remainders</span><br><span class="line">    <span class="comment"># Increment n_updates for all inputs which are still running</span></span><br><span class="line">    n_updates += still_runnign + new_halted</span><br><span class="line">    <span class="comment"># Compute the weight to be applied to the new state and output</span></span><br><span class="line">    <span class="comment">#    0 when the input has already halted</span></span><br><span class="line">    <span class="comment">#    p when the input hasn't halted yet</span></span><br><span class="line">    <span class="comment">#    the remainders when it halted this step</span></span><br><span class="line">    update_weights = tf.expand_dims(</span><br><span class="line">        p * still_running + new_halted * remainders,</span><br><span class="line">        <span class="number">-1</span></span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># Apply transformation to the state</span></span><br><span class="line">    transformed_state = transition_function(self_attention(state))</span><br><span class="line">    <span class="comment"># Interpolate transformed and prevous states for non-halted inputs</span></span><br><span class="line">    new_state = (</span><br><span class="line">        transformed_state * update_weights\</span><br><span class="line">        + previous_state * (<span class="number">1</span> - update_weights)</span><br><span class="line">    )</span><br><span class="line">    step += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> (transformed_state, </span><br><span class="line">            step, </span><br><span class="line">            halting_probability, </span><br><span class="line">            remainders, </span><br><span class="line">            n_updates, </span><br><span class="line">            new_state)</span><br></pre></td></tr></table></figure>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://arxiv.org/pdf/1807.03819.pdf" target="_blank" rel="noopener">Universal Transformers</a>, <em>Mostafa Dehghani, Stephan Gouws, Oriol Vinyals, Jakob Uszkoreit Łukasz Kaiser, 2018,  ICLR 2019</em></li>
+<li><a href="http://ai.googleblog.com/2018/08/moving-beyond-translation-with.html" target="_blank" rel="noopener">Moving Beyond Translation with the Universal Transformer</a>, <em>Google AI Blog</em></li>
+<li><a href="https://zhuanlan.zhihu.com/p/51535565" target="_blank" rel="noopener">(简介)Universal Transformers</a>, wywzxxz, 知乎</li>
+<li><a href="https://zhuanlan.zhihu.com/p/44655133" target="_blank" rel="noopener">【NLP】Universal Transformers详解</a>，李如，知乎</li>
+<li><a href="https://arxiv.org/pdf/1603.08983v4.pdf" target="_blank" rel="noopener">Adaptive Computation Time for Recurrent Neural Networks</a>, <em>Alex Graves, 2016, arXiv: 1603.08983</em></li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/transformer/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Transformer</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/parallel-recurrent/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>parallel-recurrent</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2020/05/11/transformer家族-ut/&title=Transformer家族之Universal Transformer | Rogerspy's Home&summary=
+自从 2017 年谷歌提出 Transformer 模型以后，其在多个任务上的表现都超过了前辈 RNN, 但是在某些任务上表现却差强人意，比如复制字符串（输入 abc， 输出 abcabc）。随后谷歌对原始的 Transformer 进行了改进，提出了 Universal Transformer 模型使其具有更强的泛用性，同时该模型也是图灵完备的。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2020/05/11/transformer家族-ut/&title=Transformer家族之Universal Transformer | Rogerspy's Home&summary=
+自从 2017 年谷歌提出 Transformer 模型以后，其在多个任务上的表现都超过了前辈 RNN, 但是在某些任务上表现却差强人意，比如复制字符串（输入 abc， 输出 abcabc）。随后谷歌对原始的 Transformer 进行了改进，提出了 Universal Transformer 模型使其具有更强的泛用性，同时该模型也是图灵完备的。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACxElEQVR42u3aQW7jQAwEQP//01lgT1kEsrtJjZ0FSicjtqWpCRAyzXk84uvr7/X99ffr6jM/Pz+759Udbrvw8PDwRku/un4u5WrRCSC/W75lL7YADw8P7xgvKQbPN2W2Ec8Xlz/l8ud4eHh4H+UlD3h+51lbjIeHh/f/8vKgIW+Xk8KQFCo8PDy89/OSMCJ5dxbR5k85mLXg4eHhxbzZAOyzr4/P9/Dw8PBGU/XkqhvcsplerQ0PDw/vAC8PFGYFo92O/N2iYODh4eEd5rUBQR5GJFs5g70Ys+Hh4eHdymuj2M1oaoZ5/vTo94aHh4d3gJcv/flAqz1ulReh4Vbi4eHhHeBtDl3l30qOEbStc95e4+Hh4d3La4dY+bCqLST5xhXFDA8PD+8Ab9bszoKDdibVNuhFS42Hh4e35iWFIR+P5d/dFIa8mOHh4eGd4M2GXknw2g6u9i1+EUng4eHhrXntOCovGLMCkx9reFGi8PDw8A7w2pF8EgScaJ1nbDw8PLzTvFl0m8cZs7FZ8q0XYQceHh7eTbw8Zs1DiiSubTPm/G7/PB0PDw/vLbz9Qai2Nb/3qAEeHh7eO3mbKKENWJPFJcWmaKnx8PDwDvDy0VQbPezj2mGzjoeHh3eAl4++9s1xu7ik8ERhCh4eHt4BXtIK5+3y7HDAfuRW/A7x8PDwDvCSG+VNcPvJWcDxyLtsPDw8vDUvjwBmAUQby+6Hanh4eHif4s0WdOLdTUnDw8PDu5f3VV77GHcTxealIprv4eHh4Y14+TUbZe0HXbMNGi4FDw8Pr5wNzSKA2YGtzZ/7JNooGms8PDy8BS//J789mNW2423Jqc9E4OHh4f0CXhIuzIpNS8LDw8P7bbx8bJ+01+0BgmQleHh4eO/kzW6aLLRof8uJf9S44+Hh4R3gtQOwNmJog9f8GNZtYzk8PDy89Ft/AGAsSt8mpNQ9AAAAAElFTkSuQmCC'>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2020/05/11/transformer家族-ut/&title=Transformer家族之Universal Transformer | Rogerspy's Home&summary=
+自从 2017 年谷歌提出 Transformer 模型以后，其在多个任务上的表现都超过了前辈 RNN, 但是在某些任务上表现却差强人意，比如复制字符串（输入 abc， 输出 abcabc）。随后谷歌对原始的 Transformer 进行了改进，提出了 Universal Transformer 模型使其具有更强的泛用性，同时该模型也是图灵完备的。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2020/05/13/transformer家族-guasssian/" rel="prev" title="Transformer家族之Guassian Transformer">
+                                  
+                                      Transformer家族之Guassian Transformer
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/gaussian/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Gaussian</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2020/04/29/transformer家族-insertion-deletion/" rel="prev" title="Transformer家族之Insertion-Deletion Transformer">
+                                    
+                                        Transformer家族之Insertion-Deletion Transformer
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/nmt/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>NMT</a> <a class="tag" href="/tags/insertion-deletion/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>insertion-deletion</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: 'Transformer家族之Universal Transformer',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1. Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-模型结构"><span class="toc-text">2. 模型结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Recurrent-机制"><span class="toc-text">2.1 Recurrent 机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-Encoder"><span class="toc-text">2.1.1 Encoder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-Decoder"><span class="toc-text">2.1.2 Decoder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-parallel-in-time-recurrent"><span class="toc-text">2.1.3 parallel-in-time recurrent</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Coordinate-Embedding"><span class="toc-text">2.2 Coordinate Embedding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Transition-Function"><span class="toc-text">2.3 Transition Function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Adaptive-Computation-Time-ACT"><span class="toc-text">2.4 Adaptive Computation Time (ACT)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Experiments"><span class="toc-text">3. Experiments</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Personal-Thought"><span class="toc-text">4. Personal Thought</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-UT-with-Dynamic-Halting"><span class="toc-text">5. UT with Dynamic Halting</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(14)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19px; color: #777">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.25px; color: #6f6f6f">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 17.75px; color: #808080">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 16.5px; color: #888">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.25px; color: #919191">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

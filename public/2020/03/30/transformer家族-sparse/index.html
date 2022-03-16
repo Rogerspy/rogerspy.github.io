@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Transformer家族之Sparse Transformer | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <div class="cover-wrapper">
+    <cover class='cover post half'>
+      
+        
+  <h1 class='title'>Rogerspy's Home</h1>
+
+
+  <div class="m_search">
+    <form name="searchform" class="form u-search-form">
+      <input type="text" class="input u-search-input" placeholder="" />
+      <i class="icon fas fa-search fa-fw"></i>
+    </form>
+  </div>
+
+<div class='menu navgation'>
+  <ul class='h-list'>
+    
+      
+        <li>
+          <a class="nav home" href="/"
+            
+            
+            id="home">
+            <i class='fas fa-edit fa-fw'></i>&nbsp;博文
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/video/"
+            
+            
+            id="video">
+            <i class='fas fa-film fa-fw'></i>&nbsp;视频
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/material/"
+            
+              rel="nofollow"
+            
+            
+            id="material">
+            <i class='fas fa-briefcase fa-fw'></i>&nbsp;资料
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/about/"
+            
+              rel="nofollow"
+            
+            
+            id="about">
+            <i class='fas fa-info-circle fa-fw'></i>&nbsp;关于
+          </a>
+        </li>
+      
+    
+  </ul>
+</div>
+
+      
+    </cover>
+    <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="blogarchives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+  </div>
+
+
+  <div class="l_body">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2020/03/30/transformer家族-sparse/">
+        Transformer家族之Sparse Transformer
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2020-03-30</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/nlp/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>NLP</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">4k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">14分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/5396ee05ly1g5pqn3ch6zj20u092znph.jpg" alt></p>
+<p>目前来看，自注意力机制有一统NLP的趋势，其凭借能够捕捉序列中任意两个元素的关联信息，且易于并行等优势，在与传统的NLP武林盟主<em>RNN</em>的较量中，几乎是全方位碾压。但是它也并不是没有弱点，之前我们介绍过在机器翻译过程中，它的推理过程是<em>auto-regression</em>的，严重制约了它的推理效率。因此，很多研究人员对它做了一定程度上的改善。今天我们继续来对它进行其他方面的优化，也就是变形金刚家族的另一成员 —— <em>Sparse Transformer</em>。</p>
+<a id="more"></a>
+<p>在介绍 <em>Sparse Transformer</em> 之前我们要先思考一个问题：我们为什么要对它进行稀疏化改进？稀疏注意力能解决现有的什么问题？</p>
+<h1 id="1-Why-you-need-Sparsity"><a href="#1-Why-you-need-Sparsity" class="headerlink" title="1. Why you need Sparsity?"></a>1. Why you need Sparsity?</h1><h2 id="1-1-计算复杂度"><a href="#1-1-计算复杂度" class="headerlink" title="1.1 计算复杂度"></a>1.1 计算复杂度</h2><p>从理论上来讲，<em>Self Attention</em>的计算时间和显存占用量都是$O(n^2)$级别的（$n$是序列长度），这就意味着如果序列长度变成原来的2倍，显存占用量就是原来的4倍，计算时间也是原来的4倍。现在，AI 研究中的一项挑战是对长序列的精细相关性建模，比如图像、声音等。如果我们在每一层都构建一个$n \times n$的注意力矩阵的话会消耗大量的内存。例如：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200330162729.png" alt></p>
+<p>而目前用于深度学习的标准GPU显存是12-32G。因此全自注意力（<em>full self-attention</em>）严重制约了模型的编码长度。</p>
+<h2 id="1-2-注意力集中问题"><a href="#1-2-注意力集中问题" class="headerlink" title="1.2 注意力集中问题"></a>1.2 注意力集中问题</h2><p>理解自然语言需要注意最相关的信息。例如，在阅读过程中，人们倾向于把注意力集中在最相关的部分来寻找他们心中问题的答案。然而，如果不相关的片段对阅读理解产生负面影响，就会出现检索问题。这种分心会阻碍理解过程，而理解过程需要有效的注意力。比如：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200330164544.png" alt></p>
+<p>与<em>tim</em>相关度最高的是<em>heart</em>及周围的几个词，而传统的<em>transformer</em>也给了其他不相关的词很高的权重，这样造成了注意力的分散。<em>Sparse Transformer</em>可以将注意力集中在几个最重要的元素上，避免或者缓解这一问题。</p>
+<h1 id="2-Sparse-Transformer"><a href="#2-Sparse-Transformer" class="headerlink" title="2. Sparse Transformer"></a>2. Sparse Transformer</h1><p>这里我们呢主要介绍四种<em>Sparse Transformer</em> :</p>
+<ul>
+<li><a href="https://arxiv.org/pdf/1904.10509.pdf" target="_blank" rel="noopener">Sparse Transformers</a></li>
+<li><a href="https://arxiv.org/abs/1905.07799" target="_blank" rel="noopener">Adaptive Span Transformers</a></li>
+<li><a href="https://arxiv.org/pdf/1909.00015.pdf" target="_blank" rel="noopener">Adaptively Sparse Transformers</a></li>
+<li><a href="https://openreview.net/pdf?id=Hye87grYDH" target="_blank" rel="noopener">Explicit Sparse Transformer</a></li>
+</ul>
+<h2 id="2-1-注意力模式"><a href="#2-1-注意力模式" class="headerlink" title="2.1 注意力模式"></a>2.1 注意力模式</h2><p>既然要将注意力稀疏化，那么如何稀疏就是个需要思考的问题。为了更好的处理这个问题，<em>Child</em>等人在图像上探究了<em>Transformer</em> 的注意力模式发现其中许多模式表现出了可解释和结构化的稀疏模式。以下每幅图像都显示了哪个输入像素（白色高亮标出）由一个给定的注意力头处理，以预测图像中的下一个值。当输入部分集中在小的子集上并显示出高度规律性时，该层就易于稀疏化。以下是 CIFAR-10 图像上 128 层模型的样本：</p>
+<table><tr><td><center class="half"><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/gif2_rowcol_lay19-head0.gif" style="zoom:250%;"></center></td><td><center><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/gif2_rowcol_lay20-head1.gif" style="zoom:250%;"></center></td></tr></table>
+
+<p>左图是<em>Layer 19</em>的注意力模式（白色高亮），右图是<em>Layer 20</em>的注意力模式。可以看到<em>Layer 19</em>集中了当前行的注意力，<em>Layer  20</em>集中了当前列的注意力。</p>
+<table><tr><td><center class="half"><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/gif3_memo_lay6-head1.gif" style="zoom:250%;"></center></td><td><center><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/gif3_datadep_lay36-head0.gif" style="zoom:250%;"></center></td></tr></table>
+
+<p>左图是<em>Layer 6</em>的注意力模式，右图是<em>Layer 36</em>的注意力模式。可以看到<em>Layer 6</em>无论输入是什么，注意力的集中点都具有相似的模式，<em>Layer 36</em>的注意力高度依赖具体的数据。</p>
+<p>另外，<em>Sukhbaatar</em>等人也对比了两个<em>Transformer</em>注意力头的注意力模式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200331164300.png" alt></p>
+<p>可以看到，<em>Head A</em>的注意力主要在最近的20个<em>token</em>，前面的80个<em>token</em>注意力权重很低，<em>Head B</em>的注意力主要集中在最近的20个<em>token</em>，但前80个<em>token</em>的注意力是均匀分布的。</p>
+<p>从上面两个实验可以看出，注意力通常是稀疏的，而且在不同的层有不同的模式。虽然许多层显示出稀疏的结构，但有些层清晰地显示出了动态注意力，这种注意力延伸到整个图像。这个结论和我们在<a href="[https://rogerspy.gitee.io/2019/09/18/transformer%E7%BC%96%E7%A0%81%E5%B1%82%E8%A1%A8%E7%A4%BA/](https://rogerspy.gitee.io/2019/09/18/transformer编码层表示/">《Transformer的每一个编码层都学到了什么？》</a>)中讨论的结果基本一致。</p>
+<p>由于注意力机制的稀疏模式，研究人员提出了不同的稀疏化方法，下面我们介绍其中几种。</p>
+<h2 id="2-2-Sparse-Transformers"><a href="#2-2-Sparse-Transformers" class="headerlink" title="2.2 Sparse Transformers"></a>2.2 Sparse Transformers</h2><p>2019年OpenAI研究人员研发出一种<em>Sparse Transformers</em>，该模型在预测长序列方面创造了新纪录——无论预测的是文本、图像还是声音，可以从长度可能是之前30倍的序列中提取模式。</p>
+<p>对于图像这种具有周期性结构的数据来说，作者提出<em>Strided Sparse Transformer</em>。从上面的<em>Layer 19</em>和<em>Layer 20</em>可以看出注意力分为关注当前行和当前列。作者可以根据这两种注意力模式设计两个稀疏注意力矩阵。</p>
+<h3 id="2-2-1-Full-Self-Attention"><a href="#2-2-1-Full-Self-Attention" class="headerlink" title="2.2.1 Full Self Attention"></a>2.2.1 Full Self Attention</h3><p><img src="https://kexue.fm/usr/uploads/2019/07/775103900.png" alt></p>
+<p>在上图中，左边显示了注意力矩阵，右变显示了关联性。这表明每个元素都跟序列内所有元素有关联。注意力稀疏化一个基本的思路就是减少关联性的计算，也就是认为每个元素只跟序列内的一部分元素相关，这就是稀疏注意力的基本原理。</p>
+<h3 id="2-2-2-Atrous-Self-Attention"><a href="#2-2-2-Atrous-Self-Attention" class="headerlink" title="2.2.2 Atrous Self Attention"></a>2.2.2 Atrous Self Attention</h3><p>首先考虑列性注意力。对于一张图片来说，我们如果把图片展开成一个一维序列，对于之前注意力只关注当前列实际上就意味着，在这个展开的长序列中，注意力的关注点是间隔的，不连续的。这样引入一个新概念——<em>Atrous Self Attention</em>：</p>
+<p><img src="https://kexue.fm/usr/uploads/2019/07/4107095412.png" alt></p>
+<p><em>Atrous Self Attention</em> 强行要求每个元素只跟它相对距离为$k,2k,3k,…$的元素关联，其中$k&gt;1$是预先设定的超参数。由于现在计算注意力是“跳着”来了，所以实际上每个元素只跟大约$n/k$个元素算相关性，这样一来理想情况下运行效率和显存占用都变成了$O(n^2/k)$，也就是说能直接降低到原来的$1/k$。</p>
+<h3 id="2-2-3-Local-Self-Attention"><a href="#2-2-3-Local-Self-Attention" class="headerlink" title="2.2.3 Local Self Attention"></a>2.2.3 Local Self Attention</h3><p>再考虑行性注意力。当注意力只关注在一行的内容时相当于每个元素只与前后$k$个元素以及自身有关联，如下图：</p>
+<p><img src="https://kexue.fm/usr/uploads/2019/07/713126535.png" alt></p>
+<p>其实<em>Local Self Attention</em>就跟普通卷积很像了，都是保留了一个$2k+1$大小的窗口，然后在窗口内进行一些运算，不同的是普通卷积是把窗口展平然后接一个全连接层得到输出，而现在是窗口内通过注意力来加权平均得到输出。对于<em>Local Self Attention</em>来说，每个元素只跟2k+12k+1个元素算相关性，这样一来理想情况下运行效率和显存占用都变成了$O((2k+1)n)∼O(kn)$了，也就是说随着$n$而线性增长，这是一个很理想的性质——当然也直接牺牲了长程关联性。</p>
+<h3 id="2-2-4-Stride-Sparse-Self-Attention"><a href="#2-2-4-Stride-Sparse-Self-Attention" class="headerlink" title="2.2.4 Stride Sparse Self Attention"></a>2.2.4 Stride Sparse Self Attention</h3><p>到此，就可以很自然地引入OpenAI的<em>Sparse Self Attention</em>了。OpenAI将<em>Atrous Self Attention</em>和<em>Local Self Attention</em>合并为一个，形成适用于图像的<em>Strided Sparse Transformer</em>:</p>
+<p><img src="https://kexue.fm/usr/uploads/2019/07/1199615308.png" alt></p>
+<p>这样一来Attention就具有<strong>局部紧密相关和远程稀疏相关</strong>的特性，这对很多任务来说可能是一个不错的先验，因为真正需要密集的长程关联的任务事实上是很少的。</p>
+<h3 id="2-2-5-Fix-Sparse-Self-Attention"><a href="#2-2-5-Fix-Sparse-Self-Attention" class="headerlink" title="2.2.5 Fix Sparse Self Attention"></a>2.2.5 Fix Sparse Self Attention</h3><p>对于文本这种非周期的数据，上面的<em>Stride Sparse Transformer</em>并不能很好的获取数据特征，作者认为是因为对于文本来说，元素的空间坐标和它所处的位置并没有必然的联系，它可能与未来的元素关联性更大，因此，作者提出另一种稀疏注意力模式——<em>Fix Sparse Transformer</em>。</p>
+<p><em>Fix Sparse Transformer</em>同样是由两个注意力机制合并组成的，一种如下图，相当于将完整序列划分成多个子序列，在每个子序列内部做<em>full self attention</em>。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/34545654654.png" alt></p>
+<p>另一种如下图，相当于只计算序列上固定几个位置的元素计算注意力权重。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/serwerw4335.png" alt></p>
+<p>两种注意力相结合同样保证了<strong>局部紧密相关和远程稀疏相关</strong>特性。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/sdgfghfg.png" alt></p>
+<h2 id="2-3-Adaptive-Span-Transformers"><a href="#2-3-Adaptive-Span-Transformers" class="headerlink" title="2.3 Adaptive Span Transformers"></a>2.3 Adaptive Span Transformers</h2><p>上面的稀疏化方法是研究人员利用先验知识，人工设计的一种稀疏化方法。这些方法可以很好的处理明显具有稀疏化特征的注意力机制，比如<em>Layer 19/20</em>，但是对于具有全局注意力和依赖数据特征的注意力机制，利用上述的稀疏化方法会影响最后的效果。因此，我们就想能不能设计一种自适应的注意力稀疏化机制，让模型自己决定要怎样稀疏化，这样可以避免人工设计的缺陷。</p>
+<p>针对这个问题，Facebook的研究人员提出一种新的方法，利用一个$M_z$函数自动过滤一定长度的子序列，不参与注意力计算。$M_z$函数定义如下：</p>
+<script type="math/tex; mode=display">
+m_z(x)=\min[\max[\frac{1}{R}(R+z-x), 0], 1]</script><p>这个函数的大致形状如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200401105157.png" alt></p>
+<p>其中$R$是超参数，用来控制斜率。$z$是一个需要训练的参数，$x$是相对距离。得到这样一个函数以后，计算注意力的方法如下：</p>
+<script type="math/tex; mode=display">
+a = \frac{m_z(t-r)\exp(s_{tr})}{\sum_{q=t-s}^{t-1}m_z(t-q)\exp(s_{tq})}</script><p>在损失函数中，给z添加一个<em>L1</em>惩罚项：</p>
+<script type="math/tex; mode=display">
+L = -\log P(w_1,...w_T)+\frac{\lambda}{M} \sum_iz_i</script><p>另外，我们也可以用动态方式来学习$z$，即$z$是基于当前输入的一个输出，称之为动态宽度。</p>
+<script type="math/tex; mode=display">
+z_t = S\sigma(\mathbf{v}^T\mathbf{x}_t+b)</script><p>从上面的函数图可以看出来，</p>
+<ol>
+<li>当$z$大于两元素的相对距离时，最后的注意力相当于<em>Full self attention</em>;</li>
+<li>当$z$小于两元素的相对距离时，注意力会更集中在近距离元素上，相当于<em>Local self attention</em>；</li>
+<li>当$z$很小时，远距离的元素上不会有任何注意力</li>
+</ol>
+<p>可以看出这样同样是既保留了局部的依赖，又处理了远程的稀疏性，而这样一个过程是模型自行决定，有效避免了人为设计的缺陷。</p>
+<h2 id="2-4-Adaptively-Sparse-Transformers"><a href="#2-4-Adaptively-Sparse-Transformers" class="headerlink" title="2.4 Adaptively Sparse Transformers"></a>2.4 Adaptively Sparse Transformers</h2><p>回想前面的稀疏化方法，我们发现之前的两种稀疏化方法都存在一个问题就是，注意力是连续性的。比如<em>Adaptive Span Transformer</em>，会忽略掉远距离的元素；虽然<em>Sparse Transformer</em>中包含了<em>Atrous Attention</em>，但是这种不连续性是人为设计的，具有固定的模式，不能很好的适应不同的数据。因此，本文提出一种新的方法，既能处理不连续的注意力，又能使这种不连续的注意力做到自适应不同的数据。</p>
+<p>纵观我们从介绍注意力机制开始，到<em>Transformer</em>，再到后来的各种变种，有一个东西是自始至终都和注意力形影不离，那就是<strong>Softmax</strong>。<em>Softmax</em>是将一个向量进行归一化，将向量中每一个元素赋予概率的意义，而这个概率本身就是连续的。因此，如果要处理不连续性的注意力机制，我们是否可以将<em>softmax</em>进行稀疏化呢？</p>
+<p>本文就引入一个新的<em>Softmax</em>函数，实现了注意力的不连续稀疏化——$\alpha$-$\rm{entmax}$：</p>
+<script type="math/tex; mode=display">
+\alpha - \mathrm{entmax}(\mathbf{z}) = \arg \max_{\mathbf{p} \in \Delta^d} \mathbf{p}^T\mathbf{z}+\mathbf{H}_\alpha^T(\mathbf{p})</script><p>其中$\Delta^d=\{\mathbf{p} \in \mathbb{R}^d:\sum_i\mathbf{p}_i=1\}$，对于$\alpha \ge 1$，$\mathrm{H}_\alpha^T$是<em>Tsallis</em>广延熵族：</p>
+<script type="math/tex; mode=display">
+\mathbf{H}_\alpha^T(\mathbf{p})=\begin{cases}
+\frac{1}{\alpha(\alpha-1)}\sum_j(p_j-p_j^\alpha), \alpha \ne 1, \\\\
+\\\\
+-\sum_jp_j\log p_j, \alpha =1.
+\end{cases}</script><p>可以看到，这样一个函数是非连续性的，面临一个凸优化的问题。实际上我们可以通过下面的公式对其进行优化：</p>
+<script type="math/tex; mode=display">
+\alpha-\mathrm{entmax}(\mathbf{z}) = \left[ (\alpha-1)\mathbf{z}-\tau\mathbf{1}\right]_+^{1/\alpha-1}</script><p>其中$\mathbf{1}$表示元素全为1的向量，$\tau$是一个拉格朗日乘子为了保证$\sum_ip_i=1$，$[\cdot]_+$表示$\mathrm{ReLU}$的正数部分。</p>
+<p>看公式实在头疼，看不出为啥这样一个公式能将注意力进行稀疏化，那我们就来看图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200401145025.png" alt></p>
+<p>左边是二维图像，右边的两幅图分别是<em>softmax</em>和$\alpha=2$的$\alpha$-$\mathrm{entmax}$。可以看出当 $t$ 过小的时候，输出就会变成0；$t$ 过大的时候，输出就会变成1，这样也就相当于将注意力稀疏化了。</p>
+<p>剩下的 工作就是为了确定 $\tau$，以及为了自适应不同的注意力头（<em>transformer</em>是多注意头的）的 $\alpha$ 值，作者将 $\alpha$ 作为网络的参数，利用后向传播进行优化等一系列细节，这里就不做详细介绍了。</p>
+<p>本文涉及到的数学原理和公式的推导在引文和文章附录中都有详细推导，这里就不搬上来了，有兴趣可以自己看。</p>
+<h2 id="2-5-Explicit-Sparse-Transformer"><a href="#2-5-Explicit-Sparse-Transformer" class="headerlink" title="2.5 Explicit Sparse Transformer"></a>2.5 Explicit Sparse Transformer</h2><p><em>Explicit Sparse Transformer</em>虽然实现了不连续的自适应稀疏化自注意力，但是其实整个过程蛮复杂的，尤其是其中涉及到的数学，看了让人头秃（我边推公式边看着头发往下掉，内心毫无波动…）。有没有一种既简单易实现，又能做到不连续自适应的稀疏化自注意力呢？当然有咯，接下来就来介绍这样一个工作。</p>
+<p><em>Explicit Sparse Transformer</em>的想法非常简单：它认为在计算注意力的时候，只有注意力最高的$k$个词对信息的获取有作用，其他低注意力的属于噪声，非但不会帮助模型获取有效信息，还会干扰模型做出正确决策。因此，在计算自注意力的时候，每个词只取注意力权重最高的$k$个词，其他的全部设置成$-\infty$。计算过程如下：</p>
+<ol>
+<li>首先计算注意力矩阵$P$；</li>
+<li>找出 $P$ 中每行的  $k$ 个最大元素，记录其位置，并得到一个阈值向量，$t=[t_1, t_2, …, t_{lQ}]$，$t_i$ 表示第 $i$ 行中$k$ 个元素中注意力最低的那个值；</li>
+<li>得到一个$Masking$矩阵：</li>
+</ol>
+<script type="math/tex; mode=display">
+M(P, k)_{ij} = \begin{cases}
+P_{ij},  \qquad P_{ij} \ge t_i \\\\
+\\\\
+\mathrm{-} \infty, \qquad P_{ij} \lt t_i
+\end{cases}</script><ol>
+<li>归一化</li>
+</ol>
+<script type="math/tex; mode=display">
+A = \mathrm{softmax} (M(P, k))</script><ol>
+<li>输出表示</li>
+</ol>
+<script type="math/tex; mode=display">
+C = AV</script><p>整个流程如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20200401174029.png" alt></p>
+<p>根据作者的实验表明，序列长度与<em>vanilla transformer</em>一致时，$k=8$能得到最佳结果。</p>
+<p>关于取$\mathrm{top}-k$以后的后向传播问题，作者在论文的附录中给出了解释，有兴趣的可以看原文哟。</p>
+<p>最后说几句吧，这个文章是投稿给了<em>ICLR 2020</em>，但是被拒稿了，拒稿的理由主要是效果没有达到<em>SOTA</em>，额，我觉得嘛，黑猫白猫，能抓老鼠就是好猫。</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
+<li><a href="https://kexue.fm/archives/6853" target="_blank" rel="noopener">为节约而生：从标准Attention到稀疏Attention</a>，苏剑林， 科学空间</li>
+<li><a href="https://arxiv.org/pdf/1904.10509.pdf" target="_blank" rel="noopener">Generative Modeling with Sparse Transformers</a>, <em>Rewon Child, Scott Gray,  Alec Radford, Ilya Sutskever, 2019, Arxiv:1904.10509</em></li>
+<li><a href="https://openai.com/blog/sparse-transformer/" target="_blank" rel="noopener">Generative Modeling with Sparse Transformers</a>, <em>OpenAI’s blog</em></li>
+<li><a href="https://openreview.net/pdf?id=Hye87grYDH" target="_blank" rel="noopener">EXPLICIT SPARSE TRANSFORMER: CONCENTRATED ATTENTION THROUGH EXPLICIT SELECTION</a>, <em>Guangxiang Zhao,</em>  <em>Junyang Lin</em>, <em>Zhiyuan Zhang</em>,<em>Xuancheng Ren</em>, <em>Xu Sun, 2019, Arxiv:1912.11637</em></li>
+<li><a href="https://arxiv.org/abs/1905.07799" target="_blank" rel="noopener">Adaptive Attention Span in Transformers</a>, <em>Sainbayar Sukhbaatar, Edouard Grave, Piotr Bojanowski, Armand Joulin, 2019</em>，<em>Arxiv:1905.07799</em></li>
+<li><a href="https://zhuanlan.zhihu.com/p/88702600" target="_blank" rel="noopener">Transformer之自适应宽度注意力</a>, 张雨石， 知乎</li>
+<li><a href="https://arxiv.org/pdf/1909.00015.pdf" target="_blank" rel="noopener">Adaptively Sparse Transformers</a>, <em>Goncalo M. Correia， Vlad Niculae，Andre F.T. Martins，2019，Arxiv:1909.00015</em></li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/transformer/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Transformer</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/nmt/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>NMT</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/sparse/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>sparse</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2020/03/30/transformer家族-sparse/&title=Transformer家族之Sparse Transformer | Rogerspy's Home&summary=
+目前来看，自注意力机制有一统NLP的趋势，其凭借能够捕捉序列中任意两个元素的关联信息，且易于并行等优势，在与传统的NLP武林盟主RNN的较量中，几乎是全方位碾压。但是它也并不是没有弱点，之前我们介绍过在机器翻译过程中，它的推理过程是auto-regression的，严重制约了它的推理效率。因此，很多研究人员对它做了一定程度上的改善。今天我们继续来对它进行其他方面的优化，也就是变形金刚家族的另一成员 —— Sparse Transformer。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2020/03/30/transformer家族-sparse/&title=Transformer家族之Sparse Transformer | Rogerspy's Home&summary=
+目前来看，自注意力机制有一统NLP的趋势，其凭借能够捕捉序列中任意两个元素的关联信息，且易于并行等优势，在与传统的NLP武林盟主RNN的较量中，几乎是全方位碾压。但是它也并不是没有弱点，之前我们介绍过在机器翻译过程中，它的推理过程是auto-regression的，严重制约了它的推理效率。因此，很多研究人员对它做了一定程度上的改善。今天我们继续来对它进行其他方面的优化，也就是变形金刚家族的另一成员 —— Sparse Transformer。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsUlEQVR42u3awU7DMBAE0P7/T5cLFwSkM2s7FOnlVIk29QuS153dxyO+nr9c+Xuel9f1935/vfnCw8PD27T0lcVd46+Xfv346vXg4eHhHePlm/L1Zj1bRHLPpEjg4eHhvTMvLyTt0Tx/cHh4eHj/ixfdOi4YeZyBh4eH9z68/NbJoq/T1OSzyV83Zy14eHh4k37To21E/dXrI/09PDw8vOWuehsZ5FtzvunP1vn5WTw8PLwDvHzDzQ/Zs6mn5OA+WyceHh7eXl7yBbOCsR5AzMKOL6/x8PDwbuG1g1CzmCAfNVgqS3h4eHgHeLMAd3YUzktIEkYkn8LDw8M7wbs+QOfL3RVSHOza4eHh4d0yHLDCaFtcbXnI14mHh4d3P6/up5WhQ3tMnwUreHh4eHt5+c/7dhwqv2d7/yLkxcPDw7uFt9IqOxFbtCUEDw8P7xxvtu3mJaHtwrXvxMPDw7uft1IY1gPWWQOsHdjCw8PDO8dLDqx7SSvxRzGCgIeHh3eAl9yoLR75w2oLQ7KGF/9DPDw8vK28tmAUY09lKLxSQvDw8PBO82bLmpWNPMBtB7CWshY8PDy8mPcsr7ZZlS9rbxjxor+Hh4eHt4k3CxfyRv5s0e0gV12L8PDw8CbJwKPecMswtx1BmMXKG7IWPDw8vJiXH6NXItrZMEF7HC/O7Hh4eHjLvOTA3cYW7cNKYBsqHh4eHt5hXtvab4vBypBB9IDw8PDwtvJmDbD17T5vmOXfu62/h4eHh1f+ck9+9s+a+gmsLS1FAwwPDw9vKy8vBvnwwfoI16ww/LBaPDw8vGO8tmXVzjVtGJyKw4gNHTk8PDy8W3gJst3629gCDw8P7515p6/Z0XzzFBgeHh7ecs6ZRxJ5UTn3XXh4eHjneO0P/vwYPTwEt1Nj6xceHh5e+qkP1nor8J4xqoQAAAAASUVORK5CYII='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2020/03/30/transformer家族-sparse/&title=Transformer家族之Sparse Transformer | Rogerspy's Home&summary=
+目前来看，自注意力机制有一统NLP的趋势，其凭借能够捕捉序列中任意两个元素的关联信息，且易于并行等优势，在与传统的NLP武林盟主RNN的较量中，几乎是全方位碾压。但是它也并不是没有弱点，之前我们介绍过在机器翻译过程中，它的推理过程是auto-regression的，严重制约了它的推理效率。因此，很多研究人员对它做了一定程度上的改善。今天我们继续来对它进行其他方面的优化，也就是变形金刚家族的另一成员 —— Sparse Transformer。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2020/04/09/transformer家族-insert/" rel="prev" title="Transformer家族之Insertion Transformer">
+                                  
+                                      Transformer家族之Insertion Transformer
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/nmt/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>NMT</a> <a class="tag" href="/tags/insertion/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>insertion</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2020/03/26/transformer家族-block/" rel="prev" title="Transformer家族之Blockwise Transformer">
+                                    
+                                        Transformer家族之Blockwise Transformer
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/transformer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Transformer</a> <a class="tag" href="/tags/nmt/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>NMT</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: 'Transformer家族之Sparse Transformer',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Why-you-need-Sparsity"><span class="toc-text">1. Why you need Sparsity?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-计算复杂度"><span class="toc-text">1.1 计算复杂度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-注意力集中问题"><span class="toc-text">1.2 注意力集中问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Sparse-Transformer"><span class="toc-text">2. Sparse Transformer</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-注意力模式"><span class="toc-text">2.1 注意力模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Sparse-Transformers"><span class="toc-text">2.2 Sparse Transformers</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-Full-Self-Attention"><span class="toc-text">2.2.1 Full Self Attention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-Atrous-Self-Attention"><span class="toc-text">2.2.2 Atrous Self Attention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-Local-Self-Attention"><span class="toc-text">2.2.3 Local Self Attention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-4-Stride-Sparse-Self-Attention"><span class="toc-text">2.2.4 Stride Sparse Self Attention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-5-Fix-Sparse-Self-Attention"><span class="toc-text">2.2.5 Fix Sparse Self Attention</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Adaptive-Span-Transformers"><span class="toc-text">2.3 Adaptive Span Transformers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Adaptively-Sparse-Transformers"><span class="toc-text">2.4 Adaptively Sparse Transformers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-Explicit-Sparse-Transformer"><span class="toc-text">2.5 Explicit Sparse Transformer</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#References"><span class="toc-text">References</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="/dataset/"
+          
+          
+          id="dataset">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(7)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(14)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.5px; color: #888">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19px; color: #777">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.25px; color: #6f6f6f">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.25px; color: #6f6f6f">NLP</a> <a href="/tags/nmt/" style="font-size: 22.75px; color: #5e5e5e">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.5px; color: #888">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.25px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.25px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 17.75px; color: #808080">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 16.5px; color: #888">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.5px; color: #666">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.25px; color: #919191">词向量</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>
