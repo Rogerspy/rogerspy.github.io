@@ -137,6 +137,14 @@ links:
       backgroundColor: '#FFFFFF'
       textColor: '#000000'
       tags: [线性代数, 解析几何, 矩阵分解, 向量微积分, 概率分布]
+  - group: 计算机
+    icon: fa fa-github
+    items:
+    - name: learnGitBranching
+      avatar: https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg
+      url: https://rogerspy.github.io/learnGitBranching
+      backgroundColor: '#FFFFFF' # 卡片背景颜色
+      textColor: '#000000'
   - group: 书籍资料
     icon: fa fa-graduation-cap
     items:

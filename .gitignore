@@ -3,5 +3,7 @@ _site/
 .jekyll-metadata
 .DS_Store
 .public/
+.idea/
+.deploy_git/
 node_modules/
 

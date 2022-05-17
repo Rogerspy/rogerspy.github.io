@@ -10,7 +10,7 @@ body:
   - comments
 gitalk:
   id: /wiki/material-x/
-date: 2021-03-16 23:46:29
+date: 2021-03-19 23:46:29
 password:
 summary:
 tags: [NLP, Log-Linear Language Model]
