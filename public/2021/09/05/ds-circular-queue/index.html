@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>数据结构与算法：循环队列（circular-queue） | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="archives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/09/05/ds-circular-queue/">
+        数据结构与算法：循环队列（circular-queue）
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-09-05</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/数据结构与算法/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>数据结构与算法</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">728字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">3分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210820161802.png" alt></p>
+<p>本文介绍循环队列，并用 Python 实现循环队列。</p>
+<a id="more"></a>
+<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><p>循环队列是常规队列（简单队列）的变种，是将队列中最后一个元素与第一个元素相连。因此，循环队列看起来像下图的样子：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210905000636.png" alt></p>
+<p>循环队列是为了解决简单队列的限制。在常规队列中，经过一系列的出队入队操作之后，会有一些空位置。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210904230231.png" alt></p>
+<p>上图中 0 和 1 的位置会被空置，除非等到队列重置。</p>
+<h1 id="2-循环队列的基本操作"><a href="#2-循环队列的基本操作" class="headerlink" title="2. 循环队列的基本操作"></a>2. 循环队列的基本操作</h1><p>循环队列通过循环递增的方式工作，即当我们递增指针并到达队列的末尾时，我们又从队列的开头开始。其中递增是通过模除队列的尺寸，即：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if REAR + 1 == 5 (overflow!), REAR = (REAR + 1)%5 = 0 (start of queue)</span><br></pre></td></tr></table></figure>
+<p>具体过程如下：</p>
+<ul>
+<li>两个指针 <code>FRONT</code> 和 <code>REAR</code></li>
+<li><code>FRONT</code> 追踪队列中第一个元素</li>
+<li><code>REAR</code> 追踪队列中最后一个元素</li>
+<li>初始化 <code>FRONT</code> 和 <code>REAR</code> 为 -1</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/circular-queue-program.png" style="zoom:50%;"></p>
+<h2 id="2-1-Enqueue"><a href="#2-1-Enqueue" class="headerlink" title="2.1 Enqueue"></a>2.1 Enqueue</h2><ul>
+<li>检查队列是否是满队列</li>
+<li>对于第一个元素，设置 <code>FRONT</code> 的值为 0</li>
+<li>循环增加 <code>REAR</code> ，如果 <code>REAR</code> 到末尾，下一步就从头开始</li>
+<li>在 <code>REAR</code> 指向的位置添加新元素</li>
+</ul>
+<h2 id="2-2-Dequeue"><a href="#2-2-Dequeue" class="headerlink" title="2.2 Dequeue"></a>2.2 Dequeue</h2><ul>
+<li>检查队列是否为空</li>
+<li>返回 <code>FRONT</code> 指向的值</li>
+<li><code>FRONT</code> 循环加 1</li>
+<li>对于最后一个元素，重置 <code>FRONT</code> 和 <code>REAR</code> 为 -1</li>
+</ul>
+<p>然而，检查满队列的时候，有一个新问题：</p>
+<ul>
+<li>第一种情况：<code>FRONT=0</code> &amp;&amp; <code>REAR=size-1</code></li>
+<li>第二种情况：<code>FRONT=REAR+1</code></li>
+</ul>
+<p>第二种情况下，<code>REAR</code> 因为循环递增而从 0  开始，并且其值只比 <code>FRONT</code> 时，队列已满。</p>
+<h1 id="3-Python实现循环队列"><a href="#3-Python实现循环队列" class="headerlink" title="3. Python实现循环队列"></a>3. Python实现循环队列</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Circular Queue implementation in Python</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyCircularQueue</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, k)</span>:</span></span><br><span class="line">        self.k = k</span><br><span class="line">        self.queue = [<span class="literal">None</span>] * k</span><br><span class="line">        self.head = self.tail = <span class="number">-1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Insert an element into the circular queue</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enqueue</span><span class="params">(self, data)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ((self.tail + <span class="number">1</span>) % self.k == self.head):</span><br><span class="line">            print(<span class="string">"The circular queue is full\n"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">elif</span> (self.head == <span class="number">-1</span>):</span><br><span class="line">            self.head = <span class="number">0</span></span><br><span class="line">            self.tail = <span class="number">0</span></span><br><span class="line">            self.queue[self.tail] = data</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.tail = (self.tail + <span class="number">1</span>) % self.k</span><br><span class="line">            self.queue[self.tail] = data</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Delete an element from the circular queue</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> (self.head == <span class="number">-1</span>):</span><br><span class="line">            print(<span class="string">"The circular queue is empty\n"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">elif</span> (self.head == self.tail):</span><br><span class="line">            temp = self.queue[self.head]</span><br><span class="line">            self.head = <span class="number">-1</span></span><br><span class="line">            self.tail = <span class="number">-1</span></span><br><span class="line">            <span class="keyword">return</span> temp</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            temp = self.queue[self.head]</span><br><span class="line">            self.head = (self.head + <span class="number">1</span>) % self.k</span><br><span class="line">            <span class="keyword">return</span> temp</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printCQueue</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span>(self.head == <span class="number">-1</span>):</span><br><span class="line">            print(<span class="string">"No element in the circular queue"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">elif</span> (self.tail &gt;= self.head):</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.head, self.tail + <span class="number">1</span>):</span><br><span class="line">                print(self.queue[i], end=<span class="string">" "</span>)</span><br><span class="line">            print()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.head, self.k):</span><br><span class="line">                print(self.queue[i], end=<span class="string">" "</span>)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, self.tail + <span class="number">1</span>):</span><br><span class="line">                print(self.queue[i], end=<span class="string">" "</span>)</span><br><span class="line">            print()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Your MyCircularQueue object will be instantiated and called as such:</span></span><br><span class="line">obj = MyCircularQueue(<span class="number">5</span>)</span><br><span class="line">obj.enqueue(<span class="number">1</span>)</span><br><span class="line">obj.enqueue(<span class="number">2</span>)</span><br><span class="line">obj.enqueue(<span class="number">3</span>)</span><br><span class="line">obj.enqueue(<span class="number">4</span>)</span><br><span class="line">obj.enqueue(<span class="number">5</span>)</span><br><span class="line">print(<span class="string">"Initial queue"</span>)</span><br><span class="line">obj.printCQueue()</span><br><span class="line"></span><br><span class="line">obj.dequeue()</span><br><span class="line">print(<span class="string">"After removing an element from the queue"</span>)</span><br><span class="line">obj.printCQueue()</span><br></pre></td></tr></table></figure>
+<h1 id="4-循环队列时间复杂度"><a href="#4-循环队列时间复杂度" class="headerlink" title="4. 循环队列时间复杂度"></a>4. 循环队列时间复杂度</h1><p>基于数组实现的循环队列，其 enqueue 和 dequeue 时间复杂度都是 $O(1)$。</p>
+<h1 id="5-循环队列的应用"><a href="#5-循环队列的应用" class="headerlink" title="5. 循环队列的应用"></a>5. 循环队列的应用</h1><ul>
+<li>CPU 任务调度</li>
+<li>内存管理</li>
+<li>任务堵塞管理</li>
+</ul>
+<h1 id="Refernece"><a href="#Refernece" class="headerlink" title="Refernece"></a>Refernece</h1><p><a href="https://www.programiz.com/dsa/circular-queue" target="_blank" rel="noopener">Circular Queue Data Structure</a> </p>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/数据结构/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>数据结构</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/queue/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>queue</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/09/05/ds-circular-queue/&title=数据结构与算法：循环队列（circular-queue） | Rogerspy's Home&summary=
+本文介绍循环队列，并用 Python 实现循环队列。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/09/05/ds-circular-queue/&title=数据结构与算法：循环队列（circular-queue） | Rogerspy's Home&summary=
+本文介绍循环队列，并用 Python 实现循环队列。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuUlEQVR42u3aQW4bMQwF0Nz/0inQVQvUk/9JKXGBp5URTyy9WYgEyY+PeH3+Xu3zf6722+TJYwsPDw9vdPRX6xXv+cnn55/P0O7yxSvAw8PDu8Z7DgbP1/fsNk7Yr55JzoyHh4f3DrwkqZ0lvknAwMPDw/sfebP0N0/Knxl4eHh478ZLtslXHgCeX1zyio/VWvDw8PAmu0cp7zt8vtjfw8PDw1t01WfJ7vMvb1pf9Tnx8PDwLvDaEu2m6JA30k41w/Dw8PDu8fJWUxs2NuHh+dfqdhoeHh7eBV6e5ibHaptkbTjJAxUeHh7eWV5+refl3VmR4uwAAR4eHt49XnusWUkiDyezUYYvSip4eHh438JLyrt52j0LG5vycdQAw8PDwxvxcljb9GpT4X3brK6p4OHh4S14yRW8b/nnxYt2iOHl3/Hw8PAu8IqH4jVLwdtBq+J14OHh4V3gzZr6LSMJDG1CXzTt8PDw8I7y6mZ8HBLawYKcVwQzPDw8vGu89sLND7EZtNq8FDw8PLwbvNlg6LAdFQehWWH3H68DDw8P7wIvL5Um7bFNibY9ehLG8PDw8G7zks3aa729vttD1yEEDw8P7xAvudaTEuqsiDDDFwVlPDw8vKO8tgWVt7JmvzwLA1+EBDw8PLyjvPzfiumtGJw01fKQUwxd4eHh4a15s7Gn2XXf7piXkj/yhYeHh7fmtRvnz8waV7OBBjw8PLyf5bXxZFYC3o8dREg8PDy8o7zPcrWJ+AY/a6399S0eHh7eBV5bnmjLte0YQTuGdaDugoeHhzfi5envqZcyu9CT1LxOrPHw8PAWvGT79rpvn5y9ymIyAg8PD+9HeZvPm3GuOlnHw8PD+1Feks62hYbZwEG+Cx4eHt49Xvuj+7S4bYwNR6/w8PDwLvBuFGTb425GEFZDA3h4eHgd7xcwYRbbrJO4ZAAAAABJRU5ErkJggg=='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/09/05/ds-circular-queue/&title=数据结构与算法：循环队列（circular-queue） | Rogerspy's Home&summary=
+本文介绍循环队列，并用 Python 实现循环队列。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/09/05/ds-priority-queue/" rel="prev" title="数据结构与算法：优先队列（priority queue）">
+                                  
+                                      数据结构与算法：优先队列（priority queue）
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/数据结构/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>数据结构</a> <a class="tag" href="/tags/queue/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>queue</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/09/04/ds-queue/" rel="prev" title="数据结构与算法：队列（queue）">
+                                    
+                                        数据结构与算法：队列（queue）
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/数据结构/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>数据结构</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '数据结构与算法：循环队列（circular-queue）',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-简介"><span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-循环队列的基本操作"><span class="toc-text">2. 循环队列的基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Enqueue"><span class="toc-text">2.1 Enqueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Dequeue"><span class="toc-text">2.2 Dequeue</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Python实现循环队列"><span class="toc-text">3. Python实现循环队列</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-循环队列时间复杂度"><span class="toc-text">4. 循环队列时间复杂度</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-循环队列的应用"><span class="toc-text">5. 循环队列的应用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Refernece"><span class="toc-text">Refernece</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://rogerspy.github.io/data_structure_algorithm/"
+          
+          
+          id="https:rogerspy.github.iodata_structure_algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fab fa-kaggle fa-fw" aria-hidden="true"></i>
+          
+          Kaggle
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-brain fa-fw" aria-hidden="true"></i>
+          
+          思维逻辑
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+          
+          学习小测
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://paperswithcode.com/datasets"
+          
+          
+          id="https:paperswithcode.comdatasets">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/incremental-learning/"><div class='name'>Incremental Learning</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(15)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.22px; color: #8a8a8a">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19.56px; color: #737373">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.67px; color: #6c6c6c">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.67px; color: #6c6c6c">NLP</a> <a href="/tags/nmt/" style="font-size: 22.89px; color: #5d5d5d">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/smoothing/" style="font-size: 14px; color: #999">Smoothing</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.22px; color: #8a8a8a">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.11px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.11px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 18.44px; color: #7b7b7b">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 17.33px; color: #828282">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.78px; color: #646464">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.11px; color: #919191">词向量</a> <a href="/tags/词向量压缩/" style="font-size: 14px; color: #999">词向量压缩</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

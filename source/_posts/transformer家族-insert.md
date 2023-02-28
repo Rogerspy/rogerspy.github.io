@@ -19,12 +19,12 @@ categories: [NLP]
 
 ![](https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/5396ee05ly1g5pqn3ch6zj20u092znph.jpg)
 
-传统的文本生成，比如机器翻译无论是自回归或者半自回归的推理方式，都有一个特点：通常是自左向右依次生成文本序列。本文将介绍一篇文章，打破思维定式，突破自左向右的顺序生成。*Insertion Transformer*采用随机插入式序列生成：
+传统的文本生成，比如机器翻译无论是自回归或者半自回归的推理方式，都有一个特点：通常是自左向右依次生成文本序列。本文将介绍一篇文章，打破思维定式，突破自左向右的顺序生成。*Insertion Transformer* 采用随机插入式序列生成：
 
 - 以任意顺序生成；
 - 支持自回归或者半自回归生成（同时在不同位置插入）。
 
-*Insertion Transformer*不仅在效果上远超非自回归模型，而且能以$log(n)$的推理速度，效果上达到原始*Transformer*的水平。
+*Insertion Transformer* 不仅在效果上远超非自回归模型，而且能以 $\log(n)$ 的推理速度，效果上达到原始*Transformer* 的水平。
 
 <!--more-->
 
@@ -106,7 +106,7 @@ $$
 
 - **Contextualized Vocabulary Bias**
 
-为了增加 *slot* 之间的信息共享，我哦们可以在 $H$ 上增加一个最大池化的操作，得到一个上下文向量 $g \in \mathbb{R}^d$，然后用一个可学习的投影矩阵  $V \in \mathbb{R}^{d \times |C|}$ 将 $g$ 投影到词表空间: $b=g \cdot V \in \mathbb{R}^{|C|}$，将 $b$ 作为偏置量添加到每个位置上。整个过程如下：
+为了增加 *slot* 之间的信息共享，我们可以在 $H$ 上增加一个最大池化的操作，得到一个上下文向量 $g \in \mathbb{R}^d$，然后用一个可学习的投影矩阵  $V \in \mathbb{R}^{d \times |C|}$ 将 $g$ 投影到词表空间: $b=g \cdot V \in \mathbb{R}^{|C|}$，将 $b$ 作为偏置量添加到每个位置上。整个过程如下：
 $$
 g = \mathrm{maxpool}(H) \\\\
 b = g \cdot V \\\\

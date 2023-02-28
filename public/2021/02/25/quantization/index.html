@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>模型压缩——网络量化 | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="archives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/02/25/quantization/">
+        模型压缩——网络量化
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-02-25</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/笔记/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>笔记</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">2k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">10分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://pytorch.org/assets/images/quantization-practice/compare_output_ns.png" alt></p>
+<a id="more"></a>
+<h2 id="1-理论基础"><a href="#1-理论基础" class="headerlink" title="1. 理论基础"></a>1. 理论基础</h2><blockquote>
+<p>  如果有人问你现在几点了，你不会告诉他现在“10:14:34:4301”，而是会告诉他现在“10:15”。</p>
+</blockquote>
+<p>量化就是通过降低网络层权重和/或激活函数的数值精度达到模型压缩的方法。通常神经网络模型的参数都是过量的，将模型进行压缩可以使模型更小，运算速度更快。通常硬件上 8-bit 精度的数据比 32-bit 的数据处理速度更快。</p>
+<h2 id="1-1-映射函数"><a href="#1-1-映射函数" class="headerlink" title="1.1 映射函数"></a>1.1 映射函数</h2><p>这里所说的映射函数就是将浮点数映射到整型数。一个常用的映射函数为：</p>
+<script type="math/tex; mode=display">
+Q(r) = \text{round}(\frac{r}{S}+Z)</script><p>其中 $r$ 是输入，$S,Z$ 分别是量化参数。通过下式可以将量化后的输入进行浮点数翻转：</p>
+<script type="math/tex; mode=display">
+\tilde{r} = (Q(r)-Z)\cdot S</script><p>注意 $\tilde{r}\ne r$，两者的差距表示量化误差。</p>
+<h2 id="1-2-量化参数"><a href="#1-2-量化参数" class="headerlink" title="1.2 量化参数"></a>1.2 量化参数</h2><p>上面我们说到 $S,Z$ 表示量化参数，$S$ 可以简单的表示成输入范围和输出范围的比值：</p>
+<script type="math/tex; mode=display">
+S = \frac{\beta-\alpha}{\beta_q-\alpha_q}</script><p>其中 $[\alpha, \beta]$ 表示输入的范围，即允许输入的上下界；$[\alpha_q, \beta_q]$ 表示量化后的输出的上下界。对于 8-bit 来说，输出的上下界为 $\beta_q -\alpha_q \le 2^8-1$。</p>
+<p>$Z$ 表示偏差，如果输入中有 0，$Z$ 用来保证将 0 也映射到 0：$Z = -\frac{\alpha}{S}-\alpha_q$。</p>
+<h2 id="1-3-校准"><a href="#1-3-校准" class="headerlink" title="1.3 校准"></a>1.3 校准</h2><p>选择输入限定范围的过程称之为<strong>校准</strong>。最简单的方法就是记录输入的最小最大值作为 $\alpha, \beta$。不同的校准方法会带来不同的量化策略。</p>
+<ul>
+<li>$\alpha=r<em>{min},\beta=r</em>{max}$ 时，称之为非对称量化，因为 $-\alpha\ne \beta$；</li>
+<li>$\alpha=-\max(|r<em>{min}|, |r</em>{max}|), \beta = \max(|r<em>{min}|, |r</em>{max}|)$ 时，称之为对称量化， 因为 $-\alpha=\beta$。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220314174421261.png" alt></p>
+<p>在实际应用中，对称量化应用更加广泛，因为其可以令 $Z=0$，这样可以减少推理过程计算成本。而非对称量化比对称量化更加紧凑。非对称量化容易受到异常值的影响，所以可以改进为百分比或者 KL 散度来优化这个问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">act =  torch.distributions.pareto.Pareto(<span class="number">1</span>, <span class="number">10</span>).sample((<span class="number">1</span>,<span class="number">1024</span>))</span><br><span class="line">weights = torch.distributions.normal.Normal(<span class="number">0</span>, <span class="number">0.12</span>).sample((<span class="number">3</span>, <span class="number">64</span>, <span class="number">7</span>, <span class="number">7</span>)).flatten()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_symmetric_range</span><span class="params">(x)</span>:</span></span><br><span class="line">  beta = torch.max(x.max(), x.min().abs())</span><br><span class="line">  <span class="keyword">return</span> -beta.item(), beta.item()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_affine_range</span><span class="params">(x)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> x.min().item(), x.max().item()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot</span><span class="params">(plt, data, scheme)</span>:</span></span><br><span class="line">  boundaries = get_affine_range(data) <span class="keyword">if</span> scheme == <span class="string">'affine'</span> <span class="keyword">else</span> get_symmetric_range(data)</span><br><span class="line">  a, _, _ = plt.hist(data, density=<span class="literal">True</span>, bins=<span class="number">100</span>)</span><br><span class="line">  ymin, ymax = np.quantile(a[a&gt;<span class="number">0</span>], [<span class="number">0.25</span>, <span class="number">0.95</span>])</span><br><span class="line">  plt.vlines(x=boundaries, ls=<span class="string">'--'</span>, colors=<span class="string">'purple'</span>, ymin=ymin, ymax=ymax)</span><br><span class="line"></span><br><span class="line">fig, axs = plt.subplots(<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">plot(axs[<span class="number">0</span>, <span class="number">0</span>], act, <span class="string">'affine'</span>)</span><br><span class="line">axs[<span class="number">0</span>, <span class="number">0</span>].set_title(<span class="string">"Activation, Affine-Quantized"</span>)</span><br><span class="line"></span><br><span class="line">plot(axs[<span class="number">0</span>, <span class="number">1</span>], act, <span class="string">'symmetric'</span>)</span><br><span class="line">axs[<span class="number">0</span>, <span class="number">1</span>].set_title(<span class="string">"Activation, Symmetric-Quantized"</span>)</span><br><span class="line"></span><br><span class="line">plot(axs[<span class="number">1</span>, <span class="number">0</span>], weights, <span class="string">'affine'</span>)</span><br><span class="line">axs[<span class="number">1</span>, <span class="number">0</span>].set_title(<span class="string">"Weights, Affine-Quantized"</span>)</span><br><span class="line"></span><br><span class="line">plot(axs[<span class="number">1</span>, <span class="number">1</span>], weights, <span class="string">'symmetric'</span>)</span><br><span class="line">axs[<span class="number">1</span>, <span class="number">1</span>].set_title(<span class="string">"Weights, Symmetric-Quantized"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://pytorch.org/assets/images/quantization-practice/affine-symmetric.png" alt></p>
+<p>我们可以直接用 Pytorch 内置的模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.quantization.observer <span class="keyword">import</span> MinMaxObserver, MovingAverageMinMaxObserver, HistogramObserver</span><br><span class="line">C, L = <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">normal = torch.distributions.normal.Normal(<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">inputs = [normal.sample((C, L)), normal.sample((C, L))]</span><br><span class="line">print(inputs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt;&gt;&gt;&gt;&gt;</span></span><br><span class="line"><span class="comment"># [tensor([[-0.0590,  1.1674,  0.7119, -1.1270],</span></span><br><span class="line"><span class="comment">#          [-1.3974,  0.5077, -0.5601,  0.0683],</span></span><br><span class="line"><span class="comment">#          [-0.0929,  0.9473,  0.7159, -0.4574]]]),</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># tensor([[-0.0236, -0.7599,  1.0290,  0.8914],</span></span><br><span class="line"><span class="comment">#          [-1.1727, -1.2556, -0.2271,  0.9568],</span></span><br><span class="line"><span class="comment">#          [-0.2500,  1.4579,  1.4707,  0.4043]])]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> qscheme <span class="keyword">in</span> [torch.per_tensor_affine, torch.per_tensor_symmetric]:</span><br><span class="line">  obs = MovingAverageMinMaxObserver(qscheme=qscheme)</span><br><span class="line">  <span class="keyword">for</span> x <span class="keyword">in</span> inputs:</span><br><span class="line">      obs(x)</span><br><span class="line">  print(<span class="string">f"Qscheme: <span class="subst">&#123;qscheme&#125;</span> | <span class="subst">&#123;obs.calculate_qparams()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt;&gt;&gt;&gt;&gt;</span></span><br><span class="line"><span class="comment"># Qscheme: torch.per_tensor_affine | (tensor([0.0101]), tensor([139], dtype=torch.int32))</span></span><br><span class="line"><span class="comment"># Qscheme: torch.per_tensor_symmetric | (tensor([0.0109]), tensor([128]))</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-4-Per-Tensor-and-Per-Channel-量化策略"><a href="#1-4-Per-Tensor-and-Per-Channel-量化策略" class="headerlink" title="1.4 Per-Tensor and Per-Channel 量化策略"></a>1.4 Per-Tensor and Per-Channel 量化策略</h2><p>量化参数可以针对整个权重计算，也可以单独计算每个通道。Per-tensor 就是使用相同的量化参数应用于所有通道，而 per-channel 是不同的通道使用不同的量化参数：</p>
+<p><img src="https://pytorch.org/assets/images/quantization-practice/per-channel-tensor.svg" style="zoom: 25%;"></p>
+<p>通常权重的量化方面，对称 per-channel 量化效果更好。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.quantization.observer <span class="keyword">import</span> MovingAveragePerChannelMinMaxObserver</span><br><span class="line">obs = MovingAveragePerChannelMinMaxObserver(ch_axis=<span class="number">0</span>)  <span class="comment"># calculate qparams for all `C` channels separately</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> inputs: obs(x)</span><br><span class="line">print(obs.calculate_qparams())</span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt;&gt;&gt;&gt;&gt;</span></span><br><span class="line"><span class="comment"># (tensor([0.0090, 0.0075, 0.0055]), tensor([125, 187,  82], dtype=torch.int32))</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-5-QConfig"><a href="#1-5-QConfig" class="headerlink" title="1.5 QConfig"></a>1.5 QConfig</h2><p>用 <code>QCfing</code> NameTuple 存储 <code>Observers</code> 和量化策略：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">my_qconfig = torch.quantization.QConfig(</span><br><span class="line">  activation=MovingAverageMinMaxObserver.with_args(qscheme=torch.per_tensor_affine),</span><br><span class="line">  weight=MovingAveragePerChannelMinMaxObserver.with_args(qscheme=torch.qint8)</span><br><span class="line">)</span><br><span class="line"><span class="comment"># &gt;&gt;&gt;&gt;&gt;</span></span><br><span class="line"><span class="comment"># QConfig(activation=functools.partial(&lt;class 'torch.ao.quantization.observer.MovingAverageMinMaxObserver'&gt;, qscheme=torch.per_tensor_affine)&#123;&#125;, weight=functools.partial(&lt;class 'torch.ao.quantization.observer.MovingAveragePerChannelMinMaxObserver'&gt;, qscheme=torch.qint8)&#123;&#125;)</span></span><br></pre></td></tr></table></figure>
+<h1 id="2-In-Pytorch"><a href="#2-In-Pytorch" class="headerlink" title="2. In Pytorch"></a>2. In Pytorch</h1><h2 id="2-1-Post-Training-Dynamic-Weight-only-Quantization"><a href="#2-1-Post-Training-Dynamic-Weight-only-Quantization" class="headerlink" title="2.1 Post-Training Dynamic/Weight-only Quantization"></a>2.1 Post-Training Dynamic/Weight-only Quantization</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line"><span class="comment"># toy model</span></span><br><span class="line">m = nn.Sequential(</span><br><span class="line">  nn.Conv2d(<span class="number">2</span>, <span class="number">64</span>, (<span class="number">8</span>,)),</span><br><span class="line">  nn.ReLU(),</span><br><span class="line">  nn.Linear(<span class="number">16</span>,<span class="number">10</span>),</span><br><span class="line">  nn.LSTM(<span class="number">10</span>, <span class="number">10</span>))</span><br><span class="line"></span><br><span class="line">m.eval()</span><br><span class="line"></span><br><span class="line"><span class="comment">## EAGER MODE</span></span><br><span class="line"><span class="keyword">from</span> torch.quantization <span class="keyword">import</span> quantize_dynamic</span><br><span class="line">model_quantized = quantize_dynamic(</span><br><span class="line">    model=m, qconfig_spec=&#123;nn.LSTM, nn.Linear&#125;, dtype=torch.qint8, inplace=<span class="literal">False</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">## FX MODE</span></span><br><span class="line"><span class="keyword">from</span> torch.quantization <span class="keyword">import</span> quantize_fx</span><br><span class="line">qconfig_dict = &#123;<span class="string">""</span>: torch.quantization.default_dynamic_qconfig&#125;  <span class="comment"># An empty key denotes the default applied to all modules</span></span><br><span class="line">model_prepared = quantize_fx.prepare_fx(m, qconfig_dict)</span><br><span class="line">model_quantized = quantize_fx.convert_fx(model_prepared)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通常会有更高的准确率；</li>
+<li>对于 LSTM / Transformer 来说，动态量化是首选；</li>
+<li>每一层事实校准和量化可能需要消耗算力。</li>
+</ul>
+<h2 id="2-2-Post-Training-Static-Quantization-PTQ"><a href="#2-2-Post-Training-Static-Quantization-PTQ" class="headerlink" title="2.2 Post-Training Static Quantization (PTQ)"></a>2.2 Post-Training Static Quantization (PTQ)</h2><p><img src="https://pytorch.org/assets/images/quantization-practice/ptq-flowchart.svg" style="zoom:25%;"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Static quantization of a model consists of the following steps:</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     Fuse modules</span></span><br><span class="line"><span class="comment">#     Insert Quant/DeQuant Stubs</span></span><br><span class="line"><span class="comment">#     Prepare the fused module (insert observers before and after layers)</span></span><br><span class="line"><span class="comment">#     Calibrate the prepared module (pass it representative data)</span></span><br><span class="line"><span class="comment">#     Convert the calibrated module (replace with quantized version)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line">backend = <span class="string">"fbgemm"</span>  <span class="comment"># running on a x86 CPU. Use "qnnpack" if running on ARM.</span></span><br><span class="line"></span><br><span class="line">m = nn.Sequential(</span><br><span class="line">     nn.Conv2d(<span class="number">2</span>,<span class="number">64</span>,<span class="number">3</span>),</span><br><span class="line">     nn.ReLU(),</span><br><span class="line">     nn.Conv2d(<span class="number">64</span>, <span class="number">128</span>, <span class="number">3</span>),</span><br><span class="line">     nn.ReLU()</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">## EAGER MODE</span></span><br><span class="line"><span class="string">"""Fuse</span></span><br><span class="line"><span class="string">- Inplace fusion replaces the first module in the sequence with the fused module, and the rest with identity modules</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">torch.quantization.fuse_modules(m, [<span class="string">'0'</span>,<span class="string">'1'</span>], inplace=<span class="literal">True</span>) <span class="comment"># fuse first Conv-ReLU pair</span></span><br><span class="line">torch.quantization.fuse_modules(m, [<span class="string">'2'</span>,<span class="string">'3'</span>], inplace=<span class="literal">True</span>) <span class="comment"># fuse second Conv-ReLU pair</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""Insert stubs"""</span></span><br><span class="line">m = nn.Sequential(torch.quantization.QuantStub(), </span><br><span class="line">                  *m, </span><br><span class="line">                  torch.quantization.DeQuantStub())</span><br><span class="line"></span><br><span class="line"><span class="string">"""Prepare"""</span></span><br><span class="line">m.qconfig = torch.quantization.get_default_qconfig(backend)</span><br><span class="line">torch.quantization.prepare(m, inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""Calibrate</span></span><br><span class="line"><span class="string">- This example uses random data for convenience. Use representative (validation) data instead.</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">with</span> torch.inference_mode():</span><br><span class="line">  <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    x = torch.rand(<span class="number">1</span>,<span class="number">2</span>, <span class="number">28</span>, <span class="number">28</span>)</span><br><span class="line">    m(x)</span><br><span class="line">    </span><br><span class="line"><span class="string">"""Convert"""</span></span><br><span class="line">torch.quantization.convert(m, inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""Check"""</span></span><br><span class="line">print(m[[<span class="number">1</span>]].weight().element_size()) <span class="comment"># 1 byte instead of 4 bytes for FP32</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## FX GRAPH</span></span><br><span class="line"><span class="keyword">from</span> torch.quantization <span class="keyword">import</span> quantize_fx</span><br><span class="line">m.eval()</span><br><span class="line">qconfig_dict = &#123;<span class="string">""</span>: torch.quantization.get_default_qconfig(backend)&#125;</span><br><span class="line"><span class="comment"># Prepare</span></span><br><span class="line">model_prepared = quantize_fx.prepare_fx(model_to_quantize, qconfig_dict)</span><br><span class="line"><span class="comment"># Calibrate - Use representative (validation) data.</span></span><br><span class="line"><span class="keyword">with</span> torch.inference_mode():</span><br><span class="line">  <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    x = torch.rand(<span class="number">1</span>,<span class="number">2</span>,<span class="number">28</span>, <span class="number">28</span>)</span><br><span class="line">    model_prepared(x)</span><br><span class="line"><span class="comment"># quantize</span></span><br><span class="line">model_quantized = quantize_fx.convert_fx(model_prepared)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>静态量化比动态量化更快；</li>
+<li>静态量化模型可能需要定期重新校准以保持对分布漂移的鲁棒性。</li>
+</ul>
+<h2 id="2-3-Quantization-aware-Training-QAT"><a href="#2-3-Quantization-aware-Training-QAT" class="headerlink" title="2.3 Quantization-aware Training (QAT)"></a>2.3 Quantization-aware Training (QAT)</h2><p><img src="https://pytorch.org/assets/images/quantization-practice/qat-flowchart.svg" style="zoom:25%;"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># QAT follows the same steps as PTQ, with the exception of the training loop before you actually convert the model to its quantized version</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line">backend = <span class="string">"fbgemm"</span>  <span class="comment"># running on a x86 CPU. Use "qnnpack" if running on ARM.</span></span><br><span class="line"></span><br><span class="line">m = nn.Sequential(</span><br><span class="line">     nn.Conv2d(<span class="number">2</span>,<span class="number">64</span>,<span class="number">8</span>),</span><br><span class="line">     nn.ReLU(),</span><br><span class="line">     nn.Conv2d(<span class="number">64</span>, <span class="number">128</span>, <span class="number">8</span>),</span><br><span class="line">     nn.ReLU()</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="string">"""Fuse"""</span></span><br><span class="line">torch.quantization.fuse_modules(m, [<span class="string">'0'</span>,<span class="string">'1'</span>], inplace=<span class="literal">True</span>) <span class="comment"># fuse first Conv-ReLU pair</span></span><br><span class="line">torch.quantization.fuse_modules(m, [<span class="string">'2'</span>,<span class="string">'3'</span>], inplace=<span class="literal">True</span>) <span class="comment"># fuse second Conv-ReLU pair</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""Insert stubs"""</span></span><br><span class="line">m = nn.Sequential(torch.quantization.QuantStub(), </span><br><span class="line">                  *m, </span><br><span class="line">                  torch.quantization.DeQuantStub())</span><br><span class="line"></span><br><span class="line"><span class="string">"""Prepare"""</span></span><br><span class="line">m.train()</span><br><span class="line">m.qconfig = torch.quantization.get_default_qconfig(backend)</span><br><span class="line">torch.quantization.prepare_qat(m, inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""Training Loop"""</span></span><br><span class="line">n_epochs = <span class="number">10</span></span><br><span class="line">opt = torch.optim.SGD(m.parameters(), lr=<span class="number">0.1</span>)</span><br><span class="line">loss_fn = <span class="keyword">lambda</span> out, tgt: torch.pow(tgt-out, <span class="number">2</span>).mean()</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(n_epochs):</span><br><span class="line">  x = torch.rand(<span class="number">10</span>,<span class="number">2</span>,<span class="number">24</span>,<span class="number">24</span>)</span><br><span class="line">  out = m(x)</span><br><span class="line">  loss = loss_fn(out, torch.rand_like(out))</span><br><span class="line">  opt.zero_grad()</span><br><span class="line">  loss.backward()</span><br><span class="line">  opt.step()</span><br><span class="line"></span><br><span class="line"><span class="string">"""Convert"""</span></span><br><span class="line">m.eval()</span><br><span class="line">torch.quantization.convert(m, inplace=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>QAT 准确率比 PTQ 高；</li>
+<li>量化参数可以随着模型一起训练；</li>
+<li>QAT 的模型重训可能需要消耗不少时间。</li>
+</ul>
+<h1 id="3-灵敏度分析"><a href="#3-灵敏度分析" class="headerlink" title="3. 灵敏度分析"></a>3. 灵敏度分析</h1><p>并不是所有层在量化中起到的作用都是相等的，有些层对准确率的影响可能会比较大，要想找出最优的量化层与准确率的解是比较消耗时间的，所以人们提出使用 <em>one-at-a-time</em> 方法来分析那些层对准确率最敏感，然后再 32-bit 浮点数上重训：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ONE-AT-A-TIME SENSITIVITY ANALYSIS </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> quantized_layer, _ <span class="keyword">in</span> model.named_modules():</span><br><span class="line">  print(<span class="string">"Only quantizing layer: "</span>, quantized_layer)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># The module_name key allows module-specific qconfigs. </span></span><br><span class="line">  qconfig_dict = &#123;<span class="string">""</span>: <span class="literal">None</span>, </span><br><span class="line">  <span class="string">"module_name"</span>:[(quantized_layer, torch.quantization.get_default_qconfig(backend))]&#125;</span><br><span class="line"></span><br><span class="line">  model_prepared = quantize_fx.prepare_fx(model, qconfig_dict)</span><br><span class="line">  <span class="comment"># calibrate</span></span><br><span class="line">  model_quantized = quantize_fx.convert_fx(model_prepared)</span><br><span class="line">  <span class="comment"># evaluate(model)</span></span><br></pre></td></tr></table></figure>
+<p>Pytorch 停工了分析工具：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># extract from https://pytorch.org/tutorials/prototype/numeric_suite_tutorial.htmlimport torch.quantization._numeric_suite as nsdef SQNR(x, y):    # Higher is better    Ps = torch.norm(x)    Pn = torch.norm(x-y)    return 20*torch.log10(Ps/Pn)wt_compare_dict = ns.compare_weights(fp32_model.state_dict(), int8_model.state_dict())for key in wt_compare_dict:    print(key, compute_error(wt_compare_dict[key]['float'], wt_compare_dict[key]['quantized'].dequantize()))act_compare_dict = ns.compare_model_outputs(fp32_model, int8_model, input_data)for key in act_compare_dict:    print(key, compute_error(act_compare_dict[key]['float'][0], act_compare_dict[key]['quantized'][0].dequantize()))</span></span><br></pre></td></tr></table></figure>
+<h1 id="4-模型量化工作流"><a href="#4-模型量化工作流" class="headerlink" title="4. 模型量化工作流"></a>4. 模型量化工作流</h1><p><img src="https://pytorch.org/assets/images/quantization-practice/quantization-flowchart2.png" alt></p>
+<h1 id="5-写在最后"><a href="#5-写在最后" class="headerlink" title="5. 写在最后"></a>5. 写在最后</h1><ul>
+<li>大模型（参数量大于 1 千万）对量化误差更鲁棒；</li>
+<li>从 FP32 开始训练模型比 INT8 开始训练模型准确率更高；</li>
+<li>如果模型中有大量的线性层或者递归层，可以首先考虑动态量化；</li>
+<li>用 <code>MinMax</code> 对称 per-channel 量化权重，用 <code>MovingAverageMinMax</code> 非对称 per-tensor 量化激活函数。</li>
+</ul>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://pytorch.org/blog/quantization-in-practice/" target="_blank" rel="noopener">Practical Quantization in PyTorch</a></li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-03-15T15:17:53+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年3月15日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/quantization/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>quantization</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/02/25/quantization/&title=模型压缩——网络量化 | Rogerspy's Home&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/02/25/quantization/&title=模型压缩——网络量化 | Rogerspy's Home&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3aQW7DMAwFUd//0u66CGTMJ+MWokarAE1sPS1YUuR14XV/rM+/8u+Tt1xvLBkyZGzLuB/X87aeX/z8zNUTnt+7fKMMGTIOYKw2wT+TrZNgSr4vQ4YMGZ2tPz+B8GTIkCGjz+CYfhErQ4YMGWkRm5apd7j+qBaXIUPGhgweCv/+8yv9DRkyZGzFqAVEniz2E0S0KxkyZIxmpJf1pEwlm+btzOAJMmTIOIxRa1L2C85WcJchQ8ZoxreGHtLrtrSpUGw5yJAhY3NG7bq/H5prSecy4MqQIeMABi87O6MSvNnJC93lraEMGTIGMXiqlxaoadugliAGWa0MGTK2ZbxxvZU2MmvF7a/PMmTIGM1Ii8la+vhGy3P5KxkyZIxjPG89Hb8gV288iAeBW4YMGQcwatdnvNDlG+Ul8ZWehwwZMgYxOu2B2mVZOpCBhi1kyJAxiNEPgukQWGd0g1zeyZAhYx4jvVwjgxSdIyg2EmTIkDGa0dnce2Nk5FiXnQ0ZMmSMZvBr/dqwKQ+sPK1cdjlkyJAxmtFJ+NIkj496oH8GMmTIOIBB0rj0yow8gSDRIcqQIWMo4w4XD4L9IBsMq8mQIWM0g6/a4Fda0JJj4ummDBkyJjFqQbbTnkyP7GsnLUOGjM0Z343fZEiiRo1rcRkyZMjA7YRaG+DfAq4MGTIGMWrbSgfO0DdlyJBxAIOkbrW2Jf8tGUeTIUPGmYw07+JgfiWXFsDFpqYMGTL2Y/wAfMwD8c/eGAQAAAAASUVORK5CYII='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/02/25/quantization/&title=模型压缩——网络量化 | Rogerspy's Home&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/03/08/cekl/" rel="prev" title="交叉熵与 KL 散度">
+                                  
+                                      交叉熵与 KL 散度
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/cross-entropy/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>cross-entropy</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/02/15/knowledge-distilling/" rel="prev" title="模型压缩——知识蒸馏">
+                                    
+                                        模型压缩——知识蒸馏
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/knowledge-distillation/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>knowledge distillation</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '模型压缩——网络量化',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-理论基础"><span class="toc-text">1. 理论基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-映射函数"><span class="toc-text">1.1 映射函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-量化参数"><span class="toc-text">1.2 量化参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-校准"><span class="toc-text">1.3 校准</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-Per-Tensor-and-Per-Channel-量化策略"><span class="toc-text">1.4 Per-Tensor and Per-Channel 量化策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-QConfig"><span class="toc-text">1.5 QConfig</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-In-Pytorch"><span class="toc-text">2. In Pytorch</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Post-Training-Dynamic-Weight-only-Quantization"><span class="toc-text">2.1 Post-Training Dynamic/Weight-only Quantization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Post-Training-Static-Quantization-PTQ"><span class="toc-text">2.2 Post-Training Static Quantization (PTQ)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Quantization-aware-Training-QAT"><span class="toc-text">2.3 Quantization-aware Training (QAT)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-灵敏度分析"><span class="toc-text">3. 灵敏度分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-模型量化工作流"><span class="toc-text">4. 模型量化工作流</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-写在最后"><span class="toc-text">5. 写在最后</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://rogerspy.github.io/data_structure_algorithm/"
+          
+          
+          id="https:rogerspy.github.iodata_structure_algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fab fa-kaggle fa-fw" aria-hidden="true"></i>
+          
+          Kaggle
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-brain fa-fw" aria-hidden="true"></i>
+          
+          思维逻辑
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+          
+          学习小测
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://paperswithcode.com/datasets"
+          
+          
+          id="https:paperswithcode.comdatasets">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/incremental-learning/"><div class='name'>Incremental Learning</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(15)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.22px; color: #8a8a8a">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19.56px; color: #737373">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.67px; color: #6c6c6c">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.67px; color: #6c6c6c">NLP</a> <a href="/tags/nmt/" style="font-size: 22.89px; color: #5d5d5d">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/smoothing/" style="font-size: 14px; color: #999">Smoothing</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.22px; color: #8a8a8a">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.11px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.11px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 18.44px; color: #7b7b7b">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 17.33px; color: #828282">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.78px; color: #646464">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.11px; color: #919191">词向量</a> <a href="/tags/词向量压缩/" style="font-size: 14px; color: #999">词向量压缩</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>知识图谱：知识建模（一）不那么简要的知识建模简介 | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="archives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/07/23/kg-data-modelling/">
+        知识图谱：知识建模（一）不那么简要的知识建模简介
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-07-23</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/知识图谱/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>知识图谱</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">8.7k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">34分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/kgicon.png" alt></p>
+<h1 id="1-序言"><a href="#1-序言" class="headerlink" title="1. 序言"></a>1. 序言</h1><h2 id="1-1-什么是知识建模（语义建模）"><a href="#1-1-什么是知识建模（语义建模）" class="headerlink" title="1.1 什么是知识建模（语义建模）?"></a>1.1 什么是知识建模（语义建模）?</h2><blockquote>
+<p>通过赋予数据指定的概念和数据之间的关系使数据包含语义。</p>
+</blockquote>
+<a id="more"></a>
+<p>本质上讲，我们是通过明确数据代表的概念以及概念之间的关系来对数据进行建模。这样一个知识模型必须同时被人类和计算机所理解。对于人类来说相对比较容易，因为我们可以通过文字和数字对任意我们想要的东西进行建模，更重要的是赋予计算机更多的思考。</p>
+<h2 id="1-2-我们为什么要知识建模？"><a href="#1-2-我们为什么要知识建模？" class="headerlink" title="1.2 我们为什么要知识建模？"></a>1.2 我们为什么要知识建模？</h2><p>对于数据来说，上下文信息非常重要。比如 “苹果”，我们是在讨论苹果电子产品还是水果？作为人类，当给定上下文的时候，我们可以很轻易的判断我们在讨论什么。当我说，“昨天买的苹果真好吃！”没有人会觉得我啃了一部手机。这就是问题的关键，没有上下文，数据所携带的信息总是不明确的。知识模型就是赋予数据以意义，避免这种歧义。</p>
+<p>另外，还可以通过概念之间的关系帮助我们发散思维，找到数据之间的关联性。比如，“张三”是“张四”的父亲，而“张四”又是“张五”的父亲。人类可以很轻易的发现“张三”和“张五”是祖孙关系，但是如果没有知识模型构建的数据之间的关系，那么计算机是无法得知“张三”与“张五”的关系的。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210823222116.png" alt></p>
+<h2 id="1-3-Led-Zeppelin-乐队知识模型"><a href="#1-3-Led-Zeppelin-乐队知识模型" class="headerlink" title="1.3 Led Zeppelin 乐队知识模型"></a>1.3 Led Zeppelin 乐队知识模型</h2><p>解释知识模型最好的方式就是举例子。下图展示了一个 Led Zeppelin 乐队简单的知识模型，包括一些与 Led Zeppelin 相关的概念和概念之间的关系。从图中我们可以看到， Led Zeppelin 是一个乐队，它有一张专辑叫做 “ Led Zeppelin IV”，这张专辑发布于 “1971年11月8日”，专辑中有一首歌叫做 “Black Dog”。“Jimmy Page” 是一个人，也是乐队的成员之一。当然这只是一小部分数据，我们仅仅用这部分数据作为一个例子进行介绍。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210823225518.png" style="zoom:67%;"></p>
+<p>知识模型也可以将信息排列成层次结构。比如“唱片”和“歌曲”都是“具有创造性的作品”，同时“具有创造性的作品”还包括“书籍”、“电影”、“雕塑”等等。</p>
+<p>上图中大多数的关系都是用实线箭头连接的，除了 “is a” 关系是用虚线箭头连接的。这是因为 “is a” 代表了一类特殊的关系——“rdf:type”。现在先不用管这啥，在后面的章节会介绍。</p>
+<h1 id="2-知识模型基础"><a href="#2-知识模型基础" class="headerlink" title="2. 知识模型基础"></a>2. 知识模型基础</h1><p>虽然我么现在有了一张看起来很漂亮的图，但是如果计算机不能理解这张图，再漂亮也白搭。如何让计算机从图中抽取语义信息？下面我们就来介绍一个非常有用的工具——<strong>RDF</strong>。</p>
+<h2 id="2-1-理解-RDF"><a href="#2-1-理解-RDF" class="headerlink" title="2.1 理解 RDF"></a>2.1 理解 RDF</h2><p>RDF（<em><a href="https://www.w3.org/TR/rdf11-concepts/" target="_blank" rel="noopener">Resource Description Framework</a></em>），翻译成中文：“资源描述框架”。顾名思义，它是一个用来描述数据的框架。在 RDF 数据模型中，我们用三元组来描述数据。一个三元组包含：<strong>subject</strong>、<strong>object</strong> 和 <strong>predicate</strong>，我们可以简单理解为，一个三元组就是有最简单的“主谓宾”构成的事实描述。RDF 图就是将很多三元组组合起来，其中 subject 和 object 是节点，predicate 是边。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210824001055.png" style="zoom:60%;"></p>
+<div class="container" style="margin-top:40px;margin-bottom:20px;">
+    <div style="background-color:#54c7ec;height:36px;line-height:36px;vertical-align:middle;">
+        <div style="margin-left:10px">
+            <font color="white" size="4">
+                • NOTE
+            </font>
+        </div>
+    </div>
+    <div style="background-color:#F3F4F7">
+        <div style="padding:15px 10px 15px 20px;line-height:1.5;">
+            predicate 的方向很重要！如有必要，我们可以在三元组中定义双向关系，如下图：
+        </div>    
+    </div>    
+</div>
+
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210824002230.png" style="zoom:60%;"></p>
+<p>对于 RDF 来说，节点有三种类型：</p>
+<ul>
+<li><strong>Resources</strong>：你想要描述的概念，比如 Led Zeppelin 乐队知识模型图中的矩形框中的内容。所有的概念都必须有一个唯一的标识符。</li>
+<li><strong>Literals</strong>：即字面量，所有的字面量必须是字符串、数字和日期，如 Led Zeppelin 乐队知识模型图中的圆形框中的内容。</li>
+<li><strong>Blank nodes</strong>：空节点表示没有唯一标识符的数据。</li>
+</ul>
+<h2 id="2-2-URI"><a href="#2-2-URI" class="headerlink" title="2.2 URI"></a>2.2 URI</h2><blockquote>
+<p> 所有的 resources 和 predicates  都必须有<strong>机器可读</strong>的唯一标识符。</p>
+</blockquote>
+<p>为什么标识符的唯一性这么重要？比如，我们要对一个大型组织结构的雇员进行建模，其中可能有很多同名同姓的人，不考虑每个人的昵称的话，你怎么区分到底是财务室的张三，还是技术部的张三，又或者是食堂大厨张三？解决的办法就是每个人都分配一个唯一的标识符——Uniform Resource Identififiers（URIs）。</p>
+<blockquote>
+<p>URI 是一个字符串，用来准确的辨认特定的资源。为了保证统一性，所有的 URI 都有预定义的语法规则。</p>
+</blockquote>
+<p>URI 与我们平时上网的时候，各个网站的 URL 很像。URI 可以是层级结构的（hierarchical URIs），也可以是不透明的（opaque URI）。Hierarchical URI 会包含不同级别的信息，它可以编码资源的位置信息，即资源存放在模型中的哪个位置，或者共享资源的上下文信息。而 opaque URI 不会编码任何信息，它的后缀通常是随机字符串。</p>
+<blockquote>
+<ul>
+<li>Hierarchical：&lt;<a href="http://mycompany.com/people/JediDepartment/LukeSkywalker" target="_blank" rel="noopener">http://mycompany.com/people/JediDepartment/LukeSkywalker</a> &gt;</li>
+<li>Opaque：&lt;<a href="http://mycompany.com/AE04801" target="_blank" rel="noopener">http://mycompany.com/AE04801</a> &gt;</li>
+</ul>
+</blockquote>
+<p>上例中 hierarchical URI 是人类可读的。从中我们知道 <em>Luke Skywalker</em> 为 <em>My Company</em> 工作，他是 <em>Jedi Department</em> 部门的员工。Opaque URI 同样是代表的 <em>Luke Skywalker</em>，但我们很难从中读取到任何信息。这就意味着 Opaque URI 的隐私性非常强。Opaque URI 的另一个优点是，不需要经常更新。比如如果 <em>Luke Skywalker</em> 变更了工作，从 <em>Jedi Department</em> 部门调到财务部门。Opaque URI 不需要做任何变更，而 Hierarchical URI 就要跟着改变。</p>
+<p>从上面的例子中，我们可以看到两种 URI 各有优劣势，那么什么样的 URI 是一个好的 URI 呢？对此 <a href="https://www.ebi.ac.uk/rdf/documentation/good_practice_uri/" target="_blank" rel="noopener">European Bioinformatics Institute</a> 给出了几个性质，总结起来就是：</p>
+<ul>
+<li><strong>全局唯一性</strong>：一个 URI 决不能被两个不同的概念同时引用，即使两个概念是等价的。</li>
+<li><strong>持久性</strong>：在可预见的将来，URI 要保证可用性。</li>
+<li><strong>稳定性</strong>：一个 URI 决不能在不同的数据上重复使用，即使原来的版本已经删除了。</li>
+<li><strong>可解析性（不可引用性）</strong>：简单来说就是，当用户在自己的浏览器上点击 URI 的时候，我们希望浏览器能重定向到合适的文档。</li>
+</ul>
+<p>在介绍 <em>Skywalker</em> 的时候，我随便造了一个 URI，用浏览器访问的时候会返回给你“404 Page Not Found”，也就是说这个 URI 不是一个好的 URI，因为它不满足上面第四个性质：可解析性。</p>
+<p>下面我们回到 Led Zeppelin 的例子。我们用 URI 来表示三元组：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210824102652704.png" alt></p>
+<p>当我们点击上面的 URI 的时候，浏览器会给我们展示相关的资源页面，比如：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210824103813.png" alt></p>
+<p>上面我们是将一个三元组用 URI 来表示，而我们要做的是将所有的三元组都用 URI 来表示。但是全部都用完整的 URI 的话显得多余，所以我们可以用<strong>前缀</strong>：</p>
+<ol>
+<li>用 <code>@prefix</code> 作为定义前缀的开始；</li>
+<li>选择前缀名；</li>
+<li>描述前缀的命名空间；</li>
+<li>以句号 <code>.</code> 结尾.</li>
+</ol>
+<div style="text-align: center">
+    <span style="background-color:#FFE4B5">@prefix</span>&nbsp;&nbsp;
+    <span style="background-color:#EE82EE">prefix name</span>&nbsp;&nbsp;
+    <span style="background-color:#FFC1C1">:</span>&nbsp;&nbsp;
+    <span style="background-color:#98FB98"> &lt; resource namespace &gt;</span>&nbsp;&nbsp;
+    <span style="background-color:#00BFFF">.</span>
+</div>
+
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@prefix wd: &lt;https://www.wikidata.org/wiki/&gt;.</span><br></pre></td></tr></table></figure>
+<p>现在回到上面的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@prefix wd: &lt;https://www.wikidata.org/wiki/&gt;.</span><br><span class="line">@prefix wdp: &lt;https://www.wikidata.org/wiki/Property&gt;</span><br><span class="line"></span><br><span class="line">&lt;wd:Q2331&gt; &lt;wdp:P527&gt; &lt;wd:Q16546&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210824112850.png" alt></p>
+<p>现在我们就可以将整个图用 URI 来表示了：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/23.png" style="zoom: 67%;"></p>
+<p>从图中我们可以看到，大多数的 URI 都是源自 Wikidata，少部分看起来有点奇怪，比如 <code>schema</code>、 <code>rdf</code>、<code>rdfs</code>。在介绍这几个比较奇怪的 URI 之前，我们再多说点关于<strong>空节点</strong>，即 “blank node” 的事情。</p>
+<h2 id="2-3-Blank-node"><a href="#2-3-Blank-node" class="headerlink" title="2.3 Blank node"></a>2.3 Blank node</h2><p>空节点表示没有 URI 或者没有 Literal 的资源。听起来好像空节点是非法节点，但是实际上 RDF 允许这种情况的存在。必须说明的是，空节点只能出现在节点上，边是不允许的。空节点的 URI 并非是未知的，而是匿名的。当你想要表示一个复杂的资源特征，但是又不知道特征的名字，比如具体地址的街道门牌号。又或者你希望保护一些信息的隐私。类似于 “&lt;张三&gt;，&lt;生日&gt;，&lt;<em>*</em>&gt;”，我告诉你张三有一个属性叫做生日，但是我不告诉你他的生日是多少。</p>
+<h2 id="2-4-RDFS"><a href="#2-4-RDFS" class="headerlink" title="2.4 RDFS"></a>2.4 RDFS</h2><p>RDFS 即 “RDF Schema”，本质上是一个知识建模的词表，用来表示 RDF 知识模型。RDFS 包含了一系列的属性和其他机制用于描述知识以及知识之间的关系。</p>
+<p>在介绍 RDFS 之前需要搞清楚，我们为什么需要这样一个词表？在我们最初引入 Led Zeppelin 例子的时候，把虚线箭头以下的部分去掉似乎并不影响整体性。实际上这种知识建模的技术就是诞生于 20 世纪 60 年代的语义网络。语义网络有一定的优点，比如容易理解、相关概念容易聚类等。如上面例子展示的，对我们人类来说，整张图的概念很清晰，关系也很明确。但是这样一个图有一个非常严重的问题：</p>
+<p><strong>没有标准！</strong></p>
+<ol>
+<li>节点和边的值没有标准，完全由用户自己定义。</li>
+<li>多源数据融合困难。比如三元组1（鱼，住在，水里），三元组2（鱼，生活在，水里），对于我们人类来说，两个三元组描述的是同一个事实，应该融合成一个三元组。但是对于计算机来说，它无法理解“住在”和“生活在”是同一概念，所以就没有办法自动融合在一起。</li>
+<li>无法区分概念和实例。比如在语义网络中（鱼，是，动物）中，“鱼”和“动物”是同级的概念。而我们很清楚，他们是有上下位关系的。</li>
+</ol>
+<p>为了解决语义网络存在的各种缺点，所以 W3C 制定了统一的标准，而这些标准就是相当于是由权威机构发布一些词汇，用来标准化常见的概念。比如，语义网络中</p>
+<blockquote>
+<p>鱼，是，动物</p>
+<p>羊，是一种，动物</p>
+</blockquote>
+<p>我们将 “是”、“是一种”统一成 <code>rdf:type</code>，其中 <code>rdf</code> 表示前缀，完整的 URI 为 <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code>。这样既完成了标准化，也实现了 URI。</p>
+<h3 id="2-4-1-RDFS-常用词汇"><a href="#2-4-1-RDFS-常用词汇" class="headerlink" title="2.4.1 RDFS 常用词汇"></a>2.4.1 RDFS 常用词汇</h3><p>下面我们就来介绍，RDFS 是如何构建标准化词表的。首先先介绍 “类” 的概念：</p>
+<ul>
+<li><p>知识可以被分成很多组，这些组称之为“<strong>类（class）</strong>”，这些类的成员就是“<strong>实例（instance）</strong>”。类和实例可以通过 URI 加以区分，也可以通过 RDF 属性加以描述。比如 <code>rdf:type</code> 就是用来描述是个实例属于某个类别：</p>
+<blockquote>
+<p>鱼，<code>rdf:type</code>，动物</p>
+</blockquote>
+</li>
+<li><p>类也可以有子类 “<strong>subclass</strong>”，所有子类的实例也是类的实例。</p>
+</li>
+<li><p><strong>属性（property）</strong> 表示连接 subject 和 object 的边，即 predicate。</p>
+</li>
+</ul>
+<p>用 RDFS 中一些重要的 Schema：</p>
+<ul>
+<li><p><strong><code>rdf:Class</code></strong>：定义类节点。比如 “Led Zeppelin”，“Led Zeppelin IV”，“Black Dog”，“Jimmy Page” 都是类。</p>
+</li>
+<li><p><strong><code>rdfs:Literal</code></strong>：用于定义节点的字面量，即字符串或者数字等。比如 “1971/8/11”。</p>
+<div class="container" style="margin-top:40px;margin-bottom:20px;">
+    <div style="background-color:#54c7ec;height:36px;line-height:36px;vertical-align:middle;">
+        <div style="margin-left:10px">
+            <font color="white" size="4">
+                • NOTE
+            </font>
+        </div>
+    </div>
+    <div style="background-color:#F3F4F7">
+        <div style="padding:15px 10px 15px 20px;line-height:1.5;">
+            <code>rdfs:Literal</code> 本身是一个类，同时也是 <code>rdf:Class</code> 的实例。
+        </div>    
+    </div>    
+</div>
+</li>
+<li><p><strong><code>rdf:Property</code></strong>：属性，即连接节点的边，还可以通过 <code>rdfs:subPropertyOf</code> 定义子属性。有一个很特殊而又常用的属性 <code>rdf:type</code> 用来描述一个实体是一个类别的实例，特殊在于我们经常缩写成 <code>a</code>。</p>
+</li>
+<li><p><strong><code>rdfs:domain</code> </strong> 和 <strong><code>rdfs:range</code></strong>：用来指定 <code>rdf:Property</code> 的定义域和值域。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;hasMember&gt; a rdf:Property . </span><br><span class="line">&lt;hasMember&gt; rdfs:domain &lt;Band&gt; . </span><br><span class="line">&lt;hasMember&gt; rdfs:range &lt;Person&gt; .</span><br><span class="line"></span><br><span class="line"># 用自然语言描述就是:</span><br><span class="line"># &lt;hasMember&gt; 是一条边</span><br><span class="line"># 定义域（subject）是&lt;Band&gt;</span><br><span class="line"># 值域（object）是&lt;Person&gt;</span><br><span class="line"># 等效于： &lt;Band&gt; &lt;hasMember&gt; &lt;Person&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>rdfs:subClassOf</code></strong>：定义类的子类，可以用来构建层级关系。比如，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;musician&gt; &lt;rdfsLsubClassOf&gt; &lt;Person&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>rdfs:label</code></strong> 和 <strong><code>rdfs:comments</code></strong>：之前介绍的 RDFS 词汇使数据变成计算机可读，但是我们还是希望对人类也可读。<code>rdfs:label</code> 是给一个节点人类可读的名字，帮助我们理解该节点，对 opaque URI 尤其有用。<code>rdfs:comment</code> 给节点添加文本描述，有点类似于给代码加注释。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;hasMember&gt; rdfs:label “has member” . </span><br><span class="line">&lt;hasMember&gt; rdfs:comment “Property relating a band to one of its band members” .</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2-5-OWL"><a href="#2-5-OWL" class="headerlink" title="2.5 OWL"></a>2.5 OWL</h2><p>RDFS 是节点和关系的标准化词汇表。随着技术的发展，人们发现 RDFS 的表达能力相当有限，因此提出了OWL。我们可以把 OWL 当做是 RDFS 的一个扩展，其添加了额外的预定义词汇。</p>
+<p>OWL 也定义了类、属性和实例。不同于 RDFS，OWL 有更丰富，更严格的词汇表。这里可能会有一个疑问：既然 OWL 覆盖了 RDFS 大部分词汇，而且比 RDFS 表达能力更强，那我们为什么还要用 RDFS？</p>
+<p>这就有点像牛刀可以用来杀鸡，但是不提倡，道理是一样的。虽然 OWL 表达能力更强，但是同时要求也更严格。当我们构建的知识模型本身就比较简单的时候， RDFS 就足够了。</p>
+<p>OWL 的好处是，它支持和集成了 RDFS 的元素。比如 在OWL 里你仍可以用 <code>rdf:type</code>、<code>rdfs:range</code>、<code>rdfs:subPropertyOf</code> 等。</p>
+<p>另外， OWL 也定义了自己的词汇，这些词汇比 RDFS 更细致。可以对一些属性添加约束，比如 <code>owl:allValuesFrom</code> 可以定义类的取值范围。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;hasParent&gt; owl:allValuesFrom &lt;Human&gt; .</span><br></pre></td></tr></table></figure>
+<p>OWL 也支持用一系列操作来描述知识。比如，<code>owl:unionOf</code> 可以用来表示类，比如水果，包含甜水果和不甜的水果。<code>owl:unionOf</code> 的 subject 也可以是空节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Fruit&gt; owl:unionOf ( &lt;SweetFruit&gt; &lt;NonSweetFruit ) .</span><br></pre></td></tr></table></figure>
+<p>我们还可以用 OWL 定义反向关系。还记得上面 Darth Vader 和 Luke 的例子吗？我们可以通过 <code>owl:inverseOf</code> 来定义 “<hasson>” 和 “<hasfather>” 是一对互逆关系：</hasfather></hasson></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;hasSon&gt; owl:inverseOf &lt;hasFather&gt; .</span><br></pre></td></tr></table></figure>
+<p>OWL 中另一个重要的词汇是 <code>owl:sameAs</code>，它用来表示两个实体是相同的。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;BillClinton&gt; owl:sameAs &lt;WilliamJeffersonClinton&gt; .</span><br></pre></td></tr></table></figure>
+<p>另一个用来表示两个类是等价的词汇是 <code>owl:equivalentClass</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;USPresident&gt; owl:equivalentClass &lt;PrincipalResidentOfWhiteHouse&gt; .</span><br></pre></td></tr></table></figure>
+<p>说两个事情是等价的看起来有点多余，但是这确实是 OWL 的一大优势。用“等价”描述可以很轻松的引用外部知识模型和本体。比如，你可以说 wikidata 中的 Al Pacino 和 IMDB 中的 Al Pacino 是等价的。这个在帮助你构建知识模型的时候省掉很多工作。</p>
+<p>最后， WOL 还可以定义两种不同的 property：</p>
+<ul>
+<li><strong>Object property</strong>：实体与实体之间的关系（&lt;hasMember &gt;）</li>
+<li><strong>Data propery</strong>：实体与属性的关系（&lt;birthDay &gt;）</li>
+</ul>
+<h1 id="3-知识建模的步骤"><a href="#3-知识建模的步骤" class="headerlink" title="3. 知识建模的步骤"></a>3. 知识建模的步骤</h1><p>前面我们介绍了关于知识模型的理论，接下来就是如何用上面的理论一步一步从头构建一个知识模型。在实际的项目当中，不建议自己从头构建知识模型。现在有很多领域已经有专家、工程师构建好的知识模型，我们可以以此为基础进行开发。本文是为了介绍相关知识，所以介绍从头构建知识模型的内容。</p>
+<p>这里我们主要介绍两点：</p>
+<ul>
+<li>RDF 知识模型的语法，或者更正式一点的说法——RDF 数据的序列化。</li>
+<li>帮助我们进行知识建模的工具——Protege。</li>
+</ul>
+<h2 id="3-1-RDF-序列化"><a href="#3-1-RDF-序列化" class="headerlink" title="3.1 RDF 序列化"></a>3.1 RDF 序列化</h2><p>RDF 是一种知识描述框架，本质上也是一种模型。而序列化就是要讲这种描述框架落到实处。就像算法本身只是一种数学模型，而要如何实现算法就具体依赖你使用什么编程语言。RDF 三元组的序列化就是使用“编程语言”把它实现出来。RDF 序列化方法有多种：</p>
+<ul>
+<li><p>RDF/XML：就是用XML的格式来表示 RDF 数据。之所以提出这个方法，是因为 XML 的技术比较成熟，有许多现成的工具来存储和解析 XML。然而，对于 RDF 来说，XML 的格式太冗长，也不便于阅读，通常我们不会使用这种方式来处理 RDF 数据。</p>
+</li>
+<li><p>N-Triples：即用多个三元组来表示 RDF 数据集，是最直观的表示方法。在文件中，每一行表示一个三元组，方便机器解析和处理。</p>
+</li>
+<li>Turtle：应该是使用得最多的一种 RDF 序列化方式了。它比 RDF/XML 紧凑，且可读性比 N-Triples 好。</li>
+<li>RDFa：即“The Resource Description Framework in Attributes”，是 HTML5 的一个扩展，在不改变任何显示效果的情况下，让网站构建者能够在页面中标记实体，像人物、地点、时间、评论等等。也就是说，将 RDF 数据嵌入到网页中，搜索引擎能够更好的解析非结构化页面，获取一些有用的结构化信息。</li>
+<li>Json-LD：即“JSON for Linking Data”，用键值对的方式来存储 RDF 数据。</li>
+</ul>
+<p>我们以 Turtle 为例进行介绍，因为如上所述，它是目前用的最多的一种序列方法。Turtle 简称 TTL，表示 Time To Live。</p>
+<h3 id="Turtle"><a href="#Turtle" class="headerlink" title="Turtle"></a>Turtle</h3><p>为了解释 TTL，我们从 TTL 的<a href="https://www.w3.org/TR/turtle/" target="_blank" rel="noopener">官网</a> 借来一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@base &lt;http://example.org/&gt; .</span><br><span class="line">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .</span><br><span class="line">@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .</span><br><span class="line">@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .</span><br><span class="line">@prefix rel: &lt;http://www.perceive.net/schemas/relationship/&gt; .</span><br><span class="line"></span><br><span class="line">&lt;#green-goblin&gt; rel:enemyOf &lt;#spiderman&gt; ;</span><br><span class="line">&lt;#green-goblin&gt; a foaf:Person ;    # in the context of the Marvel universe</span><br><span class="line">&lt;#green-goblin&gt; foaf:name &quot;Green Goblin&quot; .</span><br><span class="line"></span><br><span class="line">&lt;#spiderman&gt; rel:enemyOf &lt;#green-goblin&gt; ;</span><br><span class="line">&lt;#spiderman&gt; a foaf:Person ;</span><br><span class="line">&lt;#spiderman&gt; foaf:name &quot;Spiderman&quot;, &quot;Человек-паук&quot;@ru .</span><br></pre></td></tr></table></figure>
+<p>下面我们详细介绍这个例子。</p>
+<ul>
+<li><p>1-5 行：定义前缀。任何好的 TTL 文件都是先定义前缀。其中 2-3 行是我们之前介绍的 <code>rdf</code> 和 <code>rdfs</code>，4-5 行是两个新词 <code>foaf</code> 和 <code>rel</code>。第 1 行 <code>base</code> 是比较特殊的前缀，它表示一个基础的 URI，所有 “&lt;&gt;” 内的内容都是属于它的命名空间。需要注意的是，每一行都必须有 “.” 作为结束。</p>
+</li>
+<li><p>7-9 行：描述了一条关于“&lt;#green-goblin&gt;”的知识。</p>
+<ol>
+<li><code>&lt;#green-goblin&gt;</code> 就是以 <code>@base</code> 为前缀的节点，等价于 <code>&lt;http://example.org/#green-goblin&gt;</code>。</li>
+<li><code>rel:enemyOf</code> 表示以 <code>rel</code> 为前缀的关系，等价于 <code>&lt;http://www.perceive.net/schemas/relationship/enemyOf&gt;</code>。后面的 <code>&lt;#spiderman&gt;</code> 和 <code>&lt;#green-goblin&gt;</code> 类似。</li>
+<li><code>a</code> 表示 <code>rdf:type</code>，后面的表示法都与之前类似。</li>
+<li>这三行描述的信息是：Green Goblin 有一个敌人叫做 Spiderman，Green Goblin 是一个人，Green Goblin 的名字叫做 Green Goblin。</li>
+<li>字符串用双引号表示。</li>
+<li>注释用 “#” 。</li>
+<li>每一个三元组都以 “<strong>空格  .</strong>” 结尾。</li>
+</ol>
+</li>
+<li><p>每一个三元组都写 &lt;#green-goblin&gt; 有点重复，显得笨重又耗时。我们可以用 <strong>predicate list</strong> 的方法，将有相同 subject 的描述组合在一起，每条 predicate-object 描述用 “;” 分割。然后最后一条 predicate list 用空格和句号结束。我们将 7-9 行和11-13 行改造如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;#green-goblin&gt;</span><br><span class="line">    rel:enemyOf &lt;#spiderman&gt; ;</span><br><span class="line">    a foaf:Person ;    # in the context of the Marvel universe</span><br><span class="line">    foaf:name &quot;Green Goblin&quot; .</span><br><span class="line">    </span><br><span class="line">&lt;#spiderman&gt;</span><br><span class="line">    rel:enemyOf &lt;#green-goblin&gt; ;</span><br><span class="line">    a foaf:Person ;</span><br><span class="line">    foaf:name &quot;Spiderman&quot;, &quot;Человек-паук&quot;@ru .</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我们来看改造后的第 9 行。Spiderman 有两个名字，一个是英文名，另一个是俄文名。两个英文名之间用 “,” 分割。在俄文名的引号后面有一个语言标签 <code>@ru</code>。语言标签有两部分组成 <code>@</code> 和 语言关键词。</p>
+</li>
+</ul>
+<p>除了上面的例子展示的一些语法，Turtle 还有一些其他语法。比如可以使用 <code>xsd</code> 里指定数据类型，比如日期、字符串、数字等。更详细内容可查看<a href="https://www.w3.org/TR/turtle/" target="_blank" rel="noopener">官网</a>。</p>
+<p>另外，如果你之前已经用一种序列化方法实现了一个知识模型，现在处于某种原因，你想换成另一种序列化方法。不要紧，可以试试这个<a href="https://www.easyrdf.org/converter" target="_blank" rel="noopener">小工具</a>。</p>
+<h2 id="3-2-知识建模工具"><a href="#3-2-知识建模工具" class="headerlink" title="3.2 知识建模工具"></a>3.2 知识建模工具</h2><p>在我看来，有两种方法构建知识模型：</p>
+<ol>
+<li>在文本编辑器中写三元组（手动或者自动）。</li>
+<li>用工具创建三元组。</li>
+</ol>
+<p>就个人而言，我更喜欢前者。因为这样我们可以完全掌控我们要构建的知识模型。更重要的是，不需要从头学习一个工具的使用。当然，这纯属是个人原因。如果你找到一款趁手的工具，完全没必要手写三元组。如果你要手写三元组的话，这里推荐一个 python 包 —— <a href="https://rdflflib.readthedocs.io/en/stable/" target="_blank" rel="noopener">rdflib</a>。</p>
+<p>考虑使用工具的话，现在市面上的开源而又实用的工具只有 <a href="https://protege.stanford.edu" target="_blank" rel="noopener">Protégé</a>。</p>
+<p>Protégé 是斯坦福大学开发的一款本体（本文提到的“本体”等效于“知识模型”）建模工具。包括网页版和桌面版。</p>
+<p>基本上，Protégé 允许用户添加类、对象和数据属性和实例，不需要手写三元组。用过给类添加子类来构建层级结构。知识建模完成以后可以将文件保存成 OWL 文件。</p>
+<h2 id="3-3-按步骤构建知识模型"><a href="#3-3-按步骤构建知识模型" class="headerlink" title="3.3 按步骤构建知识模型"></a>3.3 按步骤构建知识模型</h2><p>斯坦福大学不仅开发了知识建模工具，还发表了一篇文章叫我们怎样进行知识建模——<a href="https://protege.stanford.edu/publications/ontology_development/ontology101.pdf" target="_blank" rel="noopener">《Ontology Development 101 guide》</a>。更详细的内容可以看另一篇文章：<a href="https://rogerspy.gitee.io/2021/08/23/kg-build-ontology-method/">知识图谱：知识建模（二）构建本体的方法论</a>，或者去看原文。</p>
+<p>总的来说，知识建模有三大原则：</p>
+<blockquote>
+<ol>
+<li>对于一个领域来说，没有一个唯一正确的建模方法。我们可以用不同的方法进行建模。最好的方法依赖于实际应用和需求。</li>
+<li>本体构建（知识建模）需要不断迭代。</li>
+<li>本体中的概念和关系应该接近你感兴趣的领域（物理上或逻辑上）。</li>
+</ol>
+</blockquote>
+<p>具体步骤如下：</p>
+<ol>
+<li>确定知识领域及范围，即应用场景。</li>
+<li>确定知识模型的重要概念。</li>
+<li>本体复用。</li>
+<li>定义类，类的层级结构以及关系。</li>
+<li>定义限制条件。</li>
+</ol>
+<h2 id="3-4-可视化知识模型"><a href="#3-4-可视化知识模型" class="headerlink" title="3.4 可视化知识模型"></a>3.4 可视化知识模型</h2><p>无论你是怎么建模的，最后你都希望看下你建模出来的知识模型长什么样子。可视化工具有两种：</p>
+<ol>
+<li><p>Protege 自带的插件 OntoGraf。</p>
+<p>在菜单中选择 Windows -&gt; Tabs -&gt; OntoGraf</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210826102126.png" alt></p>
+</li>
+<li><p>网页工具 <a href="http://vowl.visualdataweb.org/webvo" target="_blank" rel="noopener">WebVOWL</a>。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/第34页-35.PNG" alt></p>
+</li>
+</ol>
+<h1 id="4-知识模型查询"><a href="#4-知识模型查询" class="headerlink" title="4. 知识模型查询"></a>4. 知识模型查询</h1><p>在知识建模的时候，我们提到知识建模的目的是希望它能回答我们一些什么问题。现在，我们就要介绍一下我们该怎么像知识模型问问题。</p>
+<h2 id="4-1-SPARQL"><a href="#4-1-SPARQL" class="headerlink" title="4.1 SPARQL"></a>4.1 SPARQL</h2><p><a href="https://www.w3.org/TR/2008/REC-rdf-sparql-query-20080115/" target="_blank" rel="noopener">SPARQL</a> 是 “SPARQL Protocol and RDF Query Language” 的首字母缩写。SPARQL 对 RDF 来说，就像 SQL 对关系型数据库一样。如果你会一点 SQL，那 SPARQL 学起来也会比较快。</p>
+<p>我们用下面的例子做一个简单的介绍：</p>
+<ul>
+<li><p>例 1：</p>
+<p><strong>数据</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@prefix schemaL &lt;http://schema.org&gt; .</span><br><span class="line">@prefix wd: &lt;http://www.wikidata.org/wiki/&gt; .</span><br><span class="line"></span><br><span class="line">wd:Q2331 schema:album wd:Q201940 .</span><br><span class="line">wd:Q2331 schema:album wd:Q209539 .</span><br></pre></td></tr></table></figure>
+<p>上面这两个三元组相当于：Led Zeppelin (wd:Q2331) 有两张专辑，分别是 wd:Q201940 和 Q209539。</p>
+<p><strong>Query</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@prefix schemaL &lt;http://schema.org&gt; .</span><br><span class="line">@prefix wd: &lt;http://www.wikidata.org/wiki/&gt; .</span><br><span class="line"></span><br><span class="line">SELECT ?album_name</span><br><span class="line">WHRER &#123;</span><br><span class="line">    wd:Q2331 schema:album ?album_name .</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一条查询语句包括两部分：</p>
+<ul>
+<li>SELECT：定义我们要查询的变量（album_name），以 “?” 开头。</li>
+<li>WHERE：定义了基本的匹配模式。</li>
+</ul>
+<p>上面的查询语句返回结果是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wd:Q201940</span><br><span class="line">wd:Q209539</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>例 2：</p>
+<p><strong>数据</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@prefix schemaL &lt;http://schema.org&gt; .</span><br><span class="line">@prefix wd: &lt;http://www.wikidata.org/wiki/&gt; .</span><br><span class="line">@prefix wpd: &lt;http://www.wikidata.org/wiki/Property&gt; .</span><br><span class="line"></span><br><span class="line">wd:Q201940 a wd:208569;  # Led Zeppelin IV 是一张专辑</span><br><span class="line">    wd:P1449 &quot;Led Zeppelin IV&quot;  # 有一个名字叫做 “Led Zeppelin IV”</span><br></pre></td></tr></table></figure>
+<p>上面两条三元组的意思是：Led Zeppelin IV 是一张专辑，Led Zeppelin IV 的名字是 “Led Zeppelin IV”。现在我想查询所有叫做 “Led Zeppelin IV” 的专辑，那我可以用下面的查询语句：</p>
+<p><strong>Query</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@prefix schemaL &lt;http://schema.org&gt; .</span><br><span class="line">@prefix wd: &lt;http://www.wikidata.org/wiki/&gt; .</span><br><span class="line">@prefix wpd: &lt;http://www.wikidata.org/wiki/Property&gt; .</span><br><span class="line"></span><br><span class="line">SELECT ?album</span><br><span class="line">WHERE &#123;</span><br><span class="line">    ?alubm wd:P1449 &quot;Led Zeppelin IV&quot; .</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样，在 SELECT 语句中以 “?” 开头定义我们需要查询的变量，在 WHERE 中定义查询模式。最后返回结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wd:Q201940</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>以上两个例子都是非常基础的查询语句。<a href="https://www.stardog.com/tutorials/sparql/" target="_blank" rel="noopener">Stardog tutorial</a> 是一份非常好的 SPARQL 教程，我们可以在这里找到更详细的介绍。</p>
+<h2 id="4-2-SPARQL-endpoint"><a href="#4-2-SPARQL-endpoint" class="headerlink" title="4.2 SPARQL endpoint"></a>4.2 SPARQL endpoint</h2><p>前面我们已经将某一领域的知识建模完成了，存成了 <code>.ttl</code> 文件。实际上这个 <code>.ttl</code> 文件是一个文本文件。我们说知识查询需要用到 SPARQL 查询语言。但是对于一个文本文件来说，我们能做的似乎只有字符串匹配或者正则匹配。SPARQL 语句应该在哪里输入？又在哪里执行？在哪里输出结果？也就是说，现在我们的知识模型文件和知识查询之间形成了一个断层。填补这个断层的就是 endpoint。这里我们介绍三种 SPARQL endpoint：</p>
+<ul>
+<li>D2RQ SPARQL endpoint</li>
+<li>Apache jena SPARQL endpoint</li>
+<li>rdflib</li>
+</ul>
+<h3 id="4-2-1-D2RQ-SPARQL-endpoint"><a href="#4-2-1-D2RQ-SPARQL-endpoint" class="headerlink" title="4.2.1 D2RQ SPARQL endpoint"></a>4.2.1 D2RQ SPARQL endpoint</h3><p>SPARQL endpoint 用于处理客户端的请求，可以类比web server提供用户浏览网页的服务。通过endpoint，我们可以把数据发布在网上，供用户查询。</p>
+<p>D2RQ 是以虚拟 RDF 的方式访问关系型数据库的一个工具。也就是说，假设我们原来的数据是存储在关系型数据库中的，我们不需要把这些数据手动转成 RDF 型数据，就可以通过 D2RQ 使用 SPARQL 语句而不是 SQL 语句进行查询。</p>
+<p>它的工作原理也很简单，就是 D2RQ 会根据关系型数据库的表结构生成一个 mapping 文件，然后 D2RQ 会根据这个 mapping 文件将 SPARQL 语句翻译成 SQL 语句，然后进行查询。这里隐藏着一个 D2RQ 很重要的一个功能：将关系型数据库的数据转化成 RDF 数据。这也是我们常用来批量生成 RDF 数据的方式。关于这个功能不是我们要介绍的，想了解更多可以去 <a href="http://d2rq.org/getting-started" target="_blank" rel="noopener">D2RQ 的官网</a>进行了解。</p>
+<p>我们通过 D2RQ 中的 D2RQ server 功能来进行 SPARQL 查询。D2RQ server 架构图如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/d2rq_server.png" alt></p>
+<p>进入 D2RQ 目录，使用下面的命令启动 D2R Server:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d2r-server.bat mapping.ttl  # windows</span><br><span class="line">d2r-server mapping.ttl  # linux</span><br></pre></td></tr></table></figure>
+<p>其中 “mapping.ttl” 就是我们上面说的 mapping 文件。</p>
+<blockquote>
+<p>这里多说两句：</p>
+<p>以 mysql 关系型数据库为例。生成 mapping.ttl 的方式如下：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">generate-mapping -u root -o mapping.ttl jdbc:mysql:///demo</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li><code>generate-mapping</code> 是转换命令</li>
+<li><code>-u root</code> 表示关系型数据库的用户名</li>
+<li><code>-o mapping.ttl</code> 表示输出 mapping 文件名，可自定义</li>
+<li><code>jdbc:mysql:///demo</code> 关系型数据库</li>
+</ul>
+<p>生成 mapping 文件之后，根据我们用 protege 知识建模的时候生成的 <code>.owl</code> 文件对 mapping文件进行修改，得到我们最终要用的 mapping 文件。更多关于 mapping 的语法参看：<a href="http://d2rq.org/d2rq-language" target="_blank" rel="noopener">The D2RQ Mapping Language</a>。</p>
+</blockquote>
+<p>此时，D2RQ 服务就启动的。我们有两种方式进行 RDF 查询：</p>
+<ol>
+<li>浏览器中查询</li>
+<li>命令行查询</li>
+<li>Python 脚本查询</li>
+</ol>
+<h4 id="4-2-1-1-浏览器查询"><a href="#4-2-1-1-浏览器查询" class="headerlink" title="4.2.1.1 浏览器查询"></a>4.2.1.1 浏览器查询</h4><p>在浏览器中输入 “<a href="http://localhost:2020/" target="_blank" rel="noopener">http://localhost:2020/</a> ”，可以看到如下页面：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/d2rs-screenshot-start.png" alt></p>
+<p>点击页面右下角红框地方的链接，进入 endpoint。然后就可以进行查询了，如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/sparql_browser.png" style="zoom:80%;"></p>
+<h4 id="4-2-1-2-命令行查询"><a href="#4-2-1-2-命令行查询" class="headerlink" title="4.2.1.2 命令行查询"></a>4.2.1.2 命令行查询</h4><p>使用 <code>d2rq-query</code> 工具进行命令行查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d2r-query mapping.ttl &quot;SELECT * &#123; ?s ?p ?o &#125; LIMIT 10&quot;</span><br></pre></td></tr></table></figure>
+<p>或者加载一个查询文件，比如 <code>query.sparql</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d2r-query mapping.ttl @query.sparql</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-1-3-Python-脚本查询"><a href="#4-2-1-3-Python-脚本查询" class="headerlink" title="4.2.1.3 Python 脚本查询"></a>4.2.1.3 Python 脚本查询</h4><p>通常情况下，我们对 RDF 的查询是集成在代码中的。为了能在代码中进行查询，人们就开发了一个 python 库—— <a href="https://github.com/RDFLib/sparqlwrapper" target="_blank" rel="noopener">SPARQLWrapper</a>。这是一个Python下的包装器，可以让我们十分方便地和endpoint进行交互。下面是通过SPARQLWrapper，向 D2RQ endpoint发送查询“巩俐参演的评分大于 7 的电影有哪些”，得到结果的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> SPARQLWrapper <span class="keyword">import</span> SPARQLWrapper, JSON</span><br><span class="line"></span><br><span class="line">sparql = SPARQLWrapper(<span class="string">"http://localhost:2020/sparql"</span>)</span><br><span class="line">sparql.setQuery(<span class="string">"""</span></span><br><span class="line"><span class="string">    PREFIX : &lt;http://www.kgdemo.com#&gt;</span></span><br><span class="line"><span class="string">    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    SELECT ?n WHERE &#123;</span></span><br><span class="line"><span class="string">      ?s rdf:type :Person.</span></span><br><span class="line"><span class="string">      ?s :personName '巩俐'.</span></span><br><span class="line"><span class="string">      ?s :hasActedIn ?o.</span></span><br><span class="line"><span class="string">      ?o :movieTitle ?n.</span></span><br><span class="line"><span class="string">      ?o :movieRating ?r.</span></span><br><span class="line"><span class="string">    FILTER (?r &gt;= 7)</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">"""</span>)</span><br><span class="line">sparql.setReturnFormat(JSON)</span><br><span class="line">results = sparql.query().convert()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> result <span class="keyword">in</span> results[<span class="string">"results"</span>][<span class="string">"bindings"</span>]:</span><br><span class="line">    print(result[<span class="string">"n"</span>][<span class="string">"value"</span>])</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">2046</span><br><span class="line">Memoirs of a Geisha</span><br><span class="line">荆轲刺秦王</span><br><span class="line">大红灯笼高高挂</span><br><span class="line">霸王别姬</span><br><span class="line">活着</span><br><span class="line">唐伯虎点秋香</span><br><span class="line">秋菊打官司</span><br><span class="line">菊豆</span><br><span class="line">Hong gao liang</span><br><span class="line">画魂</span><br><span class="line">风月</span><br><span class="line">Piao Liang Ma Ma</span><br><span class="line">The Hand</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-2-Apache-jena-SPARQL-endpoint"><a href="#4-2-2-Apache-jena-SPARQL-endpoint" class="headerlink" title="4.2.2 Apache jena SPARQL endpoint"></a>4.2.2 Apache jena SPARQL endpoint</h3><p> <a href="https://jena.apache.org/getting_started/index.html" target="_blank" rel="noopener">Apache jena</a> 严格来说是语义网框架，包括存储、查询和推理组件，架构图如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/jena-architecture.png" style="zoom:70%;"></p>
+<p>我们可以将 <code>.ttl</code> 数据存储到 jena 数据库中，然后通过 Fuseki 查询组件进行查询。操作流程同样是可以在浏览器端和命令行和通过调用 api 在代码里进行操作。这里我们不再详细介绍，在接下来的知识存储相关文章中进行详细介绍。</p>
+<h3 id="4-2-3-RDFLib"><a href="#4-2-3-RDFLib" class="headerlink" title="4.2.3 RDFLib"></a>4.2.3 RDFLib</h3><p><a href="https://rdflib.readthedocs.io/en/stable/intro_to_sparql.html" target="_blank" rel="noopener">RDFLib</a> 是一个 python 包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rdflib</span><br><span class="line">g = rdflib.Graph()</span><br><span class="line">g.parse(<span class="string">"demo.ttl"</span>)  <span class="comment"># 导入 ttl 文件</span></span><br><span class="line"></span><br><span class="line">knows_query = <span class="string">"""</span></span><br><span class="line"><span class="string">SELECT DISTINCT ?aname ?bname</span></span><br><span class="line"><span class="string">WHERE &#123;</span></span><br><span class="line"><span class="string">    ?a foaf:knows ?b .</span></span><br><span class="line"><span class="string">    ?a foaf:name ?aname .</span></span><br><span class="line"><span class="string">    ?b foaf:name ?bname .</span></span><br><span class="line"><span class="string">&#125;"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> qres:</span><br><span class="line">    print(<span class="string">f"<span class="subst">&#123;row.aname&#125;</span> knows <span class="subst">&#123;row.bname&#125;</span>"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-4-Wikidata-Query-Service"><a href="#4-2-4-Wikidata-Query-Service" class="headerlink" title="4.2.4 Wikidata Query Service"></a>4.2.4 Wikidata Query Service</h3><p>如果你想快速体验 SPARQL 的话，wikidata 提供了一个服务——<a href="https://query.wikidata.org/" target="_blank" rel="noopener">Wikidata Query Service</a>：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20210826173014.png" style="zoom:80%;"></p>
+<h2 id="4-3-更多-SPARQL-语法"><a href="#4-3-更多-SPARQL-语法" class="headerlink" title="4.3 更多 SPARQL 语法"></a>4.3 更多 SPARQL 语法</h2><p>接下来，我们再介绍一些比较常用的 SPARQL 语法。</p>
+<h3 id="4-3-1-DISTINCT"><a href="#4-3-1-DISTINCT" class="headerlink" title="4.3.1 DISTINCT"></a>4.3.1 DISTINCT</h3><p>用于数据去重。</p>
+<p><strong>数据</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@prefix  foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .</span><br><span class="line"></span><br><span class="line">_:x    foaf:name   &quot;Alice&quot; .</span><br><span class="line">_:x    foaf:mbox   &lt;mailto:alice@example.com&gt; .</span><br><span class="line"></span><br><span class="line">_:y    foaf:name   &quot;Alice&quot; .</span><br><span class="line">_:y    foaf:mbox   &lt;mailto:asmith@example.com&gt; .</span><br><span class="line"></span><br><span class="line">_:z    foaf:name   &quot;Alice&quot; .</span><br><span class="line">_:z    foaf:mbox   &lt;mailto:alice.smith@example.com&gt; .</span><br></pre></td></tr></table></figure>
+<p><strong>Query</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PREFIX foaf:    &lt;http://xmlns.com/foaf/0.1/&gt;</span><br><span class="line">SELECT DISTINCT ?name WHERE &#123; ?x foaf:name ?name &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>返回结果</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;Alice&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-2-OPTIONAL"><a href="#4-3-2-OPTIONAL" class="headerlink" title="4.3.2 OPTIONAL"></a>4.3.2 OPTIONAL</h3><p>通常的 query 语句只会返回匹配到的数据，OPTIONAL 可以返回一些匹配到的数据包含的额外信息：</p>
+<p><strong>数据</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@prefix foaf:       &lt;http://xmlns.com/foaf/0.1/&gt; .</span><br><span class="line">@prefix rdf:        &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .</span><br><span class="line"></span><br><span class="line">_:a  rdf:type        foaf:Person .</span><br><span class="line">_:a  foaf:name       &quot;Alice&quot; .</span><br><span class="line">_:a  foaf:mbox       &lt;mailto:alice@example.com&gt; .</span><br><span class="line">_:a  foaf:mbox       &lt;mailto:alice@work.example&gt; .</span><br><span class="line"></span><br><span class="line">_:b  rdf:type        foaf:Person .</span><br><span class="line">_:b  foaf:name       &quot;Bob&quot; .</span><br></pre></td></tr></table></figure>
+<p><strong>Query</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;</span><br><span class="line">SELECT ?name ?mbox</span><br><span class="line">WHERE  &#123; ?x foaf:name  ?name .</span><br><span class="line">         OPTIONAL &#123; ?x  foaf:mbox  ?mbox &#125;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>返回结果</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;Alice&quot;	&lt;mailto:alice@example.com&gt;</span><br><span class="line">&quot;Alice&quot;	&lt;mailto:alice@work.example&gt;</span><br><span class="line">&quot;Bob&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-3-UNION"><a href="#4-3-3-UNION" class="headerlink" title="4.3.3 UNION"></a>4.3.3 UNION</h3><p>求并集。</p>
+<p><strong>数据</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@prefix dc10:  &lt;http://purl.org/dc/elements/1.0/&gt; .</span><br><span class="line">@prefix dc11:  &lt;http://purl.org/dc/elements/1.1/&gt; .</span><br><span class="line"></span><br><span class="line">_:a  dc10:title     &quot;SPARQL Query Language Tutorial&quot; .</span><br><span class="line">_:a  dc10:creator   &quot;Alice&quot; .</span><br><span class="line"></span><br><span class="line">_:b  dc11:title     &quot;SPARQL Protocol Tutorial&quot; .</span><br><span class="line">_:b  dc11:creator   &quot;Bob&quot; .</span><br><span class="line"></span><br><span class="line">_:c  dc10:title     &quot;SPARQL&quot; .</span><br><span class="line">_:c  dc11:title     &quot;SPARQL (updated)&quot; .</span><br></pre></td></tr></table></figure>
+<p><strong>Query</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PREFIX dc10:  &lt;http://purl.org/dc/elements/1.0/&gt;</span><br><span class="line">PREFIX dc11:  &lt;http://purl.org/dc/elements/1.1/&gt;</span><br><span class="line"></span><br><span class="line">SELECT ?title</span><br><span class="line">WHERE  &#123; &#123; ?book dc10:title  ?title &#125; UNION &#123; ?book dc11:title  ?title &#125; &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>返回结果</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;SPARQL Protocol Tutorial&quot;</span><br><span class="line">&quot;SPARQL&quot;</span><br><span class="line">&quot;SPARQL (updated)&quot;</span><br><span class="line">&quot;SPARQL Query Language Tutorial&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-4-FILTER"><a href="#4-3-4-FILTER" class="headerlink" title="4.3.4 FILTER"></a>4.3.4 FILTER</h3><p>过滤器。</p>
+<p><strong>数据</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@prefix dc:   &lt;http://purl.org/dc/elements/1.1/&gt; .</span><br><span class="line">@prefix :     &lt;http://example.org/book/&gt; .</span><br><span class="line">@prefix ns:   &lt;http://example.org/ns#&gt; .</span><br><span class="line"></span><br><span class="line">:book1  dc:title  &quot;SPARQL Tutorial&quot; .</span><br><span class="line">:book1  ns:price  42 .</span><br><span class="line">:book2  dc:title  &quot;The Semantic Web&quot; .</span><br><span class="line">:book2  ns:price  23 .</span><br></pre></td></tr></table></figure>
+<p><strong>Query</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PREFIX  dc:  &lt;http://purl.org/dc/elements/1.1/&gt;</span><br><span class="line">SELECT  ?title</span><br><span class="line">WHERE   &#123; ?x dc:title ?title</span><br><span class="line">          FILTER regex(?title, &quot;^SPARQL&quot;) </span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>返回结果</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;SPARQL Tutorial&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-5-ORDER-BY"><a href="#4-3-5-ORDER-BY" class="headerlink" title="4.3.5 ORDER BY"></a>4.3.5 ORDER BY</h3><p>排序。</p>
+<p><strong>数据</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@prefix dc:   &lt;http://purl.org/dc/elements/1.1/&gt; .</span><br><span class="line">@prefix :     &lt;http://example.org/book/&gt; .</span><br><span class="line">@prefix ns:   &lt;http://example.org/ns#&gt; .</span><br><span class="line">@prefix schema: &lt;https://schema.org&gt; .</span><br><span class="line"></span><br><span class="line">:book1  dc:title  &quot;SPARQL Tutorial&quot; .</span><br><span class="line">:book1  ns:price  42 .</span><br><span class="line">:book2  dc:title  &quot;The Semantic Web&quot; .</span><br><span class="line">:book2  ns:price  23 .</span><br><span class="line">:book3 schema:name &quot;A data engineer&apos;s guide to semantic models&quot; .</span><br><span class="line">:book3 ns:price 0 .</span><br></pre></td></tr></table></figure>
+<p><strong>Query</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PREFIX  dc:  &lt;http://purl.org/dc/elements/1.1/&gt;</span><br><span class="line">PREFIX  schema: &lt;https://schema.org&gt; .</span><br><span class="line">SELECT  ?title</span><br><span class="line">WHERE   &#123; </span><br><span class="line">    &#123; ?x dc:title ?title&#125; UNION &#123;?x schema:name ?title&#125;</span><br><span class="line">        &#125;</span><br><span class="line">ORDER BY DESC(?title)</span><br></pre></td></tr></table></figure>
+<p><strong>返回结果</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;A data engineer&apos;s guide to semantic models&quot;</span><br><span class="line">&quot;SPARQL Tutorial&quot;</span><br><span class="line">&quot;The Semantic Web&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-6-LIMIT"><a href="#4-3-6-LIMIT" class="headerlink" title="4.3.6 LIMIT"></a>4.3.6 LIMIT</h3><p><strong>数据</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@prefix dc:   &lt;http://purl.org/dc/elements/1.1/&gt; .</span><br><span class="line">@prefix :     &lt;http://example.org/book/&gt; .</span><br><span class="line">@prefix ns:   &lt;http://example.org/ns#&gt; .</span><br><span class="line">@prefix schema: &lt;https://schema.org&gt; .</span><br><span class="line"></span><br><span class="line">:book1  dc:title  &quot;SPARQL Tutorial&quot; .</span><br><span class="line">:book1  ns:price  42 .</span><br><span class="line">:book2  dc:title  &quot;The Semantic Web&quot; .</span><br><span class="line">:book2  ns:price  23 .</span><br><span class="line">:book3 schema:name &quot;A data engineer&apos;s guide to semantic models&quot; .</span><br><span class="line">:book3 ns:price 0 .</span><br></pre></td></tr></table></figure>
+<p><strong>Query</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PREFIX  dc:  &lt;http://purl.org/dc/elements/1.1/&gt;</span><br><span class="line">PREFIX  schema: &lt;https://schema.org&gt; .</span><br><span class="line">SELECT  ?title</span><br><span class="line">WHERE   &#123; </span><br><span class="line">    &#123; ?x dc:title ?title&#125; UNION &#123;?x schema:name ?title&#125;</span><br><span class="line">        &#125;</span><br><span class="line">ORDER BY DESC(?title)</span><br><span class="line">LIMIT 2</span><br></pre></td></tr></table></figure>
+<p><strong>返回结果</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;A data engineer&apos;s guide to semantic models&quot;</span><br><span class="line">&quot;SPARQL Tutorial&quot;</span><br></pre></td></tr></table></figure>
+<p>更详细的 SPARQL 语法可参考之前提到的资源。</p>
+<h1 id="5-结语"><a href="#5-结语" class="headerlink" title="5. 结语"></a>5. 结语</h1><p>到这里，我们的知识建模简介就结束了。但是对于我们来说，它才刚刚开始。学习这个理论是一个很好的开始，但最好的学习方法是将理论付诸实践。注意建议：当您决定构建一个模型时，尝试与一个团队一起构建模型。由于建模是如此的主观，所以把一群不同的思想家聚集在一起总是一个好主意。语义建模并不一定需要以语义模型开始和结束。</p>
+<p>不管怎样，无论你可能读了多少。我希望我能让你对知识建模领域更了解一点，最重要的是，我希望你能对链接数据感到最小兴奋。毕竟，我们不需要更多的数据，我们需要更多有意义的数据。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><p><a href="https://www.semanticarts.com/a-data-engineers-guide-to-semantic-modelling/" target="_blank" rel="noopener">A DATA ENGINEER’S GUIDE TO SEMANTIC MODELLING</a>, <em>Ilaria Maresi, 2020</em> </p>
+</li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/32122644" target="_blank" rel="noopener">知识图谱基础之RDF，RDFS与OWL</a>, <em>SimmerChan</em></p>
+</li>
+<li><a href="https://zhuanlan.zhihu.com/p/32880610" target="_blank" rel="noopener">实践篇（三）：D2RQ SPARQL endpoint与两种交互方式</a>, <em>SimmerChan</em></li>
+<li><a href="https://zhuanlan.zhihu.com/p/33224431" target="_blank" rel="noopener">实践篇（四）：Apache jena SPARQL endpoint及推理</a>, <em>SimmerChan</em> </li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/kg/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>KG</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/knowledge-modelling/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>knowledge-modelling</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/07/23/kg-data-modelling/&title=知识图谱：知识建模（一）不那么简要的知识建模简介 | Rogerspy's Home&summary=
+1. 序言1.1 什么是知识建模（语义建模）?
+通过赋予数据指定的概念和数据之间的关系使数据包含语义。
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/07/23/kg-data-modelling/&title=知识图谱：知识建模（一）不那么简要的知识建模简介 | Rogerspy's Home&summary=
+1. 序言1.1 什么是知识建模（语义建模）?
+通过赋予数据指定的概念和数据之间的关系使数据包含语义。
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3aQW4jMQwEwPz/01kg57Wnm5TiHGpOhj3xqBRApEl+fcXX98/1/vWrT1/d8/7T5M5jFx4eHt5o6a+uVwt9j2zff096v56HLcDDw8O7xmuDQRIekiM+f/pwQ/Hw8PA+ykuS4DYRvx6K8PDw8P4Ary1e5MvNyxZ4eHh4f4GX/Pjfh5NN+n691oKHh4cX8041wH7z9Qf6e3h4eHjB8dq2xGaJ+KbR9bBOPDw8vAu8fbk2Z7fNrdmzHmoteHh4eGtee7jnTal27CBJl/OCCB4eHt49XhIMkq+elYDbZL0tlODh4eHd5p1qWbXV1Fm4Ks5/PDw8vF/ntYEhwSf3t8HjYTICDw8P7xAvT3bb4mxeH9iUHvDw8PB+n9ce1rNyQFtcyBtmxXfi4eHhHeK1iWze3GpLt/uN/s89eHh4eBd47QBBm86eCi35D4DVfAQeHh5ewDs7bjUrxeZhYzhThoeHh3eU1zbmZ6XYWXLcJusPCjw8PLyjvLMF3FnRIQ85yVY+FCPw8PDwFrz2uJ+1stqhrlMFZTw8PLx7vCsZepzT7gvHUcTDw8PDO8qbpdHJ386S6c3wAR4eHt6neO0ikmZYu1ltSeKhGIGHh4d3iNcmvvvCa/uUduiqmCzDw8PDG/E2pNmMU9seW72Dh4eHd4GXp7ntA2ZJ9iyc1P8APDw8vAVvk+Dmx3HbuJqFn4fRATw8PLxDvE17KWlT5WFmFceSTcHDw8M7xPsur33imweb2cABHh4e3m1e+9Wz1HZTjGg3a4jEw8PDK3l5MEjKFrOUvU3Wi7Xh4eHhXePl5ddN8aJNnQ/cj4eHh/cHeC17P0CwCRt4eHh4n+W1x31e2M2P+3qIAQ8PD+8aLy9GzO6fNbTyIbCHwICHh4d3lNc2wDYLatltmDnQ38PDw8N7t6p/qbcr8DTcDPcAAAAASUVORK5CYII='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/07/23/kg-data-modelling/&title=知识图谱：知识建模（一）不那么简要的知识建模简介 | Rogerspy's Home&summary=
+1. 序言1.1 什么是知识建模（语义建模）?
+通过赋予数据指定的概念和数据之间的关系使数据包含语义。
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/07/27/data-structures-with-python/" rel="prev" title="Data Structures With Python">
+                                  
+                                      Data Structures With Python
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/data-structure/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Data Structure</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/05/29/kg-survey-3/" rel="prev" title="知识图谱：综述（三）Schema, Identity, Context">
+                                    
+                                        知识图谱：综述（三）Schema, Identity, Context
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/survey/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>survey</a> <a class="tag" href="/tags/kg/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>KG</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '知识图谱：知识建模（一）不那么简要的知识建模简介',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-序言"><span class="toc-text">1. 序言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-什么是知识建模（语义建模）"><span class="toc-text">1.1 什么是知识建模（语义建模）?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-我们为什么要知识建模？"><span class="toc-text">1.2 我们为什么要知识建模？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Led-Zeppelin-乐队知识模型"><span class="toc-text">1.3 Led Zeppelin 乐队知识模型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-知识模型基础"><span class="toc-text">2. 知识模型基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-理解-RDF"><span class="toc-text">2.1 理解 RDF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-URI"><span class="toc-text">2.2 URI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Blank-node"><span class="toc-text">2.3 Blank node</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-RDFS"><span class="toc-text">2.4 RDFS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-RDFS-常用词汇"><span class="toc-text">2.4.1 RDFS 常用词汇</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-OWL"><span class="toc-text">2.5 OWL</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-知识建模的步骤"><span class="toc-text">3. 知识建模的步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-RDF-序列化"><span class="toc-text">3.1 RDF 序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Turtle"><span class="toc-text">Turtle</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-知识建模工具"><span class="toc-text">3.2 知识建模工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-按步骤构建知识模型"><span class="toc-text">3.3 按步骤构建知识模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-可视化知识模型"><span class="toc-text">3.4 可视化知识模型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-知识模型查询"><span class="toc-text">4. 知识模型查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-SPARQL"><span class="toc-text">4.1 SPARQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-SPARQL-endpoint"><span class="toc-text">4.2 SPARQL endpoint</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-D2RQ-SPARQL-endpoint"><span class="toc-text">4.2.1 D2RQ SPARQL endpoint</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-1-1-浏览器查询"><span class="toc-text">4.2.1.1 浏览器查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-1-2-命令行查询"><span class="toc-text">4.2.1.2 命令行查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-1-3-Python-脚本查询"><span class="toc-text">4.2.1.3 Python 脚本查询</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-Apache-jena-SPARQL-endpoint"><span class="toc-text">4.2.2 Apache jena SPARQL endpoint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-RDFLib"><span class="toc-text">4.2.3 RDFLib</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-Wikidata-Query-Service"><span class="toc-text">4.2.4 Wikidata Query Service</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-更多-SPARQL-语法"><span class="toc-text">4.3 更多 SPARQL 语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-DISTINCT"><span class="toc-text">4.3.1 DISTINCT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-2-OPTIONAL"><span class="toc-text">4.3.2 OPTIONAL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-3-UNION"><span class="toc-text">4.3.3 UNION</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-4-FILTER"><span class="toc-text">4.3.4 FILTER</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-5-ORDER-BY"><span class="toc-text">4.3.5 ORDER BY</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-6-LIMIT"><span class="toc-text">4.3.6 LIMIT</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-结语"><span class="toc-text">5. 结语</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://rogerspy.github.io/data_structure_algorithm/"
+          
+          
+          id="https:rogerspy.github.iodata_structure_algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fab fa-kaggle fa-fw" aria-hidden="true"></i>
+          
+          Kaggle
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-brain fa-fw" aria-hidden="true"></i>
+          
+          思维逻辑
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+          
+          学习小测
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://paperswithcode.com/datasets"
+          
+          
+          id="https:paperswithcode.comdatasets">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/incremental-learning/"><div class='name'>Incremental Learning</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(15)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.22px; color: #8a8a8a">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19.56px; color: #737373">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.67px; color: #6c6c6c">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.67px; color: #6c6c6c">NLP</a> <a href="/tags/nmt/" style="font-size: 22.89px; color: #5d5d5d">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/smoothing/" style="font-size: 14px; color: #999">Smoothing</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.22px; color: #8a8a8a">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.11px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.11px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 18.44px; color: #7b7b7b">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 17.33px; color: #828282">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.78px; color: #646464">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.11px; color: #919191">词向量</a> <a href="/tags/词向量压缩/" style="font-size: 14px; color: #999">词向量压缩</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

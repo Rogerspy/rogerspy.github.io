@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Compact word vectors with Bloom embeddings | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="archives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2022/05/17/compact-word-embedding/">
+        Compact word vectors with Bloom embeddings
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2022-05-17</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/博客转载/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>博客转载</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">2.7k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">11分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://explosion.ai/static/c570bfb56770b9ce58baf9de2b257d8e/338d3/bloom-embeddings.png" style="zoom: 33%;"></p>
+<p>通常 word embedding 表占用的内存是非常大的，100 万个 32-bit 的浮点数内存是 4MB，那么 100 万个300 维的向量至少要占用 1.2 GB 的内存。这种内存消耗会严重限制 word embeeding 的应用场景。</p>
+<a id="more"></a>
+<p>通常有三种方式降低 word embedding 的内存占用：</p>
+<ul>
+<li>减小词表大小</li>
+<li>降低词向量维度</li>
+<li>降低每个维度浮点数的精度</li>
+</ul>
+<p>以上三种方法是非常有效的，但是也会带来一些问题。比如减小词表大小会更容易带来未登录词的问题，降低词向量维度会降低词向量表达能力，降低精度通常也会影响模型效果。</p>
+<p>吹了以上三种方法之外，还有一种方式：</p>
+<ul>
+<li>cheat，即使用一种概率数据结构。概率数据结构是一个神经网络模型，可以被广泛使用。但是神经网络模型的问题就是不够直观（黑盒子），所以我们起名为“cheat”。下面我们详细介绍一下。</li>
+</ul>
+<h1 id="1-Bloom-embeddings-算法"><a href="#1-Bloom-embeddings-算法" class="headerlink" title="1. Bloom embeddings 算法"></a>1. Bloom embeddings 算法</h1><p>常规的 word embedding 矩阵是将每个词映射到唯一的 ID 上，通常这些 ID 是序列化的，比如词表中有 100 个词，那么这些词的 ID 就是 <code>range(100)</code>。然后将这些 ID 与矩阵中的每一行对应起来，这样就相当于将每一行与词对应起来了。比如 “apple” 的 ID 是 5，那么它的词向量就对应 embedding 矩阵中的第 5 行。这种方式对 embedding 矩阵的行数是不限制的，即词表有多大那么矩阵就有多少行。</p>
+<p>Bloom embedding 是可以限制 embedding 矩阵的行数的（但是不限制词表的大小），当词表大小超过了 embedding 矩阵行数的时候就会出现多个词共享词向量的情况。一个解决方式就是设置一个特殊的向量，0-98 的词分别对应相应的向量，其他 ID 的词就全部对应到第 99 行的向量上。</p>
+<p>显然这种解决方案太过暴力，这就相当于将太多的词都设置成了未登录词（<unknown>）。但是如果我们不止一行这种特殊向量呢？比如我们设置 10 行特殊向量，0-89 编号的词分别对应相应的向量，其他词随机在这 10 行特殊向量中选择一个向量呢？这就相当于我们有 10 个不同的未登录词 <unknow0>…<unknow9>。</unknow9></unknow0></unknown></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_row</span><span class="params">(word_id, number_vector=<span class="number">100</span>, number_oov=<span class="number">10</span>)</span>:</span></span><br><span class="line">    number_known = number_vector - number_oov</span><br><span class="line">    <span class="keyword">if</span> word_id &lt; number_known:</span><br><span class="line">        <span class="keyword">return</span> word_id</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> number_known + (word_id % number_oov)</span><br></pre></td></tr></table></figure>
+<p>如果我们将所有的未登录词都映射到同一个向量上去，对于模型来说就无法区分不同的训练数据。比如，有两个句子，其中每句话中有一个词能够很强烈的暗示这个句子的情感取向，其中一个是积极情绪，另一个是负面情绪，恰恰这两个词都是在特殊向量上，那么模型就无法区分这两个句子的区别了。而如果我们有多个特殊向量，而我们又足够幸运，这两个词分别对应到了不同的特殊向量上，那么模型就可以得到两个不同的结果。</p>
+<p>如果上面这种假设是成立的，那么我们为什么不多设置一些特殊向量呢？Bloom embedding 就是一个极端的模型，将词表中的每一个词都设置成未登录词，然后 embedding 矩阵中的每一个向量都是特殊向量。</p>
+<p><img src="https://explosion.ai/1ba0ccfd147a86fe5811a8273f1e735a/bloom-embeddings_normal_vs_hashed.svg" alt></p>
+<p>这种极端方法看起来很奇怪，而且还不一定好用。其实真正让 Bloom embedding 算法发挥作用的是下一步：通过简单重复多次相同的操作，我们可以极大提升词的分辨率，并且有比向量更多的唯一词向量表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> mmh3</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">allocate</span><span class="params">(n_vectors, n_dimensions)</span>:</span></span><br><span class="line">    table = np.zeros((n_vectors, n_dimensions), dtype=<span class="string">'f'</span>)</span><br><span class="line">    table += np.random.uniform(<span class="number">-0.1</span>, <span class="number">0.1</span>, table.size).reshape(table.size)</span><br><span class="line">    <span class="keyword">return</span> table</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_vector</span><span class="params">(table, word)</span>:</span></span><br><span class="line">    hash1 = mmh3.hash(word, seed=<span class="number">0</span>)</span><br><span class="line">    hash2 = mmh3.hash(word, seed=<span class="number">1</span>)</span><br><span class="line">    row1 = hash1 % table.shape[<span class="number">0</span>]</span><br><span class="line">    row2 = hash2 % table.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> table[row1] + table[row2]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_vector</span><span class="params">(table, word, d_vector)</span>:</span></span><br><span class="line">    hash1 = mmh3.hash(word, seed=<span class="number">0</span>)</span><br><span class="line">    hash2 = mmh3.hash(word, seed=<span class="number">1</span>)</span><br><span class="line">    row1 = hash1 % table.shape[<span class="number">0</span>]</span><br><span class="line">    row2 = hash2 % table.shape[<span class="number">0</span>]</span><br><span class="line">    table[row1] -= <span class="number">0.001</span> * d_vector</span><br><span class="line">    table[row2] -= <span class="number">0.001</span> * d_vector</span><br><span class="line">    <span class="keyword">return</span> table</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，我们使用哈希函数得到两个 key，这两个 key 不太可能像词一样发生碰撞，然后将两个向量相加就可以得到更多词的唯一表示了。</p>
+<p><strong>例子</strong></p>
+<p>下面我们来看一个小例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vocab = [<span class="string">'apple'</span>, <span class="string">'strawberry'</span>, <span class="string">'orange'</span>, <span class="string">'juice'</span>,</span><br><span class="line">         <span class="string">'drink'</span>, <span class="string">'smoothie'</span>, <span class="string">'eat'</span>, <span class="string">'fruit'</span>,</span><br><span class="line">         <span class="string">'health'</span>, <span class="string">'wellness'</span>, <span class="string">'steak'</span>, <span class="string">'fries'</span>,</span><br><span class="line">         <span class="string">'ketchup'</span>, <span class="string">'burger'</span>, <span class="string">'chips'</span>, <span class="string">'lobster'</span>,</span><br><span class="line">         <span class="string">'caviar'</span>, <span class="string">'service'</span>, <span class="string">'waiter'</span>, <span class="string">'chef'</span>]</span><br></pre></td></tr></table></figure>
+<p>我们将这些词映射到 2-d 向量中。正常情况下，我们会得到一个 <code>(20, 2)</code> 的矩阵。我们使用上面的方法生成一个<code>(15, 2)</code> 的矩阵：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">normal = np.random.uniform(<span class="number">-0.1</span>, <span class="number">0.1</span>, (<span class="number">20</span>, <span class="number">2</span>))</span><br><span class="line">hashed = np.random.uniform(<span class="number">-0.1</span>, <span class="number">0.1</span>, (<span class="number">15</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>常规矩阵</p>
+<p>在常规矩阵中，我们将每个词映射进矩阵：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">word2id = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_normal_vector</span><span class="params">(word, table)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> word2id:</span><br><span class="line">        word2id[word] = len(word2id)</span><br><span class="line">    <span class="keyword">return</span> normal[word2id[word]]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hashed 矩阵</p>
+<p>哈希矩阵只有 15 行，所以有一些词必须共享向量。我们使用哈希函数生成哈希值，然后将哈希值修正到 <code>range(0,15)</code> 范围内。需要注意的是，我们要计算每个 key 的多个不同的哈希值，所以 python 内置的哈希函数不太方便，我们使用 <code>MurmurHash</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hashed = [mmh3.hash(w,<span class="number">1</span>) % <span class="number">15</span> <span class="keyword">for</span> w <span class="keyword">in</span> vocab]</span><br><span class="line"><span class="keyword">assert</span> hashes1 == [<span class="number">3</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">13</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">13</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">13</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">13</span>]</span><br></pre></td></tr></table></figure>
+<p>如你所见，一些 key 被多个词共享，然而还有 2/15 的 key 是闲置的。显然这种情况并不理想。 比如词表中的“strawberry” 和 “heart” 就没有了区分性，模型无法得知我们用的是那个词。</p>
+<p>为了解决这个问题，我们再次对每个词使用一次哈希函数，这一次我们用不同的 seed：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line">hashes2 = [mmh3.hash(w, <span class="number">2</span>) % <span class="number">15</span> <span class="keyword">for</span> w <span class="keyword">in</span> vocab]</span><br><span class="line"><span class="keyword">assert</span> len(Counter(hashes2).most_common()) == <span class="number">12</span></span><br></pre></td></tr></table></figure>
+<p>这次更糟，有 3 个闲置 key， 但是我们会发现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> len(Counter(zip(hashes1, hashes2))) == <span class="number">20</span></span><br></pre></td></tr></table></figure>
+<p>通过两次哈希结果的组合，我们就可以得到 20 个唯一的组合。这就意味着我们将两个向量相加就可以得到唯一的向量表示了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> vocab:</span><br><span class="line">    key1 = mmh3.hash(word, <span class="number">0</span>) % <span class="number">15</span></span><br><span class="line">    key2 = mmh3.hash(word, <span class="number">1</span>) % <span class="number">15</span></span><br><span class="line">    vector = hashed[key1] + hashed[key2]</span><br><span class="line">    print(word, <span class="string">'%.3f %.3f'</span> % tuple(vector))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">apple 0.161 0.163</span><br><span class="line">strawberry 0.128 -0.024</span><br><span class="line">orange 0.157 -0.047</span><br><span class="line">juice -0.017 -0.023</span><br><span class="line">drink 0.097 -0.124</span><br><span class="line">smoothie 0.085 0.024</span><br><span class="line">eat 0.000 -0.105</span><br><span class="line">fruit -0.060 -0.053</span><br><span class="line">health 0.166 0.103</span><br><span class="line">wellness 0.011 0.065</span><br><span class="line">steak 0.155 -0.039</span><br><span class="line">fries 0.157 -0.106</span><br><span class="line">ketchup 0.076 0.127</span><br><span class="line">burger 0.045 -0.084</span><br><span class="line">chips 0.082 -0.037</span><br><span class="line">lobster 0.138 0.067</span><br><span class="line">caviar 0.066 0.098</span><br><span class="line">service -0.017 -0.023</span><br><span class="line">waiter 0.039 0.001</span><br><span class="line">chef -0.016 0.030</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这样我们就有了一个函数，可以将 20 个词 映射到 20 个唯一的向量上去，但是我们的词向量却只有 15 行，节省了 1/4 的内存。现在的问题是，我们虽然将词映射到了向量上去，但是这种映射是否有效？</p>
+<p>我们现在做一个小实验，先随机设置一个常规 word embedding 矩阵当作每个词的真实词向量，然后我们看下是否能够通过压缩过的 embedding 矩阵得到与之匹配的向量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> mmh3</span><br><span class="line"></span><br><span class="line">np.random.seed(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">nb_epoch = <span class="number">20</span></span><br><span class="line">learn_rate = <span class="number">0.001</span></span><br><span class="line">nr_hash_vector = <span class="number">15</span></span><br><span class="line"></span><br><span class="line">words = [str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>)]</span><br><span class="line">true_vectors = np.random.uniform(<span class="number">-0.1</span>, <span class="number">0.1</span>, (len(words), <span class="number">2</span>))  <span class="comment"># 真实的词向量矩阵</span></span><br><span class="line">hash_vectors = np.random.uniform(<span class="number">-0.1</span>, <span class="number">0.1</span>, (nr_hash_vector, <span class="number">2</span>))  <span class="comment"># 压缩后的词向量矩阵</span></span><br><span class="line">examples = list(zip(words, true_vectors))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(nb_epoch):</span><br><span class="line">    np.random.shuffle(examples)</span><br><span class="line">    loss = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> word, truth <span class="keyword">in</span> examples:</span><br><span class="line">        key1 = mmh3.hash(word, <span class="number">0</span>) % nr_hash_vector</span><br><span class="line">        key2 = mmh3.hash(word, <span class="number">1</span>) % nr_hash_vector</span><br><span class="line">        </span><br><span class="line">        hash_vector = hash_vectors[key1] + hash_vectors[key2]</span><br><span class="line">        </span><br><span class="line">        diff = hash_vector - truth</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 模拟梯度下降</span></span><br><span class="line">        hash_vectors[key1] -= learn_rate * diff</span><br><span class="line">        hash_vectors[key2] -= learn_rate * diff</span><br><span class="line">        loss += (diff*<span class="number">2</span>).sum()</span><br><span class="line">    print(epoch, loss)</span><br></pre></td></tr></table></figure>
+<p>我们可以得到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">0 -4.552187444900751</span><br><span class="line">1 -4.513732579131083</span><br><span class="line">2 -4.47518179590089</span><br><span class="line">3 -4.439109966571761</span><br><span class="line">4 -4.4016736165408386</span><br><span class="line">5 -4.3649578351872</span><br><span class="line">6 -4.330003220666162</span><br><span class="line">7 -4.294276613407629</span><br><span class="line">8 -4.260200584655477</span><br><span class="line">9 -4.22524699343236</span><br><span class="line">10 -4.190274216061722</span><br><span class="line">11 -4.154823580829194</span><br><span class="line">12 -4.119579998535728</span><br><span class="line">13 -4.087484288266794</span><br><span class="line">14 -4.053525036916957</span><br><span class="line">15 -4.020518293389426</span><br><span class="line">16 -3.987864913164988</span><br><span class="line">17 -3.956116312323212</span><br><span class="line">18 -3.9218190519236003</span><br><span class="line">19 -3.8946058240614283</span><br></pre></td></tr></table></figure>
+<p>实际上，我们测试时将 <code>epoch</code> 设置成 2000 时，loss 仍然在下降。所以我们可以得出结论：经过哈希压缩的 embedding 矩阵仍然是有效的。</p>
+<p>进一步地，我们可以思考下面几个问题：</p>
+<ul>
+<li>当 <code>nr_hash_vector</code> 发生变化时，<code>loss</code> 怎么变？</li>
+<li>如果移除 <code>key2</code>，<code>loss</code> 会变大吗？</li>
+<li>如果增加 key 的个数会发生什么？</li>
+<li>如果词表变大会发生什么？</li>
+<li>如果词向量的维度增加会发生什么？</li>
+<li>哈希 embedding 对初始化条件有多敏感？如果我们改变随机种子对结果有多大影响？</li>
+</ul>
+<h1 id="2-HashedEmbed"><a href="#2-HashedEmbed" class="headerlink" title="2. HashedEmbed"></a>2. HashedEmbed</h1><p><code>HashedEmbed</code> 是用 4 个小哈希表，分别对应词的四种特征，利用 4 个 key 分别从每个表中抽取一个向量，将这四个向量相加得到最后的词向量。四种特征分别是 <code>ORTH</code> ， <code>PREFIX</code>，<code>SUFFIX</code>，<code>SHAPE</code>。比如我们用 5000 行的矩阵表示 <code>ORTH</code>，2500 行的矩阵表示 <code>PREFIX</code>，2500 行的矩阵表示 <code>SUFFIX</code> 以及 2500 行的矩阵表示 <code>SHAPE</code>。最终整个 embedding 矩阵只有12500 行 96 维，只需要占用 5 MB的存储空间。下面是 <code>Apple</code> 的例子：    </p>
+<p><img src="https://explosion.ai/399b8d35f03cf1a4eb5dfefe58645255/bloom-embeddings_tok2vec.svg" alt></p>
+<p>从模型尺寸的角度来考虑，这种方式还有另一个好处。由于给定相同的哈希函数的话，相同的字符串就是映射到相同的哈希值，因此，我们不需要再维护一个词表。任意字符串都可以通过哈希函数映射到对应的词向量上，而不需要词表的 ID 来映射。</p>
+<h1 id="3-floret-Bloom-embeddings-for-fastText"><a href="#3-floret-Bloom-embeddings-for-fastText" class="headerlink" title="3. floret: Bloom embeddings for fastText"></a>3. floret: Bloom embeddings for fastText</h1><p><code>floret</code> 是一个用 Bloom embedding 进行改写的 fasttext 模型变种。Fasttext 使用词的 n-gram 特征作为输入，一个词向量是通过对该词的所有 ngram 特征加和求平均得到的。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;apple&gt;</span><br><span class="line">&lt;app</span><br><span class="line">appl</span><br><span class="line">pple</span><br><span class="line">ple&gt;</span><br></pre></td></tr></table></figure>
+<p>fasttext 还支持可变 n-gram，比如 <code>n=[4,5,6]</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;apple&gt;</span><br><span class="line">&lt;app</span><br><span class="line">appl</span><br><span class="line">pple</span><br><span class="line">ple&gt;</span><br><span class="line">&lt;appl</span><br><span class="line">apple</span><br><span class="line">pple&gt;</span><br><span class="line">&lt;apple</span><br><span class="line">apple&gt;</span><br></pre></td></tr></table></figure>
+<p>通过使用 subword 的方法，fasttext 可以得到更有用的输入向量，比如 <code>appletrees</code> 在词表中没有，如果不用 subword 的话，那就会映射到 <code>unknown</code> 上去，而是用 subword 的话，词表中是存在 <code>apple</code> 和 <code>tree</code> 的，这样就能得到更好的表达。</p>
+<p>fasttext 使用两个独立的表分别存储 word 和 subword：</p>
+<p><img src="https://explosion.ai/b5ba6d2c139cba49ba2be1a9b9b0bd8f/bloom-embeddings_separate_words_subwords.svg" alt></p>
+<p>两个表的典型大小都是 2M 行，假设词向量的维度是 300 维，那么两个表需要占用至少 4GB 的存储空间！</p>
+<p>这个时候就需要 bloom embedding 出场了：</p>
+<ul>
+<li><p>将 word 和 subword 存储在同一个表中（典型尺寸为 50-200 K）：</p>
+<p><img src="https://explosion.ai/c7527d7f3989176c781d35811797a339/bloom-embeddings_combined_words_subwords.svg" alt></p>
+</li>
+<li><p>将每一个 token 映射到多行：</p>
+<p><img src="https://explosion.ai/0ae08f6a499fd4569bb96f6177c503d2/bloom-embeddings_floret_bloom.svg" alt></p>
+</li>
+</ul>
+<p>这样，我们可以将存储降到 100 MB 以下！</p>
+<p>下图是实验结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs20220517105210.png" alt></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://explosion.ai/blog/bloom-embeddings?continueFlag=b6ca8b587fbbab42bb48a07f3703ff16" target="_blank" rel="noopener">Compact word vectors with Bloom embeddings</a></p>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-05-17T11:02:09+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年5月17日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/词向量压缩/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>词向量压缩</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2022/05/17/compact-word-embedding/&title=Compact word vectors with Bloom embeddings | Rogerspy's Home&summary=
+通常 word embedding 表占用的内存是非常大的，100 万个 32-bit 的浮点数内存是 4MB，那么 100 万个300 维的向量至少要占用 1.2 GB 的内存。这种内存消耗会严重限制 word embeeding 的应用场景。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2022/05/17/compact-word-embedding/&title=Compact word vectors with Bloom embeddings | Rogerspy's Home&summary=
+通常 word embedding 表占用的内存是非常大的，100 万个 32-bit 的浮点数内存是 4MB，那么 100 万个300 维的向量至少要占用 1.2 GB 的内存。这种内存消耗会严重限制 word embeeding 的应用场景。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtklEQVR42u3aQXKDMBAEQP//084DbPDMSkpxaE4ujEFNqrTKrF6v+Hh/HO0174vj85rP6z+/3Xzg4eHhLQ/96tb5lfdPucLcX5mPBw8PD+9/eFcDuv88m42TkjAbAx4eHt6Tee2ZfGHdFhI8PDy85/Py+GA29SeLdTw8PLwn8NpbzxbBeRlIisTmrAUPDw8v5uVdpOd8PtLfw8PDw1vuqucTbhLO3p+5Z7xHBx4eHt4J3qyhtb4ZK39lyYL7xzjx8PDwDvParU75+VmosdJmw8PDw/sf3q7IdX0Znd/5R9nAw8PD28prW1+zkHe2IJ4VpC8lAQ8PD+8Abzbdt22ztsCsFAw8PDy8c7w2dEim410hQnufqPrh4eHhbeKtbLpaCYJnhWcWkeDh4eHt4s0enE/E7cSdv44ozMXDw8M7zMvjg1mMmxSYtvVVZC14eHh4W3l5rJBP5e1T2jZYciUeHh7eCV5bHmbL7llYPCs8S9UPDw8Pb8SbUfNWVs5u/xiXVDw8PLytvPW20yzYXe/IRaULDw8P7xivndbz4CCPMNpmWBQQ4+Hh4R3grQ+xncrbTQbt6yh2FuDh4eEt8+4fM4tcW3ZbDKI4Aw8PD+8Yb7YdKrlD/m0SYSQtsXp3Ax4eHl7Ja2OIdgPBykDzohUtvvHw8PA28WaAlbBgNuhiN0SeB+Ph4eEd4NX//JeDWAk7orgEDw8P7xgvb4blr6MtBq/RsS2AwMPDwxttGsibXnnwmv928/YvPDw8vAO89QZ/275aiYaHTS88PDy8A7wTQepKKyt5BUlRwcPDwzvNa5fFsx5T8qyVMOLLffDw8PAewJsFE21A3JaByzHg4eHhPYDXLpR3NduGbTM8PDy8Y7w2CEjihva3+dDzkAIPDw/vBG9lY1O+saCNZdtNBhv6e3h4eHi/eX8LEnOoSTJQ2wAAAABJRU5ErkJggg=='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2022/05/17/compact-word-embedding/&title=Compact word vectors with Bloom embeddings | Rogerspy's Home&summary=
+通常 word embedding 表占用的内存是非常大的，100 万个 32-bit 的浮点数内存是 4MB，那么 100 万个300 维的向量至少要占用 1.2 GB 的内存。这种内存消耗会严重限制 word embeeding 的应用场景。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2022/05/17/incremental-learning-survey/" rel="prev" title="自然语言处理中的增量学习综述">
+                                  
+                                      自然语言处理中的增量学习综述
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/survey/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>survey</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2022/01/11/dijkstra-algorithm-python/" rel="prev" title="Dijkstra&#39;s Algorithm in 5 steps with Python">
+                                    
+                                        Dijkstra&#39;s Algorithm in 5 steps with Python
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/dijkstra-s-algorithm/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Dijkstra's Algorithm</a> <a class="tag" href="/tags/graph-algorithm/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Graph Algorithm</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: 'Compact word vectors with Bloom embeddings',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Bloom-embeddings-算法"><span class="toc-text">1. Bloom embeddings 算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-HashedEmbed"><span class="toc-text">2. HashedEmbed</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-floret-Bloom-embeddings-for-fastText"><span class="toc-text">3. floret: Bloom embeddings for fastText</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://rogerspy.github.io/data_structure_algorithm/"
+          
+          
+          id="https:rogerspy.github.iodata_structure_algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fab fa-kaggle fa-fw" aria-hidden="true"></i>
+          
+          Kaggle
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-brain fa-fw" aria-hidden="true"></i>
+          
+          思维逻辑
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+          
+          学习小测
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://paperswithcode.com/datasets"
+          
+          
+          id="https:paperswithcode.comdatasets">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/incremental-learning/"><div class='name'>Incremental Learning</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(15)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.22px; color: #8a8a8a">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19.56px; color: #737373">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.67px; color: #6c6c6c">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.67px; color: #6c6c6c">NLP</a> <a href="/tags/nmt/" style="font-size: 22.89px; color: #5d5d5d">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/smoothing/" style="font-size: 14px; color: #999">Smoothing</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.22px; color: #8a8a8a">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.11px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.11px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 18.44px; color: #7b7b7b">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 17.33px; color: #828282">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.78px; color: #646464">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.11px; color: #919191">词向量</a> <a href="/tags/词向量压缩/" style="font-size: 14px; color: #999">词向量压缩</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

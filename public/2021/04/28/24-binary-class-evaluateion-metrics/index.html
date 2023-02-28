@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>24种二分类模型的评估方法 | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="archives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/04/28/24-binary-class-evaluateion-metrics/">
+        24种二分类模型的评估方法
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-04-28</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/博客转载/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>博客转载</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">6.1k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">24分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img width="75%" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/4f4d15426607b3fd4051791fa9224979.jpg"></p>
+<p>评估一个模型的好坏有很多指标，每个指标都有其优缺点。如何针对不同场合选取合适的评估指标是一个非常重要的工作。本文将会介绍一些用于分类模型的评估指标，然后介绍我们该如何选取。</p>
+<a id="more"></a>
+<h1 id="1-混淆矩阵（Confusion-Matrix）"><a href="#1-混淆矩阵（Confusion-Matrix）" class="headerlink" title="1. 混淆矩阵（Confusion Matrix）"></a>1. 混淆矩阵（Confusion Matrix）</h1><p>混淆矩阵（混淆表）是一个用来评估分类模型的 $N\times N$ 矩阵，其中 $N$ 表示类别数量。混淆矩阵通过对比真实的类别标签和模型预测的类别标签从整体上对模型进行评估。</p>
+<h2 id="1-1-二分类混淆矩阵"><a href="#1-1-二分类混淆矩阵" class="headerlink" title="1.1 二分类混淆矩阵"></a>1.1 二分类混淆矩阵</h2><p>对于二分类问题，混淆矩阵是一个 $2 \times 2$ 的矩阵，如下所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210508163046.png" alt></p>
+<ul>
+<li>目标标签有两个类别：<strong>Positive</strong> 和 <strong>Negative</strong></li>
+<li>每一列表示真实的标签类别（actual values）</li>
+<li>每一行表示模型预测的标签类别（predicted values）</li>
+</ul>
+<p>矩阵中的 <strong>TP</strong>、<strong>TN</strong>、<strong>FP</strong>、<strong>FN</strong> 分别表示什么呢？</p>
+<p><strong>True Positive（TP）</strong></p>
+<ul>
+<li>模型预测的标签和真实的标签相同</li>
+<li>真实的标签是 <strong>Positive</strong>，模型预测的标签也是 <strong>Positive</strong></li>
+</ul>
+<p><strong>True Negative（TN）</strong></p>
+<ul>
+<li>模型预测的标签与真实的标签相同</li>
+<li>真实的标签是 <strong>Negative</strong>，模型预测的标签也是 <strong>Negative</strong></li>
+</ul>
+<p><strong>False Positive（FP）</strong></p>
+<ul>
+<li>模型预测的结果与真实的标签不一致</li>
+<li>真实的标签是 <strong>Negative</strong>，但模型预测的是 <strong>Positive</strong></li>
+<li>这种错误称之为 “第一类错误”（<em>Type-I error</em>）</li>
+</ul>
+<p><strong>False Negative（FN）</strong></p>
+<ul>
+<li>模型预测的结果与真实的标签不一致</li>
+<li>真实的标签是 <strong>Positive</strong>，但模型预测的是 <strong>Negative</strong></li>
+<li>这种错误称之为 “第二类错误”（<em>Type-II error</em>）</li>
+</ul>
+<p>举例说明：假设有 1000 个样本，分类模型在这些样本上得到了下面这个混淆矩阵：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210508163200.png" alt></p>
+<p>矩阵中不同的值表示：</p>
+<ul>
+<li>True Positive (TP) = 560，有 560个 正样本被模型正确预测了；</li>
+<li>True Negative (TN) = 330，有 330 个负样本被正确预测了；</li>
+<li>False Positive (FP) = 60，有 60 负样本被模型预测成了正样本；</li>
+<li>False Negative (FN) = 50，有 50 个正样本被模型预测成了负样本。</li>
+</ul>
+<p>从混淆矩阵中可以看出，绝大多数的正样本和负样本可以被模型准确识别出来，说明这是一个还不错的分类模型。</p>
+<h2 id="1-2-多分类混淆矩阵"><a href="#1-2-多分类混淆矩阵" class="headerlink" title="1.2 多分类混淆矩阵"></a>1.2 多分类混淆矩阵</h2><p>有了二分类的混淆矩阵，我们可以把它扩展到多分类问题上。假设有三个类别：A,B,C。那么混淆矩阵应该是一个 $3 \times 3$ 的矩阵：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210508164822.png" alt></p>
+<p>对于每个类别的 TP、TN、FP、FN 的计算方式如下：</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{split}
+A:\\\\
+& TP=Cell_1 \\\\
+& TN=Cell_5+Cell_6+Cell_8+Cell_9 \\\\
+& FP=Cell_2+Cell_3 \\\\
+& FN=Cell_4+Cell_7 \\\\
+B:\\\\
+& TP=Cell_5 \\\\
+& TN=Cell_1+Cell_3+Cell_7+Cell_9 \\\\
+& FP=Cell_4+Cell_6 \\\\
+& FN=Cell_2+Cell_8 \\\\
+C:\\\\
+& TP=Cell_9 \\\\
+& TN=Cell_1+Cell_2+Cell_4+Cell_5 \\\\
+& FP=Cell_7+Cell_8 \\\\
+& FN=Cell_3+Cell_6 \\\\
+\end{split}
+\end{equation}</script><h2 id="1-3-用-scikit-learn-计算混淆矩阵"><a href="#1-3-用-scikit-learn-计算混淆矩阵" class="headerlink" title="1.3 用 scikit-learn 计算混淆矩阵"></a>1.3 用 scikit-learn 计算混淆矩阵</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"></span><br><span class="line">predict_class = y_pred_pos &gt; threshold</span><br><span class="line">confusion = metrics.confusion_matrix(true_class, predict_class)</span><br><span class="line">print(confusion)</span><br></pre></td></tr></table></figure>
+<p>输出的结果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="number">330</span>, <span class="number">60</span>]  </span><br><span class="line">[<span class="number">50</span>, <span class="number">560</span>]]</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，<code>scikit-learn</code> 的混淆矩阵<code>(0, 0)</code> 位置是 TN，<code>(1,1)</code> 位置是 TP。</p>
+<h2 id="1-4-什么时候用？"><a href="#1-4-什么时候用？" class="headerlink" title="1.4 什么时候用？"></a>1.4 什么时候用？</h2><p>几乎在所有的分类问题上都可以使用，尤其是在了解具体数量而非归一化的比例的时候（通常是类别不平衡）。</p>
+<h1 id="2-准确率（Accuracy）"><a href="#2-准确率（Accuracy）" class="headerlink" title="2. 准确率（Accuracy）"></a>2. 准确率（Accuracy）</h1><h2 id="2-1-准确率定义"><a href="#2-1-准确率定义" class="headerlink" title="2.1 准确率定义"></a>2.1 准确率定义</h2><p>准确率评估的是模型对样本正确分类的比例，计算方法如下：</p>
+<script type="math/tex; mode=display">
+\mathrm{accuracy}=\frac{TP+TN}{TP+TN+FP+FN}</script><h2 id="2-2-用-scikit-learn-计算准确率"><a href="#2-2-用-scikit-learn-计算准确率" class="headerlink" title="2.2 用 scikit-learn 计算准确率"></a>2.2 用 scikit-learn 计算准确率</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix, accuracy_score </span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold </span><br><span class="line">tn, fp, fn, tp = confusion_matrix(y_true, y_pred_class).ravel() </span><br><span class="line">accuracy = (tp + tn) / (tp + fp + fn + tn) </span><br><span class="line"></span><br><span class="line"><span class="comment"># or simply </span></span><br><span class="line">accuracy_score(y_true, y_pred_class)</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-准确率与阈值的关系"><a href="#2-3-准确率与阈值的关系" class="headerlink" title="2.3 准确率与阈值的关系"></a>2.3 准确率与阈值的关系</h2><p><img src="https://i2.wp.com/neptune.ai/wp-content/uploads/acc_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>分类任务中，模型输出的是每个类别对应的概率。比如二分类，当正类别概率大于 50% 的时候，我们认为该样本是正样本，其中 50% 就是分类的阈值。阈值是可以人为设定的，比如可以规定当概率大于 70% 的时候才认为是正样本。</p>
+<p>对于二分类模型，通常选择 0.5 作为阈值。阈值过大会造成 FN 过大，从而降低准确率。阈值太小会造成 FP 多大，同样会造成准确率过低。</p>
+<h2 id="2-4-什么时候用？"><a href="#2-4-什么时候用？" class="headerlink" title="2.4 什么时候用？"></a>2.4 什么时候用？</h2><ul>
+<li>各类别比较平衡</li>
+<li>每个类别对我们来说同等重要</li>
+</ul>
+<h2 id="2-5-什么时候不能用？"><a href="#2-5-什么时候不能用？" class="headerlink" title="2.5 什么时候不能用？"></a>2.5 什么时候不能用？</h2><p>考虑一个场景：假设每 100 个人中就有 1 个人生病了，我们用一个分类模型对生病的人和没有生病的人进行分类。即使模型所有的输出都是没有生病那准确率也有 99%，但是这个模型却是很糟糕的一个模型。</p>
+<p>仔细观察一下上面的数据分布，很容易发现问题：数据类别不平衡。也就是说，在类别不平衡的数据上评估分类模型的好坏是不可以使用准确率的。</p>
+<h1 id="3-精准度（Precision）"><a href="#3-精准度（Precision）" class="headerlink" title="3. 精准度（Precision）"></a>3. 精准度（Precision）</h1><h2 id="3-1-精准度定义"><a href="#3-1-精准度定义" class="headerlink" title="3.1 精准度定义"></a>3.1 精准度定义</h2><p>精准度表示在模型预测为正样本的数据中，有多少是真正的正样本。比如用渔网捞鱼，这一网捞上来的有鱼有虾，其中是鱼的比例就是精准度。计算公式如下：</p>
+<script type="math/tex; mode=display">
+\mathrm{Precision} = \frac{TP}{TP+FP}</script><h2 id="3-2-用-scikit-learn-计算精准度"><a href="#3-2-用-scikit-learn-计算精准度" class="headerlink" title="3.2 用 scikit-learn 计算精准度"></a>3.2 用 scikit-learn 计算精准度</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix, precision_score</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">tn, fp, fn, tp = confusion_matrix(y_true, y_pred_class).ravel()</span><br><span class="line">positive_predictive_value = tp/ (tp + fp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># or simply</span></span><br><span class="line">precision_score(y_true, y_pred_class)</span><br></pre></td></tr></table></figure>
+<h2 id="3-3-精准度与阈值的关系"><a href="#3-3-精准度与阈值的关系" class="headerlink" title="3.3 精准度与阈值的关系"></a>3.3 精准度与阈值的关系</h2><p><img src="https://i0.wp.com/neptune.ai/wp-content/uploads/ppv_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>从这个解释中我们可以看出，阈值越高说明概率越大。从直觉上可以判断，概率越大说明可信度越高。那么样本被正确分类的可能性就越高。回到精准度的角度，精准度表示真正的正样本比例。如果阈值设定较高的话，正样本分类的正确率也会越高，精准度也会越高。极端情况下，把阈值设定成 100%，精准度也会达到最大。</p>
+<h2 id="3-4-什么时候用？"><a href="#3-4-什么时候用？" class="headerlink" title="3.4 什么时候用？"></a>3.4 什么时候用？</h2><ul>
+<li>单独使用精准度没有什么意义，通常会配合其他指标一起使用</li>
+<li>当错误警报成本过高，或者当你认为每个预测为正样本的样例都值得一看的时候，可以针对精准度进行调整</li>
+</ul>
+<h1 id="4-召回率（Recall）"><a href="#4-召回率（Recall）" class="headerlink" title="4. 召回率（Recall）"></a>4. 召回率（Recall）</h1><h2 id="4-1-召回率定义"><a href="#4-1-召回率定义" class="headerlink" title="4.1 召回率定义"></a>4.1 召回率定义</h2><p>召回率又叫真阳性率，表示有多少是真正的正样本被模型正确识别出来了。我们经常会听到某某产品出现了质量问题，厂家紧急召回的新闻。召回率就是说，市面上所有的问题产品，厂家召回了多少。另外一个例子，目前新冠肆虐，新冠的检测是通过咽拭子。召回率表示，通过咽拭子找到了多少新冠患者。</p>
+<p>通过这两个例子我们可以对准确率，精确度和召回率加以区分。准确率关注的是所有类别的分类正确率，精确度是正样本的准确率，而召回率表示找到的正样本占总正样本的比例。</p>
+<p>用公式表示如下：</p>
+<script type="math/tex; mode=display">
+\mathrm{recall} = \frac{TP}{TP+FN}</script><h2 id="4-2-用-scikit-learn-计算召回率"><a href="#4-2-用-scikit-learn-计算召回率" class="headerlink" title="4.2 用 scikit-learn 计算召回率"></a>4.2 用 scikit-learn 计算召回率</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix, recall_score</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">tn, fp, fn, tp = confusion_matrix(y_true, y_pred_class).ravel()</span><br><span class="line">true_positive_rate = tp / (tp + fn)</span><br><span class="line"></span><br><span class="line"><span class="comment"># or simply</span></span><br><span class="line"></span><br><span class="line">recall_score(y_true, y_pred_class)</span><br></pre></td></tr></table></figure>
+<h2 id="4-3-召回率与阈值的关系"><a href="#4-3-召回率与阈值的关系" class="headerlink" title="4.3 召回率与阈值的关系"></a>4.3 召回率与阈值的关系</h2><p><img src="https://i1.wp.com/neptune.ai/wp-content/uploads/tpr_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>阈值设定越低，模型预测为正样本的门槛就越低，就越容易把所有的正样本找出来。所以召回率与阈值是一个负相关的关系。</p>
+<h2 id="4-4-什么时候用？"><a href="#4-4-什么时候用？" class="headerlink" title="4.4 什么时候用？"></a>4.4 什么时候用？</h2><ul>
+<li>单独使用召回率没有什么意义，通常会配合其他指标一起使用</li>
+<li>但是有些情况，比如灾难预警、欺诈性交易等，即使收到一些错误预警，我们也必须谨慎对待。即在宁可信其有不可信其无的场景下，适当调整召回率是有必要的</li>
+</ul>
+<h1 id="5-F1-得分（F1-score）"><a href="#5-F1-得分（F1-score）" class="headerlink" title="5. F1 得分（F1-score）"></a>5. F1 得分（F1-score）</h1><h2 id="5-1-F1-得分定义"><a href="#5-1-F1-得分定义" class="headerlink" title="5.1 F1 得分定义"></a>5.1 F1 得分定义</h2><p>通常情况下，我们想提高精准度就需要牺牲召回率，要想提高召回率就要牺牲精准度。从之前介绍的精准度、召回率和阈值的关系中我们就可以看出一些端倪。当然，一个理想的分类模型是精准度和召回率都可以达到很高，但是实际上却是比较困难。</p>
+<p>为了综合评估精准度和召回率，我们可以使用 F1 得分：</p>
+<script type="math/tex; mode=display">
+F1 = \frac{1}{\frac{1}{\mathrm{Recall}}+\frac{1}{\mathrm{Precision}}} = \frac{2\times \mathrm{Precision} \times \mathrm{Recall}}{\mathrm{Precision}+\mathrm{Recall}}</script><p>从定义上看，我们可以认为 F1 得分是精准度和召回率的一个平均。</p>
+<h2 id="5-2-用-scikit-learn-计算-F1得分"><a href="#5-2-用-scikit-learn-计算-F1得分" class="headerlink" title="5.2 用 scikit-learn 计算 F1得分"></a>5.2 用 scikit-learn 计算 F1得分</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">f1_score(y_true, y_pred_class)</span><br></pre></td></tr></table></figure>
+<p>在实际情况中，精准度、召回率和 F1 得分都不会单独使用，而是综合一起来评估模型的好坏：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">classification_report(y_true, y_pred_class)</span><br></pre></td></tr></table></figure>
+<p>我们会得到一个类似如下的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">              precision    recall  f1-score   support</span><br><span class="line"></span><br><span class="line">           <span class="number">1</span>       <span class="number">1.00</span>      <span class="number">0.67</span>      <span class="number">0.80</span>         <span class="number">3</span></span><br><span class="line">           <span class="number">2</span>       <span class="number">0.00</span>      <span class="number">0.00</span>      <span class="number">0.00</span>         <span class="number">0</span></span><br><span class="line"></span><br><span class="line">   micro avg       <span class="number">1.00</span>      <span class="number">0.67</span>      <span class="number">0.80</span>         <span class="number">3</span></span><br><span class="line">   macro avg       <span class="number">0.33</span>      <span class="number">0.22</span>      <span class="number">0.27</span>         <span class="number">3</span></span><br><span class="line">weighted avg       <span class="number">1.00</span>      <span class="number">0.67</span>      <span class="number">0.80</span>         <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>其中 <code>support</code> 是参与评估的总样本数，<code>1,2,3</code> 分别是类别标签。<code>mirco avg</code>，<code>marco avg</code> 和 <code>weighted avg</code> 的计算方式分别如下：</p>
+<p><code>micro avg</code>:</p>
+<script type="math/tex; mode=display">
+\begin{equation}\nonumber
+\begin{split}
+\mathrm{micro\ avg\ Precision} &= \frac{TP1+TP2}{TP1+TP2+FP1+FP2} = \frac{\sum TP_i}{\sum(TP_i+FP_i)} \\\\
+\mathrm{micro\ avg\ Recall} &= \frac{TP1+TP2}{TP1+TP2+FN1+FN2} = \frac{\sum TP_i}{\sum(TP_i+FN_i)} \\\\
+\mathrm{micro\ avg\ F1} &= \frac{2\times \mathrm{micro\ avg\ Precision} \times \mathrm{micro\ avg\ Recall}}{\mathrm{micro\ avg\ Precision} + \mathrm{micro\ avg\ Recall}}
+\end{split}
+\end{equation}</script><p><code>macro avg</code>:</p>
+<script type="math/tex; mode=display">
+\begin{equation}\nonumber
+\begin{split}
+\mathrm{macro\ avg\ Precision} &= \frac{1}{n} \sum \mathrm{Precision}_i \\\\
+\mathrm{macro\ avg\ Recall} &= \frac{1}{n} \sum \mathrm{Recall}_i \\\\
+\mathrm{macro\ avg\ F1} &= \frac{1}{n} \sum \mathrm{F1}_i
+\end{split}
+\end{equation}</script><p><code>weighted avg</code>:</p>
+<p>假设类别 1 有 4 个，类别 2 有 10 个。</p>
+<script type="math/tex; mode=display">
+\begin{equation}\nonumber
+\begin{split}
+\mathrm{weighted\ avg\ Precision} &= \frac{4 \times \mathrm{Precision}_{1}+10 \times \mathrm{Precision}_{2}}{14} &= \frac{\sum(n_i\times \mathrm{Precision}_{i})}{\sum n_i} \\\\
+\mathrm{weighted\ avg\ Recall} &= \frac{4 \times \mathrm{Recall}_{1}+10 \times \mathrm{Recall}_{2}}{14} &= \frac{\sum(n_i\times \mathrm{Recall}_{i})}{\sum n_i} \\\\
+\mathrm{weighted\ avg\ F1} &= \frac{4 \times F1_{1}+10 \times F1_{2}}{14} &= \frac{\sum(n_i\times F1_{i})}{\sum n_i}
+\end{split}
+\end{equation}</script><h2 id="5-3-F1-得分与阈值的关系"><a href="#5-3-F1-得分与阈值的关系" class="headerlink" title="5.3 F1 得分与阈值的关系"></a>5.3 F1 得分与阈值的关系</h2><p><img src="https://i2.wp.com/neptune.ai/wp-content/uploads/f1_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>精准度与阈值的关系是正相关，召回率与阈值的关系是负相关，F1 是精准度和召回率的综合平均值，所以当阈值过大或过小的时候都会对 F1 造成损失，所以要保证较高的 F1 得分，阈值必须在一个合理的范围内。</p>
+<h2 id="5-4-什么时候用？"><a href="#5-4-什么时候用？" class="headerlink" title="5.4 什么时候用？"></a>5.4 什么时候用？</h2><ul>
+<li>F1 得分是常规分类问题的首选评估指标，但是通常也会配合准确率，精准度和召回率</li>
+</ul>
+<h1 id="6-F2-得分（F2-score）"><a href="#6-F2-得分（F2-score）" class="headerlink" title="6. F2 得分（F2-score）"></a>6. F2 得分（F2-score）</h1><h2 id="6-1-F2-得分定义"><a href="#6-1-F2-得分定义" class="headerlink" title="6.1 F2 得分定义"></a>6.1 F2 得分定义</h2><p>F2 得分表示精准度和召回率的综合评价，与 F1 不同的是，F2 着重强调召回率：</p>
+<script type="math/tex; mode=display">
+F2 = \frac{5 \times \mathrm{Precision}\times \mathrm{Recall}}{4\times  \mathrm{Precision+Recall}}</script><h2 id="6-2-用-scikit-learn-计算-F2-得分"><a href="#6-2-用-scikit-learn-计算-F2-得分" class="headerlink" title="6.2 用 scikit-learn 计算 F2 得分"></a>6.2 用 scikit-learn 计算 F2 得分</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> fbeta_score</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">fbeta_score(y_true, y_pred_class, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="6-3-F2-得分与阈值的关系"><a href="#6-3-F2-得分与阈值的关系" class="headerlink" title="6.3 F2 得分与阈值的关系"></a>6.3 F2 得分与阈值的关系</h2><p><img src="https://i0.wp.com/neptune.ai/wp-content/uploads/f2_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>由于 F2 得分更强调召回率的作用，所以 F2 的性质也与召回率的性质相似，随着阈值的提高 F2 得分会有一个库快速的上升，然后短暂达到平衡，然后随着阈值的升高 F2 得分逐渐下降。</p>
+<h2 id="6-4-什么时候用？"><a href="#6-4-什么时候用？" class="headerlink" title="6.4 什么时候用？"></a>6.4 什么时候用？</h2><ul>
+<li>在注重召回率的场景下都可以使用</li>
+</ul>
+<h1 id="7-F-beta-得分（F-beta-score）"><a href="#7-F-beta-得分（F-beta-score）" class="headerlink" title="7. F-beta 得分（F-beta score）"></a>7. F-beta 得分（F-beta score）</h1><h2 id="7-1-F-beta-定义"><a href="#7-1-F-beta-定义" class="headerlink" title="7.1 F-beta 定义"></a>7.1 F-beta 定义</h2><p>既然有 F1 得分，有 F2 得分，那么我顶定义一个 $\beta$ ，当 $\beta=1$ 时，即为 F1 得分，当 $\beta=2$ 时，即为 F2 得分。计算方法如下：</p>
+<script type="math/tex; mode=display">
+F_{beta} = (1+\beta^2)\frac{\mathrm{Precision}\times \mathrm{Recall}}{\beta^2 \times \mathrm{Precision}+\mathrm{Recall}}</script><p>我肯可以通过调整 $\beta$ 值来确定召回率在我们的评估指标中占有的比重。</p>
+<h2 id="7-2-用-scikit-learn-计算-F-beta-得分"><a href="#7-2-用-scikit-learn-计算-F-beta-得分" class="headerlink" title="7.2 用 scikit-learn 计算 F-beta 得分"></a>7.2 用 scikit-learn 计算 F-beta 得分</h2><p>在上面计算 F2 得分的时候，我们就可以发现，用到了 <code>fbeta_score</code> 函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> fbeta_score</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">fbeta_score(y_true, y_pred_class, beta)</span><br></pre></td></tr></table></figure>
+<h2 id="7-3-F-beta-得分与阈值的关系"><a href="#7-3-F-beta-得分与阈值的关系" class="headerlink" title="7.3 F-beta 得分与阈值的关系"></a>7.3 F-beta 得分与阈值的关系</h2><p><img src="https://i0.wp.com/neptune.ai/wp-content/uploads/f_by_beta.png?fit=933%2C518&amp;ssl=1" alt></p>
+<p>上图展示了不同 $\beta$ 值时， F-beta 与阈值的关系。</p>
+<h1 id="8-假阳性率（Type-I-error）"><a href="#8-假阳性率（Type-I-error）" class="headerlink" title="8. 假阳性率（Type-I error）"></a>8. 假阳性率（Type-I error）</h1><h2 id="8-1-假阳性率定义"><a href="#8-1-假阳性率定义" class="headerlink" title="8.1 假阳性率定义"></a>8.1 假阳性率定义</h2><p>假阳性率表示，我们预测的某事但没有发生。因此，假阳性率又可以叫做误报率。比如，本来没有大雨，但是天气预报却预报说有雨，说明天气预报误报了。我们可以将其视为模型发出的错误报警。</p>
+<script type="math/tex; mode=display">
+FPR = \frac{\mathrm{FP}}{FP+TN}</script><h2 id="8-2-用-scikit-learn-计算假阳性率"><a href="#8-2-用-scikit-learn-计算假阳性率" class="headerlink" title="8.2 用 scikit-learn 计算假阳性率"></a>8.2 用 scikit-learn 计算假阳性率</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">tn, fp, fn, tp = confusion_matrix(y_true, y_pred_class).ravel()</span><br><span class="line">false_positive_rate = fp / (fp + tn)</span><br></pre></td></tr></table></figure>
+<h2 id="8-3-假阳性率与阈值的关系"><a href="#8-3-假阳性率与阈值的关系" class="headerlink" title="8.3 假阳性率与阈值的关系"></a>8.3 假阳性率与阈值的关系</h2><p>通常一个好的模型假阳性率都比较低，但是我们还可以通过调节阈值来进一步降低假阳性率。因为在分母中包含真负样本（$TN$），当我们的数据不平衡时，假阳性率通常会很低。</p>
+<p><img src="https://i2.wp.com/neptune.ai/wp-content/uploads/fpr_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>显然，随着阈值的增大，假阳性率在降低。</p>
+<h2 id="8-4-什么时候用？"><a href="#8-4-什么时候用？" class="headerlink" title="8.4 什么时候用？"></a>8.4 什么时候用？</h2><ul>
+<li>很少单独使用假阳性率，通常是和其他指标一起使用；</li>
+<li>如果误报会导致较严重的后果，可以通过调节阈值来降低。</li>
+</ul>
+<h1 id="9-假阴性率（Type-II-error）"><a href="#9-假阴性率（Type-II-error）" class="headerlink" title="9. 假阴性率（Type-II error）"></a>9. 假阴性率（Type-II error）</h1><h2 id="9-1-假阴性率定义"><a href="#9-1-假阴性率定义" class="headerlink" title="9.1 假阴性率定义"></a>9.1 假阴性率定义</h2><p>假阴性率表示，当我们没有预测的事情却发生了。因此，假阴性率又可以叫做漏报率。比如，本来有一场大雨，但是天气预报没有预报，说明天气预报对这次大雨漏报了。</p>
+<script type="math/tex; mode=display">
+FNR = \frac{FN}{TP+FN}</script><h2 id="9-2-用-scikit-learn-计算假阴性率"><a href="#9-2-用-scikit-learn-计算假阴性率" class="headerlink" title="9.2 用 scikit-learn 计算假阴性率"></a>9.2 用 scikit-learn 计算假阴性率</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">tn, fp, fn, tp = confusion_matrix(y_true, y_pred_class).ravel()</span><br><span class="line">false_negative_rate = fn / (tp + fn)</span><br></pre></td></tr></table></figure>
+<h2 id="9-3-假阴性率与阈值的关系"><a href="#9-3-假阴性率与阈值的关系" class="headerlink" title="9.3 假阴性率与阈值的关系"></a>9.3 假阴性率与阈值的关系</h2><p><img src="https://i2.wp.com/neptune.ai/wp-content/uploads/fnr_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>当我们提高阈值的时候，假阴性率也会随之升高。</p>
+<h2 id="9-4-什么时候用？"><a href="#9-4-什么时候用？" class="headerlink" title="9.4 什么时候用？"></a>9.4 什么时候用？</h2><ul>
+<li>通常与其他指标一起使用；</li>
+<li>如果漏报的代价比较大的时候，就需要关注这个指标了。</li>
+</ul>
+<h1 id="10-真阴性率（True-negative-rate）"><a href="#10-真阴性率（True-negative-rate）" class="headerlink" title="10. 真阴性率（True negative rate）"></a>10. 真阴性率（True negative rate）</h1><h2 id="10-1-真阴性率定义"><a href="#10-1-真阴性率定义" class="headerlink" title="10.1 真阴性率定义"></a>10.1 真阴性率定义</h2><p>真阴性率表示，在所有的负样本中有多少负样本被检测出来。</p>
+<script type="math/tex; mode=display">
+TNR = \frac{TN}{TN+FP}</script><h2 id="10-2-用-scikit-learn-计算真阴性率"><a href="#10-2-用-scikit-learn-计算真阴性率" class="headerlink" title="10.2 用 scikit-learn 计算真阴性率"></a>10.2 用 scikit-learn 计算真阴性率</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">tn, fp, fn, tp = confusion_matrix(y_true, y_pred_class).ravel()</span><br><span class="line">true_negative_rate = tn / (tn + fp)</span><br></pre></td></tr></table></figure>
+<h2 id="10-3-真阴性率与阈值的关系"><a href="#10-3-真阴性率与阈值的关系" class="headerlink" title="10.3 真阴性率与阈值的关系"></a>10.3 真阴性率与阈值的关系</h2><p><img src="https://i0.wp.com/neptune.ai/wp-content/uploads/tnr_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>阈值越高，真阴性率越高。</p>
+<h2 id="10-4-什么时候用？"><a href="#10-4-什么时候用？" class="headerlink" title="10.4 什么时候用？"></a>10.4 什么时候用？</h2><ul>
+<li>通常与其他指标一起用；</li>
+<li>当你确实希望确保你所说的每一句都是正确的时候，可以考虑该指标。比如，当一个医生对病人说 “你很健康”  的时候。</li>
+</ul>
+<h1 id="11-负样本预测值（Negative-Predictive-Value）"><a href="#11-负样本预测值（Negative-Predictive-Value）" class="headerlink" title="11. 负样本预测值（Negative Predictive Value）"></a>11. 负样本预测值（Negative Predictive Value）</h1><h2 id="11-1-负样本预测值定义"><a href="#11-1-负样本预测值定义" class="headerlink" title="11.1 负样本预测值定义"></a>11.1 负样本预测值定义</h2><p>负样本预测值表示，模型预测的负样本有多少是真正的负样本，我们可以认为它是负类别的准确率。</p>
+<script type="math/tex; mode=display">
+NPV = \frac{TN}{TN+FN}</script><h2 id="11-2-用-scikit-learn-计算负样本预测值"><a href="#11-2-用-scikit-learn-计算负样本预测值" class="headerlink" title="11.2 用 scikit-learn 计算负样本预测值"></a>11.2 用 scikit-learn 计算负样本预测值</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">tn, fp, fn, tp = confusion_matrix(y_true, y_pred_class).ravel()</span><br><span class="line">negative_predictive_value = tn/ (tn + fn)</span><br></pre></td></tr></table></figure>
+<h2 id="11-3-负样本预测值与阈值的关系"><a href="#11-3-负样本预测值与阈值的关系" class="headerlink" title="11.3 负样本预测值与阈值的关系"></a>11.3 负样本预测值与阈值的关系</h2><p><img src="https://i2.wp.com/neptune.ai/wp-content/uploads/npv_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>阈值越高就会有越多的样本被预测为负样本，被误分类成负样本的几率就越高。但是对于非平衡数据集来说，一个较高的阈值通常负样本预测值表现也还不错。</p>
+<h2 id="11-4-什么时候用？"><a href="#11-4-什么时候用？" class="headerlink" title="11.4 什么时候用？"></a>11.4 什么时候用？</h2><ul>
+<li>当我们更加关注负样本的预测准确率时，可以考虑使用这一评估指标。</li>
+</ul>
+<h1 id="12-假发现率（False-Discovery-Rate）"><a href="#12-假发现率（False-Discovery-Rate）" class="headerlink" title="12. 假发现率（False Discovery Rate）"></a>12. 假发现率（False Discovery Rate）</h1><h2 id="12-1-假发现率定义"><a href="#12-1-假发现率定义" class="headerlink" title="12.1 假发现率定义"></a>12.1 假发现率定义</h2><p>假发现率表示，所有预测为正样本的数据中有多少是真正的正样本。</p>
+<script type="math/tex; mode=display">
+FDR = \frac{TP}{TP+FP}</script><h2 id="12-2-用-scikit-learn-计算假发现率"><a href="#12-2-用-scikit-learn-计算假发现率" class="headerlink" title="12.2 用 scikit-learn 计算假发现率"></a>12.2 用 scikit-learn 计算假发现率</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">tn, fp, fn, tp = confusion_matrix(y_true, y_pred_class).ravel()</span><br><span class="line">false_discovery_rate = fp/ (tp + fp)</span><br></pre></td></tr></table></figure>
+<h2 id="12-3-假发现率与阈值的关系"><a href="#12-3-假发现率与阈值的关系" class="headerlink" title="12.3 假发现率与阈值的关系"></a>12.3 假发现率与阈值的关系</h2><p><img src="https://i2.wp.com/neptune.ai/wp-content/uploads/fdr_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>阈值越高，假发现率越低。</p>
+<h2 id="12-4-什么时候用？"><a href="#12-4-什么时候用？" class="headerlink" title="12.4 什么时候用？"></a>12.4 什么时候用？</h2><ul>
+<li>通常和其他指标一起使用；</li>
+<li>如果误报的代价过高，或者当你希望所有预测为正样本的数据都值得一看的时候，可以考虑该指标。</li>
+</ul>
+<h1 id="13-Cohen-Kappa-Metric"><a href="#13-Cohen-Kappa-Metric" class="headerlink" title="13. Cohen Kappa Metric"></a>13. Cohen Kappa Metric</h1><h2 id="13-1-Cohen-Kappa-定义"><a href="#13-1-Cohen-Kappa-定义" class="headerlink" title="13.1 Cohen Kappa 定义"></a>13.1 Cohen Kappa 定义</h2><p>简单来说，<em>Cohen Kappa</em> 指的是你的模型比一个随机分类器好多少。</p>
+<script type="math/tex; mode=display">
+\kappa = \frac{p_0-p_e}{1-p_e}</script><ul>
+<li>$p_0$ 表示模型预测结果，通常为准确率；</li>
+<li>$p_e$ 表示随机预测结果，通常为随机模型的准确率。</li>
+</ul>
+<h2 id="13-2-用-scikit-learn-计算-Cohen-Kappa"><a href="#13-2-用-scikit-learn-计算-Cohen-Kappa" class="headerlink" title="13.2 用 scikit-learn 计算 Cohen Kappa"></a>13.2 用 scikit-learn 计算 Cohen Kappa</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> cohen_kappa_score</span><br><span class="line"></span><br><span class="line">cohen_kappa_score(y_true, y_pred_class)</span><br></pre></td></tr></table></figure>
+<h2 id="13-3-Cohen-Kappa-与阈值的关系"><a href="#13-3-Cohen-Kappa-与阈值的关系" class="headerlink" title="13.3 Cohen Kappa 与阈值的关系"></a>13.3 Cohen Kappa 与阈值的关系</h2><p><img src="https://i0.wp.com/neptune.ai/wp-content/uploads/kappa_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<h2 id="13-4-什么时候用？"><a href="#13-4-什么时候用？" class="headerlink" title="13.4 什么时候用？"></a>13.4 什么时候用？</h2><ul>
+<li>Cohen Kappa 通常不会用在一般的文本分类上，而是在非平衡数据的分类模型上。</li>
+</ul>
+<h1 id="14-Matthews-Correlation-Coefficient-（MCC）"><a href="#14-Matthews-Correlation-Coefficient-（MCC）" class="headerlink" title="14. Matthews Correlation Coefficient （MCC）"></a>14. Matthews Correlation Coefficient （MCC）</h1><p>$MCC$ 表示真实标签和预测标签的相关性。</p>
+<h2 id="14-1-MCC-定义"><a href="#14-1-MCC-定义" class="headerlink" title="14.1 MCC 定义"></a>14.1 MCC 定义</h2><script type="math/tex; mode=display">
+MCC = \frac{TP\times TN-FP\times FN}{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}</script><h2 id="14-2-scikit-learn-计算-MCC"><a href="#14-2-scikit-learn-计算-MCC" class="headerlink" title="14.2 scikit-learn 计算 MCC"></a>14.2 scikit-learn 计算 MCC</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> matthews_corrcoef</span><br><span class="line"></span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">matthews_corrcoef(y_true, y_pred_class)</span><br></pre></td></tr></table></figure>
+<h2 id="14-3-MCC-与阈值的关系"><a href="#14-3-MCC-与阈值的关系" class="headerlink" title="14.3 MCC 与阈值的关系"></a>14.3 MCC 与阈值的关系</h2><p><img src="https://i0.wp.com/neptune.ai/wp-content/uploads/mcc_by_thres.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<h2 id="14-4-什么时候用？"><a href="#14-4-什么时候用？" class="headerlink" title="14.4 什么时候用？"></a>14.4 什么时候用？</h2><ul>
+<li>不平衡数据集</li>
+<li>希望预测结果有更强的可解释性的</li>
+</ul>
+<h1 id="15-ROC-曲线"><a href="#15-ROC-曲线" class="headerlink" title="15. ROC 曲线"></a>15. ROC 曲线</h1><p>ROC 曲线是一个图表，用于展示真阳性率（$TPR$）和假阳性率（$FPR$）之间的权衡。基本上，对于每个阈值，我们计算 $TPR$ 和 $FPR$ 并将其绘制在一张图表上。它代表的是分类器以多大的置信度将样本分类为正样本。</p>
+<p>可以在 <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.10.9777&amp;rep=rep1&amp;type=pdf" target="_blank" rel="noopener">Tom Fawcett</a> 的这篇文章中找到对 ROC 曲线和 ROC AUC 分数的广泛详细的讨论。</p>
+<h2 id="15-1-用-scikit-learn-计算-ROC"><a href="#15-1-用-scikit-learn-计算-ROC" class="headerlink" title="15.1 用 scikit-learn 计算 ROC"></a>15.1 用 scikit-learn 计算 ROC</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scikitplot.metrics <span class="keyword">import</span> plot_roc</span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">plot_roc(y_true, y_pred, ax=ax)</span><br></pre></td></tr></table></figure>
+<h2 id="15-2-曲线图是什么样的？"><a href="#15-2-曲线图是什么样的？" class="headerlink" title="15.2 曲线图是什么样的？"></a>15.2 曲线图是什么样的？</h2><p><img src="https://i1.wp.com/neptune.ai/wp-content/uploads/roc_auc_curve.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<p>每个不同的阈值对应曲线上不同的点（即不同的混淆矩阵）。对于每个阈值，较高的 $TPR$ 和较低的 $FPR$ 越好，因此具有更多左上角曲线的分类器更好。从上图可以看出，在大约（0.15， 0.85）左右的位置（左上角黑色实线和黑色虚线焦点）二者取得平衡。因此该位置对应的阈值应该是最佳的分类阈值。</p>
+<h1 id="16-ROC-AUC-得分"><a href="#16-ROC-AUC-得分" class="headerlink" title="16. ROC-AUC 得分"></a>16. ROC-AUC 得分</h1><p>为了从 ROC 曲线上得到一个量化的指标，我们可以计算 ROC-AUC（<em>Area Under the ROC Curve</em>） 得分。</p>
+<h2 id="16-1-用-scikit-learn-计算-ROC-AUC"><a href="#16-1-用-scikit-learn-计算-ROC-AUC" class="headerlink" title="16.1 用 scikit-learn 计算 ROC-AUC"></a>16.1 用 scikit-learn 计算 ROC-AUC</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_auc_score</span><br><span class="line"></span><br><span class="line">roc_auc = roc_auc_score(y_true, y_pred_pos)</span><br></pre></td></tr></table></figure>
+<h2 id="16-2-什么时候用？"><a href="#16-2-什么时候用？" class="headerlink" title="16.2 什么时候用？"></a>16.2 什么时候用？</h2><ul>
+<li>当你非常关心排序预测的时候，应该使用 ROC-AUC 得分而没有必要关注<a href="https://machinelearningmastery.com/calibrated-classification-model-in-scikit-learn/" target="_blank" rel="noopener">概率修正</a>。</li>
+<li>当你的数据严重不平衡的时候，不应该使用 ROC-AUC 作为评估指标。直观上来讲，当数据严重类别不平衡的时候， $FPR$ 会被严重拉低，因为大量的数据是 <em>True Negative</em> 的。</li>
+<li>当正负样本的类别平衡的时候，可以使用 ROC-AUC 作为评估指标。</li>
+</ul>
+<h1 id="17-Precision-Recall-Curve"><a href="#17-Precision-Recall-Curve" class="headerlink" title="17. Precision-Recall Curve"></a>17. Precision-Recall Curve</h1><p>PRC 是一条融合了精准度和召回率的可视化曲线。对于每个阈值，计算相应的精准度和召回率，然后画在图上即可。Y 轴对应的值越高，则模型表现越好。</p>
+<h2 id="17-1-用-scikit-learn-计算-PRC"><a href="#17-1-用-scikit-learn-计算-PRC" class="headerlink" title="17.1 用 scikit-learn 计算 PRC"></a>17.1 用 scikit-learn 计算 PRC</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scikitplot.metrics <span class="keyword">import</span> plot_precision_recall</span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">plot_precision_recall(y_true, y_pred, ax=ax)</span><br></pre></td></tr></table></figure>
+<h2 id="17-2-曲线长什么样？"><a href="#17-2-曲线长什么样？" class="headerlink" title="17.2 曲线长什么样？"></a>17.2 曲线长什么样？</h2><p><img src="https://i1.wp.com/neptune.ai/wp-content/uploads/prec_rec_curve.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<h1 id="18-PR-AUC-得分-平均精准度"><a href="#18-PR-AUC-得分-平均精准度" class="headerlink" title="18. PR AUC 得分 | 平均精准度"></a>18. PR AUC 得分 | 平均精准度</h1><p>与 ROC-AUC 类似，我们也可以计算 <strong>A</strong>rea <strong>U</strong>nder the Precision-Recall <strong>C</strong>urve 以获得评估模型的量化指标。</p>
+<h2 id="18-1-用-sickit-learn计算-PR-AUC"><a href="#18-1-用-sickit-learn计算-PR-AUC" class="headerlink" title="18.1 用 sickit-learn计算 PR AUC"></a>18.1 用 sickit-learn计算 PR AUC</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> average_precision_score</span><br><span class="line"></span><br><span class="line">average_precision_score(y_true, y_pred_pos)</span><br></pre></td></tr></table></figure>
+<h2 id="18-2-什么时候用？"><a href="#18-2-什么时候用？" class="headerlink" title="18.2 什么时候用？"></a>18.2 什么时候用？</h2><ul>
+<li>当你要在精准度和召回率之间做取舍的时候</li>
+<li>当你要选择一个合适的阈值符合实际情况的时候</li>
+<li>当你的数据严重不平衡的时候。就像之前讨论的那样，由于 PR AUC 主要关注点是正样本的类别，很少关注到负样本。所以在类别严重不平衡的时候可以使用 PR AUC 作为模型的评估指标。</li>
+<li>当你更关注正样本而非负样本的时候，可以使用 PR AUC 作为模型的评估指标。</li>
+</ul>
+<h1 id="19-Log-loss"><a href="#19-Log-loss" class="headerlink" title="19. Log loss"></a>19. Log loss</h1><p>对数损失函数经常用来优化机器学习模型的参数。然后实际上它也可以作为模型的评估指标。</p>
+<h2 id="19-1-定义对数损失"><a href="#19-1-定义对数损失" class="headerlink" title="19.1 定义对数损失"></a>19.1 定义对数损失</h2><p>对数损失用来计算真实标签与预测标签之间的差别：</p>
+<script type="math/tex; mode=display">
+\mathrm{Logloss} = -(y_{\mathrm{true}}\times\log(y_{\mathrm{pred}})) + (1-y_{\mathrm{true}})\times\log(1-y_{\mathrm{pred}})</script><p>观测到的正样本置信度越高，那么它与真实的正样本之间的差距就越小。但是这并不是一个线性关系，真实的关系如下图：</p>
+<p><img src="https://i1.wp.com/neptune.ai/wp-content/uploads/log_los_chart.png?fit=724%2C496&amp;ssl=1" alt></p>
+<h2 id="19-2-用-scikit-learn-计算对数损失"><a href="#19-2-用-scikit-learn-计算对数损失" class="headerlink" title="19.2 用 scikit-learn 计算对数损失"></a>19.2 用 scikit-learn 计算对数损失</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> log_loss</span><br><span class="line"></span><br><span class="line">log_loss(y_true, y_pred)</span><br></pre></td></tr></table></figure>
+<h2 id="19-3-什么时候用？"><a href="#19-3-什么时候用？" class="headerlink" title="19.3 什么时候用？"></a>19.3 什么时候用？</h2><ul>
+<li>几乎总是有一个性能指标可以更好地匹配我们的业务问题。 因此，我们可以使用对数损失作为模型的目标，并使用其他一些指标来评估性能。</li>
+</ul>
+<h1 id="20-Brier-得分"><a href="#20-Brier-得分" class="headerlink" title="20. Brier 得分"></a>20. Brier 得分</h1><h2 id="20-1-Brier-得分定义"><a href="#20-1-Brier-得分定义" class="headerlink" title="20.1 Brier 得分定义"></a>20.1 Brier 得分定义</h2><script type="math/tex; mode=display">
+\mathrm{Brierloss} = (y_{\mathrm{pred}}-y_{\mathrm{true}})^2</script><h2 id="20-2-用-scikit-learn-计算-Brier-得分"><a href="#20-2-用-scikit-learn-计算-Brier-得分" class="headerlink" title="20.2 用 scikit-learn 计算 Brier 得分"></a>20.2 用 scikit-learn 计算 Brier 得分</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> brier_score_loss</span><br><span class="line"></span><br><span class="line">brier_score_loss(y_true, y_pred_pos)</span><br></pre></td></tr></table></figure>
+<h2 id="20-3-什么时候用？"><a href="#20-3-什么时候用？" class="headerlink" title="20.3 什么时候用？"></a>20.3 什么时候用？</h2><ul>
+<li>当你关心修正概率的时候</li>
+</ul>
+<h1 id="21-累积收益表"><a href="#21-累积收益表" class="headerlink" title="21. 累积收益表"></a>21. 累积收益表</h1><h2 id="21-1-定义累积收益表"><a href="#21-1-定义累积收益表" class="headerlink" title="21.1 定义累积收益表"></a>21.1 定义累积收益表</h2><p>简单来说，累积收益表（Cumulative gains chart）可以帮助我们判断使用当前模型的收益超过一个随机模型多少。</p>
+<ul>
+<li>先对预测结果从高到低进行排序</li>
+<li>对于每个百分数，我们计算大于这个百分数的真阳性样本比例。</li>
+</ul>
+<h2 id="21-2-用-scikit-learn-计算-CGC"><a href="#21-2-用-scikit-learn-计算-CGC" class="headerlink" title="21.2 用 scikit-learn 计算 CGC"></a>21.2 用 scikit-learn 计算 CGC</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scikitplot.metrics <span class="keyword">import</span> plot_cumulative_gain</span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">plot_cumulative_gain(y_true, y_pred, ax=ax)</span><br></pre></td></tr></table></figure>
+<h2 id="21-3-CGC-看起来是什么样的？"><a href="#21-3-CGC-看起来是什么样的？" class="headerlink" title="21.3 CGC 看起来是什么样的？"></a>21.3 CGC 看起来是什么样的？</h2><p><img src="https://i0.wp.com/neptune.ai/wp-content/uploads/cum_gain_chart.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<h2 id="21-4-什么时候用？"><a href="#21-4-什么时候用？" class="headerlink" title="21.4 什么时候用？"></a>21.4 什么时候用？</h2><ul>
+<li>当你想选择最有希望与你进行交易的客户的时候，可以使用 CGC 作为评估指标。</li>
+<li>它可以作为 ROC-AUC 指标的一个很好的额外补充。</li>
+</ul>
+<h1 id="22-Lift-curve-lift-chart"><a href="#22-Lift-curve-lift-chart" class="headerlink" title="22. Lift curve | lift chart"></a>22. Lift curve | lift chart</h1><h2 id="22-1-定义-lift-curve"><a href="#22-1-定义-lift-curve" class="headerlink" title="22.1 定义 lift curve"></a>22.1 定义 lift curve</h2><p>Lift curve 基本上只是 CGC 的另一种表示形式：</p>
+<ul>
+<li>首先对预测结果由高到低进行排序；</li>
+<li>对于每个预测值，计算训练好的模型和随机模型达到该百分比概率的真阳性比例</li>
+<li>计算上述比例，然后画图</li>
+</ul>
+<p>它能告诉我们对于给定最大预测值，它比一个随机模型好多少。</p>
+<h2 id="22-2-用-scikit-learn-计算-lift-curve"><a href="#22-2-用-scikit-learn-计算-lift-curve" class="headerlink" title="22.2 用 scikit-learn 计算 lift curve"></a>22.2 用 scikit-learn 计算 lift curve</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scikitplot.metrics <span class="keyword">import</span> plot_lift_curve </span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots() plot_lift_curve(y_true, y_pred, ax=ax)</span><br></pre></td></tr></table></figure>
+<p><img src="https://i2.wp.com/neptune.ai/wp-content/uploads/lift_curve_chart.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<h2 id="22-3-什么时候用？"><a href="#22-3-什么时候用？" class="headerlink" title="22.3 什么时候用？"></a>22.3 什么时候用？</h2><ul>
+<li>当你想选择最有希望与你进行交易的客户的时候，可以使用 CGC 作为评估指标。</li>
+<li>它可以作为 ROC-AUC 指标的一个很好的额外补充。</li>
+</ul>
+<h1 id="23-Kolmogorov-Smirnov-plot"><a href="#23-Kolmogorov-Smirnov-plot" class="headerlink" title="23. Kolmogorov-Smirnov plot"></a>23. Kolmogorov-Smirnov plot</h1><h2 id="23-1-定义-KS-plot"><a href="#23-1-定义-KS-plot" class="headerlink" title="23.1 定义 KS plot"></a>23.1 定义 KS plot</h2><p>KS plot 帮助我们从预测结果中获得独立的正样本分布和负样本分布。</p>
+<ul>
+<li>根据预测得分进行排序</li>
+<li>对 [0.0, 1.0] 之间的每个截点计算相邻截点（depth）之间的数据中的真阳性和真阴性比例</li>
+<li>画出计算出来的比例，y 轴表示 $positive(depth)/positive(all)$，$negative(depth)/negative(all)$，x 轴表示 depth</li>
+</ul>
+<p>KS plot有点类似于 CGC，但是CGC 只关注正样本，而 KS plot同时关注正负样本。</p>
+<h2 id="23-2-用-scikit-learn-计算-KS-plot"><a href="#23-2-用-scikit-learn-计算-KS-plot" class="headerlink" title="23.2 用 scikit-learn 计算 KS plot"></a>23.2 用 scikit-learn 计算 KS plot</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scikitplot.metrics <span class="keyword">import</span> plot_ks_statistic</span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">plot_ks_statistic(y_true, y_pred, ax=ax)</span><br></pre></td></tr></table></figure>
+<p><img src="https://i0.wp.com/neptune.ai/wp-content/uploads/ks_plot.png?fit=1024%2C768&amp;ssl=1" alt></p>
+<h1 id="24-Kolmogorov-Smirnov-statistic"><a href="#24-Kolmogorov-Smirnov-statistic" class="headerlink" title="24. Kolmogorov-Smirnov statistic"></a>24. Kolmogorov-Smirnov statistic</h1><h2 id="24-1-定义-KS-statistic"><a href="#24-1-定义-KS-statistic" class="headerlink" title="24.1 定义 KS statistic"></a>24.1 定义 KS statistic</h2><p>如果我们想从 KS plot 中选择一个值作为指标，那么我们可以查看所有 KS plot 中所有阈值，然后找到正负样本分布距离最远的点。</p>
+<p>如果有一个阈值，所有观测到的上方样本都是真阳性，而所有下方的样本都是真阴性，那么我们就找到了一个完美的 KS statistic 值：1.0</p>
+<h2 id="24-2-用-scikit-learn-计算-KS-statistic"><a href="#24-2-用-scikit-learn-计算-KS-statistic" class="headerlink" title="24.2 用 scikit-learn 计算 KS statistic"></a>24.2 用 scikit-learn 计算 KS statistic</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scikitplot.helpers <span class="keyword">import</span> binary_ks_curve</span><br><span class="line"></span><br><span class="line">res = binary_ks_curve(y_true, y_pred_pos)</span><br><span class="line">ks_stat = res[<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="24-3-什么时候用？"><a href="#24-3-什么时候用？" class="headerlink" title="24.3 什么时候用？"></a>24.3 什么时候用？</h2><ul>
+<li>当你面对的是排序问题且你对正负样本都很关心的时候</li>
+<li>可以作为 ROC-AUC  的补充指标</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="https://neptune.ai/blog/evaluation-metrics-binary-classification" target="_blank" rel="noopener">24 Evaluation Metrics for Binary Classification (And When to Use Them)</a></li>
+<li><a href="https://www.analyticsvidhya.com/blog/2020/04/confusion-matrix-machine-learning/" target="_blank" rel="noopener">Everything you Should Know about Confusion Matrix for Machine Learning</a></li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/评估方法/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>评估方法</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/04/28/24-binary-class-evaluateion-metrics/&title=24种二分类模型的评估方法 | Rogerspy's Home&summary=
+评估一个模型的好坏有很多指标，每个指标都有其优缺点。如何针对不同场合选取合适的评估指标是一个非常重要的工作。本文将会介绍一些用于分类模型的评估指标，然后介绍我们该如何选取。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/04/28/24-binary-class-evaluateion-metrics/&title=24种二分类模型的评估方法 | Rogerspy's Home&summary=
+评估一个模型的好坏有很多指标，每个指标都有其优缺点。如何针对不同场合选取合适的评估指标是一个非常重要的工作。本文将会介绍一些用于分类模型的评估指标，然后介绍我们该如何选取。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACq0lEQVR42u3aQY7CMAwFUO5/aWY7EkP5tmNgpNcVKjTN8yIJtm+3+Lr/uq6/vf7l41PP7jyOk4zZvPDw8PAGU382xev7+dTz8XP8i7Di4eHhrfGup1hdxKsbRv6baljx8PDwvoeXT6u6CeUBxcPDw/uPvCrmeuTk2I2Hh4f3PbyzQ/cSDUmqYjHXgoeHhxfz8iX+ez6v1Pfw8PDwxlX1XtErHydvEbi3Ljw8PLwNXr7g9kpT1YN1tUkrmiceHh7eUV61qJ80CuShmd958RkPDw9vgZccYU/9x09KYtUANfcTPDw8vAGvd5jOn+q9pVokO5yGwMPDw4tbB/I2qeorewmOXiijSOPh4eENePlyfKrQ1QtWkhaJci14eHh4b+H1ymD5hKqbUGF7wMPDw3sjL198J0/l7QV5SxYeHh7eNm9eakpenBTANlq+8PDw8DZ4vaRAftjtlcp6m8ofY+Lh4eEt8PKiV7VNanKAnoQjKoPh4eHhLfB6KYbqhHr1/XzbwMPDw9vmVVMPzZcNEh/5IT5KSeDh4eG1eMlynJejzrYgHCi54eHh4X2IN0lGJKTekbrZdIWHh4c35uWMebtAjp8czV/8Y8DDw8M7yqsec/OFvhfEPGQvAoqHh4e3wOsV9SfT7eWbe3fw8PDwNniTFEAvOdtjVFMYeHh4eNu8SeK1CjiVZY2ewsPDw1vmVcv21dBUmwwONGPh4eHhHeXdi1de1krSuL10bWG7wsPDw1vgVRfc6hTzMlgS1mqw8PDw8PZ4k6HzfOkkwZFvDHh4eHjv5CXTyhf0ajvCZO+KWgfw8PDwPsrrlaPy0XqpkGMbAx4eHt7amTNP5uZp2WrhLUra4uHh4a3x8tckzQFVZHLs7hXG8PDw8DZ4kz/81eGqAeo1LuDh4eGt8X4AdyVUuQoeeoAAAAAASUVORK5CYII='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/04/28/24-binary-class-evaluateion-metrics/&title=24种二分类模型的评估方法 | Rogerspy's Home&summary=
+评估一个模型的好坏有很多指标，每个指标都有其优缺点。如何针对不同场合选取合适的评估指标是一个非常重要的工作。本文将会介绍一些用于分类模型的评估指标，然后介绍我们该如何选取。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/05/22/ds-divide-and-conquer/" rel="prev" title="数据结构与算法：分治算法">
+                                  
+                                      数据结构与算法：分治算法
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/算法/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>算法</a> <a class="tag" href="/tags/divide-conquer/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>divide-conquer</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/04/22/ds-time-complexity/" rel="prev" title="数据结构与算法：时间复杂度">
+                                    
+                                        数据结构与算法：时间复杂度
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/数据结构/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>数据结构</a> <a class="tag" href="/tags/时间复杂度/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>时间复杂度</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '24种二分类模型的评估方法',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-混淆矩阵（Confusion-Matrix）"><span class="toc-text">1. 混淆矩阵（Confusion Matrix）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-二分类混淆矩阵"><span class="toc-text">1.1 二分类混淆矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-多分类混淆矩阵"><span class="toc-text">1.2 多分类混淆矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-用-scikit-learn-计算混淆矩阵"><span class="toc-text">1.3 用 scikit-learn 计算混淆矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-什么时候用？"><span class="toc-text">1.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-准确率（Accuracy）"><span class="toc-text">2. 准确率（Accuracy）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-准确率定义"><span class="toc-text">2.1 准确率定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-用-scikit-learn-计算准确率"><span class="toc-text">2.2 用 scikit-learn 计算准确率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-准确率与阈值的关系"><span class="toc-text">2.3 准确率与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-什么时候用？"><span class="toc-text">2.4 什么时候用？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-什么时候不能用？"><span class="toc-text">2.5 什么时候不能用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-精准度（Precision）"><span class="toc-text">3. 精准度（Precision）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-精准度定义"><span class="toc-text">3.1 精准度定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-用-scikit-learn-计算精准度"><span class="toc-text">3.2 用 scikit-learn 计算精准度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-精准度与阈值的关系"><span class="toc-text">3.3 精准度与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-什么时候用？"><span class="toc-text">3.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-召回率（Recall）"><span class="toc-text">4. 召回率（Recall）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-召回率定义"><span class="toc-text">4.1 召回率定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-用-scikit-learn-计算召回率"><span class="toc-text">4.2 用 scikit-learn 计算召回率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-召回率与阈值的关系"><span class="toc-text">4.3 召回率与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-什么时候用？"><span class="toc-text">4.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-F1-得分（F1-score）"><span class="toc-text">5. F1 得分（F1-score）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-F1-得分定义"><span class="toc-text">5.1 F1 得分定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-用-scikit-learn-计算-F1得分"><span class="toc-text">5.2 用 scikit-learn 计算 F1得分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-F1-得分与阈值的关系"><span class="toc-text">5.3 F1 得分与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-什么时候用？"><span class="toc-text">5.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-F2-得分（F2-score）"><span class="toc-text">6. F2 得分（F2-score）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-F2-得分定义"><span class="toc-text">6.1 F2 得分定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-用-scikit-learn-计算-F2-得分"><span class="toc-text">6.2 用 scikit-learn 计算 F2 得分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3-F2-得分与阈值的关系"><span class="toc-text">6.3 F2 得分与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-4-什么时候用？"><span class="toc-text">6.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-F-beta-得分（F-beta-score）"><span class="toc-text">7. F-beta 得分（F-beta score）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-F-beta-定义"><span class="toc-text">7.1 F-beta 定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-用-scikit-learn-计算-F-beta-得分"><span class="toc-text">7.2 用 scikit-learn 计算 F-beta 得分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-3-F-beta-得分与阈值的关系"><span class="toc-text">7.3 F-beta 得分与阈值的关系</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-假阳性率（Type-I-error）"><span class="toc-text">8. 假阳性率（Type-I error）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1-假阳性率定义"><span class="toc-text">8.1 假阳性率定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-2-用-scikit-learn-计算假阳性率"><span class="toc-text">8.2 用 scikit-learn 计算假阳性率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-3-假阳性率与阈值的关系"><span class="toc-text">8.3 假阳性率与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-4-什么时候用？"><span class="toc-text">8.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-假阴性率（Type-II-error）"><span class="toc-text">9. 假阴性率（Type-II error）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#9-1-假阴性率定义"><span class="toc-text">9.1 假阴性率定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-2-用-scikit-learn-计算假阴性率"><span class="toc-text">9.2 用 scikit-learn 计算假阴性率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-3-假阴性率与阈值的关系"><span class="toc-text">9.3 假阴性率与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-4-什么时候用？"><span class="toc-text">9.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-真阴性率（True-negative-rate）"><span class="toc-text">10. 真阴性率（True negative rate）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#10-1-真阴性率定义"><span class="toc-text">10.1 真阴性率定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-2-用-scikit-learn-计算真阴性率"><span class="toc-text">10.2 用 scikit-learn 计算真阴性率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-3-真阴性率与阈值的关系"><span class="toc-text">10.3 真阴性率与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-4-什么时候用？"><span class="toc-text">10.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-负样本预测值（Negative-Predictive-Value）"><span class="toc-text">11. 负样本预测值（Negative Predictive Value）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#11-1-负样本预测值定义"><span class="toc-text">11.1 负样本预测值定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-2-用-scikit-learn-计算负样本预测值"><span class="toc-text">11.2 用 scikit-learn 计算负样本预测值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-3-负样本预测值与阈值的关系"><span class="toc-text">11.3 负样本预测值与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-4-什么时候用？"><span class="toc-text">11.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-假发现率（False-Discovery-Rate）"><span class="toc-text">12. 假发现率（False Discovery Rate）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#12-1-假发现率定义"><span class="toc-text">12.1 假发现率定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-2-用-scikit-learn-计算假发现率"><span class="toc-text">12.2 用 scikit-learn 计算假发现率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-3-假发现率与阈值的关系"><span class="toc-text">12.3 假发现率与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-4-什么时候用？"><span class="toc-text">12.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-Cohen-Kappa-Metric"><span class="toc-text">13. Cohen Kappa Metric</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#13-1-Cohen-Kappa-定义"><span class="toc-text">13.1 Cohen Kappa 定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-2-用-scikit-learn-计算-Cohen-Kappa"><span class="toc-text">13.2 用 scikit-learn 计算 Cohen Kappa</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-3-Cohen-Kappa-与阈值的关系"><span class="toc-text">13.3 Cohen Kappa 与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-4-什么时候用？"><span class="toc-text">13.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14-Matthews-Correlation-Coefficient-（MCC）"><span class="toc-text">14. Matthews Correlation Coefficient （MCC）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#14-1-MCC-定义"><span class="toc-text">14.1 MCC 定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-2-scikit-learn-计算-MCC"><span class="toc-text">14.2 scikit-learn 计算 MCC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-3-MCC-与阈值的关系"><span class="toc-text">14.3 MCC 与阈值的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-4-什么时候用？"><span class="toc-text">14.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-ROC-曲线"><span class="toc-text">15. ROC 曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#15-1-用-scikit-learn-计算-ROC"><span class="toc-text">15.1 用 scikit-learn 计算 ROC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-2-曲线图是什么样的？"><span class="toc-text">15.2 曲线图是什么样的？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#16-ROC-AUC-得分"><span class="toc-text">16. ROC-AUC 得分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#16-1-用-scikit-learn-计算-ROC-AUC"><span class="toc-text">16.1 用 scikit-learn 计算 ROC-AUC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-2-什么时候用？"><span class="toc-text">16.2 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#17-Precision-Recall-Curve"><span class="toc-text">17. Precision-Recall Curve</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#17-1-用-scikit-learn-计算-PRC"><span class="toc-text">17.1 用 scikit-learn 计算 PRC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-2-曲线长什么样？"><span class="toc-text">17.2 曲线长什么样？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#18-PR-AUC-得分-平均精准度"><span class="toc-text">18. PR AUC 得分 | 平均精准度</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#18-1-用-sickit-learn计算-PR-AUC"><span class="toc-text">18.1 用 sickit-learn计算 PR AUC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18-2-什么时候用？"><span class="toc-text">18.2 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#19-Log-loss"><span class="toc-text">19. Log loss</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#19-1-定义对数损失"><span class="toc-text">19.1 定义对数损失</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#19-2-用-scikit-learn-计算对数损失"><span class="toc-text">19.2 用 scikit-learn 计算对数损失</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#19-3-什么时候用？"><span class="toc-text">19.3 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#20-Brier-得分"><span class="toc-text">20. Brier 得分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#20-1-Brier-得分定义"><span class="toc-text">20.1 Brier 得分定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20-2-用-scikit-learn-计算-Brier-得分"><span class="toc-text">20.2 用 scikit-learn 计算 Brier 得分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20-3-什么时候用？"><span class="toc-text">20.3 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#21-累积收益表"><span class="toc-text">21. 累积收益表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#21-1-定义累积收益表"><span class="toc-text">21.1 定义累积收益表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#21-2-用-scikit-learn-计算-CGC"><span class="toc-text">21.2 用 scikit-learn 计算 CGC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#21-3-CGC-看起来是什么样的？"><span class="toc-text">21.3 CGC 看起来是什么样的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#21-4-什么时候用？"><span class="toc-text">21.4 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#22-Lift-curve-lift-chart"><span class="toc-text">22. Lift curve | lift chart</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#22-1-定义-lift-curve"><span class="toc-text">22.1 定义 lift curve</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#22-2-用-scikit-learn-计算-lift-curve"><span class="toc-text">22.2 用 scikit-learn 计算 lift curve</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#22-3-什么时候用？"><span class="toc-text">22.3 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#23-Kolmogorov-Smirnov-plot"><span class="toc-text">23. Kolmogorov-Smirnov plot</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#23-1-定义-KS-plot"><span class="toc-text">23.1 定义 KS plot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#23-2-用-scikit-learn-计算-KS-plot"><span class="toc-text">23.2 用 scikit-learn 计算 KS plot</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#24-Kolmogorov-Smirnov-statistic"><span class="toc-text">24. Kolmogorov-Smirnov statistic</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#24-1-定义-KS-statistic"><span class="toc-text">24.1 定义 KS statistic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#24-2-用-scikit-learn-计算-KS-statistic"><span class="toc-text">24.2 用 scikit-learn 计算 KS statistic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#24-3-什么时候用？"><span class="toc-text">24.3 什么时候用？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://rogerspy.github.io/data_structure_algorithm/"
+          
+          
+          id="https:rogerspy.github.iodata_structure_algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fab fa-kaggle fa-fw" aria-hidden="true"></i>
+          
+          Kaggle
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-brain fa-fw" aria-hidden="true"></i>
+          
+          思维逻辑
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+          
+          学习小测
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://paperswithcode.com/datasets"
+          
+          
+          id="https:paperswithcode.comdatasets">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/incremental-learning/"><div class='name'>Incremental Learning</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(15)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.22px; color: #8a8a8a">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19.56px; color: #737373">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.67px; color: #6c6c6c">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.67px; color: #6c6c6c">NLP</a> <a href="/tags/nmt/" style="font-size: 22.89px; color: #5d5d5d">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/smoothing/" style="font-size: 14px; color: #999">Smoothing</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.22px; color: #8a8a8a">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.11px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.11px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 18.44px; color: #7b7b7b">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 17.33px; color: #828282">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.78px; color: #646464">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.11px; color: #919191">词向量</a> <a href="/tags/词向量压缩/" style="font-size: 14px; color: #999">词向量压缩</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

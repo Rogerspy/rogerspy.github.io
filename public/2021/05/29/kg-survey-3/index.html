@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>知识图谱：综述（三）Schema, Identity, Context | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="archives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/05/29/kg-survey-3/">
+        知识图谱：综述（三）Schema, Identity, Context
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-05-29</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/知识图谱/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>知识图谱</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">5.5k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">20分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/kgicon.png" alt></p>
+<p>接下来，我们介绍 Schema、Identity 和 Context。在上一章，我们将以节点和边组成的数据集合称之为“Data graph”，而真正意义上的知识图谱（knowledge graph）是经过了 Schema（数据模式）、Identity（数据一致性）、Context（上下文）、ontology（本体）和 rules（规则）等表示方法增强过的 data graph。本章我们讨论 Schema、Identity 和 Context。Ontology 和 rules 在后面章节讨论。</p>
+<a id="more"></a>
+<h1 id="3-Schema-Identity-Context"><a href="#3-Schema-Identity-Context" class="headerlink" title="3. Schema, Identity, Context"></a>3. Schema, Identity, Context</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220208095917.png" alt></p>
+<center> Fig 1. 示例知识图谱</center>
+
+<h2 id="3-1-Schema"><a href="#3-1-Schema" class="headerlink" title="3.1 Schema"></a>3.1 Schema</h2><p>相比于关系型数据库的数据模型，图数据的一大优势就是不需要数据模式（schema）或者可以延后定义数据模式。但是给图数据制定数据模式可以规范一些更加高级的结构或者语义。接下来我们讨论三种图数据模式：semantic，validating，emergent。</p>
+<h3 id="3-1-1-Semantic-schema"><a href="#3-1-1-Semantic-schema" class="headerlink" title="3.1.1 Semantic schema"></a>3.1.1 Semantic schema</h3><p>语义模式的允许定义图中的高级项的意义，我们可以用这些项进行推理。</p>
+<p>根据示例图谱，我们可以定义一些类别（class），比如 Event，City 等等，然后根据类别定义一些子类（subclass），从而形成一个层级结构：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220209164651.png" alt></p>
+<p>有了这样一个层级结构，我们可以直接从数据中检索到<code>（EID15，type，Food Festival）</code>，然后根据语义模式推理出<code>（EID15，type，Festival）</code>，进一步推理出<code>（EID15，type，Event）</code>，如下所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220209165443.png" alt></p>
+<p>除了类别，我们还希望定义边上标签的语义，即属性（property）。回到示例图谱，我们可以认为 city 和 venue 是 location 的子属性（sub-property），或者 bus 和 flight 是 connections to 的子属性。这样，属性也可以形成一个层级结构。</p>
+<p>更进一步，我们可以给属性定义定义域（domain）和值域（range）。定义域表示节点的类别，而边是从该节点扩展出来的。比如，定义 connections to 的定义域为 city，那么对于<code>（Arica connections to Santiago）</code>来说，我们可以推理出<code>（Arica，type，city）</code>。而值域同样表示节点的类别，而边是扩展到该节点上。比如，定义 connections to 的值域是 city，那么那么对于<code>（Arica, connections, to Santiago）</code>来说，我们可以推理出<code>（Santiago，type，city）</code>。</p>
+<p>RDF Schema（RDFS）是定义语义模式的一个重要标准，在 RDFS 中我们可以定义类（class）、子类（subclass）、属性（property）、子属性（sub-property）、定义域（domain）和值域（range），并且可以将这些定义进行序列化。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220210101146.png" alt></p>
+<p>下面给出一个例子：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220210101438.png" alt></p>
+<p>由于 RDFS 的表达能力较弱，比如无法表示两个实体是同一实体（乔丹，same as，飞人），后来又衍生出另一个非常重要的语义模式——OWL（Web Ontology Language）。OWL 的语义表达能力更强，同时也支持 RDFS，在实际的工程中 OWL 的应用更加广泛。</p>
+<blockquote>
+<p>无论是 RDFS 还是 OWL，包括 OWL 2 等所有的语义模式标准，本质上都是词表。这些词表被认为是语义模式的标准词表，我们用这个词表中的词进行语义建模实现了语义标准化，避免了利用自然语言进行语义建模的歧义性和多样性为后续的推理带来困扰，同时也为多图谱融合提供了方便。我们在后续的文章中进行详细讲解。</p>
+</blockquote>
+<p>语义模式同时也满足一个知识图谱的重要假设——开放世界假设：</p>
+<blockquote>
+<p>当前没有陈述的事情是未知的。</p>
+</blockquote>
+<p>即，没有在知识图谱中描述的知识，我们认为是未知的，而不是不存在的。比如在我们的示例图谱中找不到<code>（Viña del Mar，flight ，Arica）</code>这样一条关系，这不代表在 Viña del Mar 和 Arica 之间是没有航班的，只能说明我们现在还不知道这两地之间有没有航班。</p>
+<p>开放世界假设从逻辑上讲是很合理的，因为我们不可能在知识图谱中描述所有的知识，我们只需要描述我们所需要的知识就可以了。但是这样也会给我们带来一定的麻烦，在开放世界假设下，知识图谱无法回答“是”或“否”的问题。比如“<em>在 Viña del Mar 和 Arica 之间有航班吗？</em>”这样一个问题，知识图谱无法直接回答“有”或者“没有”。</p>
+<p>相对于开放世界假设，还存在一个封闭世界假设：</p>
+<blockquote>
+<p>没有描述的事情就是不存在的。</p>
+</blockquote>
+<p>即，假设我们的图谱已经是完备的了，它包含了一切知识。</p>
+<p>处于开放世界假设和封闭世界假设之间，还有一个局部封闭世界假设：</p>
+<blockquote>
+<p>假设部分没有描述的事情真的不存在。</p>
+</blockquote>
+<p>即，认为我们的图谱是部分完备的。比如假设我们的图谱中已经包含了所有航空公司的所有航线，在所有这些航线中都没有 Viña del Mar 和 Arica 之间的航班，那么我们就认为这两地之间确实没有航班。</p>
+<h3 id="3-1-2-Validating-schema"><a href="#3-1-2-Validating-schema" class="headerlink" title="3.1.2 Validating schema"></a>3.1.2 Validating schema</h3><p>如果图谱中的数据多样性较高且存在大量不完备的信息，那么开放世界假设作为默认语义是比较合理的。但是在某些场景下，我们必须保证数据的完备性。比如我们必须保证示例图谱中每一项活动都至少有一个名字、举办地点、开始时间和结束时间，这样才能保证用户对这项活动有最基础的了解。为了保证这些数据的完备性，我们必须对图谱添加一些约束，而 validating schema 就是去验证图谱是否满足我们添加的约束的。</p>
+<blockquote>
+<ul>
+<li>Semantic schema 用于从现有的知识中推理出新的知识</li>
+<li>Validating schema 用于验证已有的知识的合法性</li>
+</ul>
+</blockquote>
+<p>定义 validating schema 的标准方法是使用 <strong><em>shapes</em></strong>。</p>
+<script type="math/tex; mode=display">
+\text{shape} = [nodes, constraints]</script><p>其中的 $nodes$ 选取可以是一个类别的所有实例，或者某个属性的定义域或者值域，或者某条查询语句的结果等等。$constraints$ 就是作用在这些节点上的约束条件，比如给定属性上节点的数量，节点的数据类型等等。多个 shape 相互关联就形成了 shapes graph。</p>
+<p>Shapes graph 可以用类似 UML 示意图来表示，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220210150506.png" alt></p>
+<p>这个例子中包含 4 个 shape：Event、Venue、City 以及 Place，每个 shape 中都对该类别下的节点做出了限制，比如 Event 要求必须包含 name（数据类型是字符串类型）、start（数据类型是日期类型）、end（数据类型是日期类型） 和 type（任意类型）等。其中的 $[1..*]$ 表示可以有 $1-\infty$ 个值，$[1..1]$ 表示只能有 1 个值，$[0..1]$ 表示要么没有值（即可以缺省），要么只能有一个值。</p>
+<p>当我们定义了这样一个 shape graph之后，就可以通过递归的方法对数据进行检查，比如 EID15 包含定义的 4 个属性，与之相连的 Santa Lucía 必须属于 Venue 且 Santiago 属于 City。因为 City 属于 Place，就要求 Viña del Mar 和 Arica 也必须属于 Place 等等。而 EID16 就是一个不合法的节点，因为它缺少了 start 和 end。</p>
+<p>当我们定义 shape graph 时，不可能知道每个节点包含的所有属性。这种情况下，open shape 允许节点存在在 shape graph 中未定义的属性，而 close shape 则不允许这种情况。比如我们在示例图谱中添加一个关系（Santiago，founder，Pedro de Valdivia），在我们定义的 shape graph 中没有包含 founder 这个属性，在 open shape 情况下，Santiago 仍然是一个合法的节点，但是在 close shape 情况下就变成了非法节点。</p>
+<p>实际的查询语言通常还支持额外的特性：AND、OR、NOT 等操作。比如 $\text{Venue}~ AND~ (NOT~ \text{City})$ 表示 venue 不能是 City。但是这些额外的操作符的自由组合可能会造成语义问题，比如著名的理发师悖论：</p>
+<blockquote>
+<p>假设有一个 shape 是（Barber，shave，Person），并且要求 $\text{Person}~ AND~ (NOT~ \text{Barber})$。现在给定（Bob，shave，Bob），其中 Bob 满足 （Bob,，type，Person），那么 Bob 满足（Bob，type，Barber）吗？</p>
+<p>如果满足，那么这条数据就是非法的，因为 $\text{Person}~ AND~ (NOT~ \text{Barber})$；</p>
+<p>如果不满足，那么这条数据也是非法的，因为它不满足（Bob，type，Barber）。</p>
+</blockquote>
+<p>为了避免这些悖论的产生，人们提出了各种方法，比如分层（ stratification）、部分赋值（partial assignments）、稳定模型（stable models）等。</p>
+<p>虽然，Semantic schema 和 Validating schema 有不同的应用场景，但是二者也可以互补。我们可以利用 Semantic schema 对 shape 进行推理，也可以利用 Validating schema 对推理结果进行筛选。通常这种情况下需要用 open shape。</p>
+<p>目前有两种验证模式语言：<em>Shape Expressions</em> (<em>ShEx</em>) 和 <em>SHACL</em> (<em>Shapes Constraint Language</em>)。更加详细的介绍可以看 <a href="https://doi.org/10.2200/s00786ed1v01y201707wbe016" target="_blank" rel="noopener">Labra Gayo</a> 等人的论文。</p>
+<h3 id="3-1-3-Emergent-schema"><a href="#3-1-3-Emergent-schema" class="headerlink" title="3.1.3 Emergent schema"></a>3.1.3 Emergent schema</h3><p>无论是 semantic schema 还是 validating schema 都需要领域专家来构建，但是通常我们不具备这样的条件。我们可以从图谱中抽取一些隐式结构形成 emergent schema。 </p>
+<p>用于定义 emergent schema 的框架是 quotient graphs，它可以根据一些等价关系划分数据图中的节点组，同时保留图的一些结构属性。比如示例图谱中，我们可以区分不同的 type，比如 event、name、venue、class、date-time、city 等。将每一个 type 的节点融合进一个节点然后保留边，最终形成 quotient graph，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220211145433.png" alt></p>
+<p>quotient graphs 的定义取决于如何选取节点和边，不同的 quotient graphs 展现出来的图结构不同。严格意义上来说，quotient graphs 是在模拟输入图谱，这就意味着当且仅当 $x \in X, z \in Z$，且 $x \xrightarrow{y} z$ 时，$X \xrightarrow{y} Z$ 才成立。然而示例图谱中 EID16 是没有开始和结束时间的，所以我们应该将上图换成：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220211153801.png" alt></p>
+<p>将 event 分成两个节点来保存满足不同边的节点，这样的图叫做 bisimilarity。关于 bisimilarity 的一个比较严格的定义是：当存在 $X \xrightarrow{y} Z$ 关系时，对于任意 $x \in X$，必定存在 $z \in Z$ 满足 $x \xrightarrow{y} z$。</p>
+<h2 id="3-2-Identity"><a href="#3-2-Identity" class="headerlink" title="3.2 Identity"></a>3.2 Identity</h2><p>在示例图谱中，我们有一个节点 “Santiago”，但是到底是哪个 Santiago？是 Santiago de Chile？Santiago de Cuba？Santiago de Compostela？甚至说是摇滚乐队 Santiago？从（Santa Lucía，city，Santiago）我们可以推出 Santiago 是一个城市而不是乐队，另一方面，这个图谱是关于智利的旅游图谱，那么我们可以推理出这里的 Santiago 应该是 Santiago de Chile。如果没有足够多的信息，节点的歧义性就会给后续的任务带来麻烦。为了避免节点的歧义性，首先要做的就是给节点分配全局统一的标识符，其次就是给节点添加外部链接标识符加以以区分。</p>
+<h3 id="3-2-1-Persistent-identifiers"><a href="#3-2-1-Persistent-identifiers" class="headerlink" title="3.2.1 Persistent identifiers"></a>3.2.1 Persistent identifiers</h3><p>假设我们想对比智利和古巴的旅游景点，我们收集了足够多的数据然后分别构建了图谱。当我们想要将两个图谱融合在一起的时候就会出现问题：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220211172819.png" alt></p>
+<p>如图所示，两个图谱都有 Santiago 节点，我们如果直接合并的话，两个 Santiago 就会合并成一个。但是我们知道实际上两个 Santiago 是两个不同的地点。为了避免这种情况，我们可以给每个 Santiago 分配一个 Persistent identifiers（PIDs），每一个 PID 保证其全局唯一性。</p>
+<p>除了全局唯一性，我们通常还需要在网页对图谱进行展示，所以 RDF 推荐使用 IRI 来表示实体和关系。比如：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214102307.png" alt></p>
+<p>IRI 的形式与 URL 非常相近，如果我们把上面的 IRI 复制到浏览器的话，我们会发现进入到了维基百科的页面。那么 IRI 和 URL 有什么区别呢？URL 是用于信息资源的定位，所谓信息简单来说其实就是网页，比如 URL “<a href="https://www.wikidata.org/wiki/Q2887”" target="_blank" rel="noopener">https://www.wikidata.org/wiki/Q2887”</a> 表示的是关于 “Santiago” 这个网页而不是 “Santiago” 这个实体。为了更进一步解释其中的区别，我们来看下面的例子：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214104303.png" alt></p>
+<p>与上面 IRI 表示法一模一样，但是如果这里是 URL 的话，实际上会给我们带来歧义：到底是 Santiago 这个城市是由 Pedro de valdivia 建立的，还是 “Santiago” 这个网页是 Pedro de valdivia 创建的？</p>
+<h3 id="3-2-2-External-identity-links"><a href="#3-2-2-External-identity-links" class="headerlink" title="3.2.2 External identity links"></a>3.2.2 External identity links</h3><p>假设在我们的图谱中定义了 Santiago 节点为 <code>chile:Santiago</code></p>
+<blockquote>
+<p>chile 是 “<a href="http://turismo.cl/entity/”" target="_blank" rel="noopener">http://turismo.cl/entity/”</a> 的缩写，这个节点定义相当于 “<a href="http://turismo.cl/entity/Santiago”" target="_blank" rel="noopener">http://turismo.cl/entity/Santiago”</a></p>
+</blockquote>
+<p>在另一个地理相关的图谱中定义了 Santiago 为 <code>geo:SantiagoDeChile</code>。两个节点实际上指得是同一座城市，但是由于命名不同，我们就灭哟哟办法直接知道这两个节点是相同的。如果我们对来弄个图谱进行融合的时候，会造成同一个实体有两个不同的节点。</p>
+<p>将两个名称不同，但是表示同一实体的节点统一的方法有以下几种：</p>
+<ol>
+<li><p>使用实体在图谱中信息的唯一性，比如地理坐标、邮政编码、成立时间等；</p>
+</li>
+<li><p>使用标识链接来声明本体实体与外部源中发现的实体是相同实体。在 OWL 中定义了 <code>owl:sameAs</code> 属性来关联两个实体。例如：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214113104.png" alt></p>
+</li>
+</ol>
+<h3 id="3-2-3-Datatypes"><a href="#3-2-3-Datatypes" class="headerlink" title="3.2.3 Datatypes"></a>3.2.3 Datatypes</h3><p>思考一下示例图谱中左侧的两个日期：“2020-03-29T20:00:00” 和 “2020-03-22T12:00:00”，我们应该怎样分配 PID？直观上来说，我们给它们分配的 IRI 需要告诉我们特定的日期和时间，并且可以被机器或者软件识别，然后我们还可以对这些值进行排序，抽取我们需要的年份、月份等。</p>
+<p>大多数图数据模型允许定义节点的数据类型。RDF 使用 <em>XML Schema Datatypes</em> (<em>XSD</em>)，表示为（$l, d$）对 ，其中 $l$ 表示词汇字符串，$d$ 表示数据类型。比如 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“2020-03-29T20:00:00” 就表示成 &quot;2020-03-29T20:00:00&quot;^^xsd:dateTime</span><br></pre></td></tr></table></figure>
+<p>RDF 中数据类型节点被称为 “literals”，并且不允许有向外的边。RDF 中其他常用的数据类型还包括：<code>xsdstring</code>、<code>xsd:integer</code>、<code>xsd:decimal</code>、<code>xsd:boolean</code> 等等。</p>
+<p>建立在图谱之上的应用可以通过识别这些数据类型，对其进行解析然后做排序、变换等等后续的处理。</p>
+<h3 id="3-2-4-Lexicalisation"><a href="#3-2-4-Lexicalisation" class="headerlink" title="3.2.4 Lexicalisation"></a>3.2.4 Lexicalisation</h3><p>虽然通常 PID 的形式具有人类可解释性，但是 PID 本身不具有任何语义信息，比如 <code>chile:Santiago</code>。甚至有时候 PID 连人类可解释性都不具备，比如 <code>wd:Q2887</code>。这两种表示法分别称为显式表示和隐式表示，显式表示法有利于人类理解，而隐式表示有利于持久化，比如假设我，们用 <code>wd:Q2887</code> 表示某公司某部门的员工，如果该员工工作部门发生了变动，采用显式表示的话其对应的节点就需要改变，而如果采用隐式表示就无序改变。</p>
+<p>由于 PID 具有任意性，所以通常会给节点添加一个人类可读的边作为标记，比如：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214144446.png" alt></p>
+<p>实际上可以将这种标记看成是编程语言中的注释，用来说明特定节点在真实世界中包含的信息。我们可以使用昵称或者注释来实现：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214144930.png" alt></p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214144946.png" alt></p>
+<p>形如 <code>&quot;Santiago&quot;</code> 这样的节点通常是 literal，而不是标识符。不同的图谱会有不同的表示，比如 <code>(Santiago, rdfs:label, &quot;City&quot;@en)</code> 或者 <code>(Santiago, rdfs:label, &quot;Ciudad&quot;@es)</code> 表示不同语言下的注释。这种用人类可读的 labels，aliases，comments 来对节点进行注释的图谱，我们称之为 “ (<em>multilingual</em>) <em>lexicalised knowledge graphs</em> ”。</p>
+<h3 id="3-2-5-Existential-nodes"><a href="#3-2-5-Existential-nodes" class="headerlink" title="3.2.5 Existential nodes"></a>3.2.5 Existential nodes</h3><p>当建模不完整的信息时，我们在某些情况下可能知道图中必须存在一个特定的节点，与其他节点有特定的关系，但无法识别所讨论的节点。比如两个活动 <code>chile:EID42</code> 和 <code>chile:EID43</code> 有共同的活动地点，但是这个活动地点还没有公布。这种情况的一种处理方法就是忽略活动地点这个关系，但是这样我们会丢失一些信息：</p>
+<ul>
+<li>活动是有活动地点这个属性的；</li>
+<li>两个活动有相同的举办地点。</li>
+</ul>
+<p>另一种处理方法就是创建一个新的 IRI，但是这样的话又无法区分未知地点和已知地点的区别。因此，一些图谱中允许空节点的存在，即所谓的 existential nodes：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214152404.png" alt></p>
+<p>在 RDF 中支持空节点的存在，即 blank nodes。Blank nodes 也被用来对复杂元素进行建模，比如 RDF list：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214152637.png" alt></p>
+<h2 id="3-3-Context"><a href="#3-3-Context" class="headerlink" title="3.3 Context"></a>3.3 Context</h2><p>我们可以认为在某些特定情况下，图谱中的数据都是真实的。但是如果考虑时效性的话，Santiago 是从 1541 年成为一个城市的，而 Arica 到 Santiago 的航班是 1956 年开通的。考虑地理因素的话，示例图谱描述的是 chile。考虑数据来源的话，与 <code>EID15</code> 相关的数据来源于 2020 年 1 月 4 日的 Ñam 网页。因此，通过上面的例子，我们可以看到，图谱中的知识都是具有片面性的，只在某些特定情境下成立，这些特定情形我们称之为 context。现在我们就来介绍不同级别的 context 的不同表示方法。</p>
+<h3 id="3-3-1-Direct-representation"><a href="#3-3-1-Direct-representation" class="headerlink" title="3.3.1 Direct representation"></a>3.3.1 Direct representation</h3><p>第一种表示方法就是把 context 当成图谱数据的一部分，用节点和边来表示，比如 <code>EID15</code> 关联的日期时间，我们就认为在这个时间上 <code>（EID15，venueSanta Lucia）</code> 是成立的。另一种方法就如我们在第二章介绍属性图那样，改变边的模式。虽然我们的例子中用的是比较随意的方法，但是实际上有一些特定的 context 已经有一些标准了，比如 <em>Time Ontology</em> 就对时刻、时间段等信息做出了规定。另外 <em>PROV Data Model</em> 规定了在 RDF 中如何表示数据来源。</p>
+<h3 id="3-3-2-Reification"><a href="#3-3-2-Reification" class="headerlink" title="3.3.2 Reification"></a>3.3.2 Reification</h3><p>通常我们希望直接定义边本身的 context，比如 <code>(Santiago, flight, Arica)</code> 这个关系从 1956 年才成立。虽然我们可以用直接表示法，通过改变边的结构来加以声明，但是我们还是希望能有一种更加通用的方法来表示，这就是 Reification。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214165036.png" alt></p>
+<p>上图展示了三种 reification 方法。我们使用 $e$ 来表示任意标识符，表示可以与之关联到的边的 context 信息。（a）中定义了 $e$ 节点表示边和与之相连的节点（subject, predict, object）。（b）则是用 $e$ 代替目标节点，然后将原来的目标节点作为 $e$ 的值赋予给它。（c）用 $e$ 代替边，然后将 context 作为 $e$ 的标签。</p>
+<h3 id="3-3-3-Higher-arity-representation"><a href="#3-3-3-Higher-arity-representation" class="headerlink" title="3.3.3 Higher-arity representation"></a>3.3.3 Higher-arity representation</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214172615.png" alt></p>
+<ul>
+<li>（a）命名图的方法</li>
+<li>（b）属性图的方法</li>
+<li>（c） RDF*，RDF* 是 RDF 的扩展方法，它允许将整个三元组当成一个节点。</li>
+</ul>
+<p>以上三种方法中，最灵活的就是命名图的方法。RDF* 方法是最不灵活的，比如 <code>(Chile, president, M. Bachelet)</code>，Bachelet 担任了两届总统，2006-2010 年 和 2014-2018 年，这种情况无法用 RDF* 来描述。</p>
+<h3 id="3-3-4-Annotations"><a href="#3-3-4-Annotations" class="headerlink" title="3.3.4  Annotations"></a>3.3.4  Annotations</h3><p>到目前为止我们讨论了图谱中的 context，但是还没有涉及到 context 的自动推理机制。比如假设 Santiago 到 Arica 之家只有夏季航班，我们要从 Santiago 到 Arcia 只能换一种途径。虽然直接将所有汽车、航班的日期全部表示在图谱中，或者写冗长复杂的查询语句也可以，但是这样的话可能会比较麻烦，甚至根本做不到。这个时候，我们可以考虑使用 <em>annotations</em>，它提供了 context 的数学定义和关键性操作符，可以帮助我们自动进行推理。</p>
+<p>某些 annotations 是对特定领域的 context 进行建模，比如 Temporal RDF 对时间段建模：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220215095655.png" alt></p>
+<p>表示 M. Bachelet 在 2006-2010 年期间担任 Chile 总统。Fuzzy RDF 对可信度进行建模：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220215100604.png" alt></p>
+<p>表示 Santiago 有八成的可能性是属于 Semi-Arid 气候。</p>
+<p>其他形式的 annotations 与领域无关，比如 Annotated RDF 允许将不同形式的 context 建模成 semi-rings：由定义域值（比如时间段）和 meet、join 两个操作符组成的代数结构：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/blog-imgs/20220214175533.png" alt></p>
+<p>如上图所示，$G$ 表示简化的时效值集合，（1-365）表示一年的 365 天，其中形如 ${[150,152]}$ 表示 ${150,151,152}$。$Q$ 表示从 Santiago 到活动举办地的航班，返回符合时效性的答案。为了推导出答案，我们需要以下几个步骤：</p>
+<ul>
+<li>使用 meet 操作符找到同时满足 city 和 flight 的边。比如 Santiago 和 Punta Arenas 的时效性条件分别是 ${[150,152]}$ 和 ${[1,120],[220,365]}$，两个条件的交集为空，那么这个答案就会被过滤掉。</li>
+<li>使用 join 操作符，将所有符合条件的结果求并集。比如我们可以在 ${[123, 125]}$ 参加 EID16，在 ${[276,279]}$ 参加 EID17。最后将两组结果合并得到最终的 context。</li>
+</ul>
+<h3 id="3-3-5-Other-Contextual-framework"><a href="#3-3-5-Other-Contextual-framework" class="headerlink" title="3.3.5 Other Contextual framework"></a>3.3.5 Other Contextual framework</h3><p>除了 annotations 以外，还有一些其他的模型也可以用来推理，比如 <em>contextual knowledge repositories</em>，允许在独立的图谱或者子图上计算 context。它不像 命名图那样，而是通过多维建模，每个图或者子图满足一个维度的条件。OnLine Analytic Processing (OLAP) 提出了基于数据块的模型，提出了 “slice-and-dice” 和 “roll-up” 等操作。更详细的内容可以参考 <a href="https://dl.acm.org/doi/10.5555/2773565.2773655" target="_blank" rel="noopener">Contextualized Knowledge Repositories for the Semantic Web</a> 和 <a href="https://www.semanticscholar.org/paper/Building-a-Conference-Recommender-System-Based-on-Iana-Jung/a4ecd48d04aba80c4c21ae5f1d445959a538488b" target="_blank" rel="noopener">Building a Conference Recommender System Based on SciGraph and WikiCFP</a>。</p>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-02-15T11:01:19+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年2月15日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/survey/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>survey</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/kg/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>KG</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/05/29/kg-survey-3/&title=知识图谱：综述（三）Schema, Identity, Context | Rogerspy's Home&summary=
+接下来，我们介绍 Schema、Identity 和 Context。在上一章，我们将以节点和边组成的数据集合称之为“Data graph”，而真正意义上的知识图谱（knowledge graph）是经过了 Schema（数据模式）、Identity（数据一致性）、Context（上下文）、ontology（本体）和 rules（规则）等表示方法增强过的 data graph。本章我们讨论 Schema、Identity 和 Context。Ontology 和 rules 在后面章节讨论。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/05/29/kg-survey-3/&title=知识图谱：综述（三）Schema, Identity, Context | Rogerspy's Home&summary=
+接下来，我们介绍 Schema、Identity 和 Context。在上一章，我们将以节点和边组成的数据集合称之为“Data graph”，而真正意义上的知识图谱（knowledge graph）是经过了 Schema（数据模式）、Identity（数据一致性）、Context（上下文）、ontology（本体）和 rules（规则）等表示方法增强过的 data graph。本章我们讨论 Schema、Identity 和 Context。Ontology 和 rules 在后面章节讨论。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACI0lEQVR42u3aQW7DMAwEwPz/0+nVQBF3SaoBLI1OhePKHh1okdTrFY/3ZVyv3P/6+3r1KYsHBgbGYxnv21Fl3F//9Ir5zB/nwcDAOICRT7348ePnYmBgYCQbwV5Qvr8TAwMDY87Ik89qqMXAwMCYJLG9Slc+vpSLY2BgPJCRV92///e/9DcwMDAexZgExHnbYFXgxsDA2JuRB7jeq+Tz9JoHGBgY5zB6IXJVeE1eLrmCgYGxK6OXOs4L/dUjZX+0UTEwMA5g5BP1inF5S7Lwfbj+ioGBsTWjmsQmpbHef+VNyo+LgoGBsSmjWu7PX663QNUNYnMKDAyMRzGSiXql/7wMl89W+G5gYGBsxKi2G/NktZmI9kIzBgbG1oy1Tcf7DVzhC9AqzGFgYOzKmBwnXZVF5q/+6sVsDAyMhzMmG8EFm7niAY5oNgwMjO0Y1aNdecNyXlwrlPwwMDC2ZlST2PuJ8jCdLE1eBMTAwMBIimLzY6/zch4GBsYJjHxLNymr9Y60JgEdAwPjBMYEU93M9QJr1OXAwMDYmtEr3+ePTJLYXvKMgYGxN+NdHPnaVFPZPNyXexcYGBgPZ+Qj3yzmBbve/dVlwsDA2IPRayjm91fXrLdlxMDAOIGRF/TzsJvfU01iMTAwMPKgmTc184MazWMcGBgYGK2DF4WjEuMlwMDAOIHRO5KVh9p8sfLEGAMD4xxGNXWsBtnCuY9WWwIDA2Nrxg+9FrJQ3JOZPQAAAABJRU5ErkJggg=='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/05/29/kg-survey-3/&title=知识图谱：综述（三）Schema, Identity, Context | Rogerspy's Home&summary=
+接下来，我们介绍 Schema、Identity 和 Context。在上一章，我们将以节点和边组成的数据集合称之为“Data graph”，而真正意义上的知识图谱（knowledge graph）是经过了 Schema（数据模式）、Identity（数据一致性）、Context（上下文）、ontology（本体）和 rules（规则）等表示方法增强过的 data graph。本章我们讨论 Schema、Identity 和 Context。Ontology 和 rules 在后面章节讨论。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/07/23/kg-data-modelling/" rel="prev" title="知识图谱：知识建模（一）不那么简要的知识建模简介">
+                                  
+                                      知识图谱：知识建模（一）不那么简要的知识建模简介
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/kg/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>KG</a> <a class="tag" href="/tags/knowledge-modelling/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>knowledge-modelling</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/05/27/kg-survey-2/" rel="prev" title="知识图谱：综述（二）Data Graphs">
+                                    
+                                        知识图谱：综述（二）Data Graphs
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/survey/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>survey</a> <a class="tag" href="/tags/kg/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>KG</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '知识图谱：综述（三）Schema, Identity, Context',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Schema-Identity-Context"><span class="toc-text">3. Schema, Identity, Context</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Schema"><span class="toc-text">3.1 Schema</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-Semantic-schema"><span class="toc-text">3.1.1 Semantic schema</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-Validating-schema"><span class="toc-text">3.1.2 Validating schema</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-Emergent-schema"><span class="toc-text">3.1.3 Emergent schema</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Identity"><span class="toc-text">3.2 Identity</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-Persistent-identifiers"><span class="toc-text">3.2.1 Persistent identifiers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-External-identity-links"><span class="toc-text">3.2.2 External identity links</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-Datatypes"><span class="toc-text">3.2.3 Datatypes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-Lexicalisation"><span class="toc-text">3.2.4 Lexicalisation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-5-Existential-nodes"><span class="toc-text">3.2.5 Existential nodes</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-Context"><span class="toc-text">3.3 Context</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-Direct-representation"><span class="toc-text">3.3.1 Direct representation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-Reification"><span class="toc-text">3.3.2 Reification</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-Higher-arity-representation"><span class="toc-text">3.3.3 Higher-arity representation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-Annotations"><span class="toc-text">3.3.4  Annotations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-5-Other-Contextual-framework"><span class="toc-text">3.3.5 Other Contextual framework</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://rogerspy.github.io/data_structure_algorithm/"
+          
+          
+          id="https:rogerspy.github.iodata_structure_algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fab fa-kaggle fa-fw" aria-hidden="true"></i>
+          
+          Kaggle
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-brain fa-fw" aria-hidden="true"></i>
+          
+          思维逻辑
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+          
+          学习小测
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://paperswithcode.com/datasets"
+          
+          
+          id="https:paperswithcode.comdatasets">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/incremental-learning/"><div class='name'>Incremental Learning</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(15)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.22px; color: #8a8a8a">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19.56px; color: #737373">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.67px; color: #6c6c6c">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.67px; color: #6c6c6c">NLP</a> <a href="/tags/nmt/" style="font-size: 22.89px; color: #5d5d5d">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/smoothing/" style="font-size: 14px; color: #999">Smoothing</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.22px; color: #8a8a8a">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.11px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.11px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 18.44px; color: #7b7b7b">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 17.33px; color: #828282">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.78px; color: #646464">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.11px; color: #919191">词向量</a> <a href="/tags/词向量压缩/" style="font-size: 14px; color: #999">词向量压缩</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

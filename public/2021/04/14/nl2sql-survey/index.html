@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>NL2SQL 综述 | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="archives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/04/14/nl2sql-survey/">
+        NL2SQL 综述
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-04-14</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/nl2sql/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>NL2SQL</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">9.6k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">35分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210414172835.png" alt></p>
+<a id="more"></a>
+<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><p>当今社会，人们越来越多地开始和数据打交道，其中一个核心的问题是数据的存储。为了更好的存储和管理数据，通常会把数据存储在数据库中。对于数据库管理系统的用户来说，必须具备两方面的能力：</p>
+<ol>
+<li>对于数据库的结构非常了解，比如表名、列名、实体关系等等；</li>
+<li>熟悉数据库查询语言，比如 SQL。</li>
+</ol>
+<p>虽然 SQL 语言并不复杂，但是对于非技术人员来说，这仍然是阻碍他们与数据进行交互的门槛。就像封面中的例子：“<em>what ‘s the total number of songs originally performed by anna nalick？</em>”</p>
+<ul>
+<li>首先，我怎么知道有哪些数据可用？也就是说，我怎么知道我要去哪张表里查我想要的数据？</li>
+<li>其次，我怎么知道要去 <code>Song choice</code> 和 <code>Original artist</code> 这两列中去找？</li>
+<li>然后，如果我得到了 <em>anna nalick</em> 有多少首歌以后，我还想知道她和 <em>Macy Gray</em> 谁的歌更多怎么办？</li>
+<li>再然后，如果我想知道的不是 <em>anna nalick</em> 有多少首歌，而是每个歌手分别有多少首歌又怎么办？或者有哪些歌手的歌比 <em>anna nalick</em> 多？</li>
+<li>$\cdots$</li>
+</ul>
+<p>如果我们能让计算机（数据库）理解人类的语言，只需要像和人类一样交流就可以从数据库中得到我们想要的数据岂不是美哉？这就是 NL2SQL 想要达到的目标。NL2SQL（Natural Language to SQL）， 顾名思义是将自然语言转为 SQL 语句。它可以充当数据库的智能接口，让不熟悉数据库的用户能够快速地找到自己想要的数据。</p>
+<h2 id="1-1-NL2SQL-的一些实际应用场景"><a href="#1-1-NL2SQL-的一些实际应用场景" class="headerlink" title="1.1 NL2SQL 的一些实际应用场景"></a>1.1 NL2SQL 的一些实际应用场景</h2><p>通常数据交互的场景有三种：</p>
+<ol>
+<li>企业内部数据管理。几乎所有企业都有大量数据需要存储和管理，多数企业会选择使用数据库，而对于这些企业来说，通常会雇佣专业技术人员来管理数据库。因此，企业内部数据管理对于 NL2SQL 的需求并不强烈；</li>
+<li>个人用户数据管理。对于个人用户而言，很少有用户的数据量会多到需要用到数据库。因此，这种场景下似乎 NL2SQL 的作用也并不明显。</li>
+<li>普通用户与企业数据之间的交互。比如订餐、订票、查天气、查公交地铁等等。在这些场景下，现在的技术手段是企业通过一些界面的选项引导用户一步一步查询到自己想要的数据。对于用户来说，这些操作繁复冗杂，而且需要一定的门槛。正是由于引导式操作的繁杂给社会带来了一些尴尬局面——移动互联网为年轻人提供了便利，但却给老年人带来了麻烦。同时，对于企业来说，如何引导设计查询页面，如何编写查询程序同样也是必须面对的问题。如果能够实现专用户直接使用自然语言进行信息查询，以上问题都会迎刃而解，这也是 NL2SQL 最大的意义所在。</li>
+</ol>
+<h1 id="2-NL2SQL-发展简史"><a href="#2-NL2SQL-发展简史" class="headerlink" title="2. NL2SQL 发展简史"></a>2. NL2SQL 发展简史</h1><p>NL2SQL 虽然是最近才火起来的，但是实际上它的研究历史还是比较长的。早在上世纪六七十年代人们就提出了 NLIDB （<em>Natural Language Interface to Database</em>）概念并做了一些研究。但是受限于数据量和计算机的算力，当时主要的技术手段是模式匹配、语法树和语义语法等。</p>
+<div class="timeline">
+<div class="timenode"><div class="meta"><p></p><p>1960-70 年代</p>
+<p></p></div><div class="body"><p>最早出现的 NLIDB 系统是有两个：</p><ul><li><strong>BASEBALL</strong>，主要面向当时没搞过国内的棒球联赛；</li><li><strong>LUNAR</strong>，用来回答有关从月球带回来的岩石样本的问题。 它能够准确地回答 80％ 的查询，没有任何错误。</li></ul></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>1970 年代</p>
+<p></p></div><div class="body"><p>到了上世纪 70 年代末期，陆续出现了一些 NLIDB 系统：</p><ul><li><strong>PLANES</strong>，该系统甚至能够响应不连贯或模糊的用户请求；</li><li><strong>LIFER/LADDER</strong>，通过语义语法系统分析用户请求；</li><li><strong>RENDEZVOUS</strong>，它是 IBM 实验室的 <em>San José</em> 开发的，可以帮助用户在模棱两可的情况下提出自己的请求</li></ul></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>1980 年代</p>
+<p></p></div><div class="body"><ul><li><strong>CHAT-80</strong>，采用语义语法技术处理自然语句，使得 CHAT-80 达到了当时最好的效果。它最大的问题仍然是只对特定领域的数据集有效。</li><li><strong>MASQUE</strong>， <strong>DIALOGIC</strong>，都是对 CHAT-80 的改进型系统，在处理效率上有了大幅的提升。</li></ul></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>1990 年代</p>
+<p></p></div><div class="body"><p>从 90 年代开始，人们的研究开始聚焦关系型数据库。也就是说 NLIDB 系统开始向 NL2SQL 方向聚焦，当然此时的方法仍然是只针对对特定领域的数据。</p><ul><li><strong>MASQUE/SQL</strong>，就是此时开发出来用于处理商业数据库的系统。</li><li><strong>California Restaurant Query</strong>，<strong>Expedia Hotels</strong>，<strong>GeoQuery</strong>，<strong>Hollywood</strong>，<strong>JobQuery</strong>，<strong>SQ-HAL</strong>，<strong>SystemX</strong> 等等一系列系统如雨后春笋般相继出现。</li></ul></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>2000 年后</p>
+<p></p></div><div class="body"><p>如果说 70 年代是 NLIDB 系统的诞生的话，那么进入 2000 年以后可以算是该系统的第一次进化。一些新方法的提出使得 NLIDB 不再只对特定领域的数据有效（需要指出的是，此时的主要技术手段仍然是基于规则的）。</p><ul><li><strong>PRECISE</strong>，是第一个采用插件式的 NLIDB 系统。它通过结合语法技术和数学方法，使得语义分析器完全独立于数据库的配置信息。但是它只能处理简单的句子，不能处理嵌套语句，主要是因为它假设自言语句中的词和数据库表格中的数据存在一一对应的关系。</li><li><strong>NALIX</strong>，用于处理 XML 数据库。</li></ul></div></div>
+
+<div class="timenode"><div class="meta"><p></p><p>2010 至今</p>
+<p></p></div><div class="body"><p>随着机器学习技术的发展，机器学习也开始应用于 NLIDB 系统。</p><ul><li><strong>NaLIR</strong>，通过与用户的交互使得它能处理复杂的自然语句。</li><li><strong>ATHENA</strong>，通过特定领域的本体处理更加丰富的语义信息。</li><li><strong>SQLizer</strong>，将自然语句转成逻辑表达，然后通过迭代优化逻辑表达式。</li><li><strong>Templar</strong>，是一种使用查询日志进行映射和联接路径生成的优化技术。</li></ul></div></div>
+
+以上的这些方法或者系统都是严重依赖人工设计规则。而近些年深度学习的发展为这一领域也带来了新的景象，尤其是最近两三年，基于深度学习的 NL2SQL 方法不断刷新着记录。本文主要是对基于深度学习的 NL2SQL 技术进行一个总结，并探索 NL2SQL 技术在 Excel 领域应用。
+
+<div class="timenode"><div class="meta"><p></p><p>基于深度学习的 NL2SQL</p>
+<p></p></div><div class="body"><p><strong>Seq2sql</strong>，<strong>SQLNet</strong>，<strong>TypeSQL</strong>，<strong>Coarse-to-Fine</strong>，<strong>IncSQL</strong>，<strong>X-SQL</strong>，<strong>STAMP</strong>，<strong>IRNet</strong>，<strong>SQLova</strong>，<strong>TRANX</strong>，<strong>SyntaxSQL</strong> …</p></div></div>
+</div>
+<h1 id="3-数据集"><a href="#3-数据集" class="headerlink" title="3. 数据集"></a>3. 数据集</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数据集</th>
+<th style="text-align:center">总语句</th>
+<th style="text-align:center">训练语句</th>
+<th style="text-align:center">验证语句</th>
+<th style="text-align:center">测试语句</th>
+<th style="text-align:center">总表数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="https://github.com/salesforce/WikiSQL" target="_blank" rel="noopener">WiKiSQL</a></td>
+<td style="text-align:center">80654</td>
+<td style="text-align:center">56355</td>
+<td style="text-align:center">8421</td>
+<td style="text-align:center">15875</td>
+<td style="text-align:center">26531</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://www.kaggle.com/siddhadev/ms-cntk-atis" target="_blank" rel="noopener">ATIS</a></td>
+<td style="text-align:center">5317</td>
+<td style="text-align:center">4379</td>
+<td style="text-align:center">491</td>
+<td style="text-align:center">447</td>
+<td style="text-align:center">25</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/jkkummerfeld/text2sql-data" target="_blank" rel="noopener">Advising</a><br>(query split)</td>
+<td style="text-align:center">4387</td>
+<td style="text-align:center">2040</td>
+<td style="text-align:center">515</td>
+<td style="text-align:center">1832</td>
+<td style="text-align:center">15</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/jkkummerfeld/text2sql-data" target="_blank" rel="noopener">Advising</a><br>(question split)</td>
+<td style="text-align:center">4387</td>
+<td style="text-align:center">3585</td>
+<td style="text-align:center">229</td>
+<td style="text-align:center">573</td>
+<td style="text-align:center">15</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/jkkummerfeld/text2sql-data" target="_blank" rel="noopener">GeoQuery</a></td>
+<td style="text-align:center">880</td>
+<td style="text-align:center">550</td>
+<td style="text-align:center">50</td>
+<td style="text-align:center">280</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/jkkummerfeld/text2sql-data" target="_blank" rel="noopener">Scholar</a></td>
+<td style="text-align:center">816</td>
+<td style="text-align:center">498</td>
+<td style="text-align:center">100</td>
+<td style="text-align:center">218</td>
+<td style="text-align:center">10</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/nkapetanas/dbpal" target="_blank" rel="noopener">Patients</a></td>
+<td style="text-align:center">342</td>
+<td style="text-align:center">214</td>
+<td style="text-align:center">19</td>
+<td style="text-align:center">109</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/jkkummerfeld/text2sql-data" target="_blank" rel="noopener">Restaurant</a></td>
+<td style="text-align:center">251</td>
+<td style="text-align:center">157</td>
+<td style="text-align:center">14</td>
+<td style="text-align:center">82</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://academic.microsoft.com/home" target="_blank" rel="noopener">MAS</a></td>
+<td style="text-align:center">196</td>
+<td style="text-align:center">123</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">62</td>
+<td style="text-align:center">17</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/jkkummerfeld/text2sql-data" target="_blank" rel="noopener">IMDB</a></td>
+<td style="text-align:center">131</td>
+<td style="text-align:center">82</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">42</td>
+<td style="text-align:center">16</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/jkkummerfeld/text2sql-data" target="_blank" rel="noopener">YELP</a></td>
+<td style="text-align:center">128</td>
+<td style="text-align:center">80</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">41</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://yale-lily.github.io/spider" target="_blank" rel="noopener">Spider</a></td>
+<td style="text-align:center">9693</td>
+<td style="text-align:center">8659</td>
+<td style="text-align:center">1034</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">873</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/ppasupat/WikiTableQuestions/releases" target="_blank" rel="noopener">WTQ</a></td>
+<td style="text-align:center">9287</td>
+<td style="text-align:center">5804</td>
+<td style="text-align:center">528</td>
+<td style="text-align:center">2955</td>
+<td style="text-align:center">2102</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://nlp.stanford.edu/software/sempre/wikitable/" target="_blank" rel="noopener">WikiTableQuestions</a></td>
+<td style="text-align:center">22033</td>
+<td style="text-align:center">14152</td>
+<td style="text-align:center">3537</td>
+<td style="text-align:center">4344</td>
+<td style="text-align:center">2100</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://taolusi.github.io/CSpider-explorer/" target="_blank" rel="noopener"><font color="blue">CSpider</font></a></td>
+<td style="text-align:center">8832</td>
+<td style="text-align:center">6831</td>
+<td style="text-align:center">95</td>
+<td style="text-align:center">1906</td>
+<td style="text-align:center">876</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/PaddlePaddle/Research/tree/master/NLP/DuSQL-Baseline" target="_blank" rel="noopener"><font color="blue">DuSQL</font></a></td>
+<td style="text-align:center">28763</td>
+<td style="text-align:center">22521</td>
+<td style="text-align:center">2483</td>
+<td style="text-align:center">3759</td>
+<td style="text-align:center">813</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://github.com/ZhuiyiTechnology/TableQA" target="_blank" rel="noopener"><font color="blue">TableQA</font></a></td>
+<td style="text-align:center">54059</td>
+<td style="text-align:center">41522</td>
+<td style="text-align:center">4396</td>
+<td style="text-align:center">8141</td>
+<td style="text-align:center">5291</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>上表中列出了目前主要的一些数据及其统计信息，其中蓝色字体对应的数据为中文数据集，其他数据都是英文数据集。下面我们挑选几个应用最广泛的几个英文数据集和中文数据集进行简单的介绍。</p>
+<ul>
+<li><p><strong>ATIS</strong> (<em>The Air Travel Information System</em>)：ATIS 是一个年代较为久远的经典数据集，由德克萨斯仪器公司在1990 年提出。该数据集获取自关系型数据库 Official Airline Guide (OAG, 1990)，包含 25 张表以及 5000 次的问询，每次问询平均7轮，93% 的情况下需要联合 3 张以上的表才能得到答案，问询的内容涵盖了航班、费用、城市、地面服务等信息。总的来说， ATIS 数据集存在数据量少，标注简单，领域单一等问题。</p>
+</li>
+<li><p><strong>WikiSQL</strong>：该数据集是 <em>Salesforce</em> 在 2017 年提出的大型标注 NL2SQL 数据集，也是目前规模最大的 NL2SQL 数据集。它是 <em>Victor Zhong</em> 等研究人员基于维基百科标注的数据。这个数据集一经推出就引起了学术界极大的关注。因为他对模型提出了新的挑战，研究人员也在此数据集的基础上研究出了大量的优秀模型。目前学术界的预测准确率可达 91.8%。但是 WiKiSQL 数据集是一个单表无嵌套的数据集，总的来说相对于实际场景还是偏于简单。</p>
+</li>
+<li><strong>Spider</strong>：Spider 数据集是耶鲁大学于 2018 年新提出的一个较大规模的 NL2SQL 数据集。Spider 数据集虽然在数据数量上不如 WikiSQL，但 Spider 引入了更多的 SQL 用法，例如 <em>Group By</em>、<em>Order By</em>、<em>Having</em>、<em>UNION</em>、<em>EXCEPT</em>、<em>INTERSECT</em>、<em>LIMIT</em> 等高阶操作，甚至需要 Join 不同表，更贴近真实场景，所以 Spider 是目前最复杂的数据集。作者根据 SQL 语句的复杂程度（关键字个数、嵌套程度）分成 4 种难度，而以 Spider 的标准划分的话， WiKiSQL 只有 easy 难度。目前准确率最高只有 54.7%。</li>
+<li><strong>WikiTableQuestions</strong>：该数据集是斯坦福大学于 2015 年提出的一个针对维基百科中那些半结构化表格问答的数据集，表格中的数据是真实且没有经过归一化的，一个 <em>cell</em> 内可能包含多个实体或含义，比如「Beijing, China」或「200 km」；同时，为了很好地泛化到其它领域的数据，该数据集测试集中的表格主题和实体之间的关系都是在训练集中没有见到过的。</li>
+<li><strong>CSpider</strong>：CSpider 是西湖大学利用 Spider 作为源数据集进行问题翻译，并利用 SytaxSQLNet 作为基线进行评测的 NL2SQL 数据集。CSpider 只翻译了问题，而数据库仍然是英文的，因此它在传统的 NL2SQL 上增加了额外的一些挑战，比如中文问题和英文数据库的对应问题(question-to-DB mapping)、中文的分词问题以及一些其他的语言现象。</li>
+<li><strong>DuSQL</strong>：该数据集是百度基于现有数据集问题和实际应用需求构建的多领域、多表数据集，覆盖了更多的问题类型。</li>
+<li><strong>TableQA</strong>：TableQA 是一个大规模，跨领域的中文 NL2SQL 数据集。与现有的 NL2SQL 数据集不同，TableQA 不仅要很好地概括为不同问题和表模式的 SQL 框架，而且还要概括为条件值的各种表达式。实验结果表明，在 WikiSQL 上具有 95.1％ 的条件值精度的最新模型在 TableQA 上仅获得 46.8％ 的条件值精度和 43.0％ 的逻辑形式精度，这表明所提出的数据集具有挑战性且需要处理。</li>
+</ul>
+<h1 id="4-技术路线"><a href="#4-技术路线" class="headerlink" title="4. 技术路线"></a>4. 技术路线</h1><script src="https://cdn.jsdelivr.net/npm/echarts@4.8.0/dist/echarts.min.js"></script>
+<div id="main" style="width: 100%;height:400px;"></div>
+<script type="text/javascript">
+  // 基于准备好的dom，初始化echarts实例
+  var myChart = echarts.init(document.getElementById('main'));
+  var data = {
+    "name": "NL2SQL",
+    "children": [
+        {
+            "name": "输入",
+            "children": [
+                {"name": "自然语言问句处理"},
+                {"name": "数据库的用法"},
+                {"name": "附加信息的输入"}
+            ]
+        },
+        {
+            "name": "技术方法",
+            "children": [
+                {
+                    "name": "输入增强技术",
+                     "children": [
+                         {"name": "标记、链接和匿名化"},
+                         {"name": "数据库表头或数据"}
+                     ]
+                },
+                {
+                    "name": "翻译技术",
+                    "children": [
+                        {"name": "基于规则、基于深度学习"},
+                        {"name": "处理数据库表头的方法"},
+                        {"name": "生成 SQL 语句的方法"}
+                    ]
+                },
+                {
+                    "name": "后处理技术",
+                    "children": [
+                        {"name": "处理模型生成的 SQL 语句"}
+                    ]
+                },
+                {
+                    "name": "训练",
+                    "children": [
+                        {"name": "模型优化算法"}
+                    ]
+                }
+           ]
+        },
+        {
+            "name": "输出",
+            "children": [
+                {"name": "SQL 语法合成"}
+            ]
+        },
+    ]
+  };
+  // 指定图表的配置项和数据
+  var option = {
+     tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove'
+    },
+    series:[
+        {
+            type: 'tree',
+            data: [data],
+            top: '1%',
+            left: '10%',
+            bottom: '1%',
+            right: '25%',
+            symbolSize: 7,
+            label: {
+                position: 'left',
+                verticalAlign: 'middle',
+                align: 'right',
+                fontSize: 14
+            },
+            leaves: {
+                label: {
+                    position: 'right',
+                    verticalAlign: 'middle',
+                    align: 'left'
+                }
+            },
+            emphasis: {
+                focus: 'descendant'
+            },
+            expandAndCollapse: false,
+            animationDuration: 550,
+            animationDurationUpdate: 750
+        }
+    ]
+  };
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
+  // 刷新调整
+  window.onresize = function () {
+    myChart.resize();
+  }
+</script>
+
+<p>为了系统的介绍现在的 NL2SQL 方法，我们将模型分成三部分：输入、技术方法、输出。然后总结出不同模型在这三部分的处理方法。</p>
+<h2 id="4-1-输入"><a href="#4-1-输入" class="headerlink" title="4.1 输入"></a>4.1 输入</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/nl2sql_input.png" alt="图片"></p>
+<p>模型的输入一般从三个方面考虑：</p>
+<ul>
+<li>自然语言问句 $q_{nl}$ 的预处理；</li>
+<li>附加信息的输入；</li>
+<li>数据库的处理。</li>
+</ul>
+<p>现有的所有方法中，模型输入都会包含两部分：自然语言问句 $q_{nl}$ 和数据库 $D$，其中 $S_D$ 表示数据库中的表头，$V_D$ 表示表中每一列的数据集合。</p>
+<h3 id="4-1-1-自然语言问句预处理"><a href="#4-1-1-自然语言问句预处理" class="headerlink" title="4.1.1 自然语言问句预处理"></a>4.1.1 自然语言问句预处理</h3><p>自然语言问句的预处理有不同的方法：</p>
+<ul>
+<li>基于深度学习的模型，将（$q_{nl}$，$S_D$，$V_D$）转化成词向量是必备的步骤；</li>
+<li>基于规则的模型，包含以下几种预处理方法：<ol>
+<li>将自然语言问句解析成句法树，比如 NaLIR；</li>
+<li>将自然语言问句转化成逻辑表达式，比如 SQLizer；</li>
+<li>单纯地只进行分词，比如 ATHENA；</li>
+</ol>
+</li>
+</ul>
+<h3 id="4-1-2-数据库的处理"><a href="#4-1-2-数据库的处理" class="headerlink" title="4.1.2 数据库的处理"></a>4.1.2 数据库的处理</h3><p>模型对数据库的处理包含以下几种方法：</p>
+<ul>
+<li><p>将 $D$ 作为模型的输入进行处理，这是最常见的做法；</p>
+</li>
+<li><p>只用 $D$ 来构建词表；</p>
+</li>
+<li><p>有些模型假设数据库只包含一张表；</p>
+</li>
+<li><p>通过字典将自然语句中的一些实体映射到本体上，然后通过本体关系找到可能需要 <em>JOIN</em> 的表；</p>
+<blockquote>
+<p>”本体（<em>ontology</em>）“原本是一个哲学概念，后来被应用于计算机领域。这里不对这个概念做过多的介绍，简单举几个例子说明什么是本体，大家自行体会。</p>
+<p>比如：</p>
+<p>“阿里巴巴”、“金山办公”、“姚明”等等的本体是“名字”；</p>
+<p>“2012年”、“周五”、“3月份”等的本体是“时间”；</p>
+<p>…</p>
+<p>诸如此类的用来描述事物本质的概念称为“本体”。</p>
+</blockquote>
+</li>
+<li><p>只用 $S_D$ 或者使用 $S_D + V_D$。</p>
+</li>
+</ul>
+<h3 id="4-1-3-附加信息输入"><a href="#4-1-3-附加信息输入" class="headerlink" title="4.1.3 附加信息输入"></a>4.1.3 附加信息输入</h3><p>通常使用的附加信息包括：</p>
+<ul>
+<li>开放领域的知识库，比如 Freebase；</li>
+<li>使用专业领域的字典；</li>
+<li>提前构建的 $q_{nl}$ 中的词语与 SQL 关键词之间的映射字典；</li>
+<li>WordNet；</li>
+<li>用于计算词相似度的预训练词向量矩阵。</li>
+</ul>
+<h2 id="4-2-技术方法：输入增强"><a href="#4-2-技术方法：输入增强" class="headerlink" title="4.2 技术方法：输入增强"></a>4.2 技术方法：输入增强</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/nl2sql_input_enrich.png" alt="nl2sql_input_enrich"></p>
+<p>输入增强有三种方法：</p>
+<ul>
+<li><p>标签化（Tagging）</p>
+<ol>
+<li>首先，找到 $q<em>{nl}$ 中的一些特殊词，比如 TypeSQL 通过字符串匹配找到 $q</em>{nl}$ 中包含在数据库或知识库中的实体；PT-MAML 是利用词相似度匹配的方法在 $q_{nl}$ 中找到包含在数据库中的 $V_D$。</li>
+<li>然后，将这些词和数据库中实体之间建立联系；</li>
+<li>然后，给 $q_{nl}$ 中的找到的词打上实体标签或者直接将这些词规范化到 $V_D$；</li>
+<li>将每个词的标签转化成词向量拼接到每个词的词向量后面，或者将每个实体的类型加到 $q_{nl}$ 对应实体的位置之前；</li>
+<li>将处理后的词向量序列输入到编码器中。</li>
+</ol>
+<blockquote>
+<p>其实一句话总结就是，标签化增强技术是利用数据库中的实体对 $q<em>{nl}$ 中的实体进行增强。这样可以使模型更好的捕捉到 $q</em>{nl}$ 实体和数据库实体的对应关系，从而提高准确率。但是这严重依赖 $q_{nl}$ 实体与数据库实体的匹配技术（无论是字符串匹配还是词相似度匹配），理论上讲即使没有这一步模型也是可以自动学习到，但是这种做法可以提高训练效率，在小数据量上效果应该不错，但是上到大数据量上之后过拟合的风险会大大提高。（当然，这只是个人推断没有实验证据）</p>
+</blockquote>
+</li>
+<li><p>词链接（Linking）</p>
+<p>所谓词链接技术就是计算 $q_{nl}$ 中每个词与数据库中的实体之间的相似度。词链接有两种方法：</p>
+<ol>
+<li>使用词向量计算 $q_{nl}$ 中的词与数据库中的实体之间的相似度；</li>
+<li>使用神经网络计算词与词之间的相似度。</li>
+</ol>
+<p>词链接的相似度同时输入给 $q_{nl}$ 编码器和 $S_D$ 编码器。词链接技术与标签化技术的不同之处在于计算相似度的过程是可以跟随整个模型一起进行训练的。</p>
+<blockquote>
+<p>词链接的技术要比标签化的方法更加合理，但这也意味着模型需要训练的参数量有所上升，训练和推理效率会受到影响。</p>
+</blockquote>
+</li>
+<li><p>匿名化（Anonymizing）</p>
+<p>匿名化方法就是将 $q<em>{nl}$ 和 $q</em>{sql}$ 中的常数值替换成一些特殊符号，这样可以降低词表大小。比如 “city.state_name=’New York’” 替换成 “city.state_name=’@STATE’”。用 “@STATE” 来代替具体的城市。</p>
+</li>
+</ul>
+<h2 id="4-3-技术方法：翻译技术"><a href="#4-3-技术方法：翻译技术" class="headerlink" title="4.3 技术方法：翻译技术"></a>4.3 技术方法：翻译技术</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/nl2sql_tech.png" alt="nl2sql_tech"></p>
+<h3 id="4-3-1-基于规则的方法"><a href="#4-3-1-基于规则的方法" class="headerlink" title="4.3.1 基于规则的方法"></a>4.3.1 基于规则的方法</h3><p>现在的基于规则的方法通常是将 $q_{nl}$ 解析成一个树结构的中间表达，不同的模型生成的树不一样。</p>
+<ul>
+<li><p>NaLIR 是将输入的依存句法树转化成另一种分析树。通过一个简单的算法来移动任意初始句法树的子树，然后使用一系列节点插入规则最终实现树结构的变换。</p>
+</li>
+<li><p>ATHENA 是构建一棵解释树（<em>Interpretation tree</em>），其中节点对应概念或者属性，边表示在本体库中概念或属性之间的关系。</p>
+</li>
+<li><p>SQLizer 是将经过预处理的自然语言问句转化成逻辑表达式。</p>
+</li>
+</ul>
+<h3 id="4-3-2-基于深度学习的方法"><a href="#4-3-2-基于深度学习的方法" class="headerlink" title="4.3.2 基于深度学习的方法"></a>4.3.2 基于深度学习的方法</h3><p>基于深度学习的方法接班架构都是“编码器—解码器”（<em>encoder-decoder</em>）结构的。2019 年之前的工作，通常都是使用 RNN 作为编码器对 $q_{nl}$ 进行编码。但是随着 Transformer 的特征提取能力逐渐被人们发掘，尤其是以 BERT 为代表的预训练语言模型技术被提出以后，使用预训练语言模型作为编码器逐渐成为主流。</p>
+<p>下面我们从两个方面介绍基于深度学习的 $q<em>{nl} \rightarrow q</em>{sql}$ 映射方法。</p>
+<ul>
+<li><p><strong>如何处理数据库 $S_D$</strong></p>
+<p>在深度学习框架下，数据库通常有两个作用：作为输出词表的一部分（SaV）和作为输入（SaI）。</p>
+<ol>
+<li>在 SaV 方法中，将数据库中所有的表名和列名添加到输出词表中。在解码过程中，解码器从输出词表中选择需要解码的词。</li>
+<li>在 SaI 方法中，数据库中所有表名和列名都以输入的方式传递给模型。在解码过程中，解码器利用指针机制从输入中选择需要解码的词。</li>
+</ol>
+</li>
+<li><p><strong>如何生成 $q_{sql}$</strong></p>
+<p>在生成 $q_{sql}$ 方面，已有的深度学习模型可以分成三种：</p>
+<ol>
+<li>sequence-to-sequence：输入一个序列，输出一个序列，类似于机器翻译；</li>
+<li>sequence-to-tree：输入一个序列，输出一棵树；</li>
+<li>slot filling：所谓的槽填充就是，把 SQL 语句看成是一系列的槽，通过解码器对一个一个的槽进行填充。比如，我们预先设定一个 SQL 语句：“SELECT * FROM * WHERE *”，其中 “ * ” 就是我们要填充的内容。</li>
+</ol>
+</li>
+</ul>
+<h2 id="4-4-技术方法：后处理"><a href="#4-4-技术方法：后处理" class="headerlink" title="4.4 技术方法：后处理"></a>4.4 技术方法：后处理</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/nl2sql_postprocess.png" alt="nl2sql_postprocess"></p>
+<p>后处理通常有四种：</p>
+<ul>
+<li>将之前匿名化的值进行还原；</li>
+<li>对输出是树结构的模型来说，需要后处理将树结构的结果解析成 $q_{sql}$；</li>
+<li><em>JOIN</em> 推理；</li>
+<li>使用用户反馈对结果进行修正。</li>
+</ul>
+<h2 id="4-5-技术方法：训练"><a href="#4-5-技术方法：训练" class="headerlink" title="4.5 技术方法：训练"></a>4.5 技术方法：训练</h2><p>NL2SQL 模型的训练方法是根据它采用的 AI 算法确定的，目前来说有以下几种：</p>
+<ul>
+<li>最常见的深度学习模型采用监督学习训练算法；</li>
+<li>NSP 和 DBPal 模型通过预先设定的模板和释义技术（<em>paraphrasing techniques</em>）记性训练；</li>
+<li>Seq2SQL 和 STAMP 模型采用强化学习方法进行训练；</li>
+<li>PT-MAML 采用元学习方法训练；</li>
+</ul>
+<h2 id="4-6-输出"><a href="#4-6-输出" class="headerlink" title="4.6 输出"></a>4.6 输出</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/nl2sql_output.png" alt="nl2sql_output"></p>
+<p>目前 NL2SQL 技术存在四个方面的缺陷：</p>
+<ul>
+<li>预定义的语法模式或者槽类型（实体类型）；</li>
+<li>启发式翻译规则；</li>
+<li>语法覆盖能力有限的中间表达；</li>
+<li>有限的训练数据。</li>
+</ul>
+<p>所以目前的 NL2SQL 输出的 SQL 语句是有限制的。根据限制能力的不同可以分成：</p>
+<ol>
+<li>不受限制的，这种模型通常是数据驱动类型的。缺点就是需要大量的训练数据，这也是目前几乎所有 AI 任务的痛点；</li>
+<li>低限制的，这样的模型通常是基于规则的模型， 限制通常来源于连表查询和嵌套查询等；</li>
+<li>非常受限的，这样的模型通常需要预定义语法模式和实体类型，一旦发现问题要进行改动的影响面会非常大，甚至可能需要重新设计模型结构，重新标注数据等等。</li>
+</ol>
+<p>所有模型输出结果的方式是先生成一系列候选语句，然后对候选语句进行排序，选择排名最高的 SQL 语句。基于规则的模型会设计不同的排序算法，而基于深度学习的模型通常采用的是用 <em>softmax</em> 函数来计算得分，根据每一个候选语句的得分进行排序。</p>
+<h1 id="5-评估方法"><a href="#5-评估方法" class="headerlink" title="5. 评估方法"></a>5. 评估方法</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/nl2sql_evaluation.png" alt="nl2sql_evaluation"></p>
+<p>对于 NL2SQL 模型来说，一个非常重要的点就是，我们如何评估一个模型的好坏？目前的评估方法有四种：</p>
+<ul>
+<li>字符串匹配，通过对比模型生成的 SQL 语句和给定的标准 SQL 语句，判断生成 SQL 语句的正确性。这种方法可能导致误判，比如 WHERE 条件中，$a\ \mathrm{and}\ b$ 和 $b\ \mathrm{and}\ a$ 是等价的，但是用字符串匹配的方式就会得到错误的评估。</li>
+<li>解析树匹配，通过对比模型生成的 SQL 和标准 SQL 的解析树，判断生成 SQL 的正确性。这种方法相比字符串匹配的方式，误判率会低一些，但是仍然是有一定的限制。比如，一个嵌套 SQL 语句和一个非嵌套语句实际上是等效的，但是他们的解析树是不一样的，这样解析树匹配的时候就会造成误判。</li>
+<li>结果匹配，通过对比两条 SQL 语句在数据库中的执行结果来判断生成的 SQL 是否正确。这种方式看起来比较合理，但是仍然不能排除两条不同的 SQL 会得到相同结果的可能性。</li>
+<li><p>人工验证，人工验证的误判率是最低的，但是却是成本最高的方法，几乎无法应用于实际生产中。</p>
+</li>
+<li><p>多级验证（<em>Multi-level</em>），用于验证两条 SQL 语句是否等价，如下图所示：</p>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/nl2sql_multi_level.png" alt="nl2sql_multi_level"></p>
+<p>该方法的核心思想就是：给定两条 SQL 语句，如果它们在任何数据库中的执行结果总是相同的，那么他们就是等价的，一旦出现一次不同的结果，那么他们就不是等价的。</p>
+<ol>
+<li><p>在给定的数据库上面执行两条 SQL 语句，如果结果不同则直接认定模型生成的 SQL 有误。如果结果相同，则继续下一步。</p>
+</li>
+<li><p>如果第一部中的数据库比较小，数据比较少，两条不等价的 SQL 语句可能会产生相同结果。所以，作者提出使用<a href="https://dl.acm.org/doi/10.1145/3180155.3180202" target="_blank" rel="noopener">数据库测试技术</a>对比两条 SQL 语句的执行结果。</p>
+<blockquote>
+<p>所谓数据库测试技术，实际上是为了检测数据库引擎是否存在bug的技术。具体做法就是生成大量的数据库实例，然后跑 SQL 语句。用在这里主要是通过生成大量的数据库实例来验证两条 SQL 语句是否有相同的执行结果。</p>
+</blockquote>
+</li>
+<li><p>用一个现成的验证器，验证两条语句是否等价，比如 Cosette。</p>
+</li>
+<li><p>如果验证器无法验证两条语句是否等价，那么使用 SQL语句重写技术对两条 SQL 语句进行重写。然后对比重写后的 SQL 语法结构。</p>
+</li>
+<li><p>如果重写后的 SQL 语法结构不等价，再使用人工验证。</p>
+</li>
+</ol>
+<p>在本文的实验中，数据库实例生成器用的是 EvoSQL，SQL 语句等价验证器用的是 Cosette，SQL 语句重写用的是 IBM DB2。</p>
+<h1 id="6-实验结果"><a href="#6-实验结果" class="headerlink" title="6. 实验结果"></a>6. 实验结果</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210426113709.png" alt></p>
+<p>为了方便我们对实验结果进行分析，这里专门挑选出一些比较典型的错误案例。</p>
+<h2 id="6-1-不同评估方法的对比"><a href="#6-1-不同评估方法的对比" class="headerlink" title="6.1 不同评估方法的对比"></a>6.1 不同评估方法的对比</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210426095839.png" alt></p>
+<p>首先定义一个表格中的变量。</p>
+<ul>
+<li>$acc_{sem}$，表示利用语义等价评估方法得到的结果；</li>
+<li>$acc_{ex}$，表示利用 SQL 执行结果进行评估的方法的得到的结果；</li>
+<li>$acc_{str}$，表示利用字符串匹配方法得到的评估结果；</li>
+<li>$acc_{syn}$，表示利用解析树匹配的方法得到的评估结果。</li>
+</ul>
+<p>这个实验的目的是对比同一个模型在相同的数据集上用不同的评估方法得到的评估结果。这里选取的模型是 NSP 模型，因为它能生成复杂的 SQL 语句。从表中我们可以看出，不同的评估方法得到的结果差别很大，如果考虑复杂的 SQL 语句的话，这个差别将会更大。</p>
+<h2 id="6-2-简单-SQL-语句实验结果"><a href="#6-2-简单-SQL-语句实验结果" class="headerlink" title="6.2 简单 SQL 语句实验结果"></a>6.2 简单 SQL 语句实验结果</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210426112041.png" alt></p>
+<p>上表是用于验证简单 SQL 语句使用的数据集的统计数据。在所有数据集中，只有 WikiSQL、Patients和 WTQ 三个数据集包含了简单的 SQL 语句，将这三个数据集中的简单语句筛选出来形成新的数据集（加上 -s 后缀以示区别）。</p>
+<table><tr>
+    <td><div align="center"><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210426104630.png"></div></td>
+    <td><div align="center"><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210426101828.png"></div></td>
+</tr></table>            
+
+<p>上表中，左边的表表示不同模型的总的表现，右侧表示每个单项的准确率，其中 $acc<em>{sel}$ 表示 SELECT 列的准确率，$acc</em>{agg}$ 表示聚合函数的准确率，$acc<em>{wh, col},acc</em>{wh, op}, acc_{wh,val}$ 分别表示 WHERE 条件中的列，操作符和值的准确率。</p>
+<h3 id="6-2-1-模型泛化性"><a href="#6-2-1-模型泛化性" class="headerlink" title="6.2.1 模型泛化性"></a>6.2.1 模型泛化性</h3><p>从表中我们可以看出，基于规则的模型准确率都比较低。主要还是基于规则的方法有很大的限制性，比如 NaLIR，如果映射表中没有将 “longest” 映射成 $MAX$ 函数的方法，那么当自然问句中包含 “longest” 时就会出错。解决的办法就是尽可能的扩充映射表，但是这需要大量的人工工作。</p>
+<p>NSP 作为基于深度学习的模型，其表现出来的水平较之其他深度学习模型差了很多。主要原因是它将 $S_D$ 作为输出词表的一部分，这样会有三个问题：</p>
+<ol>
+<li>模型无法捕捉自然语言问句中的实体与数据表中实体之间的关系；</li>
+<li>输出词表会很大，对解码器选择正确的输出造成困扰；</li>
+<li>如果用于验证的语句中包含训练集中没有见过的实体，模型的处理效果就会很差。</li>
+</ol>
+<p>而其他深度学习模型通常是将 $S_D$ 作为输入输送给模型进行处理，然后使用指针机制进行解码。这样就可以避免以上三个问题，最终的效果会好很多。</p>
+<h3 id="6-2-2-小数据集的模型鲁棒性"><a href="#6-2-2-小数据集的模型鲁棒性" class="headerlink" title="6.2.2 小数据集的模型鲁棒性"></a>6.2.2 小数据集的模型鲁棒性</h3><p>另一方面，我们会发现 NSP 在 Patients 数据集上的效果意外得好。通过分析发现， Patients-s 数据集的训练样本是最少的，NSP 的效果好是否跟它的数据增强技术有关呢？为了验证这个猜测，我们将 Patient-s 数据集利用数据增强技术扩展到 500。对比所有深度学习模型的表现，我们发现所有模型表现都有所提升，但是 NSP 的提升还是尤为明显。通过分析我们发现可能有以下几个原因：</p>
+<ul>
+<li>由于其他深度模型是通过指针机制从自然问句中找出实体，如果自然问句中没有数据表中对应的实体，那么这些模型就不能生成正确的 SQL 语句了。比如错误案例中 （B）所展示的，数据表中是 “flu”，而自然问句中是 “influenza”，通过指针机制无法从自然问句中找到 “flu” 这个实体，自然就无法生成正确的语句了。而 NSP 模型是将数据表中的实体作为输出词表的一部分进行解码的，这样就可以正确找到 “flu” 这个实体了。</li>
+<li>另外与 NSP 类似的将数据表实体作为输出词表的一部分的模型，比如 SyntaxSQLNet, GNN 和 IRNet 在小数据集上的效果也不如 NSP，主要原因是 NSP 的释义技术的应用。比如错误案例（A）中 NSP 可以准确的将 “hospitalization period” 映射到 “length_of_stay”，而另外几个模型就不能做到。</li>
+</ul>
+<h3 id="6-2-3-自然语言复杂性"><a href="#6-2-3-自然语言复杂性" class="headerlink" title="6.2.3 自然语言复杂性"></a>6.2.3 自然语言复杂性</h3><p>自然语言的复杂性来源于多个方面：</p>
+<ul>
+<li>语法多样性</li>
+<li>领域多样性</li>
+<li>目标 SQL 的多样性</li>
+<li>句子数量</li>
+</ul>
+<p>这里我们先讨论语法多样性和领域多样性。仔细看实验结果我们会发现，几乎所有的模型在 WTQ-s 数据集上的效果都比较差。主要是因为 WTQ-s 的数据集中自然语言问句比较多样，比如错误示例（C），不仅包含两个独立的条件，而且还有否定条件。这样的句子几乎现在所有的模型都不能处理。另外，如果数据表中的列名或者常数值比较复杂，也会导致问句比较复杂。比如错误示例（D）中列名是 “<em>number of autos da fe</em>”，这里面包含了非英文词汇，而这些词在词表中属于 OOV（<em>Out of Vocabulary</em>），导致模型无法准确辨别列名。</p>
+<h3 id="6-2-4-q-nl-与-S-D-的实体对齐"><a href="#6-2-4-q-nl-与-S-D-的实体对齐" class="headerlink" title="6.2.4 $q_{nl}$ 与 $S_D$ 的实体对齐"></a>6.2.4 $q_{nl}$ 与 $S_D$ 的实体对齐</h3><p>$q_{nl}$ 与 $S_D$ 的实体对齐对准确率的影响非常之大。在 WikiSQL 数据集上 GNN 的总体准确率是最高的，而在单项预测上 GNN 在预测列名的准确率也是最高的，因为在 GNN 模型中使用了实体链接技术。而使用标签化技术的 TypeSQL-C 和 IRNet 在列名的预测上，准确率仅次于 GNN，他们的总体准确率也是如此。</p>
+<p>在 WTQ-s 数据集上，IRNet 的总体准确率是最高的，在单项上 $acc<em>{wh, op}$ 和 $acc</em>{agg}$ 与其他模型的准确率相比相差不多，但是在 $acc<em>{wh, col}$ 和 $acc</em>{sel}$ 上的准确率高出其他模型一大截。细致的分析我们会发现， IRNet 在长列名和表中有相似列名的时候表现尤为突出。比如错误示例（D）中，IRNet 是唯一预测正确的模型。</p>
+<p>从以上的分析中我们不难发现，列名的准确性在很大程度上影响了模型的准确性。要提高模型预测列名的准确性，实体对齐是一个很有效的方法。而实体链接和标签化各有优势。</p>
+<h3 id="6-2-5-学习算法的有效性"><a href="#6-2-5-学习算法的有效性" class="headerlink" title="6.2.5 学习算法的有效性"></a>6.2.5 学习算法的有效性</h3><p>在以上所有评估模型中，Seq2SQL 和 PT-MAML 分别采用了强化学习和元学习的方法。我们将这两个学习算法都改成监督学习以后发现，两个模型的准确率都有所下降。说明他们各自的学习算法都有利于发挥他们的能力，但是总体而言，强化学习和元学习在准确率上还是比其他深度学习模型准确率差一些。</p>
+<h2 id="6-3-复杂-SQL-语句实验结果"><a href="#6-3-复杂-SQL-语句实验结果" class="headerlink" title="6.3 复杂 SQL 语句实验结果"></a>6.3 复杂 SQL 语句实验结果</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210426113745.png" alt></p>
+<p>复杂 SQL 语句的实验只在上表中的六个模型上做的，因为其他模型都不支持 复杂 SQL 语句的生成。数据集排除了 WikiSQL，因为该数据集全部是简单 SQL 语句。总的来说，这些模型的准确率都很低。</p>
+<h3 id="6-3-1-基于规则的模型"><a href="#6-3-1-基于规则的模型" class="headerlink" title="6.3.1 基于规则的模型"></a>6.3.1 基于规则的模型</h3><p>基于规则的模型准确率低，主要的原因和前面简单 SQL 的问题一样。但是 Templar 比较有意思，它的准确率在除 MAS 数据集之外的所有数据集上的表现和 NaLIR 相差不大。经过分析我们发现，主要是在 MAS 数据集上 Templar 总是无法正确进行实体映射。给定两个实体 $qf<em>1$ 和 $qf_2$，如果 $qf_2$ 在检索日志中出现的频率更高的话，Templar 选择 $qf_2$ 的概率更高，即使可能 $qf_1$ 的语义更符合 $q</em>{nl}$。比如错误案例（E），“area” 与 “domain.name” 的语义相似度比 “publication.title” 更高，但是 Templar 选择了后者。 </p>
+<h3 id="6-3-2-泛化性"><a href="#6-3-2-泛化性" class="headerlink" title="6.3.2 泛化性"></a>6.3.2 泛化性</h3><p>SaI 方法总体效果强于 SaV 方法，主要原因还是输出词表的 OOV 问题。使用 SaI 方法的模型中， SyntaxSQLNet 的准确率比 GNN 和 IRNet 低很多，主要原因为后者使用了实体对齐技术。</p>
+<h3 id="6-3-3-小数据集上的模型鲁棒性"><a href="#6-3-3-小数据集上的模型鲁棒性" class="headerlink" title="6.3.3 小数据集上的模型鲁棒性"></a>6.3.3 小数据集上的模型鲁棒性</h3><p>在小数据集上的表现和简单的 SQL 的情况类似，但是对于复杂 SQL 下，迷行表现更加糟糕。基于 SaI 的深度学习模型甚至无法训练处一个有意义的模型出来。这也从侧面说明，要想训练一个能处理复杂语句的深度学习模型需要大量的训练数据。</p>
+<h3 id="6-3-4-生成-SQL-的覆盖面"><a href="#6-3-4-生成-SQL-的覆盖面" class="headerlink" title="6.3.4 生成 SQL 的覆盖面"></a>6.3.4 生成 SQL 的覆盖面</h3><p>SyntaxSQLNet, GNN 和 IRNet 只能支持有限的 SQL，因为：</p>
+<ul>
+<li>SyntaxSQLNet 采用槽填充的方法，而槽的类型是预先定义的。预定义的槽类型严重限制了 SQL 语句的覆盖面。</li>
+<li>GNN 和 IRNet 是基于语法的模型，他们的表现比 SyntaxSQLNet 要好一些，但是也只能支持部分 SQL 语法。比如，不支持 LIMITE、ORDER BY、GROUP BY 等等。</li>
+</ul>
+<p>NSP 也面临着类似的问题，随着复杂度和多样性的提升 NSP 生成的 SQL 的错误率也随之提升。通过分析发现，NSP 的主要错误来源于表名和列名的预测错误，而这些错误中主要集中在需要连表查询的时候。</p>
+<h3 id="6-3-5-自然语言问句复杂度"><a href="#6-3-5-自然语言问句复杂度" class="headerlink" title="6.3.5 自然语言问句复杂度"></a>6.3.5 自然语言问句复杂度</h3><p>$q<em>{sql}$  的复杂度随着 $q</em>{nl}$ 增加。目前所有的模型在面对复杂语句的时候准确率都非常低。</p>
+<h3 id="6-3-6-常数值的匿名化"><a href="#6-3-6-常数值的匿名化" class="headerlink" title="6.3.6 常数值的匿名化"></a>6.3.6 常数值的匿名化</h3><p>在 Advising（question split）数据集上 NSP 模型 $acc<em>{sem}$ 和 $acc</em>{val}$ 准确率相差近 35%，这个差距非常大。而 35% 非常接近 NSP 在 WikiSQL 上对常数值的预测准确率。看下错误示例（F）我们会发现， NSP 的错误点在于将 “751” 预测错误。说明 NSP 没有正确地将 “751”匿名化。这给我们两点启示：</p>
+<ul>
+<li>NSP 的匿名化技术还有待提升；</li>
+<li>精准的映射常数值也是提升模型准确率的有效手段。</li>
+</ul>
+<h1 id="7-NL2SQL-未来的发展"><a href="#7-NL2SQL-未来的发展" class="headerlink" title="7. NL2SQL 未来的发展"></a>7. NL2SQL 未来的发展</h1><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210426113821.png" alt></p>
+<p>上表总结了目前的模型能力，红色倒三角表示模型表现很差，“-” 表示一般，绿色正三角表示表现很好。从上表中我们可以看出，没有一个模型能在所有问题上达到哪怕一般般的水平。因为每个模型都这或这或那的局限性。</p>
+<p>对于跨领域的模型适应能力，需要将数据表实体当成模型输入而不是输出，但是在特定领域下，SaV 的效果会比 SaI 好。对于数据表实体的编码研究会是一个有意思的课题。（ps：将数据表实体既当输入也当输出？）</p>
+<p>$q_{nl}$ 和 $S_D$ 实体对齐能有效提升准确率。但是目前的对齐方法还比较基础。字符串匹配的方式比词向量相似度的方法更加可靠，因为 $S_D$ 实体中可能包含很多词向量中没有的词。但是字符串匹配的方式容易造成过拟合，从实验结果中也可以看出来，IRNet 即使使用字符串匹配的方式，在 WTQ-s 数据集上的表现仍然很低，在更复杂的语句上准确率就更低了。</p>
+<p>如何生成常数值也是一个具有挑战性的问题。即使使用匿名化技术，NSP 在 $V_D$ 比较多的情况下，表现也不尽如人意。</p>
+<h1 id="8-总结"><a href="#8-总结" class="headerlink" title="8. 总结"></a>8. 总结</h1><p>本文总结了 2014年-2019 年之间的 NL2SQL SOTA 模型。并综合性的做了对比实验，从实验中我们发现了一些规律：</p>
+<ul>
+<li>表名，列名的预测准确性很大程度上影响了生成 SQL 语句的准确性；</li>
+<li>实体对齐技术能有效提升表名\列名的准确性；</li>
+<li>数据表实体作为输入和输出都有其优劣性，目前还没有同时作为输入输出的模型；理论上应该会有一定的提升；</li>
+<li>匿名化技术对预测常数值有一定的帮助。</li>
+</ul>
+<h1 id="9-参考资料"><a href="#9-参考资料" class="headerlink" title="9. 参考资料"></a>9. 参考资料</h1><ol>
+<li><a href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/45791.pdf" target="_blank" rel="noopener">Analyza: Exploring Data with Conversation</a>，<em>Kedar Dhamdhere, Kevin S. McCurley, Ralfi Nahmias, Mukund Sundararajan, Qiqi Yan</em></li>
+<li><a href="http://www.vldb.org/pvldb/vol13/p1737-kim.pdf" target="_blank" rel="noopener">Natural language to SQL: Where are we today?</a>，<em>Hyeonji Kim, Byeong-Hoon So, Wook-Shin Han, Hongrae Lee</em></li>
+<li><a href="https://www.aclweb.org/anthology/P18-1034.pdf" target="_blank" rel="noopener">Semantic Parsing with Syntax- and Table-Aware SQL Generation</a>，<em>Yibo Sun, Duyu Tang, Nan Duan, Jianshu Ji, Guihong Cao, Xiaocheng Feng, Bing Qin, Ting Liu, Ming Zhou</em></li>
+<li><a href="https://ui.adsabs.harvard.edu/abs/2020E3SWC.22901039M/abstract" target="_blank" rel="noopener">The history and recent advances of Natural Language Interfaces for Databases Querying</a>，<em>Majhadi, Khadija; Machkour, Mustapha</em></li>
+<li><a href="http://blog.csuldw.com/2019/10/20/2019-10-20-nl2sql-introduction/" target="_blank" rel="noopener">NL2SQL概述：一文了解NL2SQL</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/93132638" target="_blank" rel="noopener">试试中国人自己的Spider吧！</a></li>
+<li><a href="http://jkk.name/text2sql-data/" target="_blank" rel="noopener">Text-to-SQL Datasets and Baselines</a></li>
+<li><a href="https://github.com/salesforce/WikiSQL" target="_blank" rel="noopener">WIKISQL</a></li>
+<li><a href="https://yale-lily.github.io/spider" target="_blank" rel="noopener">Spider</a></li>
+<li><a href="https://taolusi.github.io/CSpider-explorer/" target="_blank" rel="noopener">CSpider</a></li>
+<li><a href="https://www.aclweb.org/anthology/P18-1033.pdf" target="_blank" rel="noopener">Improving Text-to-SQL Evaluation Methodology</a>，<em>Catherine Finegan-Dollak, Jonathan K. Kummerfeld, Li Zhang, Karthik Ramanathan, Sesh Sadasivam, Rui Zhang, Dragomir Radev</em></li>
+<li><a href="http://dbgroup.eecs.umich.edu/files/SIGMOD14LFb.pdf" target="_blank" rel="noopener">NaLIR: An Interactive Natural Language Interface for Querying Relational Databases</a>，<em>Fei Li，H. V. Jagadish</em> </li>
+<li><a href="https://dl.acm.org/doi/10.1145/3180155.3180202" target="_blank" rel="noopener">Search-based test data generation for SQL queries</a>，<em>Jeroen Castelein, Maurício Aniche, Mozhan Soltani, Annibale Panichella, Arie van Deursen</em> </li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/nl2sql/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>nl2sql</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/04/14/nl2sql-survey/&title=NL2SQL 综述 | Rogerspy's Home&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/04/14/nl2sql-survey/&title=NL2SQL 综述 | Rogerspy's Home&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJElEQVR42u3aMXKEMAwF0L3/pUmbIux+SZBZ7EeVSRzQc6GxLL1e8XMEz9n63ldedzwYGBiPZSTBVX//+69nIb5/Zx4bBgbGPoyzDFZdk2xHkjnz72JgYGCcrUmOgwkyT74YGBgYOeOInzzJJhuBgYGBkYdSvWLLk2xvDQYGxg6MPBX+/8+39DcwMDAexTiKz+QYl7+tHBUGBsbSjOplfbWpWR2qyI99GBgY+zAmKbXXAOiNhX34DQYGxtKM6tLe2ETvoJlvFgYGxtqM6kX8vIVQLXST9RgYGDswkmNiUmQm6XLSIj1NwRgYGEszeh94H/RoGGIwKIaBgbEbIx+5SErTq5oB5YSLgYGxBCNJtdUhieTImL+hfN2GgYGxHGM+5jXB5Mm9kKAxMDCWZsxDrP5XNfQLal8MDIzHMt4HcdUVf69dWiiJMTAwtmT0LuOuHc7IsysGBsaqjOrr8qGuvKlQLXH/+BYGBsbSjHm67G1Bvk1JmsbAwNiBUR2AyNfniTXfstNIMDAwNmDkhetVF2r5UEV0fMTAwNiA0UudSVOhiu+1OTEwMFZlzAvXKmYyqHFj/Y2BgfHFjMm4WD62lR/1qsfEMgwDA+OxjOpIxCT06uVdYb8xMDA2YExCyUvTavJt1uIYGBgYcRHbK1+bZ1gMDAyMG0bB5kMbH2ZGMDAwlmP0xibycK8a3cDAwNiTUT13Jekvb3z2LgSbTU0MDIznMX4Au0jwLlTF3LEAAAAASUVORK5CYII='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/04/14/nl2sql-survey/&title=NL2SQL 综述 | Rogerspy's Home&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/04/16/ds-data-structure-introduce/" rel="prev" title="数据结构与算法：数据结构简介">
+                                  
+                                      数据结构与算法：数据结构简介
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/数据结构/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>数据结构</a> <a class="tag" href="/tags/queue/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>queue</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/04/13/recsys-milestone/" rel="prev" title="推荐系统发展里程碑">
+                                    
+                                        推荐系统发展里程碑
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/推荐系统/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>推荐系统</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: 'NL2SQL 综述',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-简介"><span class="toc-text">1. 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-NL2SQL-的一些实际应用场景"><span class="toc-text">1.1 NL2SQL 的一些实际应用场景</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-NL2SQL-发展简史"><span class="toc-text">2. NL2SQL 发展简史</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-数据集"><span class="toc-text">3. 数据集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-技术路线"><span class="toc-text">4. 技术路线</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-输入"><span class="toc-text">4.1 输入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-自然语言问句预处理"><span class="toc-text">4.1.1 自然语言问句预处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-数据库的处理"><span class="toc-text">4.1.2 数据库的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-3-附加信息输入"><span class="toc-text">4.1.3 附加信息输入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-技术方法：输入增强"><span class="toc-text">4.2 技术方法：输入增强</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-技术方法：翻译技术"><span class="toc-text">4.3 技术方法：翻译技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-基于规则的方法"><span class="toc-text">4.3.1 基于规则的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-2-基于深度学习的方法"><span class="toc-text">4.3.2 基于深度学习的方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-技术方法：后处理"><span class="toc-text">4.4 技术方法：后处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-技术方法：训练"><span class="toc-text">4.5 技术方法：训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6-输出"><span class="toc-text">4.6 输出</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-评估方法"><span class="toc-text">5. 评估方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-实验结果"><span class="toc-text">6. 实验结果</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-不同评估方法的对比"><span class="toc-text">6.1 不同评估方法的对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-简单-SQL-语句实验结果"><span class="toc-text">6.2 简单 SQL 语句实验结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-1-模型泛化性"><span class="toc-text">6.2.1 模型泛化性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-2-小数据集的模型鲁棒性"><span class="toc-text">6.2.2 小数据集的模型鲁棒性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-3-自然语言复杂性"><span class="toc-text">6.2.3 自然语言复杂性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-4-q-nl-与-S-D-的实体对齐"><span class="toc-text">6.2.4 $q_{nl}$ 与 $S_D$ 的实体对齐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-5-学习算法的有效性"><span class="toc-text">6.2.5 学习算法的有效性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3-复杂-SQL-语句实验结果"><span class="toc-text">6.3 复杂 SQL 语句实验结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-1-基于规则的模型"><span class="toc-text">6.3.1 基于规则的模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-2-泛化性"><span class="toc-text">6.3.2 泛化性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-3-小数据集上的模型鲁棒性"><span class="toc-text">6.3.3 小数据集上的模型鲁棒性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-4-生成-SQL-的覆盖面"><span class="toc-text">6.3.4 生成 SQL 的覆盖面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-5-自然语言问句复杂度"><span class="toc-text">6.3.5 自然语言问句复杂度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-6-常数值的匿名化"><span class="toc-text">6.3.6 常数值的匿名化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-NL2SQL-未来的发展"><span class="toc-text">7. NL2SQL 未来的发展</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-总结"><span class="toc-text">8. 总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-参考资料"><span class="toc-text">9. 参考资料</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://rogerspy.github.io/data_structure_algorithm/"
+          
+          
+          id="https:rogerspy.github.iodata_structure_algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fab fa-kaggle fa-fw" aria-hidden="true"></i>
+          
+          Kaggle
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-brain fa-fw" aria-hidden="true"></i>
+          
+          思维逻辑
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+          
+          学习小测
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://paperswithcode.com/datasets"
+          
+          
+          id="https:paperswithcode.comdatasets">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/incremental-learning/"><div class='name'>Incremental Learning</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(15)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.22px; color: #8a8a8a">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19.56px; color: #737373">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.67px; color: #6c6c6c">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.67px; color: #6c6c6c">NLP</a> <a href="/tags/nmt/" style="font-size: 22.89px; color: #5d5d5d">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/smoothing/" style="font-size: 14px; color: #999">Smoothing</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.22px; color: #8a8a8a">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.11px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.11px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 18.44px; color: #7b7b7b">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 17.33px; color: #828282">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.78px; color: #646464">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.11px; color: #919191">词向量</a> <a href="/tags/词向量压缩/" style="font-size: 14px; color: #999">词向量压缩</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

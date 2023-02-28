@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>预训练语言模型-神经网络语言模型：CNNLM | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="archives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/04/11/neural-language-model-cnn/">
+        预训练语言模型-神经网络语言模型：CNNLM
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-04-11</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/语言模型/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>语言模型</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">2.8k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">11分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <p>神经网络三大神器：DNN、CNN、RNN。其中 DNN 和 RNN 都已经被用来构建语言模型了，而 CNN 一直在图像领域大展神威，它是否也可以用来构建语言模型呢？如果要用 CNN 构建语言模型应该怎么做？接下来我们从四篇论文看 CNN 构建语言模型的三种方法。</p>
+<a id="more"></a>
+<h1 id="1-CNN-语言模型"><a href="#1-CNN-语言模型" class="headerlink" title="1. CNN 语言模型"></a>1. CNN 语言模型</h1><p>简单的 CNN 语言建模思路如下：</p>
+<ol>
+<li>首先输入的词经过 embedding 层，将每个词转化成句子矩阵 $x_{1:n} \in \mathbb{R}^{n \times k}$，其中 $n$ 表示句子长度，$k$ 表示词向量维度；</li>
+<li>得到句子矩阵以后，用 $W \in \mathbb{R}^{w\times k}$ 的卷积核对句子矩阵进行卷积运算，一共有 $k$ 个卷积核；</li>
+<li>经过卷积之后得到一个新的矩阵，然后在新的矩阵上使用 <code>ReLu​</code> 激活函数；</li>
+<li>接下来使用 <em>batch normalization</em>，为了解决内部协方差飘移问题；</li>
+<li>然后经过一个 DNN 层进行降维之后直接使用 <em>softmax</em> 层输出，而不经过最大池化层，因为最大池化层会使句子丢失位置信息。</li>
+</ol>
+<p>以上就是最基本的 CNN 语言模型的结构。除此之外，还有几个变种：</p>
+<ul>
+<li><p><strong>MLPConv</strong></p>
+<p>标准的 CNN 卷积操作是利用卷积核和特征矩阵进行线性变换。而 <em>MLPConv</em> 是在标准的卷积核后面接一个多层的 DNN 将原来的线性变换转化成非线性变换。需要注意的是，<em>MLPConv</em> 同样没有加入最大池化层。</p>
+</li>
+<li><p><strong>Multi-Layer CNN</strong></p>
+<p>将多个同尺寸卷积核的卷积叠加在一起，如下图左侧。</p>
+</li>
+<li><p><strong>COM</strong></p>
+<p>将不同尺寸的卷积核的卷积拼接在一起，如下图右侧。</p>
+</li>
+</ul>
+<table><tr>
+    <td><div align="center"><img width="400" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411162823.png"></div></td>
+    <td><div align="center"><img width="400" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411162837.png"></div></td>
+</tr></table>            
+
+<h1 id="2-Gated-CNN-语言模型"><a href="#2-Gated-CNN-语言模型" class="headerlink" title="2. Gated-CNN 语言模型"></a>2. Gated-CNN 语言模型</h1><h2 id="2-1-gen-CNN"><a href="#2-1-gen-CNN" class="headerlink" title="2.1 $gen$CNN"></a>2.1 $gen$CNN</h2><p>下图展示了 $gen$CNN 模型的大致结构：</p>
+<ul>
+<li>$\beta$CNN 用来记忆序列中较早之前的信息；</li>
+<li>$\alpha$CNN 用来处理距离需要预测的词最近的部分序列。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163002.png" width="600"></p>
+<p>相对于传统 CNN，$gen$CNN 有两点不同：</p>
+<ol>
+<li>部分权重共享策略；</li>
+<li>用门控网络代替池化层。</li>
+</ol>
+<p>接下来我们详细介绍一下模型的每一个部分。</p>
+<h3 id="2-1-1-alpha-CNN-卷积"><a href="#2-1-1-alpha-CNN-卷积" class="headerlink" title="2.1.1 $\alpha$CNN: 卷积"></a>2.1.1 $\alpha$CNN: 卷积</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163024.png" width="350"></p>
+<p>$\alpha$CNN 是部分共享权重的，在卷积单元中存在两种特征：<code>Time-Flow</code> 和 <code>Time-Arrow</code>，分别对应上图中的空心节点和实心节点。</p>
+<ul>
+<li><code>Time-Flow</code>：就是传统的 CNN，用来理解句子的整体时态结构；</li>
+<li><code>Time-Arrow</code>：更像是基于 <em>FFNN</em> 的语言模型，用来理解句子的顺序。</li>
+</ul>
+<p>假设输入句子 $\pmb{x}=(x_1, \cdots, x_T)$，第 $l$ 层的特征为：</p>
+<script type="math/tex; mode=display">
+z_i^{(l, f)}(\pmb{x}) = \begin{cases}
+
+\sigma(W_{TF}^{(l, f)} \pmb{\hat{z}}_i^{(l-1)} + b_{TF}^{(l, f)}) & f\in \mathrm{Time-Flow}\\\\
+\sigma(W_{TF}^{(l, f, i)} \pmb{\hat{z}}_i^{(l-1)} + b_{TF}^{(l, f, i)}) & f \in \mathrm{Time-Arrow}
+\end{cases}</script><p>其中：</p>
+<ul>
+<li>$z_i^{(l, f)}$ 表示第 $l$ 层网络第 $i$ 个位置的特征输出；</li>
+<li>$\sigma(\cdot)$ 表示 <code>sigmoid</code> 函数或者 <code>Relu</code> 函数；</li>
+<li>$W<em>{TF}^{(l, f)}$ 表示第 $l$  层网络，$f\in \mathrm{Time-Flow}$ 的参数；$W</em>{TA}^{(l, f, i)}$ 表示第 $l$ 层网络第 $i$ 个位置，$f\in \mathrm{Time-Arrow}$ 的参数；</li>
+<li>$\pmb{\hat{z}}<em>i^{(l-1)}$ 表示第 $l-1$ 层第 $i$ 个位置的特征，令 $\pmb{\hat{z}}_i^{(0)}=[x_i^T, x</em>{i+1}^T, \cdots,x_{i+k-1}^T]$，$k$ 表示窗口大小。</li>
+</ul>
+<h3 id="2-1-2-门控网络"><a href="#2-1-2-门控网络" class="headerlink" title="2.1.2 门控网络"></a>2.1.2 门控网络</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163036.png" width="400"></p>
+<p>假设有一个第 $l$ 层网络的特征矩阵，然后再第 $l+1$ 层上加门控（窗口大小为 2）。门控网络定义是一个二分类逻辑回归器：</p>
+<script type="math/tex; mode=display">
+g_j^{(l+1, f)} = \begin{cases}
+\frac{1}{1+\exp(-W_{gate}^{(l, f, j)}\cdot\bar{\pmb{z}}_j^{(l)})} & f \in \mathrm{Time-Arrow} \\\\
+\frac{1}{1+\exp(-W_{gate}^{(l, f)}\cdot\bar{\pmb{z}}_j^{(l)})} & f \in \mathrm{Time-Flow} 
+\end{cases}</script><p>其中 $\bar{\pmb{z}}<em>j$ 表示第 $j$ 个窗口中将 $\hat{\pmb{z}}</em>{2j-1}^{(l)}$ 和 $\hat{\pmb{z}}_{2j}^{(l)}$ 融合在一起的矩阵。</p>
+<p>然后将得到的值与特征矩阵进行加权求和：</p>
+<script type="math/tex; mode=display">
+z_j^{(l+1, f)} = g_j^{(l+1, f)}\cdot z_{2j-1}^{(l, f)} + (1-g_j^{(l+1, f)}) \cdot z_{2j}^{(j, f)}</script><p>这样就得到了 $l+1$ 层的特征矩阵。</p>
+<blockquote>
+<ol>
+<li>窗口为 2，是因为网络包含两种特征 <code>Time-Flow</code> 和 <code>Time-Arrow</code>，每个窗口位置 $j$ 都包含两个窗口，所以用 $2j-1$ 和 $2j$  表示；</li>
+<li>门控网络实际上是代替池化层做特征筛选，将卷积后的特征矩阵利用门控网络筛选出第 $j$ 个位置的特征到底是更偏向于结构信息还是更偏向于位置信息。</li>
+</ol>
+</blockquote>
+<h3 id="2-1-3-循环结构"><a href="#2-1-3-循环结构" class="headerlink" title="2.1.3 循环结构"></a>2.1.3 循环结构</h3><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163052.png" width="400"></p>
+<p>就像之前介绍的那样，我们处理使用 $\alpha$CNN 来获取当前信息以外，还会使用 $\beta$CNN 来记录历史信息。$\beta$CNN 只包含 <code>Time-Flow</code> 特征，得到 $\beta$CNN 特征之后将它作为 $\alpha$CNN 输入的第一个词输入给 $\alpha$CNN。所有的 $\beta$CNN 都是相同且循环对齐的，使得 $gen$CNN 能处理任意长度的句子。每个 $\beta$CNN 后面加一个特殊的开关，当没有历史信息的时候就会把开关关掉。</p>
+<p>实验中 $\alpha$CNN 处理的句子长度为 $L<em>\alpha=30\sim40$，也就是说，如果句子长度短于 $L</em>\alpha$ 的话，那么模型就只包含了 $\alpha$CNN。实验中发现，90% 以上的句子可以只用 $\alpha$CNN 就可以， 超过 99% 的句子只需要一个 $\beta$CNN 就可以。实际上作者发现一个更大更深的 $\alpha$CNN 比 更小的 $\alpha$CNN 更多的 $\beta$CNN 结构表现更好。</p>
+<h2 id="2-2-Gated-CNN"><a href="#2-2-Gated-CNN" class="headerlink" title="2.2 Gated-CNN"></a>2.2 Gated-CNN</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411162913.png" width="400"></p>
+<p>上图是 Gated CNN 模型的基本结构，大体上和传统的 CNN 语言模型区别不大，只是在 卷积之后加了一个门控机制：</p>
+<script type="math/tex; mode=display">
+h_l(\pmb{x}) = (\pmb{x}\cdot W +b) \otimes \sigma(\pmb{x} \cdot V + c)</script><p>其中 $\pmb{x} \in \mathbb{R}^{N\times m}$ 表示词向量组成的句子矩阵或者上一层网络的输出，$W \in \mathbb{R}^{k\times m\times n}$,  $b \in \mathbb{R}^n$, $V \in \mathbb{R}^{k\times m\times n}$, $c \in \mathbb{R}^{n}$ 表示模型参数，$\sigma$ 为 <em>sigmoid</em> 函数，$\otimes$ 表示元素级相乘。</p>
+<p>其实这就相当于决定每个特征值有多少信息可以进入下一层网络，和 LSTM 中的遗忘门作用相同。</p>
+<h2 id="2-3-小结"><a href="#2-3-小结" class="headerlink" title="2.3 小结"></a>2.3 小结</h2><ul>
+<li>从 LSTM 出发到门控 CNN，我们会发现所谓门控其实就是通过 <em>sigmoid</em> 函数控制特征的传递。</li>
+<li>CNN 语言建模的关键在于不要使用池化层，因为池化层会丢失位置信息。</li>
+</ul>
+<h1 id="3-TCN-语言模型"><a href="#3-TCN-语言模型" class="headerlink" title="3. TCN 语言模型"></a>3. TCN 语言模型</h1><p>TCN 模型即所谓的 <em>Temporal Convolution Networks</em>，该模型基于两个基本原则：</p>
+<ul>
+<li>网络输出一个和输入序列等长度的序列；</li>
+<li>不会发生从未来到过去的信息泄露。</li>
+</ul>
+<p>为了达到第一点原则，TCN 使用 1D 全连接卷积网络：每一个隐层的长度和输入层相同，并且使用零填充保证后续的隐层也能保持和之前序列长度相同。</p>
+<p>为了达到第二点目的，TCN 使用因果卷积（<em>causal convolutions</em>, 如下左图），即 $t$ 时刻的输出仅为 $t$ 时刻及之前的序列的卷积结果。</p>
+<script type="math/tex; mode=display">
+\mathrm{TCN} = 1D\ \mathrm{FCN} + \mathrm{causal\ convolutions}</script><h2 id="3-1-Dilated-causal-convolution"><a href="#3-1-Dilated-causal-convolution" class="headerlink" title="3.1 Dilated causal convolution"></a>3.1 Dilated causal convolution</h2><p>为了使模型能够足够深，且能处理足够长的序列，TCN 没有使用标准的卷积网络，而是使用的空洞卷积（<em>dilated causal convolution</em>，如下右图）。</p>
+<p><table><tr>
+    <td><div align="center"><img width="400" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163423.png"></div></td>
+    <td><div align="center"><img width="600" src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163437.png"></div></td>
+</tr></table><br>1D 空洞卷积的定义如下：</p>
+<p>输入序列 $\pmb{x} \in \mathbb{R}^{n}$，卷积核 $f:{0, \cdots, k-1} \rightarrow \mathbb{R}$，在序列元素 $s$ 上的空洞卷积操作 $F$ 定义如下：</p>
+<script type="math/tex; mode=display">
+F(s) = \sum_{i=0}^{k-1}f(i)\cdot \pmb{x}_s +d\cdot i</script><p>其中 $d$ 是空洞步长（或者空洞卷积的扩张率），$k$ 是卷积核尺寸。</p>
+<p>使用空洞卷积可以使得上层的节点感受野更大，这样也就可以引入更多的历史信息。一般 $d$ 随着层数的指数增加，即 $d=O(2^i)$，其中 $i$ 为层数。每层计算卷积时相隔 $d-1$ 个位置。</p>
+<p>TCN 的视野取决于网络深度，卷积核大小和空洞卷积的步长。比如，如果我们需要依赖前 $2^{12}$ 个历史信息来预测下一个词的话，就需要至少 12 层网络。为了防止梯度消失，TCN 还使用了残差网路。</p>
+<h2 id="3-2-Residual-connection"><a href="#3-2-Residual-connection" class="headerlink" title="3.2 Residual connection"></a>3.2 Residual connection</h2><p><img src="https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/20210411163452.png" width="600"></p>
+<p>如上图所示，残差网络是训练深度模型常用的技巧，它使得网络可以以跨层的方式传递信息。TCN 构建了一个残差块来代替一层的卷积。一个残差包含两层的卷积和非线性映射，在每层中还加入了 <code>WeightNorm</code> 和 <code>Dropout</code> 来正则化网络。</p>
+<h2 id="3-3-TCN-的优点"><a href="#3-3-TCN-的优点" class="headerlink" title="3.3 TCN 的优点"></a>3.3 TCN 的优点</h2><ol>
+<li><p>并行性。当给定一个句子时，TCN可以将句子并行的处理，而不需要像RNN那样顺序的处理。</p>
+</li>
+<li><p>灵活的感受野。TCN的感受野的大小受层数、卷积核大小、扩张系数等决定。可以根据不同的任务不同的特性灵活定制。</p>
+</li>
+<li><p>稳定的梯度。RNN经常存在梯度消失和梯度爆炸的问题，这主要是由不同时间段上共用参数导致的，和传统卷积神经网络一样，TCN不太存在梯度消失和爆炸问题。</p>
+</li>
+<li><p>内存更低。RNN在使用时需要将每步的信息都保存下来，这会占据大量的内存，TCN在一层里面卷积核是共享的，内存使用更低。</p>
+</li>
+</ol>
+<h2 id="3-4-TCN-的缺点"><a href="#3-4-TCN-的缺点" class="headerlink" title="3.4 TCN 的缺点"></a>3.4 TCN 的缺点</h2><ol>
+<li>TCN 在迁移学习方面可能没有那么强的适应能力。这是因为在不同的领域，模型预测所需要的历史信息量可能是不同的。因此，在将一个模型从一个对记忆信息需求量少的问题迁移到一个需要更长记忆的问题上时，TCN 可能会表现得很差，因为其感受野不够大。</li>
+<li>论文中描述的TCN还是一种单向的结构，在语音识别和语音合成等任务上，纯单向的结构还是相当有用的。但是在文本中大多使用双向的结构，当然将TCN也很容易扩展成双向的结构，不使用因果卷积，使用传统的卷积结构即可。</li>
+<li>TCN毕竟是卷积神经网络的变种，虽然使用扩展卷积可以扩大感受野，但是仍然受到限制，相比 Transformer那种可以任意长度的相关信息都可以抓取到的特性还是差了点。TCN在文本中的应用还有待检验。</li>
+</ol>
+<h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><ul>
+<li>用 CNN 进行序列建模不要使用池化层，因为池化层会丢失位置信息；</li>
+<li>门控 CNN 通常是用 <em>sigmoid</em> 函数进行信息控制；</li>
+<li>空洞卷积可以扩展 CNN 的视野；</li>
+<li>残差连接可以训练更深的网络。</li>
+</ul>
+<h1 id="5-Reference"><a href="#5-Reference" class="headerlink" title="5. Reference"></a>5. Reference</h1><ol>
+<li><p><a href="https://www.aclweb.org/anthology/D16-1123.pdf" target="_blank" rel="noopener">Convolutional Neural Network Language Models</a>, <em>Ngoc-Quan Pham and German Kruszewski and Gemma Boleda</em></p>
+</li>
+<li><p><a href="http://www.hangli-hl.com/uploads/3/4/4/6/34465961/wang_et_al._acl_2015.pdf" target="_blank" rel="noopener">A Convolutional Architecture for Word Sequence Prediction</a>, <em>Mingxuan Wang, Zhengdong Lu, Hang Li, Wenbin Jiang, Qun Liu</em></p>
+</li>
+<li><p><a href="https://arxiv.org/pdf/1612.08083v1.pdf" target="_blank" rel="noopener">Language Modeling with Gated Convolutional Networks</a>, <em>Yann N. Dauphin, Angela Fan, Michael Auli, David Grangier</em></p>
+</li>
+<li><p><a href="https://openreview.net/pdf?id=rk8wKk-R-" target="_blank" rel="noopener">Convolutional Sequence Modelling Revisited</a>, <em>Shaojie Bai, J. Zico Kolter, Vladlen Koltun</em></p>
+</li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/cnnlm/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>CNNLM</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/language-model/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Language Model</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/04/11/neural-language-model-cnn/&title=预训练语言模型-神经网络语言模型：CNNLM | Rogerspy's Home&summary=神经网络三大神器：DNN、CNN、RNN。其中 DNN 和 RNN 都已经被用来构建语言模型了，而 CNN 一直在图像领域大展神威，它是否也可以用来构建语言模型呢？如果要用 CNN 构建语言模型应该怎么做？接下来我们从四篇论文看 CNN 构建语言模型的三种方法。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/04/11/neural-language-model-cnn/&title=预训练语言模型-神经网络语言模型：CNNLM | Rogerspy's Home&summary=神经网络三大神器：DNN、CNN、RNN。其中 DNN 和 RNN 都已经被用来构建语言模型了，而 CNN 一直在图像领域大展神威，它是否也可以用来构建语言模型呢？如果要用 CNN 构建语言模型应该怎么做？接下来我们从四篇论文看 CNN 构建语言模型的三种方法。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrklEQVR42u3aQXLbMAwF0Nz/0u2mu5TyB0A4zszzSmOrEh87QzAf/PqKP38On+TO779+vz79mrzxwgcPDw/v0tBPLzs9If/m+fnJ25Mx4+Hh4W3zngddfXR1Wc9LTj5mPDw8vM/hRQ8Nvk82389TjIeHh/dbeNUCkJSNfNuNh4eH9zm8ZIs8iWJ7McRbsxY8PDy8mJd3kT7neqW/h4eHhzfuqveKxK1FfzLOf0/Aw8PDW+DlC26+ha1OTfXt5Tvx8PDwrvKeh5jHqT1wL8ZNJggPDw9vjzeJRPNJuRU09I4v4OHh4d3lbUQM80hi3gbDw8PD2+PlG9NJGFEtHiu9Ozw8PLw38pLW1Pww1t2Scwwj8PDw8Ma8fBGvtvCrgW/y9nJUgYeHh7fAyxf00z/Oi0q1nZYfGnhxDx4eHt5VXvWIQK8R1WuwVSfleDICDw8P7ypvEtdOFvpqWDz6D8DDw8Nb4OXLffLiSaiRFJtmCw0PDw/vEi+PYvOAoDq7k+ih0NnDw8PDu8TLN769plTvNNSk3RWdjMDDw8Mb8Krt/2p022uqJQUp2tbj4eHhrfGqG+Vq4JtT8213oeLh4eHhrfHy9tWtA1h5uFCNJ/Dw8PDew6turHv3VOOPyZYdDw8Pb4NXHUq1kMy3zvNv8PDw8DZ4vdbXPISthhrNhhweHh7eGq/64jw+SErLaYrzUnSk4uHh4S3zqtHApA2WR7Sjg1x4eHh4V3l3F/pJLDsvA//5FQ8PD2+BN6onrSW+d+wgv25+8PDw8Iq8vBhUB9SLdyehBh4eHt47eXlj7Pk6KR759OVF68VxKzw8PLwf5U3ChR8IhfHw8PA+gNfLOXrHraoR8+KWGg8PD6+15Z1spuctrnya8PDw8LZ5vT/4qxFDHgRPGmOj/h4eHh7ea95fUDSIvaelFzUAAAAASUVORK5CYII='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/04/11/neural-language-model-cnn/&title=预训练语言模型-神经网络语言模型：CNNLM | Rogerspy's Home&summary=神经网络三大神器：DNN、CNN、RNN。其中 DNN 和 RNN 都已经被用来构建语言模型了，而 CNN 一直在图像领域大展神威，它是否也可以用来构建语言模型呢？如果要用 CNN 构建语言模型应该怎么做？接下来我们从四篇论文看 CNN 构建语言模型的三种方法。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/04/12/ds-introduction/" rel="prev" title="数据结构与算法：算法简介">
+                                  
+                                      数据结构与算法：算法简介
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/数据结构/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>数据结构</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/04/09/text2viz/" rel="prev" title="Text-to-Viz：根据语言描述自动创建信息图表">
+                                    
+                                        Text-to-Viz：根据语言描述自动创建信息图表
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/text2viz/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>text2viz</a> <a class="tag" href="/tags/nl2infographic/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>nl2infographic</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '预训练语言模型-神经网络语言模型：CNNLM',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-CNN-语言模型"><span class="toc-text">1. CNN 语言模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Gated-CNN-语言模型"><span class="toc-text">2. Gated-CNN 语言模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-gen-CNN"><span class="toc-text">2.1 $gen$CNN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-alpha-CNN-卷积"><span class="toc-text">2.1.1 $\alpha$CNN: 卷积</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-门控网络"><span class="toc-text">2.1.2 门控网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-循环结构"><span class="toc-text">2.1.3 循环结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Gated-CNN"><span class="toc-text">2.2 Gated-CNN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-小结"><span class="toc-text">2.3 小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-TCN-语言模型"><span class="toc-text">3. TCN 语言模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Dilated-causal-convolution"><span class="toc-text">3.1 Dilated causal convolution</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Residual-connection"><span class="toc-text">3.2 Residual connection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-TCN-的优点"><span class="toc-text">3.3 TCN 的优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-TCN-的缺点"><span class="toc-text">3.4 TCN 的缺点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-总结"><span class="toc-text">4. 总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Reference"><span class="toc-text">5. Reference</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://rogerspy.github.io/data_structure_algorithm/"
+          
+          
+          id="https:rogerspy.github.iodata_structure_algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fab fa-kaggle fa-fw" aria-hidden="true"></i>
+          
+          Kaggle
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-brain fa-fw" aria-hidden="true"></i>
+          
+          思维逻辑
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+          
+          学习小测
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://paperswithcode.com/datasets"
+          
+          
+          id="https:paperswithcode.comdatasets">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/incremental-learning/"><div class='name'>Incremental Learning</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(15)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.22px; color: #8a8a8a">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19.56px; color: #737373">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.67px; color: #6c6c6c">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.67px; color: #6c6c6c">NLP</a> <a href="/tags/nmt/" style="font-size: 22.89px; color: #5d5d5d">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/smoothing/" style="font-size: 14px; color: #999">Smoothing</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.22px; color: #8a8a8a">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.11px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.11px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 18.44px; color: #7b7b7b">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 17.33px; color: #828282">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.78px; color: #646464">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.11px; color: #919191">词向量</a> <a href="/tags/词向量压缩/" style="font-size: 14px; color: #999">词向量压缩</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

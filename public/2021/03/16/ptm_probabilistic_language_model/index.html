@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>预训练语言模型-统计语言模型 | Rogerspy&#39;s Home</title>
+  
+  <meta name="keywords" content="Machine Learning, Deep Learning, NLP">
+  
+  
+
+  
+  <link rel="alternate" href="/atom.xml" title="Rogerspy's Home">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+  
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="msapplication-TileColor" content="#1BC3FB">
+  <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/browserconfig.xml">
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/apple-touch-icon.png">
+  <link rel="mask-icon" color="#1BC3FB" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/safari-pinned-tab.svg">
+  <link rel="manifest" href="https://cdn.jsdelivr.net/gh/xaoxuu/assets@master/favicon/favicons/site.webmanifest">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/css/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+  
+
+  
+  
+  <!-- 时间线 -->
+  <link rel="stylesheet" href="/css/timeline.css">
+  <!-- 血小板-->
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <style>
+	.article p .mjx-math {
+	    font-family: Menlo,Monaco,courier,monospace,"Lucida Console",'Source Code Pro',"Microsoft YaHei",Helvetica,Arial,sans-serif,Ubuntu;
+        background: none;
+        padding: 2px;
+        border-radius: 4px;
+	}
+  </style>
+</head>
+
+<body>
+  
+  
+  <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          Rogerspy's Home
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/blog/"
+                  
+                  
+                  id="blog">
+									<i class='fas fa-edit fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/video/"
+                  
+                  
+                  id="video">
+									<i class='fas fa-film fa-fw'></i>&nbsp;视频小站
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/material/"
+                  
+                  
+                  id="material">
+									<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-folder-open fa-fw'></i>&nbsp;分类
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/archives/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="archives">
+									<i class='fas fa-archive fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)'></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)'></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)'></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-clock fa-fw'></i>&nbsp;近期文章
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/archives/"
+                
+                  rel="nofollow"
+                
+                
+                id="archives">
+								<i class='fas fa-archive fa-fw'></i>&nbsp;文章归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/blog/"
+                
+                
+                id="blog">
+								<i class='fas fa-edit fa-fw'></i>&nbsp;我的博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/video/"
+                
+                  rel="nofollow"
+                
+                
+                id="video">
+								<i class='fas fa-film fa-fw'></i>&nbsp;我的视频
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/material/"
+                
+                  rel="nofollow"
+                
+                
+                id="material">
+								<i class='fas fa-briefcase fa-fw'></i>&nbsp;学习资料
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/about/"
+                
+                  rel="nofollow"
+                
+                
+                id="about">
+								<i class='fas fa-info-circle fa-fw'></i>&nbsp;关于小站
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/03/16/ptm_probabilistic_language_model/">
+        预训练语言模型-统计语言模型
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="https://rogerspy.gitee.io" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Rogerspy</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2021-03-16</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/语言模型/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>语言模型</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div style="margin-right: 10px;">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-keyboard"></i>
+          <span class="post-meta-item-text">  字数统计: </span>
+          <span class="post-count">7.5k字</span>
+        </span>
+      </span>
+      &nbsp; | &nbsp;
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-hourglass-half"></i>
+          <span class="post-meta-item-text">  阅读时长≈</span>
+          <span class="post-count">29分</span>
+        </span>
+      </span>
+    </div>
+  
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><h2 id="1-1-词表-语料"><a href="#1-1-词表-语料" class="headerlink" title="1.1 词表/语料"></a>1.1 词表/语料</h2><p>词表表示语言中包含的所有的词，比如对于中文来说：</p>
+<a id="more"></a>
+<script type="math/tex; mode=display">
+\mathcal{V} = \{我, 爱, 北京, 天安门, ...\}</script><blockquote>
+<p>  ps: 实际上对于中文来说，词表可以分成两类：字表和词表。字表就是所有的汉字，词表指的是汉字组成的词。由于中文句子中不存在英文那种使用空格作为词与词之间的分割符的标志，因此怎样准确地进行分词也是中文自然语言处理的非常重要的工作。使用字作为句子的基本单位不存在分词的问题但是会丢失部分以词作为基本单位的语义信息。因此，以字和词作为句子的基本单位各有优劣。我们在这里讨论语言模型的时候以词作为基本单位。</p>
+</blockquote>
+<p>令 $x = w_1w_2…w_n$ 表示一个句子，其中 $w_i \in \mathcal{V}$ 以及 $i \in { 1, …, (n-1)}, n\ge 1$。令 $V$ 表示词表 $\mathcal{V}$ 的大小，写作 $|\mathcal{V}|$。</p>
+<p>我们假设 $w_n$ 是一个特殊符号—— $STOP$ ，这个符号包含在词表中（在后面的内容中我们可以看到为什么要定义这样一个符号了），比如：</p>
+<blockquote>
+<p>  我爱北京天安门STOP</p>
+<p>  我爱吃苹果STOP</p>
+<p>  小狗好可爱STOP</p>
+<p>  …</p>
+</blockquote>
+<p>令 $\mathcal{V}^+ = {x_1, x_2, …}$ 表示所有由词表中的词组成的句子集合。$\mathcal{V}^+$ 是一个无限集，因为句子的长度是可以任意的（$\ge 1$）。</p>
+<p>一个理想的词表应该包含索要处理的语言的所有词汇，但实际上这是不可能的，因为：</p>
+<ol>
+<li>每种语言（被广泛使用的）随时随刻都在产生新的词汇，有些是从别的语言借鉴而来，有些是随着新生事务的产生而产生的；</li>
+<li>通常在构建词表的时候是通过训练语料，训练语料的数量是有限了，不可能包含该种语言的所有句子；</li>
+<li>一个新词可以通过一些规则排列组合，而这样的组合可以产生的新词数量是无穷无尽的；</li>
+<li>即使是同一个字/词在不同的时代都会有不同的拼写方式。</li>
+</ol>
+<p>由于以上原因的限制，我们所用到的词表通常是有限的。而一个不能包含所有词汇的词表通常会遇到一个问题，当我们处理的句子中包含一个不在词表中的词时，我们称这个问题为 OOV（Out Of Vocabulary）问题，而这个不在词表中的词称之为“未登录词”。未登录词的出现会给自然语言处理任务带来很大的困扰，对于传统的统计方法来说，未登录词就意味着我们没有关于这个词的统计信息，无法将它纳入模型中；对于神经网络来说，我们没有办法对它进行向量化，也会对后续的模型训练和推理造成问题。</p>
+<p>面对 OOV 问题通常有三种解决方式：</p>
+<ol>
+<li>在词表中添加一个特殊符号，比如 “<unk>” ，用来表示所有未登录词。在训练数据中，将一些出现频率较低的词替换成 “<unk>”。</unk></unk></li>
+<li>对于形态学上比较丰富的语言，可以训练一个模型将一个词分割成几个子串可以覆盖更多的词汇，比如对于英语来说，可以把 “starting” 分成 “start” 和 “ing” 两部分，这样即使词表中没有 “starting” 这个词，也不会遇到 OOV 问题。</li>
+<li>使用字，而不是使用词来处理，或者字和词相互结合的方式。对于任何一种语言来说，它的最基本元素是字，而字的个数通常是有限的，任何一个词都可以使用字的组合来实现。比如英文只有26个字母，中文常用字也不过万。</li>
+</ol>
+<p>最常用，成本最低的方式是将未登录词替换成 <unk> ，因此这里我们以这种方式为例介绍语言模型。</unk></p>
+<h2 id="1-2-语言模型的定义"><a href="#1-2-语言模型的定义" class="headerlink" title="1.2 语言模型的定义"></a>1.2 语言模型的定义</h2><p>语言模型是一个随机变量的概率分布，随机变量的值来源于 $\mathcal{V}^+$ 中。因此语言模型可以定义为 $p:\mathcal{V}^+ \rightarrow \mathbb{R}$：</p>
+<script type="math/tex; mode=display">
+\forall x \in \mathcal{V}^+, p(x) \ge 0, \\\\
+\sum p(X=x) = 1</script><p>建立一个语言模型可以分成以下几步：</p>
+<ol>
+<li>收集训练语料 $x_{1:n}={x_1, x_2, …, x_n}, x_i \in \mathcal{V}^+$；</li>
+<li>从语料中构建一个词表 $\mathcal{V}$；</li>
+<li>定义概率分布 $p$ 的参数；</li>
+<li>利用训练语料进行参数估计。</li>
+</ol>
+<p>举例说明我们如何从训练语料中学习一个语言模型：</p>
+<p>令 $c(x_i)$ 为训练语料中句子 $x_i$ 出现的次数，$N$ 为句子总数。我们可以令：</p>
+<script type="math/tex; mode=display">
+p(x_i) = \frac{c(x_i)}{N}</script><p>这就是一个最简单的语言模型（ps：我们给这个模型取个名字叫 <em>Creepy model</em> 吧，其实这个名字是 <em>Noah A. Smith</em> 取的），他表示每个句子出现的概率。当然，这是一个非常简单的例子，因为对于没有出现在训练语料中的句子他会认为概率为 0，因此这个语言模型不能泛化到训练语料中不存在的句子上。而在接下来要介绍的统计语言模型就是为了尽可能的提升这种泛化性。</p>
+<h2 id="1-3-我们为什么要进行语言建模？"><a href="#1-3-我们为什么要进行语言建模？" class="headerlink" title="1.3 我们为什么要进行语言建模？"></a>1.3 我们为什么要进行语言建模？</h2><p>从上面的介绍我们可以大致了解到，所谓语言模型其实就是判断一个句子出现的概率。一个经常被人们使用的句子出现的概率就会高，被人们使用频率较低的句子出现概率就会低，人们几乎不使用的句子出现的概率几乎为零。这实际上就是在判断一个句子是一个正常的为人所用的句子的概率，简而言之就是判断一句话是不是人话，比如，$p(我爱北京天安门) \gt p(但是风格的歌)$” 说明前一句比后一句更像人话。</p>
+<p>比如早期的语言建模动机来源于 “噪声通道范式” （noisy channel paradigm），该模型广泛应用于语音识别和机器翻译领域。比如语音识别先利用声学模型产生多个候选结果，然后利用语言模型判断哪一句话更像人话进行结果重排。</p>
+<blockquote>
+<p>   所谓的噪声通道是指，假设我们有两个随机变量，$O$ 和 $D$，$O$ 是系统输入（可观测量），$D$ 是我们希望系统的输出。我们可以认为 $O$ 的值是密文， $D$ 的值是 $O$ 解密后的源文本。解密过程需要：</p>
+<script type="math/tex; mode=display">
+   \begin{equation} \nonumber
+   \begin{aligned}
+   \pmb{d}^* &= \arg \max_{\pmb{d}} p(\pmb{d}|\pmb{o}) \\\\
+            &= \arg \max_{\pmb{d}} \frac{p(\pmb{o}|\pmb{d})\cdotp(\pmb{d})}{p(\pmb{o})} \\\\
+            &= \arg \max_{\pmb{d}} \underbrace{p(\pmb{o}|\pmb{d})}_{\mathrm{channel\ model}} \cdot \underbrace{p(\pmb{d})}_{\mathrm{source\ model}}
+
+   \end{aligned}
+   \end{equation}</script><p>   从上式可以看出，我们可以通过先验的明文（$p(\pmb{d})$）和明文对应的密文（$p(\pmb{o}|\pmb{d})$）建模对密文进行解密。</p>
+<script type="math/tex; mode=display">
+   \mathrm{source} \rightarrow D \rightarrow \mathrm{channel} \rightarrow O</script><p>   首先源分布随机生成一个明文值对应 $D$，然后通过在该明文中添加噪声（channel）生成观测值 $O$ 。而解码的过程就是将这个过程反过来，利用贝叶斯公式在给定观测值 $O=o$ 时得到最有可能的 $D$。</p>
+</blockquote>
+<p>另一个很重要的原始是在语言建模过程中使用到的参数估计方法也可以被广泛应用于其他领域。</p>
+<h1 id="2-语言模型"><a href="#2-语言模型" class="headerlink" title="2. 语言模型"></a>2. 语言模型</h1><p>前面我们举例介绍了一个非常简单的语言模型，但是这种语言模型几乎没有任何泛化性，为了使得我们的语言模型具有一定的泛化性，接下来介绍统计语言模型。</p>
+<p>考虑一个随机变量序列 $ \langle W_1, W_2, …, W_l \rangle $，序列中每个随机变量可以从 $\mathcal{V}$ 中取值。我们的目标是对于任意序列 $\langle w_1, w_2, …, w_l \rangle$ 对他们的联合概率进行建模，其中 $n \ge 1, w_i \in \mathcal{V} (i=1, …, l)$：</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+p(W_1=w_1, ..., W_l=w_l) &= \left(
+\begin{matrix}
+p(W_1=w_1|W_0=w_0) \times \\\\
+p(W_2=w_2|W_0=w_0, W_1=w_1) \times \\\\
+p(W_3=w_3|W_0=w_0, W_1=w_1, W_2=w_2) \times \\\\
+\cdots \\\\
+p(W_n=w_n|W_0=w_0, W_1=w_1, W_2=w_2, ...W_{l-1}=w_{l-1})
+\end{matrix}
+\right) \\\\
+&= \left(
+\begin{matrix}
+p(W_1=w_1|W_0=w_0) \times \\\\
+p(W_2=w_2|W_{0:1}=w_{0:1}) \times \\\\
+p(W_3=w_3|W_{0:2}=w_{0:2}) \times \\\\
+\cdots \\\\
+p(W_n=w_n|W_{0:l-1}=w_{0:l-1})
+\end{matrix}
+\right) \\\\
+&= \prod_{j=1}^l p(W_j=w_j|W_{0:j-1}=w_{0:j-1})
+\end{aligned}
+\end{equation}</script><p>我们令 $W_0=w_0=START$ 表示任意句子的起始符。</p>
+<p>上式的 $l$ 并不是一个定值，任何语言中的句子都有不同的长度，在建模过程中我们怎么确定每个句子的长度呢？这个时候我们在介绍词表的时候介绍了一个特殊的符号——$STOP$ 就发挥作用了，当我们建模过程中遇到这个符号的时候就表明这个句子到此为止了，此时句子的长度就是 $l$。</p>
+<p>以上的建模过程没有涉及任何假设，我们可以看到序列中每个词的产生都依赖于在它之前出现的所有的词。上式中的每一部分都是一个条件概率，对于条件概率我们可以用简单的统计方法进行估计：</p>
+<script type="math/tex; mode=display">
+p(W_j=w_j|W_{0:j-1}=w_{0:j-1}) = \frac{c(w_{0:j})}{c(w_{0:j-1})}</script><p>其中 $c(\cdot)$ 表示序列出现在语料中的次数。例如：序列 $\langle 我， 爱， 北京， 天安门 \rangle$ </p>
+<script type="math/tex; mode=display">
+p(北京|我，爱) = \frac{c(我，爱，北京)}{c(我，爱)}</script><p>由此可得</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+p(W_1=w_1, ..., W_l=w_l) &= \prod_{j=1}^n \frac{c(w_{0:j})}{c(w_{0:j-1})} \\\\
+                                  &= \frac{\prod_{j=1}^n c(w_{0:j})}{\prod_{j=1}^n c(w_{0:j-1})} \\\\
+                                  &= \frac{ \qquad \qquad c(w_{0:1})\times c(w_{0:2}) \times ... \times c(w_{0:l-1}) \times c(w_{0:l})}{c(w_0) \times c(w_{0:1})\times c(w_{0:2}) \times ... \times c(w_{0:l-1})  \qquad  \qquad} \\\\
+                                  &= \frac{c(w_{0:l})}{c(w_0)} \\\\
+                                  &= \frac{c(\pmb{x})}{n}
+\end{aligned}
+\end{equation}</script><p>其中 $n$ 表示训练语料的句子数， $\pmb{x}$ 表示由 $\langle w_0, w_1, …, w_n \rangle$ 构成的句子。 </p>
+<p>到了这一步我们会遗憾的发现，这样构建起来的语言模型又回到了原点，一切都未曾改变！</p>
+<h2 id="2-1-Uni-Gram-模型"><a href="#2-1-Uni-Gram-模型" class="headerlink" title="2.1 Uni-Gram 模型"></a>2.1 Uni-Gram 模型</h2><p>上述建模过程我们没有涉及到任何假设，认为句子中每个词都依赖于在它之前的所有词，造成一个很尴尬的局面。现在我们走向另一个极端，给模型加入一个非常强的假设看看模型会变成什么样子：句子中的每个词都是相互独立互不依赖的。在这个假设下：</p>
+<script type="math/tex; mode=display">
+p(W_j=w_j|W_{0:j-1}=w_{0:j-1}) = p_{\theta}(W_j=w_j)</script><p>那么</p>
+<script type="math/tex; mode=display">
+p_{\theta} (\pmb{W}=\pmb{w})= \prod_{j=1}^l p_{\theta}(W_j=w_j)</script><p>此时我们需要统计句子中每个词在语料中出现的概率：</p>
+<script type="math/tex; mode=display">
+\theta_w = \frac{c(w)}{N}</script><p>其中 $N$ 表示语料中所有的词的数量。注意在计算频率的时候 $START$ 符号是不进行计算的，因为它作为句子的起始符并不是由模型生成的；但是需要计算 $STOP$ 符号，因为他是作为模型生成的结果出现的，它的概率通常是 $n/N$。Uni-Gram 模型的参数量为 $V$，对应每个 $w \in \mathcal{V}$。</p>
+<p>通常把 Uni-Gram 模型称之为“词袋模型”，因为它并不关注句子的顺序，只关注句子中每个词出现的概率。也就是说，对于相同的词组成的句子的概率是相同的。比如 $p(START我爱北京天安门STOP) = p(START天安门我爱北京STOP)$。</p>
+<p>Uni-Gram 模型非常简单易于理解，建模也非常容易。虽然存在一些问题，但是在一些任务中却非常实用（比如信息检索）。</p>
+<h2 id="2-2-Bi-Gram-模型"><a href="#2-2-Bi-Gram-模型" class="headerlink" title="2.2 Bi-Gram 模型"></a>2.2 Bi-Gram 模型</h2><p>前面两种语言模型走了两个极端：一个过于精细导致模型不能泛化，另一个过于粗放导致模型缺乏准确。下面我们取个折中的假设：假设句子中每个词出现的概率只依赖于它前面的那个词。</p>
+<script type="math/tex; mode=display">
+p(W_j=w_j|W_{0:j-1}=w_{0:j-1}) = p_{\theta}(W_j=w_j|W_{j-1}=w_{j-1}) \\\\
+p_{\theta}(\pmb{X}=\pmb{x}) = \prod_{j=1}^l p_{\theta} (W_j=w_j|W_{j-1}=w_{j-1})</script><p>Bi-Gram 模型又叫一阶马尔科夫模型，因为这个假设是一阶马尔科夫假设。</p>
+<p>经过前面的讨论，不难得出：</p>
+<script type="math/tex; mode=display">
+\theta_{w_j} = \frac{c(w_{j-1}, w_j)}{c(w_{j-1})}</script><p>Bi-Gram 模型参数量为词表中任意两个词的随机组合，即 $\approx V^2$。</p>
+<h2 id="2-3-n-Gram-模型"><a href="#2-3-n-Gram-模型" class="headerlink" title="2.3 n-Gram 模型"></a>2.3 n-Gram 模型</h2><p>既然可以有一阶马尔科夫假设，那也可以有二阶马尔科夫假设，三阶马尔科夫假设等等。这些依赖马尔科夫假设的模型我们统称为 “n-Gram” 语言模型。其中 $n$ 表示当前词出现的概率依赖于前 $n-1$ 个词。</p>
+<p>n-Gram 模型的通用形式是：</p>
+<script type="math/tex; mode=display">
+p(W_j=w_j|W_{0:j-1}=w_{0:j-1}) = p_{\theta}(W_j=w_j|W_{j-n+1:j-1}=w_{j-n+1:j-1}) \\\\
+p_{\theta}(\pmb{X}=\pmb{x}) = \prod_{j=1}^l p_{\theta}(W_j=w_j|W_{j-n+1:j-1}=w_{j-n+1:j-1})</script><p>为了简化公式符号，我们令 $\pmb{h}$ 为 $w_j$ 的历史词汇，比如对于 Bi-Gram 语言模型，$\langle 我，爱，北京，天安门 \rangle$ 中”北京“ 的历史词汇是”爱“，对于 Tri-Gram 语言模型来说，”北京“的历史词汇就是”我，爱“。此时，我们可以得到模型的参数：</p>
+<script type="math/tex; mode=display">
+\theta_{w_j|\pmb{h}} = \frac{c(\pmb{h}, w_j)}{\pmb{h}}</script><p>n-Gram 模型中的 $n$ 值越大，模型越接近 Creepy model，$n$ 值越小模型越接近 Uni-Gram 模型。通常 $n$ 值的选取取决于训练数据，这里我们可以通过一些简单的步骤进行 $n$ 值的选取：</p>
+<ol>
+<li>在构建训练数据的时候留出一部分作为验证集；</li>
+<li>令 $\mathcal{N}$ 为你期望的 $n$ 的取值范围集合，比如 $\mathcal{N} = {1,2,3,4,5}$；</li>
+<li>对于任意 $g \in \mathcal{N}$：（a）在训练数据集上构建 $g$-Gram 语言模型；（b）在验证集上计算 $g$-Gram 模型的困惑度（Perplexity，用来评估语言模型好坏的指标，后面会介绍）；</li>
+<li>选择困惑度最低的 $g$-Gram 模型。</li>
+</ol>
+<h2 id="2-4-语言模型评估：困惑度（Perplexity-ppl）"><a href="#2-4-语言模型评估：困惑度（Perplexity-ppl）" class="headerlink" title="2.4 语言模型评估：困惑度（Perplexity, ppl）"></a>2.4 语言模型评估：困惑度（Perplexity, ppl）</h2><p>现在我们知道怎么样构建一个语言模型了，但我们应该怎样对我们构建的语言模型进行评估呢？目前通用的指标是困惑度（Perplexity），定义如下：</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+\mathrm{perplexity}(p;\bar{\pmb{x}}) &= 2^{-\left(\frac{1}{M}\log_2\prod_{i=1}^m p(\bar{\pmb{x}}_i)\right)} \\\\
+                                     &= 2^{-\left(\frac{1}{M}\sum_{i=1}^m -\log_2 p(\bar{\pmb{x}}_i)\right)}
+\end{aligned}
+\end{equation}</script><p>其中 $\bar{\pmb{x}}$ 是未参与训练的验证集（<strong>验证集不能参与训练这一点非常重要</strong>），$M$ 是验证集中词的数量。这个公式看起来好吓人哦，但是别着急，我们拆开了，掰碎了一点一点来看，这到底是个什么东西。</p>
+<p>假设我们在训练数据集之外有一个验证数据集，$\langle \bar{\pmb{x}}<em>1, \bar{\pmb{x}}_2, …, \bar{\pmb{x}}_m \rangle$，其中每个 $\bar{\pmb{x}}_i, i \in {1, 2, …, m}$ 都是一个句子，每个句子都是由 $\langle w</em>{i1}, w<em>{i2}, …, w</em>{in} \rangle$ 组成的序列，$w_{ij}, j \in {1,2,…,n}$ 表示句子 $\bar{\pmb{x}}_i$ 中的第 $j$ 个词。 </p>
+<p>对于验证集中的每一句话我们都可以计算它的概率 $p(\bar{\pmb{x}}_i)$，那么对于整个验证集的所有句子出现的概率为：</p>
+<script type="math/tex; mode=display">
+p(\bar{\pmb{x}})=\prod_{i=1}^m p(\bar{\pmb{x}}_i)</script><p>直观上来讲，语言模型的质量越高，那么 $p(\bar{\pmb{x}})$ 的值应该越大。困惑度指标就是基于这一基本假设提出的。</p>
+<p>假设我们的验证集中包含 $N$ 个词，我们定义：</p>
+<script type="math/tex; mode=display">
+\frac{1}{N}\log_2\prod_{i=1}^mp(\bar{\pmb{x}}_i) = \frac{1}{N} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i)</script><blockquote>
+<p>  这里先回答两个问题：</p>
+<ol>
+<li><p>为什么要取对数？</p>
+<p>① 语言模型作为一种概率分布，对于每一个句子出现的概率一定是满足 $0&lt;p(\pmb{x})&lt;1$ 的，即使每个句子出现的概率都能达到 0.99，当我们的验证语料包含 1 万个句子的时候，$\prod_i p(\pmb{x}_i) = 0.99^{10000} \approx 2.2e^{-44}$。所以我们看到，我们直接相乘的时候很容易造成极小的数字，最后精度溢出。而如果我们取对数，最后的结果会是 $\log_2(0.99^{10000})\approx -145$，这样就不会造成精度溢出问题了 。</p>
+<p>② 对于计算机来说，乘法的效率要低于加法，因此，通过取对数将计算过程从乘法变成加法，提高了困惑度的计算效率。</p>
+</li>
+<li><p>为什么以 2 为底？</p>
+<p>首先，其实以几为底并不重要，因为通过下面的介绍我们会发现，最后还是会通过取 2 的指数来进行 “还原”，2 的作用相当于被抵消了。其次，以 2 为底可以使计算曲线更加平滑，不会造成大起大落的效果。</p>
+<p>实际上对于这两个问题以上的解释并没有触及问题的本质，要真正理解这两个问题需要从信息熵的角度出发，具体可以看<a href="https://web.stanford.edu/~jurafsky/slp3/3.pdf" target="_blank" rel="noopener">这里</a>。</p>
+</li>
+</ol>
+</blockquote>
+<p>有了以上定义，我们就可以定义困惑度了：</p>
+<script type="math/tex; mode=display">
+\mathrm{perplexity} = 2^{-l} \\\\
+l = \frac{1}{N} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i)</script><p>困惑度取了负指数，说明困惑度值越低，语言模型越好。为什么要这样定义呢？我们以最简单的情形加以说明。</p>
+<p>假设我们有一个词表 $\mathcal{V}$ ，词表大小为 $V$，语言模型服从均匀分布，即对于语言模型来说词表中的每个词出现的概率是一样的，比如对于 Uni-Gram 来说 $p(w<em>i) = 1/V$，对于Bi-Gram 来说 $p(w_i|w</em>{i-1})=1/V$ 等等。我们将这样一个分布代入到上面的困惑度计算公式中会发现困惑度为 $V$，也就是词表的大小。</p>
+<p>因此，我们可以认为，<strong>困惑度其实相当于一个等效词表，困惑度的值表明对于模型来说预测下一个词有多少种选择</strong>。比如困惑度为 120 时，当模型遇到“我爱”的时候需要从 120 个选择中准确找到“北京”这个词。（选择越多越困惑）</p>
+<p>接下来我们一步一步解析困惑度的计算过程：</p>
+<ol>
+<li>计算验证集中每个句子的概率：$p(\bar{\pmb{x}}_i), i \in {1, 2, …m}$；</li>
+<li>对每个句子的概率取对数：$\log_2 p(\bar{\pmb{x}}_i), i \in {1,2,…,m}$；</li>
+<li>计算每个词出现的平均概率：$\frac{1}{M} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i), i \in {1,2,…m}$；</li>
+<li>将平均概率作为指数计算：$2^{-\frac{1}{M} \sum_{i=1}^m \log_2p(\bar{\pmb{x}}_i)}, i \in {1,2,…m}$。</li>
+</ol>
+<p>需要注意的是困惑度并不是一个完美的指标，困惑度降低并不一定意味着语言模型质量的提升，影响困惑度的因素主要有以下几个：</p>
+<ol>
+<li><p>训练数据集越大，困惑度会下降得更低，十亿数据量的语料和十万数据量的语料训练效果是很不一样的；</p>
+</li>
+<li><p>数据中的标点会对模型的困惑度产生很大影响，一个句号能让困惑度波动几十，标点的预测总是不稳定；</p>
+</li>
+<li><p>预测语句中的“的，了”等无意义词（通用词）也对困惑度有很大影响，可能“我借你的书”比“我借你书”的指标值小几十，但从语义上分析有没有这些停用词并不能完全代表句子生成的好坏。</p>
+</li>
+</ol>
+<p>因此，在对比两个 模型的困惑度的时候要记住两个原则：</p>
+<ol>
+<li>使用不同词表的语言模型对比困惑度没有意义；</li>
+<li>概率和不等于 1 的语言模型困惑度没有意义。</li>
+</ol>
+<p>所以，<strong>评估语言模型时可以用困惑度大致估计训练效果</strong>，作出判断和分析，但它不是完全意义上的标准，具体问题还是要具体分析。</p>
+<h1 id="3-语言模型参数估计中的稀疏化问题"><a href="#3-语言模型参数估计中的稀疏化问题" class="headerlink" title="3. 语言模型参数估计中的稀疏化问题"></a>3. 语言模型参数估计中的稀疏化问题</h1><p>前面在介绍语言模型参数估计的时候是通过统计相对频率的方式，这种方式我们称之为最大似然估计。在实际情景中，我们直接用最大似然估计进行参数估计的时候会有一个问题——数据稀疏化。</p>
+<p>随着 n-Gram 模型中 $n$ 的增大，模型参数量以 $\approx V^n$ 的指数形式增长，如此大量的参数必然造成参数的稀疏，比如词表大小 $V=10000$，$n=3$ （这也是常见的语言模型），此时模型参数量为 $\approx 10^{12}$。拥有如此大量的参数而训练集有限的情况下，必然有很多计数为零的情况出现：</p>
+<ol>
+<li>当 $c(\pmb{h},w_j)=0$ 时，会导致在训练集中没有出现的句子的概率为 0，这显然是不对的，因为训练集并没有包含所有的句子；</li>
+<li>当 $c(\pmb{h})=0$ 时，会导致参数没有意义，因为作为分母是不能为 0 的。</li>
+</ol>
+<p>为了使语言模型达到可用状态，我们需要使用平滑技术（smoothing）来消除这些统计词频为零的情况。平滑的基本思想就是从高概率的句子中抽取微小的概率分配给零概率的句子，有点类似“劫富济贫”。在使用平滑技术的时候有一点要非常小心，那就是我们必须保证平滑完以后的语言模型概率和仍为 1。这里介绍三种平滑技术：线性插值平滑（Linear Interpolation Smoothing）、加性平滑（Additive Smoothing）和减值平滑（Discounting Smoothing）。</p>
+<h2 id="3-1-线性插值平滑"><a href="#3-1-线性插值平滑" class="headerlink" title="3.1 线性插值平滑"></a>3.1 线性插值平滑</h2><p>前面介绍 Creepy 模型 和 Uni-Gram 模型的时候说这两个模型走了两个极端，然后通过调整 $n$ 来控制语言模型的精细度。由此可见，不同 $n$ 对应的语言模型的优缺点是不同的，比如 Uni-Gram 一定不会出现统计频率为零的情况出现，但忽略了词与词之间的依赖关系，而 Bi-Gram 模型可能出现零词频的情况，但比 Uni-Gram 多了对词之间依赖关系的考虑，如果我们将两个模型结合起来，既可以保留 Bi-Gram 的依赖关系，又可以保留 Uni-Gram 的非零词频的优点岂不是美哉。</p>
+<script type="math/tex; mode=display">
+\hat{\theta}(w_j|w_{j-1}) = \alpha \theta(w_j|w_{j-1}) + (1-\alpha)\theta(w_j)</script><p>其中 $\alpha \in [0,1]$。利用 Uni-Gram 对 Bi-Gram 进行插值，只要 $\alpha \gt 0$，既保证了 Bi-Gram 不会出现零概率，也保证了 Uni-Gram 的词依赖。这就是线性插值的基本思想：利用低元 n-Gram 模型对高元 n-Gram 模型进行线性插值，取长补短。</p>
+<p>将上面的例子扩展到一般情况：</p>
+<script type="math/tex; mode=display">
+\hat{\theta}(\pmb{h}, w_j) = \sum_{k=1}^{n-1} \alpha_{k}\theta_k(\pmb{h}, w_j), \\\\
+\sum_{k=1}^{n-1} \alpha_k = 1, \alpha_k \in \mathbb{R}_{+}^{n-1}</script><p>那么我们如何选择 $\alpha_k$ 的值呢？一个常用的方法和前面介绍 n-Gram 模型时，介绍选取 $n$ 值的方法一样，利用验证集找到最合适的 $\alpha_k$ 值。但是无论怎么选，有一个大的原则：在高元语言模型分母遇到零词频的时候令对应的 $\alpha_k=0$。 比如：Tri-Gram </p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\begin{aligned}
+\hat{\theta}(w_j|w_{j-1}, w_{j-2}) &= \alpha_1\theta(w_j|w_{j-1}, w_{j-2})+\alpha_2\theta(w_j|w_{j-1})+\alpha_3\theta(w_j) \\\\
+                                   &= \alpha_1 \frac{c(w_{j-2}, w_{j-1}, w_j)}{c(w_{j-2}, w_{j-1})} + \alpha_2\frac{c(w_{j-1}, w_j)}{c(w_{j-1})} + \alpha_3 \frac{c(w_j)}{N}
+\end{aligned}
+\end{equation}</script><p>当 $c(w<em>{j-2}, w</em>{j-1})=0$ 或 $c(w_{j-1})=0$ 时，相应的令 $\alpha_1=0$ 或 $\alpha_2=0$ 。</p>
+<h2 id="3-2-加性平滑"><a href="#3-2-加性平滑" class="headerlink" title="3.2 加性平滑"></a>3.2 加性平滑</h2><p>加性平滑又称拉普拉斯平滑，想法非常简单：只需要对每个统计单元词频加 $\alpha$，比如：</p>
+<script type="math/tex; mode=display">
+\hat{\theta}(w_j|w_{j-1}, w_{j-2}) = \frac{\alpha + c(w_{j-2}, w_{j-1}, w_j)}{\alpha \cdot V + c(w_{j-2}, w_{j-1})}</script><p>假设 $c(我，爱)$ 在训练语料中的出现的次数是 100，经过拉普拉斯平滑以后就变成了 $100+\alpha$，这样就一定能避免任意词频出现零的情况。而 $\alpha$ 的选取仍然作为模型的超参数，通过验证集进行选取。在实际的语言模型中通常 $\alpha \lt 1$。</p>
+<p>拉普拉斯平滑存在两个问题：</p>
+<ol>
+<li>由于训练语料中零词频的词数量太多，通常会占据整个概率分布中的一个很大的比例。通过拉普拉斯平滑会给零词频的词分配了太多的概率空间。</li>
+<li>给所有未出现的词的词频加上相同的数，即认为这些词出现的概率是相同的，这种假设是否合理其实也值得商榷。而且，对于非零词频的词都增加同样的频度值，这是否合理，我们并不能给出一个明确的答案。</li>
+</ol>
+<h2 id="3-3-减值平滑"><a href="#3-3-减值平滑" class="headerlink" title="3.3 减值平滑"></a>3.3 减值平滑</h2><p>之所以会产生零词频，是因为那些非零词频的词出现的概率被模型高估了，占用了原本属于零词频词的概率份额，所以我们可以通过直接从非零词频对应的概率上扣除一部分概率还给零词频词，这就是减值平滑的基本思想。</p>
+<p>以 Bi-Gram 为例，$\theta(w<em>j|w</em>{j-1}) = c(w<em>{j-1}, w_j)/c(w</em>{j-1})$，对于任意 $c(w_{j-1}, w_j)&gt;0$ 的情况，我们都令</p>
+<script type="math/tex; mode=display">
+c^*(w_{j-1}, w_j) = c(w_{j-1}, w_j) - \beta</script><p>其中 $\beta \in [0,1]$（通常 $\beta=0.5$），这个 $\beta$ 就是我们从非零词频词的概率上抠下来的份额。</p>
+<p>举个例子，假设 $c(w_{j-1}=我)=48$：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$(w_{j-1}, w_j)$</th>
+<th style="text-align:center">$c(w_{j-1}, w_j)$</th>
+<th style="text-align:center">$c^*(w_{j-1}, w_j)$</th>
+<th style="text-align:center">$c^*(w<em>{j-1})/c(w</em>{j-1}=我)$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">（我，爱）</td>
+<td style="text-align:center">$15$</td>
+<td style="text-align:center">$15-0.5=14.5$</td>
+<td style="text-align:center">$14.5/48$</td>
+</tr>
+<tr>
+<td style="text-align:center">（我，吃）</td>
+<td style="text-align:center">$13$</td>
+<td style="text-align:center">$13-0.5=12.5$</td>
+<td style="text-align:center">$12.5/48$</td>
+</tr>
+<tr>
+<td style="text-align:center">（我，喜欢）</td>
+<td style="text-align:center">$10$</td>
+<td style="text-align:center">$10-0.5=9.5$</td>
+<td style="text-align:center">$9.5/48$</td>
+</tr>
+<tr>
+<td style="text-align:center">（我，在）</td>
+<td style="text-align:center">$10$</td>
+<td style="text-align:center">$10-0.5=9.5$</td>
+<td style="text-align:center">$9.5/48$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<script type="math/tex; mode=display">
+\sum_{c(w_{j-1}, w_j)} \frac{c^*(w_{j-1}, w_j)}{c(w_{j-1})} = \frac{14.5}{48} + \frac{12.5}{48} + \frac{9.5}{48} +\frac{9.5}{48} = \frac{46}{48}=\frac{23}{24}</script><p>由此可见，我们从非零词频的词身上抠下来 $1/24$ 的概率，我们称抠下来这部分概率为缺失质量（missing mass）。有了这部分缺失质量我们就可以将它分配给零词频的词了，通常采用的分配方法是平均分配。</p>
+<p>以上过程我们用形式化的语言描述为：</p>
+<p>定义 $\beta \in (0, 1)$，任意给定 $\pmb{h}$，我们将训练数据分成两部分：</p>
+<script type="math/tex; mode=display">
+\mathcal{A}(\pmb{h}) = \{ w_j \in \mathcal{V}:c(\pmb{h}, w_j) \gt 0\};\\\\
+\mathcal{B}(\pmb{h}) = \{ w_j \in \mathcal{V}:c(\pmb{h}, w_j) = 0\}</script><p>对于 $w_{j} \in \mathcal{A}(\pmb{h})$，定义：</p>
+<script type="math/tex; mode=display">
+\hat{\theta}(\pmb{h}, w_j) = \frac{c(\pmb{h}, w_j)-\beta}{c(\pmb{h})} \\\\
+q(\pmb{h}) = 1-\sum_{w_j\in\mathcal{A}(\pmb{h})} \hat{\theta}(\pmb{h}, w_j)</script><p>最后将 $q(\pmb{h})$ 平均分配给所有 $w_j \in \mathcal{B}(\pmb{h})$：</p>
+<script type="math/tex; mode=display">
+\hat{\theta}(\pmb{h}, w_j) = \frac{q(\pmb{h})}{\sum_{w_j \in \mathcal{B}(\pmb{h})}c(\pmb{h}, w_j)}</script><p>最终我们得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation} \nonumber
+\hat{\theta}(\pmb{h}, w_j) = \begin{cases}
+\frac{c(\pmb{h}, w_j)-\beta}{c(\pmb{h})} & \mathrm{if}: w_j \in \mathcal{A}(\pmb{h})\\\\
+\frac{q(\pmb{h})}{\sum_{w_j \in \mathcal{B}(\pmb{h})}c(\pmb{h}, w_j)} & \mathrm{if}: w_j \in \mathcal{B}(\pmb{h})
+\end{cases}
+\end{equation}</script><p>这种减去一个固定值 $\beta$ 的减值法称为 “绝对减值平滑”，这种方法简单易操作，但缺点也很明显：在每个非零词频词上减去相同的词频，然后平均分配给不同的零词频词，其中蕴含的平权假设过于绝对。因此，针对这个问题人们又提出一个古德-图灵减值平滑，其基本思想是未出现的词的词频和只出现过一次的词的词频相同，然后再去调整只出现过一次的词频使整个概率和为 1。关于这种方法这里就不详细介绍了，有兴趣可以看<a href="https://www.cs.cornell.edu/courses/cs6740/2010sp/guides/lec11.pdf" target="_blank" rel="noopener">这份资料</a>。</p>
+<p>除了以上三种平滑方法以外，还有很多其他平滑方法，比如 Kneser-Ney Smoothing、Jelinek-Mercer Smoothing 等等，更多资料<a href="https://courses.engr.illinois.edu/cs447/fa2018/Slides/Lecture04.pdf" target="_blank" rel="noopener">看这里</a>。</p>
+<h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><ol>
+<li>语言模型实际上就是一个概率分布，我们可以从中得到一个句子出现的概率或者可以根据之前出现的词推断下一个可能出现的词；</li>
+<li>构建一个统计语言模型需要马尔科夫假设；</li>
+<li>通常使用最大似然估计对模型参数进行估计；</li>
+<li>在遇到词频为零的情况时可以使用平滑方法来解决；</li>
+<li>使用困惑度对构建好的语言模型进行评估，语言模型质量越好困惑度就会越低。</li>
+</ol>
+<p>统计语言模型存在几个缺点：</p>
+<ol>
+<li>由于存在马尔科夫假设，尤其是通常使用的马尔科夫假设不会超过四阶，也就是通常的统计语言模型不会超过 5-gram，所以很难建立词与词之间的远距离依赖关系；</li>
+<li>无法构建词与词之间的相似性关系。 </li>
+</ol>
+
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-01-12T16:37:38+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2022年1月12日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/nlp/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>NLP</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/probabilistic-language-model/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>Probabilistic Language Model</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://rogerspy.gitee.io/2021/03/16/ptm_probabilistic_language_model/&title=预训练语言模型-统计语言模型 | Rogerspy's Home&summary=1. 简介1.1 词表/语料词表表示语言中包含的所有的词，比如对于中文来说："
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://rogerspy.gitee.io/2021/03/16/ptm_probabilistic_language_model/&title=预训练语言模型-统计语言模型 | Rogerspy's Home&summary=1. 简介1.1 词表/语料词表表示语言中包含的所有的词，比如对于中文来说："
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class='qrcode' rel="external nofollow noopener noreferrer" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrUlEQVR42u3aQW4jMQwEwPz/09lrgI3tblIyHKDmZDgTDWsOokzy6yu+vn9cP795dM//f23XTJ547MLDw8NbhP4oxOffP1/5+VNyWLLaL/Hg4eHhXeMlwSWfk+CS3Tt/7gsLHh4e3ofxkk0/P+W2B248PDy8v8V7Htap1IKHh4f3ybzN0jPk8zSQJInDtRY8PDy8mJd3kT7n85X+Hh4eHt66q7452uZpY1PseBEtHh4e3gVeG2IS6KZ02z49uhMPDw/vKK8dbNrcORvhWpWJ8fDw8C7w2kPtbOM+O5h1uJqCh4eHd6GMW/zsj0cBkkZXvs6qAYaHh4e34CWH5k37f3//4Q4eHh4e3gVSzk5eR/6sTRGkKOPi4eHhjXjtT/1NEaE9iG+ywLCSgYeHhxfHn2/TbdlidlhPEk/y0vHw8PBu85Ll8mZ/eyDe5LQX7To8PDy8C7ykODsbOJit0L6gKBI8PDy8o7x8s54NAbRF2PwlHhgawMPDw7vAy8sHs4zUzoXVBQs8PDy8o7xNs39W9p01z9rvH05G4OHh4a15bftqX5CdHdzbUgUeHh7eO3mboat2BOFY6O+ZKcPDw8OLN+s2YbRpoB04GBaX8fDw8A7x6mbSIqC2tJGPVdVDA3h4eHgL3uzg+3w7zoM+26U6UGvBw8PDi3l5oBvMZuXZMR0PDw/vNm+Pb4uzs6N2PbKAh4eHd5lX/8gvj8uzBDB7Ih4eHt4N3nd5tYfjPAHsqym//BceHh7eBV674SYBtTMLs6D3SQsPDw9vw9uUG3LkfrQrf014eHh47+G1Tf22BDwb1ZqVPPDw8PA+k5cHtGmwJUft4egAHh4e3tt5yf+2I1ab+x+C8fDw8K7xNk2vvIm1SQzDRIWHh4d3gXfgB3/ZysrDOlu2wMPDw1vz/gFHR3OoZBFfuQAAAABJRU5ErkJggg=='>
+        
+          <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/wechat.png">
+        
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://rogerspy.gitee.io/2021/03/16/ptm_probabilistic_language_model/&title=预训练语言模型-统计语言模型 | Rogerspy's Home&summary=1. 简介1.1 词表/语料词表表示语言中包含的所有的词，比如对于中文来说："
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2021/03/17/smoothing-techniques/" rel="prev" title="预训练语言模型-统计语言模型平滑技术（补充）">
+                                  
+                                      预训练语言模型-统计语言模型平滑技术（补充）
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/smoothing/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Smoothing</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2021/03/15/l1-l2/" rel="prev" title="神经网络的正则化">
+                                    
+                                        神经网络的正则化
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/l1/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>L1</a> <a class="tag" href="/tags/l2/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>L2</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+        <section id="comments">
+          <div id="gitalk-container"></div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX","TeX"],
+      linebreaks: { automatic:true },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: { autoNumber: "AMS" },
+      noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+      Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += (all[i].SourceElement().parentNode.className ? ' ' : '') + 'has-jax';
+    }
+  });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '预训练语言模型-统计语言模型',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+        
+          
+          
+            <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/65-1Z31313530JC.jpeg'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="mailto:rogerspy@163.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/rogerspy"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=1960721923"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-简介"><span class="toc-text">1. 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-词表-语料"><span class="toc-text">1.1 词表/语料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-语言模型的定义"><span class="toc-text">1.2 语言模型的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-我们为什么要进行语言建模？"><span class="toc-text">1.3 我们为什么要进行语言建模？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-语言模型"><span class="toc-text">2. 语言模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Uni-Gram-模型"><span class="toc-text">2.1 Uni-Gram 模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Bi-Gram-模型"><span class="toc-text">2.2 Bi-Gram 模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-n-Gram-模型"><span class="toc-text">2.3 n-Gram 模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-语言模型评估：困惑度（Perplexity-ppl）"><span class="toc-text">2.4 语言模型评估：困惑度（Perplexity, ppl）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-语言模型参数估计中的稀疏化问题"><span class="toc-text">3. 语言模型参数估计中的稀疏化问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-线性插值平滑"><span class="toc-text">3.1 线性插值平滑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-加性平滑"><span class="toc-text">3.2 加性平滑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-减值平滑"><span class="toc-text">3.3 减值平滑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-总结"><span class="toc-text">4. 总结</span></a></li></ol>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" " href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" " href="/blog/"
+          
+          
+          id="blog">
+          
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+          
+          我的博客
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-book fa-fw" aria-hidden="true"></i>
+          
+          论文笔记
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://rogerspy.github.io/data_structure_algorithm/"
+          
+          
+          id="https:rogerspy.github.iodata_structure_algorithm">
+          
+            <i class="fas fa-cube fa-fw" aria-hidden="true"></i>
+          
+          算法基础
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fas fa-code fa-fw" aria-hidden="true"></i>
+          
+          Leetcode
+        </a></li>
+      
+        <li><a class="flat-box" " href="/leetcode/"
+          
+          
+          id="leetcode">
+          
+            <i class="fab fa-kaggle fa-fw" aria-hidden="true"></i>
+          
+          Kaggle
+        </a></li>
+      
+        <li><a class="flat-box" " href="/paper_note/"
+          
+          
+          id="paper_note">
+          
+            <i class="fas fa-brain fa-fw" aria-hidden="true"></i>
+          
+          思维逻辑
+        </a></li>
+      
+        <li><a class="flat-box" " href="/algorithm/"
+          
+          
+          id="algorithm">
+          
+            <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+          
+          学习小测
+        </a></li>
+      
+        <li><a class="flat-box" " href="/video/"
+          
+          
+          id="video">
+          
+            <i class="fas fa-film fa-fw" aria-hidden="true"></i>
+          
+          视频小站
+        </a></li>
+      
+        <li><a class="flat-box" " href="/material/"
+          
+          
+          id="material">
+          
+            <i class="fas fa-briefcase fa-fw" aria-hidden="true"></i>
+          
+          学习资料
+        </a></li>
+      
+        <li><a class="flat-box" " href="https://paperswithcode.com/datasets"
+          
+          
+          id="https:paperswithcode.comdatasets">
+          
+            <i class="fas fa-database fa-fw" aria-hidden="true"></i>
+          
+          数据集
+        </a></li>
+      
+        <li><a class="flat-box" " href="/articles/"
+          
+          
+          id="articles">
+          
+            <i class="fas fa-sticky-note fa-fw" aria-hidden="true"></i>
+          
+          杂文天地
+        </a></li>
+      
+        <li><a class="flat-box" " href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" " href="/personal_center/"
+          
+          
+          id="personal_center">
+          
+            <i class="fas fa-university fa-fw" aria-hidden="true"></i>
+          
+          个人中心
+        </a></li>
+      
+        <li><a class="flat-box" " href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-terminal fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;机器学习框架</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.gitee.io/pytorch-zh/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;PyTorch 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://keras-zh.readthedocs.io/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Keras 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://tensorflow.google.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Tensorflow 中文文档
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="http://scikitlearn.com.cn/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-star fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Scikit Learn 中文文档
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-wrench fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;百宝箱</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/excalidraw-claymate/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-magic fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Excalidraw-Claymate
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/jupyterlite/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-terminal fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;JupyterLite
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://rogerspy.github.io/kanban/"
+          
+          
+            target="_blank"
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-table fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Kanban
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-eye fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;睁眼看世界</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" href="https://deeplearn.org/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Deep Learning Monitor
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://paperswithcode.com/sota"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Browse State-of-the-Art
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/transformers/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" href="https://huggingface.co/models"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Transformers-models
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/categories/"
+    title="categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" " href="/categories/incremental-learning/"><div class='name'>Incremental Learning</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nl2sql/"><div class='name'>NL2SQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/nlp/"><div class='name'>NLP</div><div class='badge'>(23)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/博客转载/"><div class='name'>博客转载</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/数据结构与算法/"><div class='name'>数据结构与算法</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/知识图谱/"><div class='name'>知识图谱</div><div class='badge'>(6)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/笔记/"><div class='name'>笔记</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/论文解读/"><div class='name'>论文解读</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box" " href="/categories/语言模型/"><div class='name'>语言模型</div><div class='badge'>(15)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-fire fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/tags/"
+    title="tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/attention/" style="font-size: 16.22px; color: #8a8a8a">Attention</a> <a href="/tags/cnnlm/" style="font-size: 14px; color: #999">CNNLM</a> <a href="/tags/cvt/" style="font-size: 14px; color: #999">CVT</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">Data Structure</a> <a href="/tags/deep/" style="font-size: 14px; color: #999">Deep</a> <a href="/tags/dijkstra-s-algorithm/" style="font-size: 14px; color: #999">Dijkstra's Algorithm</a> <a href="/tags/ffnnlm/" style="font-size: 14px; color: #999">FFNNLM</a> <a href="/tags/gaussian/" style="font-size: 14px; color: #999">Gaussian</a> <a href="/tags/graph-algorithm/" style="font-size: 14px; color: #999">Graph Algorithm</a> <a href="/tags/initialization/" style="font-size: 14px; color: #999">Initialization</a> <a href="/tags/kg/" style="font-size: 19.56px; color: #737373">KG</a> <a href="/tags/l1/" style="font-size: 14px; color: #999">L1</a> <a href="/tags/l2/" style="font-size: 14px; color: #999">L2</a> <a href="/tags/lstm/" style="font-size: 14px; color: #999">LSTM</a> <a href="/tags/lstmlm/" style="font-size: 14px; color: #999">LSTMLM</a> <a href="/tags/language-model/" style="font-size: 20.67px; color: #6c6c6c">Language Model</a> <a href="/tags/log-linear-language-model/" style="font-size: 14px; color: #999">Log-Linear Language Model</a> <a href="/tags/mhsa/" style="font-size: 14px; color: #999">MHSA</a> <a href="/tags/nlp/" style="font-size: 20.67px; color: #6c6c6c">NLP</a> <a href="/tags/nmt/" style="font-size: 22.89px; color: #5d5d5d">NMT</a> <a href="/tags/norm/" style="font-size: 14px; color: #999">Norm</a> <a href="/tags/probabilistic-language-model/" style="font-size: 14px; color: #999">Probabilistic Language Model</a> <a href="/tags/rnnlm/" style="font-size: 14px; color: #999">RNNLM</a> <a href="/tags/roc-auc/" style="font-size: 14px; color: #999">ROC-AUC</a> <a href="/tags/smoothing/" style="font-size: 14px; color: #999">Smoothing</a> <a href="/tags/transformer/" style="font-size: 24px; color: #555">Transformer</a> <a href="/tags/context2vec/" style="font-size: 14px; color: #999">context2vec</a> <a href="/tags/cross-entropy/" style="font-size: 14px; color: #999">cross-entropy</a> <a href="/tags/data-noising/" style="font-size: 14px; color: #999">data noising</a> <a href="/tags/divide-conquer/" style="font-size: 14px; color: #999">divide-conquer</a> <a href="/tags/einsum/" style="font-size: 14px; color: #999">einsum</a> <a href="/tags/insertion/" style="font-size: 16.22px; color: #8a8a8a">insertion</a> <a href="/tags/insertion-deletion/" style="font-size: 15.11px; color: #919191">insertion-deletion</a> <a href="/tags/knowledge-distillation/" style="font-size: 14px; color: #999">knowledge distillation</a> <a href="/tags/knowledge-modelling/" style="font-size: 15.11px; color: #919191">knowledge-modelling</a> <a href="/tags/nl2infographic/" style="font-size: 14px; color: #999">nl2infographic</a> <a href="/tags/nl2sql/" style="font-size: 14px; color: #999">nl2sql</a> <a href="/tags/ontology/" style="font-size: 14px; color: #999">ontology</a> <a href="/tags/parallel-recurrent/" style="font-size: 14px; color: #999">parallel-recurrent</a> <a href="/tags/pre-trained-seq2seq/" style="font-size: 14px; color: #999">pre-trained seq2seq</a> <a href="/tags/pytorch/" style="font-size: 14px; color: #999">pytorch</a> <a href="/tags/quantization/" style="font-size: 14px; color: #999">quantization</a> <a href="/tags/queue/" style="font-size: 18.44px; color: #7b7b7b">queue</a> <a href="/tags/sparse/" style="font-size: 14px; color: #999">sparse</a> <a href="/tags/stack/" style="font-size: 14px; color: #999">stack</a> <a href="/tags/survey/" style="font-size: 17.33px; color: #828282">survey</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #999">tensorflow</a> <a href="/tags/text2viz/" style="font-size: 14px; color: #999">text2viz</a> <a href="/tags/weighted-head/" style="font-size: 14px; color: #999">weighted-head</a> <a href="/tags/半监督语言模型/" style="font-size: 14px; color: #999">半监督语言模型</a> <a href="/tags/双数组前缀树/" style="font-size: 14px; color: #999">双数组前缀树</a> <a href="/tags/推荐系统/" style="font-size: 14px; color: #999">推荐系统</a> <a href="/tags/数据结构/" style="font-size: 21.78px; color: #646464">数据结构</a> <a href="/tags/数组/" style="font-size: 14px; color: #999">数组</a> <a href="/tags/时间复杂度/" style="font-size: 14px; color: #999">时间复杂度</a> <a href="/tags/算法/" style="font-size: 14px; color: #999">算法</a> <a href="/tags/评估方法/" style="font-size: 14px; color: #999">评估方法</a> <a href="/tags/词向量/" style="font-size: 15.11px; color: #919191">词向量</a> <a href="/tags/词向量压缩/" style="font-size: 14px; color: #999">词向量压缩</a> <a href="/tags/隐式正则化/" style="font-size: 14px; color: #999">隐式正则化</a>
+    </div>
+  </section>
+
+
+          
+        
+      
+        
+          
+          
+            
+
+
+  <section class='widget music'>
+    
+<header class='pure'>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=1960721923"
+    title="https://music.163.com/#/user/home?id=1960721923">
+    <i class="far fa-heart fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="tencent"
+    data-type="playlist"
+    data-id="3351822215"
+    data-volume="0.7">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
+
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  <div id="sitetime"></div>
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/atom.xml"
+            class="social fas fa-rss flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="mailto:rogerspy@163.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/rogerspy"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=1960721923"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+	</footer>
+
+<script>setLoadingBarProgress(80);</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://cdn.jsdelivr.net/gh/rogerspy/blog-imgs/a0c9e6f9efad8b731cb7376504bd10d79d2053.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: "35a5e4dc744cc7d162af",
+      clientSecret: "7b5a409e17ce0c1971f284eac9f8902eb4b8feba",
+      repo: "rogerspy.github.io",
+      owner: "Rogerspy",
+      admin: "Rogerspy",
+      
+        id: "/wiki/material-x/",
+      
+      distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.5/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
